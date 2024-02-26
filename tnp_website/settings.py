@@ -76,11 +76,18 @@ WSGI_APPLICATION = 'tnp_website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# To use Neon with Django, you have to create a Project on Neon and specify the project connection settings in your settings.py in the same way as for standalone Postgres.
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+    'ENGINE': config('ENGINE'),
+    'NAME': config('NAME'),
+    'USER': config('USER'),
+    'PASSWORD': config('PASSWORD'),
+    'HOST': config('HOST'),
+    'PORT': '5432',
+    'OPTIONS': {'sslmode': 'require'},
+  }
 }
 
 
