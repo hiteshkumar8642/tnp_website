@@ -1,4 +1,5 @@
 from django.urls import path
-from . import views
+from .views import CollegeLoginView
 urlpatterns = [
+    path('', CollegeLoginView.as_view(), name='college_login'),
 ]
