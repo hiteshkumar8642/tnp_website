@@ -1,0 +1,158 @@
+body{
+    background: linear-gradient(to right, #f8f9fd, #f8f9fdee);
+}
+.container{
+   display: flex;
+   flex-wrap: wrap;
+   width: 100%;
+   font-family: 'Rubik';
+}
+.card{
+    width: 22rem;   
+    height: 25rem;
+    margin-right: 1.8rem;
+    margin-bottom: 1.8rem;
+    border-radius: 5px;
+    border: 1px solid #e5e7e8;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+.el1{
+    padding: 1rem;
+    flex:3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.el2{
+    padding-left: 1rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+    flex: 2;
+
+    display: flex;
+    align-items: start;
+}
+.el3a{
+    padding-left: 1.08rem;
+    padding-bottom: .25rem;
+    flex: 4;
+    display: flex;
+    align-items: end;
+    color: #5f6fe1;
+
+}
+.loctext {
+    margin: 0;
+    margin-left: 1rem;
+    font-size: 1rem;
+}
+.typetext{
+    margin: 0;
+    margin-left: 1rem;
+    font-size: 1rem;
+}
+.el3b{
+    padding-left: 1rem;
+    padding-top: .25rem;
+    flex: 4;
+    display: flex;
+
+}
+.el4{
+    padding:1rem;
+    flex: 4;
+
+    display: flex;
+    justify-content: space-between;
+} 
+.el4a{
+    height:100%;
+    width: 40%;
+
+    display: flex;
+}
+.el4b{
+    height: 100%;
+        width: 40%;
+        display: flex;
+}
+.el5{
+    flex: 2;
+    background-color: #f9f19c;
+    background-image: url("../assets/sssquiggly.svg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 450;
+}
+.company_logo{
+    height: 3.5rem;
+    width:  3.5rem;
+    border-radius: 2px;
+}
+.app_status{
+    width:6rem;
+    height: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    border-radius: 5px;
+}
+.status-applied{
+    background-color: #c3f5be;
+    color: #34b417;
+}
+.status-notapplied {
+    width: 7rem;
+    background-color: #cdddf8;
+    color: #2d3c69;
+}
+.svgicon{
+    height: 1.25rem;
+    margin: 0px;
+}
+.svgicon1{
+    height: 2rem;
+    margin: 0px;
+    align-self: center;
+}
+.primary_text{
+    font-weight: 400;
+    font-size:  1.25rem;
+    margin-left: .4rem;
+}
+.date_text {
+    align-self: center;
+    font-weight: 400;
+    font-size: .9rem;
+    margin-left: .6rem;
+}
+.date_secondary_text{
+    font-weight: 300;
+    font-size: .9rem;
+}
+.secondary_text{
+    font-weight: 300;
+    font-size: 1.1rem;
+}
+.offer-type{
+    margin: 3px;
+}
+@media (min-width: 1500px) and (max-width: 1600px) {
+    .container > :nth-child(4n+4) {
+        margin-right: 0;
+    }
+}
+@media (min-width: 1900px) and (max-width: 2000px) {
+    .container > :nth-child(5n+5) {
+        margin-right: 0;
+    }
+}
+@media (min-width: 2200px) and (max-width: 2400px) {
+    .container > :nth-child(6n+6) {
+        margin-right: 0;
+    }
+}
