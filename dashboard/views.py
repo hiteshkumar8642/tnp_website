@@ -1,5 +1,6 @@
-# dashboard/views.py
+from django.shortcuts import render
 
+# Create your views here.
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
@@ -13,6 +14,11 @@ class CollegeLoginView(LoginView):
         subdomain = request.get_host().split('.')[0]
         college = get_object_or_404(College, subdomain=subdomain)
         return render(request, self.template_name, {'college': college})
+
+def home(request):
+    return render(request,'dashboard/companies.html')
+
+
 
 
 # company_contact_handler

@@ -21,7 +21,18 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('dashboard.urls'))
+<<<<<<< Updated upstream
+    path('', include('dashboard.urls')),
+    path('', include('userDetails.urls')),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns = urlpatterns + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+    path('', include('landing_page.urls')),  # Include landing page URLs
+    path('placementpro/', include('dashboard.urls')),  # Include dashboard URLs after the college subdomain
+]
+
+# Add static and media URL patterns
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> Stashed changes
