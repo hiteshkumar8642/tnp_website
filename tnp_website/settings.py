@@ -33,7 +33,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+<<<<<<< Updated upstream
     'dashboard', 'userDetails',
+=======
+    'dashboard',
+    'landing_page',
+>>>>>>> Stashed changes
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'tnp_website.urls'
+
 
 TEMPLATES = [
     {
