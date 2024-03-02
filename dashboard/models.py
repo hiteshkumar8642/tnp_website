@@ -64,6 +64,8 @@ class Shared_Company(models.Model):
     type = models.CharField(max_length=100)
     is_company = models.CharField(max_length=10)
     location = models.CharField(max_length=30)
+    college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.company_name
@@ -77,6 +79,8 @@ class Shared_HR_contact(models.Model):
     email =  models.CharField(max_length=50)
     contact_number = models.CharField(max_length=20)
     linkedin_id = models.CharField(max_length=70)
+    college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -135,6 +139,7 @@ class UserDetails(models.Model):
     gap_after_graduation = models.IntegerField(default=0)
     mobile = models.CharField(max_length=15)
     is_placed = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     college_branch = models.ForeignKey(CollegeCourse, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -166,6 +171,8 @@ class AppliedCompany(models.Model):
     STATUS_CHOICES = [
         ('applied', 'Applied'),
         ('rejected', 'Rejected'),
+        ('selected', 'Selected'),
+
     ]
     is_selected = models.CharField(max_length=10, choices=STATUS_CHOICES, default='applied')
     comment = models.TextField(null=True, blank=True)
