@@ -23,7 +23,8 @@
         </div>
         <br>
         <br>
-        <form id="registration-form">
+        <form action ="save_user_data" method = "post" id="registration-form">
+            {% csrf_token %}
             <div class="form-row">
                 <div class="form-field">
                     <label for="10th-percentage">10th Marks Percentage:</label>

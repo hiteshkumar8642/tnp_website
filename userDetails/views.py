@@ -82,4 +82,28 @@ def login(request):
 def user_profile(request):
     return render(request , 'userDetails/user_profile.html')
 
+def save_user_data(request):
+    per_10 = float(request.POST['10thPercentage'])
+    per_12 = float(request.POST['12thPercentage'])
+    grad_cgpa = float(request.POST['graduationCGPA'])
+    reg_num = request.POST['registrationNumber']
+    cur_cgpa = float(request.POST['currentCGPA'])
+    backlogs = int(request.POST['backlogs'])
+    website = request.POST['website']
+    portfolio = request.POST['portfolio']
+    github = request.POST['github']
+    codeforces = request.POST['codeforces']
+    leetcode = request.POST['leetcode']
+    linkedin = request.POST['linkedin']
+    codechef = request.POST['codechef']
+    marksheet_10 = request.POST['10thMarksheet']
+    marksheet_12 = request.POST['12thMarksheet']
+    marksheet_grad = request.POST['graduationMarksheet']
+    resume = request.POST['resume']
+    
+
+
+
+
+
 
