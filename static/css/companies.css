@@ -212,7 +212,7 @@
 	 width: 100%;
 }
  .app-sidebar {
-	 padding: 40px 16px;
+	 padding: 10px 10px;
 	 display: flex;
 	 flex-direction: column;
 	 align-items: center;
@@ -220,16 +220,20 @@
  .app-sidebar-link {
 	 color: var(--main-color);
 	 color: var(--link-color);
-	 margin: 16px 0;
+	 margin: 5px 0;
+	 padding: 10px;
 	 transition: 0.2s;
-	 border-radius: 50%;
+	 border-radius: 5%;
 	 flex-shrink: 0;
-	 width: 40px;
-	 height: 40px;
+	 width: 200px;
+	 height: 50px;
 	 display: flex;
-	 justify-content: center;
+	 justify-content: left;
 	 align-items: center;
 }
+ a {
+	text-decoration: none;
+  }
  .app-sidebar-link:hover {
 	 background-color: var(--link-color-hover);
 	 color: var(--link-color-active);

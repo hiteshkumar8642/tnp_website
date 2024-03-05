@@ -33,11 +33,6 @@ def handle_comapany_contact(request):
     else:    
         return render(request,'company_contact.html')
 
-
-
-def hr_contact(request):
-    return render(request,'hr_contact.html')
-
      
 # HR_contact_handler
 
