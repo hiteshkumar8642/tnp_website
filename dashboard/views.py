@@ -10,9 +10,6 @@ from dashboard.models import Shared_Company,Shared_HR_contact
 def dashboard(request):
     return render(request,'dashboard/companies.html')
 
-
-
-
 # company_contact_handler
         
 def handle_comapany_contact(request):
@@ -26,13 +23,18 @@ def handle_comapany_contact(request):
         is_company = request.POST.get('is_company')
         locations = request.POST.get('location-id')
 
-        res = Shared_Company.objects.filter(company_name=company_name)
-        comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations)
-        comp_db_obj.save()
-        return render(request,'company_contact.html')
+        res = Shared_Company.objects.filter(company_name=company_name).exists()
+        if len(res) > 0:
+            return render(request,'company_contact.html',{'msg':'Company Already Exist !!!'})
+        else:
+            comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations)
+            comp_db_obj.save()
+            return render(request,'company_contact.html',{'msg':'Data Saved Successfully.'})
     else:    
         return render(request,'company_contact.html')
 
+def hr_contact(request):
+    return render(request,'hr_contact.html')
      
 # HR_contact_handler
 
@@ -44,8 +46,12 @@ def handle_hr_contact(request):
         contact_number = request.POST.get('number')
         linkedin = request.POST.get('linkedin')
 
-        hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin)
-        hr_db_obj.save()
-        return render(request,'hr_contact.html',{'msg':'Data Saved successfully!!!!'})
+        res = Shared_HR_contact.objects.filter(company_name=company_name,name=name).exists()
+        if len(res) > 0:
+            return render(request,'company_contact.html',{'msg':'Company Already Exist !!!'})
+        else:
+            hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin)
+            hr_db_obj.save()
+            return render(request,'hr_contact.html',{'msg':'Data Saved successfully!!!!'})
     else:    
         return render(request,'hr_contact.html')

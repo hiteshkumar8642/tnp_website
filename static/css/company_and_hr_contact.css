@@ -22,7 +22,7 @@ body,html{
 
 #company-container{
     width: 600px;
-    height: 800px;
+    height: 850px;
     margin-top: 20px;
     margin-left: 600px;
     padding: 10px;
@@ -110,6 +110,12 @@ select{
 	outline: none;	
 }
 
+#company-container h3{
+    margin-left: 200px;
+    margin-top:20px;
+    font-size: 20px;
+}
+
 #company-container button {
     width: 75%;
     margin-left: 70px;
@@ -131,7 +137,7 @@ select{
 
 #company-container1{
     width: 400px;
-    height: 640px;
+    height: 700px;
     margin-top: 70px;
     margin-left: 700px;
     padding: 35px;
@@ -189,6 +195,12 @@ select{
 
 #company-container.active{
     filter: blur(50px);
+}
+
+#company-container1 h3{
+    margin-left: 100px;
+    margin-top:20px;
+    font-size: 20px;
 }
 
 
