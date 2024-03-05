@@ -6,8 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dashboard', '0003_application_course_remove_college_user_and_more'),
-        ('dashboard', '0003_company_contacts_hr_contact'),
+        ('dashboard', '0003_application_course_remove_college_user_and_more')
     ]
 
     operations = [
