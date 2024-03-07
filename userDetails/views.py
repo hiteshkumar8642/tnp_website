@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
 from . forms import createUserForm
-
+from dashboard.models import UserDetails
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -79,28 +79,60 @@ def login(request):
 
     return render(request,'userDetails/login.html')
 
+
+@login_required
 def user_profile(request):
     return render(request , 'userDetails/user_profile.html')
 
 def save_user_data(request):
-    per_10 = float(request.POST['10thPercentage'])
-    per_12 = float(request.POST['12thPercentage'])
-    grad_cgpa = float(request.POST['graduationCGPA'])
-    reg_num = request.POST['registrationNumber']
-    cur_cgpa = float(request.POST['currentCGPA'])
-    backlogs = int(request.POST['backlogs'])
-    website = request.POST['website']
-    portfolio = request.POST['portfolio']
-    github = request.POST['github']
-    codeforces = request.POST['codeforces']
-    leetcode = request.POST['leetcode']
-    linkedin = request.POST['linkedin']
-    codechef = request.POST['codechef']
-    marksheet_10 = request.POST['10thMarksheet']
-    marksheet_12 = request.POST['12thMarksheet']
-    marksheet_grad = request.POST['graduationMarksheet']
-    resume = request.POST['resume']
-    
+
+    if request.method == 'POST':
+        per_10 = float(request.POST['10thPercentage'])
+        per_12 = float(request.POST['12thPercentage'])
+        grad_cgpa = float(request.POST['graduationCGPA'])
+        cur_cgpa = float(request.POST['currentCGPA'])
+        backlogs = int(request.POST['backlogs'])
+        website = request.POST['website']
+        portfolio = request.POST['portfolio']
+        github = request.POST['github']
+        codeforces = request.POST['codeforces']
+        leetcode = request.POST['leetcode']
+        linkedin = request.POST['linkedin']
+        codechef = request.POST['codechef']
+        marksheet_10 = request.POST['10thMarksheet']
+        marksheet_12 = request.POST['12thMarksheet']
+        marksheet_grad = request.POST['graduationMarksheet']
+        resume = request.POST['resume']
+        
+        user = User.objects.get(username=request.user.username)
+
+        # Create or update the user details
+        user_details, created = UserDetails.objects.get_or_create(user=user)
+
+    # Update the user details fields
+        user_details.tenth_percentage  = per_10
+        user_details.twelfth_percentage = per_12
+        user_details.graduation_cgpa = grad_cgpa
+        user_details.current_cgpa = cur_cgpa
+        user_details.backlogs = backlogs
+        user_details.other_website_link= website
+        user_details.portfolio_link = portfolio
+        user_details.github_profile = github
+        user_details.codeforces = codeforces
+        user_details.leetcode_profile = leetcode
+        user_details.linkedin_profile = linkedin
+        user_details.codechef_profile = codechef
+        user_details.tenth_marksheet = marksheet_10
+        user_details.twelfth_marksheet = marksheet_12
+        user_details.graduation_marksheet = marksheet_grad
+        user_details.resume = resume
+
+        # Save the user details to the database
+        user_details.save()
+        return redirect('user_profile')
+
+    return render(request, 'userDetails/user_profile.html') 
+
 
 
 

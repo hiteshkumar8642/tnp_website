@@ -99,6 +99,7 @@ class UserDetails(models.Model):
     leetcode_profile = models.URLField()
     codechef_profile = models.URLField()
     codeforces_profile = models.URLField()
+    linkedin_profile = models.URLField()
     github_profile = models.URLField()
     portfolio_link = models.URLField()
     department = models.CharField(max_length=100)
