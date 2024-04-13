@@ -1,5 +1,5 @@
 
-{% extends 'base.html' %}
+{% extends 'dashboard/base1.html' %}
 {% load static %}
 {% block title %}HR_Contact{% endblock title %}
 {% load static %}
@@ -7,7 +7,7 @@
     <div id="company-container1">
         <div id="inner1">
         <h1> HR Contact </h1> <br>
-        <form action="/hr_contacts/" id="hr_form" method="post">{% csrf_token %}
+        <form action={% url 'hr_contacts' %} id="hr_form" method="post">{% csrf_token %}
             <div class="from-group">
                 <label for="company-name">Company Name</label>
                 <input type="text" name="company-name" id="company-name" required>

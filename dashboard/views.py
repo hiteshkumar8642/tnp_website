@@ -1,14 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.contrib.auth.models import User  
 
 # Create your views here.
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails
 
 def dashboard(request):
     return render(request,'dashboard/companies.html')
+
+def company_contact(request):
+    return render(request,'company_contact.html')
 
 # company_contact_handler
         
@@ -22,19 +26,24 @@ def handle_comapany_contact(request):
         selected_options = request.POST.getlist('intern1')
         is_company = request.POST.get('is_company')
         locations = request.POST.get('location-id')
+        users = request.user
+        user_id = users.id
+        user_details = get_object_or_404(UserDetails, user=users)
+        branch = user_details.branch
 
         res = Shared_Company.objects.filter(company_name=company_name).exists()
-        if len(res) > 0:
-            return render(request,'company_contact.html',{'msg':'Company Already Exist !!!'})
+        if res==True:
+            return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
         else:
-            comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations)
+            comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,student_id=user_id)
             comp_db_obj.save()
-            return render(request,'company_contact.html',{'msg':'Data Saved Successfully.'})
+            return render(request,'dashboard/company_contact.html',{'msg':'Data Saved Successfully.'})
     else:    
-        return render(request,'company_contact.html')
+        return render(request,'dashboard/company_contact.html')
+    
 
 def hr_contact(request):
-    return render(request,'hr_contact.html')
+    return render(request,'dashboard/hr_contact.html')
      
 # HR_contact_handler
 
@@ -45,13 +54,30 @@ def handle_hr_contact(request):
         email = request.POST.get('company-email')
         contact_number = request.POST.get('number')
         linkedin = request.POST.get('linkedin')
+        
+        users = request.user
+        user_id = users.id
+        user_details = get_object_or_404(UserDetails, user=users)
+        branch = user_details.branch
 
         res = Shared_HR_contact.objects.filter(company_name=company_name,name=name).exists()
-        if len(res) > 0:
-            return render(request,'company_contact.html',{'msg':'Company Already Exist !!!'})
+        if res == True:
+            return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
         else:
-            hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin)
+            hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=branch,student_id=user_id)
             hr_db_obj.save()
-            return render(request,'hr_contact.html',{'msg':'Data Saved successfully!!!!'})
-    else:    
-        return render(request,'hr_contact.html')
+            return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
+    else:
+        print("devvrat")
+        return render(request , 'dashboard/hr_contact.html')
+    
+def print_list(request):
+    if request.session.get(request.user):
+        res = Shared_HR_contact.objects.all()
+        return render(request,'dashboard/hr_list.html',{'hr_list':res})
+    else:
+        return render(request,'dashboard/hr_contact.html')   # redirect to 
+    
+
+# def assig_cont(request):
+

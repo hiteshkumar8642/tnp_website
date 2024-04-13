@@ -67,13 +67,17 @@
         <a href="{% url 'company_contacts' %}" class="app-sidebar-link">
           Share Company Contact
         </a>
+        <a href="{% url 'hr_list' %}" class="app-sidebar-link">
+          HR List
+        </a>
       </div>
       {%block content%}
       {%endblock%}  
+      </div>  
     </div>
     
   </div>
 
-  <script src="{%static 'js/companies.js' %}"></script>
+  
 </body>
 </html>
