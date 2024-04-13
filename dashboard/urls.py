@@ -6,5 +6,5 @@ urlpatterns = [
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
     path('hr_list/',views.print_list,name="hr_list"),
-    # path('contact_assignment',views.assig_cont,name="assign")
+    path('tnp_view',views.tnp_view,name="tnp_view")
 ]
