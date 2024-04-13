@@ -67,10 +67,11 @@
         <a href="{% url 'company_contacts' %}" class="app-sidebar-link">
           Share Company Contact
         </a>
-      </div>  
+      </div>
+      {%block content%}
+      {%endblock%}  
     </div>
-    {%block content%}
-    {%endblock%}
+    
   </div>
 
   <script src="{%static 'js/companies.js' %}"></script>
