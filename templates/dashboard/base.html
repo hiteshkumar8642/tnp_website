@@ -44,8 +44,8 @@
             <path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
         </button>
         <button class="profile-btn">
-          <img src="https://assets.codepen.io/3306515/IMG_2025.jpg" />
-          <span>Aybüke C.</span>
+          <img src="{{request.user.userdetails.photo.url}}" />
+          <span>{{request.user.username}}</span>
         </button>
       </div>
       <button class="messages-btn">
@@ -78,6 +78,6 @@
     
   </div>
 
-  
+  <script src="{%static 'js/companies.js' %}"></script>
 </body>
 </html>

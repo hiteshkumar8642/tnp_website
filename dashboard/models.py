@@ -180,3 +180,15 @@ class AppliedCompany(models.Model):
 
     def __str__(self):
         return f"Applied Company - {self.application_id.company_id.name} - {self.user_id.username}"
+
+class UserProfile(models.Model):
+    ROLE_CHOICES = [
+        (1, "Student"),
+        (2, "Helper"),
+        (3, "Coordinator"),
+        (4, "Officer"),
+        (5, "Admin 1"),
+        (6, "Admin 2"),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
