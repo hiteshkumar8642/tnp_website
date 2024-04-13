@@ -1,0 +1,27 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% block title %} hr_list {% endblock title %}
+{% block content %} 
+    <div id="container-list">
+        <div id="upper">
+            <h3> HR LIST </h3>
+            <button id="add-btn"> ADD </button>
+        </div>
+        <div id="print-list">
+            <ul>
+                {% for hr in hr_list %}
+                <li>
+                    HR Name : {{hr.name}}
+                    Company Name : {{hr.company_name}}
+                    Email : {{hr.email}}
+                    Contact Number : {{hr.contact_number}}
+                    Linkedin ID : {{hr.linkedin_id}}
+                    College Branch : {{hr.college_branch}}
+                    Student ID : {{hr.student_id}}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock content %}
