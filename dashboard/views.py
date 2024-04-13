@@ -29,7 +29,7 @@ def handle_comapany_contact(request):
         users = request.user
         user_id = users.id
         user_details = get_object_or_404(UserDetails, user=users)
-        branch = user_details.branch
+        branch = user_details.college_branch
 
         res = Shared_Company.objects.filter(company_name=company_name).exists()
         if res==True:
@@ -56,28 +56,30 @@ def handle_hr_contact(request):
         linkedin = request.POST.get('linkedin')
         
         users = request.user
-        user_id = users.id
-        user_details = get_object_or_404(UserDetails, user=users)
-        branch = user_details.branch
+        print(users.userdetails.college_branch)
+        # # user_id = users.id
+        # # user_id = User.objects.get(id=request.user)
+        # # print(user_id)
+        # user_details = UserDetails.objects.get(user=users)
+        # branch = user_details.college_branch
 
-        res = Shared_HR_contact.objects.filter(company_name=company_name,name=name).exists()
-        if res == True:
-            return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
-        else:
-            hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=branch,student_id=user_id)
-            hr_db_obj.save()
-            return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
+
+        # res = Shared_HR_contact.objects.filter(company_name=company_name,name=name).exists()
+        # if res == True:
+        #     return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
+        # else:
+        hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
+        hr_db_obj.save()
+        return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
     else:
         print("devvrat")
         return render(request , 'dashboard/hr_contact.html')
     
 def print_list(request):
-    if request.session.get(request.user):
-        res = Shared_HR_contact.objects.all()
-        return render(request,'dashboard/hr_list.html',{'hr_list':res})
-    else:
-        return render(request,'dashboard/hr_contact.html')   # redirect to 
+    res = Shared_HR_contact.objects.all()
+    return render(request,'dashboard/hr_list.html',{'hr_list':res})
     
-
-# def assig_cont(request):
+def tnp_view(request):
+    res = Shared_HR_contact.objects.all()
+    return render(request,'dashboard/tnp_view.html',{'hr_list':res})
 

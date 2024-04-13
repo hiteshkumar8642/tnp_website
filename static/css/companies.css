@@ -793,4 +793,99 @@
 		 top: 10px;
 	}
 }
+
+
+#scroll-bg{
+  /* background-color:rgb(216, 223, 240); */
+  align-items: center;
+  width: 900px;
+  margin-top: 50px;
+  margin-left: 200px;
+  margin-bottom: 20px;
+  padding: 80px auto;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+#scroll-div{
+  width: 700px;
+  margin: 20px 20px 20px 90px;
+  /* background-color:greenyellow; */
+  height: 650px;
+  overflow: hidden;
+  overflow-y: scroll;
+  
+}
+
+#scroll-object{
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  color:white;
+  font-family: "Helvetica Neue",Helvetica,Arial;
+  font-size: 30px;
+}
+
+.assing-btn{
+  /* border: 10px black solid; */
+  height: 40px;
+  width: 120px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color:rgb(226, 169, 169);
+}
+
+.card-hr{
+	width: 600px;
+	height: 250px;
+	padding: 10px 10px 10px 10px;
+	background-color: rgb(88, 222, 243);
+	color: black;
+	font-size:18px;
+	border-radius: 10px;
+	border: 1px solid;
+}
+
+.view-btn{
+	color: black;
+	font-size:14px;
+	font-weight:bold;
+}
+
+#btn-add{
+	width: 90px;
+	border-radius: 10px;
+	border: 5px solid
+}
+
+#btn-submit-hr-contact{
+	width: 170px;
+	border-radius: 10px;
+	border: 5px solid
+}
+
+#btn-dlt-all{
+	width: 120px;
+	border-radius: 10px;
+	border: 5px solid
+}
+
+#all-tnp-btn{
+	margin-top: 20px;
+	margin-left: 40px;
+	width: 500px;
+	height: 50px;
+	/* background-color:rgb(194, 103, 103); */
+	display: flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+
+
+
+
+
  

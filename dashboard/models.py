@@ -65,7 +65,7 @@ class Shared_Company(models.Model):
     is_company = models.CharField(max_length=10)
     location = models.CharField(max_length=30)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
-    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.company_name
@@ -80,7 +80,7 @@ class Shared_HR_contact(models.Model):
     contact_number = models.CharField(max_length=20)
     linkedin_id = models.CharField(max_length=70)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
-    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

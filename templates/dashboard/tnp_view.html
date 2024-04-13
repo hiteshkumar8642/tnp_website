@@ -1,13 +1,13 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
-{% block title %} hr_list {% endblock title %}
-{% block content %} 
-   <div id="tnp-view-cont">
+{% block title %} TNP_view {% endblock title %}
+{% block content %}
+    <div id="tnp-view-cont">
         <div id="tnp-cont1">
             <div id="scroll-bg">
                 <div id="scroll-div">
                     <div id="scroll-object">
-                        {% for hr in hr_list %}
+                         {% for hr in hr_list %}
                             <div class="card-hr">
                                 HR Name : {{hr.name}}<br>
                                 Company Name : {{hr.company_name}}<br>
@@ -16,6 +16,11 @@
                                 Linkedin ID : {{hr.linkedin_id}}<br>
                                 College Branch : {{hr.college_branch}}<br>
                                 Student ID : {{hr.student_id}}<br>
+                                <div id="all-tnp-btn">
+                                <button id="btn-add" class="view-btn"> ADD </button>
+                                <button id="btn-submit-hr-contact"  class="view-btn">Submit to HR contact</button>
+                                <button id="btn-dlt-all"  class="view-btn">Delete All</button>
+                                </div>
                             </div>
                             <br>
                         {% endfor %}
@@ -24,5 +29,4 @@
             </div>
         </div>
     </div>
-
 {% endblock content %}
