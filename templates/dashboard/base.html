@@ -70,12 +70,14 @@
         <a href="{% url 'hr_list' %}" class="app-sidebar-link">
           HR List
         </a>
+      </div>
+      {%block content%}
+      {%endblock%}  
       </div>  
     </div>
-    {%block content%}
-    {%endblock%}
+    
   </div>
 
-  <script src="{%static 'js/companies.js' %}"></script>
+  
 </body>
 </html>
