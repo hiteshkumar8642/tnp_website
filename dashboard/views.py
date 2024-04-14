@@ -9,7 +9,9 @@ from django.http import HttpResponse
 from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails
 
 def dashboard(request):
-    return render(request,'dashboard/companies.html')
+    if request.user.isauthenticated:
+        res = an.objects.all()
+        return render(request,'dashboard/companies.html')
 
 def company_contact(request):
     return render(request,'company_contact.html')

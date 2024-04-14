@@ -192,3 +192,8 @@ class UserProfile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
+
+class Announcement(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    job_description = models.TextField(null=True, blank=True)    
+    
