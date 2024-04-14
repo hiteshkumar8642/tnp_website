@@ -6,10 +6,12 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application
 
 def dashboard(request):
-    return render(request,'dashboard/companies.html')
+    announcement=Announcement.objects.all().order_by('created')[:10]
+    application=Application.objects.all().order_by('last_date')
+    return render(request,'dashboard/companies.html',{'announcement':announcement , 'application':application})
 
 def company_contact(request):
     return render(request,'company_contact.html')
