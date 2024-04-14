@@ -6,14 +6,10 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,Announcement,Application
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact
 
 def dashboard(request):
-    if request.user.is_authenticated:
-        announcement = Announcement.objects.all().order_by('created')[:10]
-        application = Application.objects.all().order_by('created')
-        print(application[0])
-        return render(request,'dashboard/companies.html',{'application':application , 'announcement':announcement})
+    return render(request,'dashboard/companies.html')
 
 def company_contact(request):
     return render(request,'company_contact.html')
@@ -31,15 +27,13 @@ def handle_comapany_contact(request):
         is_company = request.POST.get('is_company')
         locations = request.POST.get('location-id')
         users = request.user
-        user_id = users.id
-        user_details = get_object_or_404(UserDetails, user=users)
-        branch = user_details.college_branch
+        branch = users.userdetails.college_branch
 
         res = Shared_Company.objects.filter(company_name=company_name).exists()
         if res==True:
             return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
         else:
-            comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,student_id=user_id)
+            comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,user=users)
             comp_db_obj.save()
             return render(request,'dashboard/company_contact.html',{'msg':'Data Saved Successfully.'})
     else:    
@@ -61,23 +55,16 @@ def handle_hr_contact(request):
         
         users = request.user
         print(users.userdetails.college_branch)
-        # # user_id = users.id
-        # # user_id = User.objects.get(id=request.user)
-        # # print(user_id)
-        # user_details = UserDetails.objects.get(user=users)
-        # branch = user_details.college_branch
-
-
-        # res = Shared_HR_contact.objects.filter(company_name=company_name,name=name).exists()
-        # if res == True:
-        #     return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
-        # else:
         hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
         hr_db_obj.save()
         return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
     else:
         print("devvrat")
         return render(request , 'dashboard/hr_contact.html')
+
+
+
+# TNP View of HR contact 
     
 def print_list(request):
     res = Shared_HR_contact.objects.all()
@@ -91,6 +78,26 @@ def delete_all_contact(request):
     Shared_HR_contact.objects.all().delete()
     return render(request,'dashboard/tnp_view.html')
 
-# def transfer_contact(request):
+def transfer_contact(request,hr_id):
+    sh_hr_obj =  Shared_HR_contact.objects.get(id=hr_id)
+    name = sh_hr_obj.name
+    company = sh_hr_obj.company_name
+    email = sh_hr_obj.email
+    contact = sh_hr_obj.contact_number
+    linked = sh_hr_obj.linkedin_id
+    clg_branch = sh_hr_obj.college_branch
+    # hr_cont_obj = HRContact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
+
+    return render(request,'dashboard/tnp_view.html') 
     
+
+# TNP View of Company Details 
+ 
+def tnp_company_view(request):
+    res = Shared_Company.objects.all()
+    return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
+
+def delete_all_company_contact(request):
+    Shared_Company.objects.all().delete()
+    return render(request,'dashboard/tnp_view.html')
 

@@ -28,7 +28,7 @@
                                 College Branch : {{hr.college_branch}}<br>
                                 Student ID : {{hr.user}}<br>
                                 <div id="all-tnp-btn">
-                                    <a href="{% url 'hr_list' %}"><button id="btn-submit-hr-contact"  class="view-btn">Submit to HR contact</button></a>
+                                    <a href="{% url 'transfer_contact' hr_id=hr.id  %}"><button id="btn-submit-hr-contact"  class="view-btn">Submit to HR contact</button></a>
                                 </div>
                             </div>
                             <br>
