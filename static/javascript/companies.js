@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     var modeSwitch = document.querySelector('.mode-switch');
-  
-    modeSwitch.addEventListener('click', function () {                     document.documentElement.classList.toggle('dark');
-      modeSwitch.classList.toggle('active');
-    });
+      modeSwitch.addEventListener('click', function () 
+      {
+        document.documentElement.classList.toggle('dark');
+        modeSwitch.classList.toggle('active');
+      }
+    );
     
     var listView = document.querySelector('.list-view');
     var gridView = document.querySelector('.grid-view');
