@@ -83,3 +83,10 @@ def tnp_view(request):
     res = Shared_HR_contact.objects.all()
     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
 
+def delete_all_contact(request):
+    Shared_HR_contact.objects.all().delete()
+    return render(request,'dashboard/tnp_view.html')
+
+# def transfer_contact(request):
+    
+

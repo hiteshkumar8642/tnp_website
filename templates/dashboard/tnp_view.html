@@ -1,7 +1,18 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
-{% block title %} TNP_view {% endblock title %}
+{% block title %} TNP_view {% endblock%}
+{%block head%}
+<link href="{%static 'css/tnp_view.css' %}" rel="stylesheet"> 
+{%endblock%}
 {% block content %}
+    <div id="tnp-main">
+        <div id="tnp-header">
+            <form action="{% url 'dlt_all' %}" method="post">
+                {% csrf_token %}
+                <button id="btn-dlt-all" class="view-btn" type="submit" > Delete All</button>
+            </form>
+            <button id="btn-add"  class="view-btn" onclick="redirectToPage()"> ADD </button>
+        </div>
     <div id="tnp-view-cont">
         <div id="tnp-cont1">
             <div id="scroll-bg">
@@ -15,11 +26,9 @@
                                 Contact Number : {{hr.contact_number}}<br>
                                 Linkedin ID : {{hr.linkedin_id}}<br>
                                 College Branch : {{hr.college_branch}}<br>
-                                Student ID : {{hr.student_id}}<br>
+                                Student ID : {{hr.user}}<br>
                                 <div id="all-tnp-btn">
-                                <button id="btn-add" class="view-btn"> ADD </button>
-                                <button id="btn-submit-hr-contact"  class="view-btn">Submit to HR contact</button>
-                                <button id="btn-dlt-all"  class="view-btn">Delete All</button>
+                                    <a href="{% url 'hr_list' %}"><button id="btn-submit-hr-contact"  class="view-btn">Submit to HR contact</button></a>
                                 </div>
                             </div>
                             <br>
@@ -29,4 +38,11 @@
             </div>
         </div>
     </div>
+    </div>
+    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> {% endcomment %}
+    <script>
+        function redirectToPage() {
+            window.location.href = "http://127.0.0.1:8000/dashboard/hr_contacts/";  
+        }
+    </script>
 {% endblock content %}

@@ -1,6 +1,9 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 {% block title %} hr_list {% endblock title %}
+{%block head%}
+<link href="{%static 'css/tnp_view.css' %}" rel="stylesheet"> 
+{%endblock%}  
 {% block content %} 
    <div id="tnp-view-cont">
         <div id="tnp-cont1">

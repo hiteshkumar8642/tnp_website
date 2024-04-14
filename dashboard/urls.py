@@ -7,5 +7,7 @@ urlpatterns = [
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
     path('hr_list/',views.print_list,name="hr_list"),
-    path('tnp_view/',views.tnp_view,name="tnp_view")
+    path('tnp_view/',views.tnp_view,name="tnp_view"),
+    path('dlt_all/',views.delete_all_contact,name="dlt_all"),
+    # path('transfer_contact/',views.transfer_contact,name="transfer_contact")
 ]
