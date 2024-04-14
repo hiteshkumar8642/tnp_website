@@ -45,12 +45,15 @@
     </div>
     <div class="app-content">
       <div class="app-sidebar">
+        
         <a href="{% url 'dashboard' %}" class="app-sidebar-link active">
           Companies
         </a>
+        {% if request.user.userprofile.role != 4%}
         <a href="" class="app-sidebar-link">
           Applied Companies
         </a>
+        {%endif%}
         <a href="{% url 'hr_contacts' %}" class="app-sidebar-link">
           Share HR Contact
         </a>
