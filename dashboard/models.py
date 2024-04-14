@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User  
 
 class Course(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     DEGREE_CHOICES = [
         ('B.Tech', 'Bachelor of Technology'),
         ('B.E', 'Bachelor of Engineering'),
@@ -23,6 +25,8 @@ class Course(models.Model):
         return f"{self.degree} - {self.specialization}"
 
 class College(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     subdomain = models.CharField(max_length=50, unique=True)
 
@@ -30,6 +34,8 @@ class College(models.Model):
         return self.name
 
 class CollegeCourse(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
@@ -37,6 +43,8 @@ class CollegeCourse(models.Model):
         return f"{self.college.name} - {self.course}"
 
 class Company(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     allowed_courses = models.ManyToManyField(Course, blank=True)
     is_intern = models.BooleanField(null=True, blank=True)
@@ -56,6 +64,8 @@ class Company(models.Model):
 # Company_Contact DataBase  
     
 class Shared_Company(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     company_name = models.CharField(max_length=50)
     company_email = models.CharField(max_length=90)
     company_contact = models.CharField(max_length=20,default="")
@@ -74,6 +84,8 @@ class Shared_Company(models.Model):
 # HR_Contact DataBase 
     
 class Shared_HR_contact(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=30)
     company_name = models.CharField(max_length=50)
     email =  models.CharField(max_length=50)
@@ -86,6 +98,8 @@ class Shared_HR_contact(models.Model):
         return self.name
 
 class HRContact(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     linkedin = models.URLField(null=True, blank=True)
     mobile = models.CharField(max_length=15, null=True, blank=True)
@@ -101,6 +115,8 @@ class HRContact(models.Model):
         return f"{self.name} - {self.company_id.name}"
 
 class CallHistory(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     hr_id = models.ForeignKey(HRContact, on_delete=models.CASCADE)
     student_id = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(null=True, blank=True)
@@ -117,6 +133,8 @@ class CallHistory(models.Model):
         return f"Call History - {self.hr_id.name} - {self.student_id.username}"
 
 class UserDetails(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     resume = models.FileField(upload_to='user_resumes/')
     photo = models.ImageField(upload_to='user_photos/')
@@ -147,6 +165,9 @@ class UserDetails(models.Model):
         return f"{self.user.username} - {self.college_branch.college.name} - {self.college_branch.course}"
 
 class Application(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    last_date = models.DateField(null=True, blank=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     predicted_visit_date = models.DateField(null=True, blank=True)
     twelfth_marks_eligibility = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
@@ -166,6 +187,8 @@ class Application(models.Model):
         return f"Application - {self.company_id.name} - {self.college_branch}"
     
 class AppliedCompany(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     
@@ -182,6 +205,8 @@ class AppliedCompany(models.Model):
         return f"Applied Company - {self.application_id.company_id.name} - {self.user_id.username}"
 
 class UserProfile(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     ROLE_CHOICES = [
         (1, "Student"),
         (2, "Helper"),
@@ -194,6 +219,8 @@ class UserProfile(models.Model):
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
 
 class Announcement(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_description = models.TextField(null=True, blank=True)    
+    announcement = models.TextField(null=True, blank=True)    
     
