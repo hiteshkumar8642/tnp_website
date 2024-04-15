@@ -69,11 +69,16 @@
         <a href="{% url 'tnp_company_view' %}" class="app-sidebar-link">
           TNP Company View
         </a>
+        {%if request.user.is_authenticated%}
+        <a href="{% url 'logout' %}" class="app-sidebar-link">
+          Logout
+        </a>
+        {%endif%}
       </div>
-      <div class="projects-section">
+      
         {%block content%}
         {%endblock%}  
-      <div>
+     
       </div>  
     </div>
     

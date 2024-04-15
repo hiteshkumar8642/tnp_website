@@ -11,5 +11,6 @@ urlpatterns = [
     path('dlt_all/',views.delete_all_contact,name="dlt_all"),
     path('transfer_contact/<int:hr_id>',views.transfer_contact,name="transfer_contact"),
     path('tnp_company_view/',views.tnp_company_view,name="tnp_company_view"),
-    path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact")
+    path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
+    path('logout/',views.logout,name='logout')
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.models import User  
+from django.contrib.auth.models import User, auth  
 
 # Create your views here.
 from django.shortcuts import render, get_object_or_404
@@ -103,3 +103,6 @@ def delete_all_company_contact(request):
     Shared_Company.objects.all().delete()
     return render(request,'dashboard/tnp_view.html')
 
+def logout(request):
+    auth.logout(request)
+    return render(request,'landing_page/home.html')
