@@ -49,31 +49,31 @@
         <a href="{% url 'dashboard' %}" class="app-sidebar-link active">
           Companies
         </a>
-        {% if request.user.userprofile.role != 4%}
+        {% if request.user.userprofile.role != 4 or request.user.userprofile.role != 5  or request.user.userprofile.role != 6%}
         <a href="" class="app-sidebar-link">
           Applied Companies
         </a>
         {%endif%}
+        {% if request.user.userprofile.role == 3 or request.user.userprofile.role == 4 or request.user.userprofile.role == 2 %}
         <a href="{% url 'hr_contacts' %}" class="app-sidebar-link">
           Share HR Contact
         </a>
+        {%endif%}
+        {% if request.user.userprofile.role == 3 or request.user.userprofile.role == 4 or request.user.userprofile.role == 2 %}
         <a href="{% url 'company_contacts' %}" class="app-sidebar-link">
           Share Company Contact
         </a>
+        {%endif%}
+        {% if request.user.userprofile.role == 3 or request.user.userprofile.role == 4 %}
         <a href="{% url 'hr_list' %}" class="app-sidebar-link">
           HR List
         </a>
-        <a href="{% url 'tnp_view' %}" class="app-sidebar-link">
-          TNP View
-        </a>
-        <a href="{% url 'tnp_company_view' %}" class="app-sidebar-link">
-          TNP Company View
-        </a>
-        {% comment %} {%if request.user.is_authenticated%}
+        {%endif%}
+        {%if request.user.is_authenticated%}
         <a href="{% url 'logout' %}" class="app-sidebar-link">
           Logout
         </a>
-        {%endif%} {% endcomment %}
+        {%endif%}
       </div>
       
         {%block content%}
