@@ -11,15 +11,18 @@
                 <div id="scroll-div">
                     <div id="scroll-object">
                         {% for hr in hr_list %}
+                            {% if hr.assigned %}
                             <div class="card-hr">
                                 HR Name : {{hr.name}}<br>
-                                Company Name : {{hr.company_name}}<br>
-                                Email : {{hr.email}}<br>
-                                Contact Number : {{hr.contact_number}}<br>
-                                Linkedin ID : {{hr.linkedin_id}}<br>
+                                Gender : {{hr.gender}}<br>
+                                Company ID : {{hr.company_id}}<br>
+                                Email : {{hr.mail_id}}<br>
+                                Contact Number : {{hr.mobile}}<br>
+                                Linkedin ID : {{hr.linkedin}}<br>
                                 College Branch : {{hr.college_branch}}<br>
-                                Student ID : {{hr.student_id}}<br>
+                                Date of Contact : {{hr.date_of_contact}}<br>
                             </div>
+                            {% endif%}
                             <br>
                         {% endfor %}
                     </div>

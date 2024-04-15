@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company
 
 def dashboard(request):
     announcement=Announcement.objects.all().order_by('created')[:10]
@@ -64,12 +64,10 @@ def handle_hr_contact(request):
         print("devvrat")
         return render(request , 'dashboard/hr_contact.html')
 
-
-
 # TNP View of HR contact 
     
 def print_list(request):
-    res = Shared_HR_contact.objects.all()
+    res = HRContact.objects.all()
     return render(request,'dashboard/hr_list.html',{'hr_list':res})
     
 def tnp_view(request):
@@ -86,9 +84,12 @@ def transfer_contact(request,hr_id):
     company = sh_hr_obj.company_name
     email = sh_hr_obj.email
     contact = sh_hr_obj.contact_number
-    linked = sh_hr_obj.linkedin_id
+    linkedin = sh_hr_obj.linkedin_id
     clg_branch = sh_hr_obj.college_branch
-    # hr_cont_obj = HRContact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
+    cmp_obj = Company.objects.get(name=company)
+    
+    hr_cont_obj = HRContact.objects.create(name=name.upper(),mail_id=email, mobile=contact,linkedin=linkedin,college_branch=clg_branch,company_id=cmp_obj.pk)
+    hr_cont_obj.save()
 
     return render(request,'dashboard/tnp_view.html') 
     
@@ -103,6 +104,7 @@ def delete_all_company_contact(request):
     Shared_Company.objects.all().delete()
     return render(request,'dashboard/tnp_view.html')
 
-def logout(request):
-    auth.logout(request)
-    return render(request,'landing_page/home.html')
+
+
+
+

@@ -12,5 +12,5 @@ urlpatterns = [
     path('transfer_contact/<int:hr_id>',views.transfer_contact,name="transfer_contact"),
     path('tnp_company_view/',views.tnp_company_view,name="tnp_company_view"),
     path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
-    path('logout/',views.logout,name='logout')
+    # path('logout/',views.logout,name='logout')
 ]
