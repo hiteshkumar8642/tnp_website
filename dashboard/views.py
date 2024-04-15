@@ -46,8 +46,8 @@ def handle_comapany_contact(request):
             else:    
                 return render(request,'dashboard/company_contact.html')
         elif request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            Shared_HR_contact.objects.all().delete()
-            return render(request,'dashboard/tnp_view.html')
+            res = Shared_Company.objects.all()
+            return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')    
@@ -85,16 +85,26 @@ def handle_hr_contact(request):
 # TNP View of HR contact 
     
 def print_list(request):
-    res = HRContact.objects.all()
-    return render(request,'dashboard/hr_list.html',{'hr_list':res})
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+            res = HRContact.objects.all()
+            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
     
 def tnp_view(request):
     res = Shared_HR_contact.objects.all()
     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
 
 def delete_all_contact(request):
-    Shared_HR_contact.objects.all().delete()
-    return render(request,'dashboard/tnp_view.html')
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+            Shared_HR_contact.objects.all().delete()
+            return render(request,'dashboard/tnp_view.html')
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
 
 def transfer_contact(request,hr_id):
     sh_hr_obj =  Shared_HR_contact.objects.get(id=hr_id)
@@ -119,8 +129,14 @@ def tnp_company_view(request):
     return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
 
 def delete_all_company_contact(request):
-    Shared_Company.objects.all().delete()
-    return render(request,'dashboard/tnp_view.html')
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+            Shared_Company.objects.all().delete()
+            return render(request,'dashboard/tnp_view.html')
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
+        
 
 def logout(request):
     auth.logout(request)

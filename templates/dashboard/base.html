@@ -69,6 +69,11 @@
           HR List
         </a>
         {%endif%}
+        {% if request.user.userprofile.role == 3 %}
+        <a href="{% url 'my_hr_list' %}" class="app-sidebar-link">
+          My HR List
+        </a>
+        {%endif%}
         {%if request.user.is_authenticated%}
         <a href="{% url 'logout' %}" class="app-sidebar-link">
           Logout
