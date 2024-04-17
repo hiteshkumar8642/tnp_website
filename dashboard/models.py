@@ -101,7 +101,7 @@ class HRContact(models.Model):
     linkedin = models.URLField(null=True, blank=True)
     mobile = models.CharField(max_length=15, null=True, blank=True)
     mail_id = models.EmailField(null=True, blank=True)
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company_id = models.ForeignKey(Company, null=True, blank=True,on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, null=True, blank=True)
     date_of_contact = models.DateField(null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
