@@ -7,7 +7,7 @@
     <div id="company-container">
         <div id="inner">
         <h1> Company Contacts </h1> <br>
-        <form action={% url 'company_contacts'%} id="comp-form" method="post">{% csrf_token %}
+        <form action={% url 'common_company_form'%} id="comp-form" method="post">{% csrf_token %}
             <div class="from-group">
                 <label for="company-name" >Company Name </label>
                 <input type="text" name="company-name" id="company-name" required>

@@ -16,6 +16,6 @@ urlpatterns = [
     path('common_form/',views.common_form,name="common_form"),
     path('common_company_form/',views.common_company_form,name="common_company_form"),
     path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
-    path('assign_me/',views.assign_me,name="assign_me"),
+    path('assign_me/<str:cnt>',views.assign_me,name="assign_me"),
     path('logout/',views.logout,name='logout')
 ]

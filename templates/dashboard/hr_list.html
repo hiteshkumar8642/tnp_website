@@ -11,7 +11,7 @@
                 <div id="scroll-div">
                     <div id="scroll-object">
                         {% for hr in hr_list %}
-                            {% if hr.assigned %}
+                            {% comment %} {% if hr.assigned is None %} {% endcomment %}
                             <div class="card-hr">
                                 HR Name : {{hr.name}}<br>
                                 Gender : {{hr.gender}}<br>
@@ -22,10 +22,12 @@
                                 College Branch : {{hr.college_branch}}<br>
                                 Date of Contact : {{hr.date_of_contact}}<br>
                                 <div id="all-tnp-btn">
-                                    <a href="{% url 'assign_me' %}"><button id="btn-submit-hr-contact"  class="view-btn"> Assign Me </button></a>
+                                    {% if hr.assigned is None%}
+                                    <a href="{% url 'assign_me' cnt=hr.name %}"><button id="btn-submit-hr-contact"  class="view-btn"> Assign Me </button></a>
+                                    {% endif %}
                                 </div>
                             </div>
-                            {% endif%}
+                            {% comment %} {% endif%} {% endcomment %}
                             <br>
                         {% endfor %}
                     </div>
