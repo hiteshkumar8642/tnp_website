@@ -11,7 +11,7 @@
                 {% csrf_token %}
                 <button id="btn-dlt-all" class="view-btn" type="submit" > Delete All</button>
             </form>
-            <button id="btn-add"  class="view-btn" onclick="redirectToPage()"> ADD </button>
+            <button id="btn-add"  class="view-btn" > ADD </button>
         </div>
     <div id="tnp-view-cont">
         <div id="tnp-cont1">
@@ -44,8 +44,12 @@
     </div>
     {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> {% endcomment %}
     <script>
-        function redirectToPage() {
-            window.location.href = "http://127.0.0.1:8000/dashboard/company_contacts/";  
-        }
+        btn = document.getElementById('btn-add')
+        {% comment %} function redirectToPage() {
+            document.location.href="{% url 'common_form'%}"  
+        } {% endcomment %}
+        btn.addEventListener('click',()=>{
+            document.location.href="{% url 'common_company_form'%}"
+        });
     </script>
 {% endblock content %}

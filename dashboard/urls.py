@@ -12,6 +12,9 @@ urlpatterns = [
     path('dlt_all/',views.delete_all_contact,name="dlt_all"),
     path('transfer_contact/<int:hr_id>',views.transfer_contact,name="transfer_contact"),
     path('tnp_company_view/',views.tnp_company_view,name="tnp_company_view"),
+    path('common_form/',views.common_form,name="common_form"),
+    path('common_company_form/',views.common_company_form,name="common_company_form"),
     path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
+    path('assign_me/',views.assign_me,name="assign_me"),
     path('logout/',views.logout,name='logout')
 ]

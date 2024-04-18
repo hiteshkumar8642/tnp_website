@@ -16,8 +16,6 @@ def dashboard(request):
     else:
         return render(request,'landing_page/home.html')
 
-def company_contact(request):
-    return render(request,'company_contact.html')
 
 # company_contact_handler
         
@@ -40,7 +38,7 @@ def handle_comapany_contact(request):
                 if res==True:
                     return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
                 else:
-                    comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,user=users)
+                    comp_db_obj = Shared_Company(company_name=company_name.upper(),company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,user=users)
                     comp_db_obj.save()
                     return render(request,'dashboard/company_contact.html',{'msg':'Data Saved Successfully.'})
             else:    
@@ -53,8 +51,8 @@ def handle_comapany_contact(request):
     return render(request,'landing_page/home.html')    
         
 
-def hr_contact(request):
-    return render(request,'dashboard/hr_contact.html')
+# def hr_contact(request):
+#     return render(request,'dashboard/hr_contact.html')
      
 # HR_contact_handler
 
@@ -70,7 +68,7 @@ def handle_hr_contact(request):
                 
                 users = request.user
                 print(users.userdetails.college_branch)
-                hr_db_obj = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
+                hr_db_obj = Shared_HR_contact(name=name, company_name=company_name.upper(), email=email, contact_number=contact_number,linkedin_id=linkedin,college_branch=users.userdetails.college_branch,user=users)
                 hr_db_obj.save()
                 return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
             else:
@@ -115,7 +113,7 @@ def transfer_contact(request,hr_id):
     linkedin = sh_hr_obj.linkedin_id
     clg_branch = sh_hr_obj.college_branch
     cmp_obj = Company.objects.get(name=company)
-    
+    print(cmp_obj)
     hr_cont_obj = HRContact.objects.create(name=name.upper(),mail_id=email, mobile=contact,linkedin=linkedin,college_branch=clg_branch,company_id=cmp_obj.pk)
     hr_cont_obj.save()
 
@@ -136,10 +134,63 @@ def delete_all_company_contact(request):
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
-        
+
+def assign_me(request):
+    pass
 
 def logout(request):
     auth.logout(request)
     return render(request,'landing_page/home.html')
 
+def common_form(request):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4:     
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                company_name = request.POST.get('company-name')
+                email = request.POST.get('company-email')
+                contact_number = request.POST.get('number')
+                linkedin = request.POST.get('linkedin')
+                gender = request.POST.get('gender')
+                users = request.user
+                clg_branch = users.userdetails.college_branch
+                comp_obj = Company.objects.filter(name=company_name)
+                print(comp_obj.id)
+                hr_db_obj = HRContact(name=name.upper(), company_name=company_name.upper(), gender=gender, mail_id=email, mobile=contact_number,linkedin=linkedin,college_branch=clg_branch,company_id = comp_obj.id)
+                hr_db_obj.save()
+                return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
+            else:
+                return render(request , 'dashboard/hr_common_form.html')
+        # elif request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+        #     res = Shared_HR_contact.objects.all()
+        #     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
+
+def common_company_form(request):
+    print(request.user)
+    # if request.user.is_authenticated:
+    #     if request.user.userprofile.role==3 or request.user.userprofile.role==4:     
+    #         if request.method == 'POST':
+    #             name = request.POST.get('name')
+    #             company_name = request.POST.get('company-name')
+    #             email = request.POST.get('company-email')
+    #             contact_number = request.POST.get('number')
+    #             linkedin = request.POST.get('linkedin')
+    #             gender = request.POST.get('gender')
+    #             users = request.user
+    #             clg_branch = users.userdetails.college_branch
+    #             comp_obj = Company.objects.get(name=company_name)
+    #             hr_db_obj = HRContact(name=name, company_name=company_name, gender=gender, mail_id=email, mobile=contact_number,linkedin=linkedin,college_branch=clg_branch,company_id = comp_obj.id)
+    #             hr_db_obj.save()
+    #             return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
+    #         else:
+    #             return render(request , 'dashboard/hr_common_form.html')
+    #     # elif request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+    #     #     res = Shared_HR_contact.objects.all()
+    #     #     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
+    #     else:
+    #         raise PermissionDenied
+    # return render(request,'landing_page/home.html')
 
