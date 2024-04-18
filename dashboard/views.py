@@ -90,6 +90,15 @@ def print_list(request):
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
+
+def my_print_list(request):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+            res = HRContact.objects.filter(assigned=request.user)
+            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
     
 def tnp_view(request):
     res = Shared_HR_contact.objects.all()
