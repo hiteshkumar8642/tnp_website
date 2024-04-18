@@ -52,6 +52,7 @@
       </div>
       <div class="project-boxes jsGridView">
         {%for x in application%}
+        <a href="{% url 'job_description' jd_id=x.id  %}">
         <div class="project-box-wrapper">
           <div class="project-box" style="background-color: #fee4cb;">
             <div class="project-box-header">
@@ -94,6 +95,7 @@
             </div>
           </div>  
         </div>
+      </a>
         {%endfor%}
       </div>
     </div>

@@ -1,0 +1,12 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Company_Contact{% endblock title %}
+{% block content %}
+
+{%for x in description%}
+{%if x.is_spp%}  SPP  {%endif%}<br>
+{%if x.is_sip%}  SIP  {%endif%}<br>
+{{x.company_id.name}}<br>
+{{x.position}}<br>
+{%endfor%}
+{%endblock%}

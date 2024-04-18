@@ -176,6 +176,18 @@ def common_form(request):
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
+def job_description(request,jd_id):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==1 or request.user.userprofile.role==2 or request.user.userprofile.role==3:
+            if request.method == 'POST':
+                print("hii")
+            else :
+                res =  Application.objects.filter(id=jd_id)
+                return render(request,'dashboard/job_description.html',{'description':res})    
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
+
 
 def common_company_form(request):
     print(request.user)
