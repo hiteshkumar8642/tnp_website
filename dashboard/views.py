@@ -85,7 +85,9 @@ def print_list(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
             res = HRContact.objects.filter(assigned=None)
-            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+            print(res)
+            # return render(request,'dashboard/hr_list.html',{'hr_list':res})
+            return render(request,'landing_page/home.html')
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
@@ -122,7 +124,7 @@ def transfer_contact(request,hr_id):
     clg_branch = sh_hr_obj.college_branch
     cmp_obj = Company.objects.get(name=company)
     print(cmp_obj)
-    hr_cont_obj = HRContact.objects.create(name=name.upper(),mail_id=email, mobile=contact,linkedin=linkedin,college_branch=clg_branch,company_id=cmp_obj.pk)
+    hr_cont_obj = HRContact.objects.create(name=name.upper(),mail_id=email, mobile=contact,linkedin=linkedin,college_branch=clg_branch)
     hr_cont_obj.save()
 
     return render(request,'dashboard/tnp_view.html') 
