@@ -93,7 +93,7 @@ def SaveDetails(request):
                 print("Uploaded File Name:", uploaded_file.name)
                 print("Uploaded File Size:", uploaded_file.size)
                 print("Uploaded File Content Type:", uploaded_file.content_type)
-        if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation_marksheet' in request.FILES and 'tenth_marksheet' in request.FILES and 'twelfth_marksheet' in request.FILES) :
+        if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation-marksheet' in request.FILES and '10th-marksheet' in request.FILES and '12th-marksheet' in request.FILES) :
             user = request.user
             resume = request.FILES['resume']
             photo = request.FILES['photo']
