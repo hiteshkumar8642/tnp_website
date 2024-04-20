@@ -52,7 +52,7 @@
           Companies
         </a>
         {% if request.user.userprofile.role != 4 or request.user.userprofile.role != 5  or request.user.userprofile.role != 6%}
-        <a href="" class="app-sidebar-link">
+        <a href="{% url 'applied_company' %}" class="app-sidebar-link">
           Applied Companies
         </a>
         {%endif%}

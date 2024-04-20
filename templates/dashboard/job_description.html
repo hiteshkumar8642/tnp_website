@@ -34,6 +34,9 @@
         {% endif %}
     {% else %}
         <h1>You Are Eligible To Apply</h1>
+        <form action="{% url 'apply' j_id=x.id %}">
+            <input type="submit" value="Apply" />
+        </form>
     {%endif%}
 {%endfor%}
 {%endblock%}

@@ -4,6 +4,7 @@ from dashboard import views
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    path('applied_company/', views.appliedCompany, name='applied_company'),
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
     path('job_description/<int:jd_id>',views.job_description,name='job_description'),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('common_company_form/',views.common_company_form,name="common_company_form"),
     path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
     path('assign_me/<str:cnt>',views.assign_me,name="assign_me"),
+    path('apply/<int:j_id>',views.apply,name="apply"),
     path('logout/',views.logout,name='logout')
 ]
