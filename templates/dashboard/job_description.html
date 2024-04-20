@@ -4,9 +4,36 @@
 {% block content %}
 
 {%for x in description%}
-{%if x.is_spp%}  SPP  {%endif%}<br>
-{%if x.is_sip%}  SIP  {%endif%}<br>
-{{x.company_id.name}}<br>
-{{x.position}}<br>
+    {%if x.is_spp%}  SPP  {%endif%}<br>
+    {%if x.is_sip%}  SIP  {%endif%}<br>
+    {{x.company_id.name}}<br>
+    {{x.position}}<br>
+    <br>
+    {%if request.user.userdetails.twelfth_percentage < x.twelfth_marks_eligibility or request.user.userdetails.tenth_percentage < x.tenth_marks_eligibility or request.user.userdetails.gap_after_twelfth > x.twelfth_gap or request.user.userdetails.gap_after_graduation > x.graduation_gap or request.user.userdetails.graduation_cgpa < x.graduation_marks or request.user.userdetails.current_cgpa < x.current_cgpa or request.user.userdetails.backlogs > x.backlogs %}
+        <h1>You Are Not Eligible To Apply Due To:</h1>
+        {% if request.user.userdetails.twelfth_percentage < x.twelfth_marks_eligibility %}
+            <h3>Your 12th Marks {{ request.user.userdetails.twelfth_percentage }} and required {{ x.twelfth_marks_eligibility }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.tenth_percentage < x.tenth_marks_eligibility %}
+            <h3>Your 10th Marks {{ request.user.userdetails.tenth_percentage }} and required {{ x.tenth_marks_eligibility }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.graduation_cgpa < x.graduation_marks %}
+            <h3>Your Graduation Marks {{ request.user.userdetails.graduation_cgpa }} and required {{ x.graduation_marks }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.current_cgpa < x.current_cgpa %}
+            <h3>Your Current Marks {{ request.user.userdetails.current_cgpa }} and required {{ x.current_cgpa }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.gap_after_graduation > x.graduation_gap %}
+            <h3>Your Gap after graduation {{ request.user.userdetails.gap_after_graduation }} and required {{ x.graduation_gap }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.gap_after_twelfth > x.twelfth_gap %}
+            <h3>Your Gap after 12th {{ request.user.userdetails.gap_after_twelfth }} and required {{ x.twelfth_gap }}</h3>
+        {% endif %}
+        {% if request.user.userdetails.backlogs > x.backlogs %}
+            <h3>Your Active Backlogs {{ request.user.userdetails.backlogs }} and required {{ x.backlogs }}</h3>
+        {% endif %}
+    {% else %}
+        <h1>You Are Eligible To Apply</h1>
+    {%endif%}
 {%endfor%}
 {%endblock%}

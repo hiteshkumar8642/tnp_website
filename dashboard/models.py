@@ -220,6 +220,7 @@ class UserProfile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
 
 class Announcement(models.Model):
     created = models.DateTimeField(auto_now_add=True)
