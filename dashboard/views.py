@@ -6,13 +6,30 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany
 
 def dashboard(request):
     if request.user.is_authenticated:
         announcement=Announcement.objects.all().order_by('created')[:10]
         application=Application.objects.all().order_by('last_date')
         return render(request,'dashboard/companies.html',{'announcement':announcement , 'application':application})
+    else:
+        return render(request,'landing_page/home.html')
+
+def appliedCompany(request):
+    if request.user.is_authenticated:
+        announcement=Announcement.objects.all().order_by('created')[:10]
+        application=AppliedCompany.objects.filter(user_id=request.user)
+        return render(request,'dashboard/applied_company.html',{'announcement':announcement , 'application':application})
+    else:
+        return render(request,'landing_page/home.html')
+
+def apply(request,j_id):
+    if request.user.is_authenticated:
+        appli=Application.objects.get(id=j_id)
+        app=AppliedCompany(user_id=request.user,application_id=appli)
+        app.save()
+        return dashboard(request)
     else:
         return render(request,'landing_page/home.html')
 

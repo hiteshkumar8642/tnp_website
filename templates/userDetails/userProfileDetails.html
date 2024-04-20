@@ -1,0 +1,280 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f8ff; /* Light blue background */
+  color: black;
+}
+
+.container {
+  max-width: 1050px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff; /* White container background */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+  position: relative;
+  border: 2px solid black;
+  border-radius: 50%;
+}
+
+.profile-pic input[type="file"] {
+  display: none;
+}
+
+.profile-pic label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  text-align: center;
+  line-height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.profile-pic img {
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.user-name {
+  font-size: 24px;
+}
+
+.form-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between; /* Align items with space between */
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+  column-gap: 40px; /* Distance between columns */
+  margin-bottom: 15px;
+}
+
+/* Form fields */
+.form-field {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.form-field label {
+  display: block;
+  font-weight: bold;
+  width: 200px; /* Fixed width for labels */
+}
+
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="url"],
+.form-field input[type="file"] {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #dcdbdba1;
+  width: 100%;
+}
+
+/* Submit button */
+.submit-btn {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn button[type="submit"] {
+  padding: 15px 30px;
+  font-size: medium;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.submit-btn button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        
+        <form action = "{% url 'SaveDetails' %}" id="registration-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile">
+                <div class="profile-pic">
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                    <label for="photo">
+                        <img src="{{request.user.photo.url}}" alt="image">
+                    </label>
+                </div>
+                <div class="user-name">{{request.user.first_name}}</div>
+            </div>
+            <br>
+            <br>
+            
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="department">Department :</label>
+                    <input type="text" id="department" name="department" min="0" max="100" step="0.1" required>
+                </div>
+                <div class="form-field">
+                    <label for="mobile">Mobile :</label>
+                    <input type="number" id="mobile" name="mobile"  required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="10th-percentage">10th Marks Percentage:</label>
+                    <input type="number" id="10th-percentage" name="10th-percentage" min="0" max="100" step="0.1"
+                        required>
+                </div>
+                <div class="form-field">
+                    <label for="10th-marksheet">10th Marksheet:</label>
+                    <input type="file" id="10th-marksheet" name="10th-marksheet" accept=".pdf" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="12th-percentage">12th Marks Percentage:</label>
+                    <input type="number" id="12th-percentage" name="12th-percentage" min="0" max="100" step="0.1"
+                        required>
+                </div>
+                <div class="form-field">
+                    <label for="12th-marksheet">12th Marksheet:</label>
+                    <input type="file" id="12th-marksheet" name="12th-marksheet" accept=".pdf" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="graduation-cgpa">Graduation CGPA:</label>
+                    <input type="number" id="graduation-cgpa" name="graduation-cgpa" min="0" max="10" step="0.01"
+                        required>
+                </div>
+                <div class="form-field">
+                    <label for="graduation-marksheet">Graduation Marksheet:</label>
+                    <input type="file" id="graduation-marksheet" name="graduation-marksheet" accept=".pdf" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="registration-number">Registration Number:</label>
+                    <input type="text" id="registration-number" name="registration-number" required>
+                </div>
+                <div class="form-field">
+                    <label for="current-cgpa">Current CGPA:</label>
+                    <input type="number" id="current-cgpa" name="current-cgpa" min="0" max="10" step="0.01" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="resume">Resume:</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf" required>
+                </div>
+                <div class="form-field">
+                    <label for="backlogs">No of Backlogs:</label>
+                    <input type="number" id="backlogs" name="backlogs" min="0" max="40" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="gap_after_twelfth">Gap after 12th:</label>
+                    <input type="number" id="gap_after_twelfth" name="gap_after_twelfth" required>
+                </div>
+                <div class="form-field">
+                    <label for="gap_after_graduation">Gap after graduation:</label>
+                    <input type="number" id="gap_after_graduation" name="gap_after_graduation" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="portfolio">Portfolio:</label>
+                    <input type="url" id="portfolio" name="portfolio" required>
+                </div>
+                <div class="form-field">
+                    <label for="linkedin">Linkedin:</label>
+                    <input type="url" id="linkedin" name="linkedin" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="github">Github:</label>
+                    <input type="url" id="github" name="github" required>
+                </div>
+                <div class="form-field">
+                    <label for="codeforces">Codeforces:</label>
+                    <input type="url" id="codeforces" name="codeforces">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="codechef">CodeChef:</label>
+                    <input type="url" id="codechef" name="codechef">
+                </div>
+                <div class="form-field">
+                    <label for="leetcode">Leetcode:</label>
+                    <input type="url" id="leetcode" name="leetcode">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="leetcode">Website:</label>
+                    <input type="url" id="website" name="website">
+                </div>
+            </div>
+            <!-- Add more form rows as needed -->
+            <div class="form-field">
+                <!-- Placeholder for shifting the submit button -->
+                <div class="form-field submit-btn">
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+</html>

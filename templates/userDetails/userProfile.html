@@ -1,0 +1,209 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{%static 'css/userProfile.css' %}">
+
+    <!-- FontAwesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar top -->
+    <div class="navbar-top">
+        <div class="title">
+            <h1>Profile</h1>
+        </div>
+
+        <!-- End -->
+    </div>
+    <!-- End -->
+
+    <!-- Sidenav -->
+    <div class="sidenav">
+        <div class="profile">
+            <img src="{{user.photo.url}}" alt="" width="100" height="100">
+
+            <div class="name">
+                <p>{{request.user.first_name}} {{request.user.last_name}}</p>
+            </div>
+            <div class="job">
+                {{request.user.username}}
+            </div>
+            
+        </div>
+
+        <div class="sidenav-url">
+            <div class="url">
+                <a href="#profile" class="active">Profile</a>
+                <hr align="center">
+            </div>
+            <div class= "url">
+                <a href="#" onclick="openPDF('{{user.resume.url}}')">Resume</a>
+            </div>
+            <div class= "url">
+                <a href="#" onclick="openPDF('{{user.graduation_marksheet.url}}')">Graduation marksheet</a>
+            </div>
+            <div class= "url">
+                <a href="#" onclick="openPDF('{{user.twelfth_marksheet.url}}')">XII marksheet</a>
+            </div>
+            <div class= "url">
+                <a href="#" onclick="openPDF('{{user.tenth_marksheet.url}}')">X marksheet</a>
+            </div>
+        </div>
+    </div>
+    <!-- End -->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="card">
+            <div class="card-body">
+                
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>First name</td>
+                            <td>:</td>
+                            <td>{{request.user.first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Last name</td>
+                            <td>:</td>
+                            <td>{{request.user.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td>{{request.user.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Department</td>
+                            <td>:</td>
+                            <td>{{user.department}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile</td>
+                            <td>:</td>
+                            <td>{{user.mobile}}</td>
+                        </tr>
+                        <tr>
+                            <td>10th marks percentage</td>
+                            <td>:</td>
+                            <td>{{user.tenth_percentage}}</td>
+                        </tr>
+                        <tr>
+                            <td>12th marks percentage</td>
+                            <td>:</td>
+                            <td>{{user.twelfth_percentage}}</td>
+                        </tr>
+                        <tr>
+                            <td>Graduation CGPA</td>
+                            <td>:</td>
+                            <td>{{user.graduation_cgpa}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Gap after 12th</td>
+                            <td>:</td>
+                            <td>{{user.gap_after_twelfth}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gap after graduation</td>
+                            <td>:</td>
+                            <td>{{user.gap_after_graduation}}</td>
+                        </tr>
+                        
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <i class="fa fa-pen fa-xs edit" id = "edit-icon"></i>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Current CGPA</td>
+                            <td>:</td>
+                            <td class="editable">{{user.current_cgpa}}</td>
+                        </tr>
+                        <tr>
+                            <td>No. of Backlogs</td>
+                            <td>:</td>
+                            <td class="editable" id="backlogs">{{user.backlogs}}</td>
+                        </tr>
+                        <tr>
+                            <td>Codeforces</td>
+                            <td>:</td>
+                            <td class="editable" id = "codeforces">{{user.codeforces_profile}}</td>
+                        </tr>
+                        <tr>
+                            <td>codechef</td>
+                            <td>:</td>
+                            <td class="editable" id = "codechef">{{user.codechef_profile}}</td>
+                        </tr>
+                        <tr>
+                            <td>leetcode</td>
+                            <td>:</td>
+                            <td class="editable" id = "leetcode">{{user.leetcode_profile}}</td>
+                        </tr>
+                        <tr>
+                            <td>github</td>
+                            <td>:</td>
+                            <td class="editable" id = "github">{{user.github_profile}}</td>
+                        </tr><tr>
+                            <td>Portfolio</td>
+                            <td>:</td>
+                            <td class="editable" id = "portfolio">{{user.portfolio_link}}</td>
+                        </tr>
+                        <tr>
+                            <td>Other website</td>
+                            <td>:</td>
+                            <td class="editable" id = "website">{{user.other_website_link}}</td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+                <button id="save-button">Save</button>
+            </div>
+        </div>
+        
+    </div>
+    <!-- End -->
+
+
+    <script>
+        document.getElementById('edit-icon').addEventListener('click', function() {
+            var editableCells = document.querySelectorAll('.editable');
+            editableCells.forEach(function(cell) {
+                cell.contentEditable = true;
+                cell.classList.add('editable-border');
+            });
+            document.getElementById('edit-icon').style.display = 'none';
+            document.getElementById('save-button').style.display = 'block';
+        });
+
+        document.getElementById('save-button').addEventListener('click', function() {
+            var editableCells = document.querySelectorAll('.editable');
+            editableCells.forEach(function(cell) {
+                cell.contentEditable = false;
+                cell.classList.remove('editable-border');
+
+            });
+            
+            document.getElementById('edit-icon').style.display = 'block';
+            document.getElementById('save-button').style.display = 'none';
+            // Add code to save data to the database here
+        });
+        function openPDF(pdfPath) {
+            // Open the PDF in a popup window
+            window.open(pdfPath, '_blank', 'toolbar=0,location=0,menubar=0');
+        }
+    </script>
+</body>
+</html>

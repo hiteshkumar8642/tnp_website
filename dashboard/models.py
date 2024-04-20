@@ -30,6 +30,7 @@ class College(models.Model):
     updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     subdomain = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # def __str__(self):
     #     return self.name
@@ -219,6 +220,7 @@ class UserProfile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
 
 class Announcement(models.Model):
     created = models.DateTimeField(auto_now_add=True)

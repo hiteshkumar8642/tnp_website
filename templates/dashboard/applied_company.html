@@ -53,13 +53,12 @@
       <div class="project-boxes jsGridView">
         {%for x in application%}
         <div class="project-box-wrapper">
-          <a href="{% url 'job_description' jd_id=x.id  %}">
           <div class="project-box" style="background-color: #fee4cb;">
             <div class="project-box-header">
-              <span>{{x.updated}}</span>
+              <span>{{ x.updated | date:"jS F Y" }}</span>
               <div class="more-wrapper">
-                {%if x.is_spp%}  SPP  {%endif%}
-                {%if x.is_sip%}  SIP  {%endif%}
+                {%if x.application_id.is_spp%}  SPP  {%endif%}
+                {%if x.application_id.is_sip%}  SIP  {%endif%}
                 <!-- <button class="project-btn-more">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
                     <circle cx="12" cy="12" r="1" />
@@ -70,11 +69,11 @@
               </div>
             </div>
             <div class="project-box-content-header">
-              <p class="box-content-header">{{x.company_id.name}}</p>
-              <p class="box-content-subheader">{{x.position}}</p>
+              <p class="box-content-header">{{x.application_id.company_id.name}}</p>
+              <p class="box-content-subheader">{{x.application_id.position}}</p>
               <p class="box-content-subheader">
                 <centre>
-                  {%if x.is_fte%}  Full Time  {%endif%} {%if x.is_ppo%}  PPO  {%endif%} {%if x.is_intern%}  Intern  {%endif%}
+                  {%if x.application_id.is_fte%}  Full Time  {%endif%} {%if x.application_id.is_ppo%}  PPO  {%endif%} {%if x.application_id.is_intern%}  Intern  {%endif%}
                 </centre>
               </p>
             </div>
@@ -87,14 +86,13 @@
             <!-- </div> -->
             <div class="project-box-footer">
               <div class="participants">
-                {{x.company_id.college_ctc}} LPA
+                {{x.application_id.company_id.college_ctc}} LPA
               </div>
               <div class="days-left" style="color: #ff942e;">
-                {{x.last_date|timeuntil}}
+                {{x.is_selected}}
               </div>
             </div>
-          </div>
-        </a>  
+          </div> 
         </div>
         {%endfor%}
       </div>
