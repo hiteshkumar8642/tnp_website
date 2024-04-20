@@ -30,6 +30,7 @@ class College(models.Model):
     updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     subdomain = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # def __str__(self):
     #     return self.name

@@ -87,6 +87,12 @@ def userProfile(request):
 
 def SaveDetails(request):
     if(request.method=='POST'):
+        for field_name, uploaded_file in request.FILES.items():
+                # Print the file details
+                print("Field Name:", field_name)
+                print("Uploaded File Name:", uploaded_file.name)
+                print("Uploaded File Size:", uploaded_file.size)
+                print("Uploaded File Content Type:", uploaded_file.content_type)
         if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation_marksheet' in request.FILES and 'tenth_marksheet' in request.FILES and 'twelfth_marksheet' in request.FILES) :
             user = request.user
             resume = request.FILES['resume']
