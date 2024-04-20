@@ -13,6 +13,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .tokens import account_activation_token
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application
+
 
 # Create your views here.
 
@@ -73,10 +75,53 @@ def login(request):
         user = auth.authenticate(username = username , password = password)
         if user is not None :
             auth.login(request,user)
-            return redirect('dashboard')
+            return render(request,"userDetails/userProfileDetails.html")
         else:
             messages.info(request,"Invalid credentials.")
 
     return render(request,'userDetails/login.html')
+
+def userProfile(request):
+    user = UserDetails.objects.get(user = request.user)
+    return render(request,'userDetails/userProfile.html',{'user':user})
+
+def SaveDetails(request):
+    if(request.method=='POST'):
+        if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation_marksheet' in request.FILES and 'tenth_marksheet' in request.FILES and 'twelfth_marksheet' in request.FILES) :
+            user = request.user
+            resume = request.FILES['resume']
+            photo = request.FILES['photo']
+            backlogs = request.POST.get('backlogs')
+            graduation_marksheet = request.FILES['graduation-marksheet']
+            graduation_cgpa = request.POST.get('graduation-cgpa')
+            twelfth_marksheet = request.FILES['12th-marksheet']
+            twelfth_percentage = request.POST.get('12th-percentage')
+            tenth_marksheet = request.FILES['10th-marksheet']
+            tenth_percentage = request.POST.get('10th-percentage')
+            current_cgpa = request.POST.get('graduation-cgpa')
+            other_website_link = request.POST.get('website')
+            leetcode_profile = request.POST.get('leetcode')
+            codechef_profile = request.POST.get('codechef')
+            codeforces_profile = request.POST.get('codeforces')
+            github_profile = request.POST.get('github')
+            portfolio_link = request.POST.get('portfolio')
+            linkedin_profile = request.POST.get('linkedin')
+            department = request.POST.get('department')
+            gap_after_twelfth = request.POST.get('gap_after_twelfth')
+            gap_after_graduation = request.POST.get('gap_after_graduation')
+            mobile = request.POST.get('mobile')
+
+            user_db_obj = userDetails(user = user,resume = resume, photo = photo , backlogs = backlogs , graduation_marksheet = graduation_marksheet , graduation_cgpa = graduation_cgpa , twelfth_marksheet = twelfth_marksheet , tenth_marksheet = tenth_marksheet ,twelfth_percentage = twelfth_percentage , tenth_percentage = tenth_percentage , current_cgpa = current_cgpa , other_website_link = other_website_link , leetcode_profile= leetcode_profile , codechef_profile = codechef_profile , codeforces_profile = codeforces_profile , github_profile = github_profile , portfolio_link  = portfolio_link , linkedin_profile = linkedin_profile , department = department , gap_after_graduation = gap_after_graduation , mobile = mobile , gap_after_twelfth = gap_after_twelfth)
+            user_db_obj.save()
+            return redirect('dashboard')
+        else:
+            print("error in files")
+            return render(request , "userDetails/userProfileDetails.html")
+
+    else: 
+        print("error")
+        return render(request , "userDetails/userProfileDetails.html")
+
+
 
 

@@ -8,3 +8,4 @@
 /userDetails/migrations/__pycache__/*.pyc
 /tnp_website/__pycache__/*.pyc
 *.pyc
+.venv
