@@ -214,15 +214,15 @@ def common_company_form(request):
                 branch = users.userdetails.college_branch
                 res = Shared_Company.objects.filter(company_name=company_name).exists()
                 if res==True:
-                    return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
+                    return render(request,'dashboard/common_comp_form.html',{'msg':'Company Already Exist !!!'})
                 else:
                     comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,user=users)
                     comp_db_obj.save()
-                    print("devvrat")
                     res = Shared_Company.objects.all()
                     return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
-            else:    
-                return render(request,'dashboard/company_contact.html')
+            else:  
+                print("add")  
+                return render(request,'dashboard/common_comp_form.html')
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')   
