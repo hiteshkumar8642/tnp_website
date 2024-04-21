@@ -13,7 +13,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .tokens import account_activation_token
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,UserProfile,UserDetails,CollegeCourse,College,Course
 
 
 # Create your views here.
@@ -29,7 +29,7 @@ def activate_email(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        messages.success(request , "Registered succesfully ! Please confirm your email to login. /n If you didn't recieve any email, check if you typed your email correctly. ")
+        messages.success(request , "Registered succesfully ! Please confirm your email to login. If you didn't recieve any email, check if you typed your email correctly. ")
     else:
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
@@ -60,6 +60,9 @@ def register(request):
             user = form.save(commit = False)
             user.is_active = False
             user.save()
+            clg=College.objects.get(name=request.POST.get('college'))
+            user_profile_obj = UserProfile(user = user , role = 1,college = clg)
+            user_profile_obj.save()
             activate_email(request , user , form.cleaned_data.get('email'))
             return redirect('login')
         else:
@@ -75,7 +78,16 @@ def login(request):
         user = auth.authenticate(username = username , password = password)
         if user is not None :
             auth.login(request,user)
-            return render(request,"userDetails/userProfileDetails.html")
+            user_profile_obj = UserProfile.objects.get(user = user)
+            college = user_profile_obj.college 
+            branches = CollegeCourse.objects.filter(college=college)
+            try:
+                userr = UserDetails.objects.get(user=user)
+            except:
+                userr= None
+            if userr is not None :
+                return redirect('dashboard')
+            return render(request,"userDetails/userProfileDetails.html",{'branches':branches})
         else:
             messages.info(request,"Invalid credentials.")
 
@@ -87,12 +99,12 @@ def userProfile(request):
 
 def SaveDetails(request):
     if(request.method=='POST'):
-        for field_name, uploaded_file in request.FILES.items():
+        #for field_name, uploaded_file in request.FILES.items():
                 # Print the file details
-                print("Field Name:", field_name)
-                print("Uploaded File Name:", uploaded_file.name)
-                print("Uploaded File Size:", uploaded_file.size)
-                print("Uploaded File Content Type:", uploaded_file.content_type)
+                #print("Field Name:", field_name)
+                #print("Uploaded File Name:", uploaded_file.name)
+                #print("Uploaded File Size:", uploaded_file.size)
+                #print("Uploaded File Content Type:", uploaded_file.content_type)
         if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation-marksheet' in request.FILES and '10th-marksheet' in request.FILES and '12th-marksheet' in request.FILES) :
             user = request.user
             resume = request.FILES['resume']
@@ -116,8 +128,11 @@ def SaveDetails(request):
             gap_after_twelfth = request.POST.get('gap_after_twelfth')
             gap_after_graduation = request.POST.get('gap_after_graduation')
             mobile = request.POST.get('mobile')
-
-            user_db_obj = userDetails(user = user,resume = resume, photo = photo , backlogs = backlogs , graduation_marksheet = graduation_marksheet , graduation_cgpa = graduation_cgpa , twelfth_marksheet = twelfth_marksheet , tenth_marksheet = tenth_marksheet ,twelfth_percentage = twelfth_percentage , tenth_percentage = tenth_percentage , current_cgpa = current_cgpa , other_website_link = other_website_link , leetcode_profile= leetcode_profile , codechef_profile = codechef_profile , codeforces_profile = codeforces_profile , github_profile = github_profile , portfolio_link  = portfolio_link , linkedin_profile = linkedin_profile , department = department , gap_after_graduation = gap_after_graduation , mobile = mobile , gap_after_twelfth = gap_after_twelfth)
+            branch = request.POST.get('branch')
+            print(branch)
+            brnc= Course.objects.get(degree=branch)
+            clgbrnc=CollegeCourse.objects.get(college=request.user.userprofile.college, course=brnc)
+            user_db_obj = UserDetails(user = user,college_branch = clgbrnc,resume = resume, photo = photo , backlogs = backlogs , graduation_marksheet = graduation_marksheet , graduation_cgpa = graduation_cgpa , twelfth_marksheet = twelfth_marksheet , tenth_marksheet = tenth_marksheet ,twelfth_percentage = twelfth_percentage , tenth_percentage = tenth_percentage , current_cgpa = current_cgpa , other_website_link = other_website_link , leetcode_profile= leetcode_profile , codechef_profile = codechef_profile , codeforces_profile = codeforces_profile , github_profile = github_profile , portfolio_link  = portfolio_link , linkedin_profile = linkedin_profile , department = department , gap_after_graduation = gap_after_graduation , mobile = mobile , gap_after_twelfth = gap_after_twelfth)
             user_db_obj.save()
             return redirect('dashboard')
         else:
@@ -126,7 +141,26 @@ def SaveDetails(request):
 
     else: 
         print("error")
+
         return render(request , "userDetails/userProfileDetails.html")
+
+def UpdateDetails(request):
+    if(request.method=="POST"):
+        user = request.user
+        user_obj = UserDetails.objects.get(user = user)
+        user_obj.current_cgpa = request.POST.get('currentcgpa')
+        user_obj.backlogs = request.POST.get('backlogs')
+        user_obj.codeforces = request.POST.get('codeforces')
+        user_obj.codechef = request.POST.get('codechef')
+        user_obj.leetcode = request.POST.get('leetcode')
+        user_obj.github= request.POST.get('github')
+        user_obj.portfolio = request.POST.get('portfolio')
+        user_obj.website = request.POST.get('website')
+        user_obj.save()
+        return redirect('userProfile')
+    else:
+        return redirect('userProfile')
+
 
 
 

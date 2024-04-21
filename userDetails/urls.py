@@ -6,4 +6,5 @@ urlpatterns = [
     path("SaveDetails",views.SaveDetails,name = "SaveDetails"),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path("userProfile" , views.userProfile , name="userProfile"),
+    path("UpdateDetails" , views.UpdateDetails , name = "UpdateDetails")
 ]

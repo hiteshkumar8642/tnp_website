@@ -154,7 +154,19 @@ input[type="number"]::-webkit-inner-spin-button {
             </div>
             <br>
             <br>
-            
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="college">College :</label>
+                    <select id="branch" name="branch" required>
+                        <option value="" disabled selected>----Select Branch----</option>
+                        {% for branch in branches %}
+                        <option value="{{branch.course.degree}}">{{branch.course.degree}}</option>
+                        {% endfor %}
+                        <!-- Add more colleges as needed -->
+                    </select>
+                </div>
+                
+            </div>
             <div class="form-row">
                 <div class="form-field">
                     <label for="department">Department :</label>
