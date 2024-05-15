@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} hr_list {% endblock title %}
 {%block head%}
-<link href="{%static 'css/tnp_view.css' %}" rel="stylesheet"> 
+<link href="{%static 'css/my_hr_list.css' %}" rel="stylesheet"> 
 {%endblock%}  
 {% block content %} 
    <div id="tnp-view-cont">
@@ -11,6 +11,7 @@
                 <div id="scroll-div">
                     <div id="scroll-object">
                         {% for hr in hr_list %}
+                        <a href="{% url 'full_detail_visibility' cnt=hr.id %}">
                             <div class="card-hr">
                                 HR Name : {{hr.name}}<br>
                                 Gender : {{hr.gender}}<br>
@@ -19,13 +20,9 @@
                                 Linkedin ID : {{hr.linkedin}}<br>
                                 College Branch : {{hr.college_branch}}<br>
                                 Date of Contact : {{hr.date_of_contact}}<br>
-                                <div id="all-tnp-btn">
-                                    {% if hr.assigned is None%}
-                                    <a href="{% url 'assign_me' cnt=hr.name %}"><button id="btn-submit-hr-contact"  class="view-btn"> Assign Me </button></a>
-                                    {% endif %}
-                                </div>
                             </div>
                             <br>
+                        </a>
                         {% endfor %}
                     </div>
                 </div>

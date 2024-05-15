@@ -1,4 +1,5 @@
 # dashboard/models.py
+
 from django.db import models
 from django.contrib.auth.models import User  
 from django.contrib.postgres.fields import ArrayField
@@ -22,8 +23,6 @@ class Course(models.Model):
     specialization = models.CharField(max_length=100)
     course_duration = models.IntegerField()  # Duration in years
 
-    # def __str__(self):
-    #     return f"{self.degree} - {self.specialization}"
 
 class College(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -32,17 +31,13 @@ class College(models.Model):
     subdomain = models.CharField(max_length=50, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.name
-
+  
 class CollegeCourse(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return f"{self.college.name} - {self.course}"
 
 class Company(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -55,9 +50,6 @@ class Company(models.Model):
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE, related_name='companies')
     time_of_visit = models.DateField(null=True, blank=True)
     history = models.JSONField(null=True, blank=True)
-
-    # def __str__(self):
-    #     return self.name
 
 
 # Company_Contact DataBase  
@@ -76,9 +68,6 @@ class Shared_Company(models.Model):
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.company_name
-    
 
 # HR_Contact DataBase 
     
@@ -93,8 +82,7 @@ class Shared_HR_contact(models.Model):
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.name
+    
 
 class HRContact(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -110,8 +98,7 @@ class HRContact(models.Model):
     assigned = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='assigned_hr')
     reassigned = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reassigned_hr')
 
-    # def __str__(self):
-    #     return f"{self.name} - {self.company_id.name}"
+    
 
 class CallHistory(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -128,8 +115,6 @@ class CallHistory(models.Model):
     colour = models.CharField(max_length=10, choices=COLOR_CHOICES, null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return f"Call History - {self.hr_id.name} - {self.student_id.username}"
 
 class UserDetails(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -160,8 +145,6 @@ class UserDetails(models.Model):
     is_verified = models.BooleanField(default=False)
     college_branch = models.ForeignKey(CollegeCourse, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return f"{self.user.username} - {self.college_branch.college.name} - {self.college_branch.course}"
 
 class Application(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -186,8 +169,7 @@ class Application(models.Model):
     graduation_marks = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     current_cgpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
 
-    # def __str__(self):
-    #     return f"Application - {self.company_id.name} - {self.college_branch}"
+    
     
 class AppliedCompany(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -204,8 +186,6 @@ class AppliedCompany(models.Model):
     is_selected = models.CharField(max_length=10, choices=STATUS_CHOICES, default='applied')
     comment = models.TextField(null=True, blank=True)
 
-    # def __str__(self):
-    #     return f"Applied Company - {self.application_id.company_id.name} - {self.user_id.username}"
 
 class UserProfile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
