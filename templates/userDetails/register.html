@@ -79,6 +79,12 @@
                         {% csrf_token %}
 						<div class="input-group mb-2">
 							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-university" aria-hidden="true"></i></span>
+							</div>
+							{{form.college}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
 							{{form.username}}

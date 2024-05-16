@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany
+from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory
 
 def dashboard(request):
     if request.user.is_authenticated:
@@ -110,7 +110,7 @@ def my_print_list(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
             res = HRContact.objects.filter(assigned=request.user)
-            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+            return render(request,'dashboard/my_hr_list.html',{'hr_list':res})
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
@@ -136,9 +136,8 @@ def transfer_contact(request,hr_id):
     contact = sh_hr_obj.contact_number
     linkedin = sh_hr_obj.linkedin_id
     clg_branch = sh_hr_obj.college_branch
-    cmp_obj = Company.objects.get(name=company)
-    print(cmp_obj)
-    hr_cont_obj = HRContact.objects.create(name=name.upper(),mail_id=email, mobile=contact,linkedin=linkedin,college_branch=clg_branch,company_id=cmp_obj.pk)
+    # cmp_obj = Company.objects.get(name=company)
+    hr_cont_obj = HRContact.objects.create(name=name,mail_id=email, mobile_numbers=[contact],linkedin=linkedin,college_branch=clg_branch)
     hr_cont_obj.save()
 
     return render(request,'dashboard/tnp_view.html') 
@@ -163,11 +162,9 @@ def assign_me(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
             res = HRContact.objects.get(name=cnt)
-            print(res.assigned)
             res.assigned = request.user
-            print(res.assigned)
             res.save()
-            return redirect('hr_list')
+            return redirect('hr_list')  
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
@@ -184,11 +181,9 @@ def common_form(request):
                 email = request.POST.get('company-email')
                 contact_number = request.POST.get('number')
                 linkedin = request.POST.get('linkedin')
-                gender = request.POST.get('gender')
+                gender = request.POST.get('hr-gender')
                 users = request.user
                 clg_branch = users.userdetails.college_branch
-                # comp_obj = Company.objects.filter(name=company_name)
-                print(name1)
                 hr_db_obj = HRContact(name=name1, gender=gender, mail_id=email, mobile_numbers=[contact_number],linkedin=linkedin,college_branch=clg_branch)
                 hr_db_obj.save()
                 return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
@@ -230,16 +225,49 @@ def common_company_form(request):
                 branch = users.userdetails.college_branch
                 res = Shared_Company.objects.filter(company_name=company_name).exists()
                 if res==True:
-                    return render(request,'dashboard/company_contact.html',{'msg':'Company Already Exist !!!'})
+                    return render(request,'dashboard/common_comp_form.html',{'msg':'Company Already Exist !!!'})
                 else:
                     comp_db_obj = Shared_Company(company_name=company_name,company_email=comp_email,company_contact=comp_contact,ctc=ctc,college_visited=clg_visited,type=selected_options,is_company=is_company,location=locations,college_branch=branch,user=users)
                     comp_db_obj.save()
-                    print("devvrat")
                     res = Shared_Company.objects.all()
                     return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
-            else:    
-                return render(request,'dashboard/company_contact.html')
+            else:  
+                return render(request,'dashboard/common_comp_form.html')
         else:
             raise PermissionDenied
-    return render(request,'landing_page/home.html')   
+    return render(request,'landing_page/home.html')  
+
+
+def full_detail_visibility(request,cnt):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+            hr_obj = HRContact.objects.filter(id=cnt).values()
+            # print(type(hr_obj))
+            comp_id = HRContact.objects.filter(id=cnt).values('company_id').first()
+            val = comp_id['company_id']
+            company_values = Company.objects.filter(id=val).values()
+            print(company_values)
+            call_his_obj = CallHistory.objects.filter(hr_id=cnt).values()
+            return render(request,'dashboard/full_visibility.html',{'hr_list':hr_obj,'comp_values':company_values,'call_history':call_his_obj})
+        else:
+            PermissionDenied()
+    return render(request,'landing_page/home.html')
+
+
+def response_submisions(request,id):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+            if request.method == 'POST':
+                comment = request.POST.get('comment')
+                color = request.POST.get('color')
+                his_obj = CallHistory.objects.filter(hr_id=id)
+                if his_obj==True:
+                    his_obj.color = color
+                    his_obj.comment=comment
+                else:
+                    CallHistory.objects.create(hr_id=id, color=color,comment=comment)
+                return redirect('/')
+        else:
+            PermissionDenied()
+    return render(request,'landing_page/home.html')
 
