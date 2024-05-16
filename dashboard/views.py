@@ -27,8 +27,7 @@ def appliedCompany(request):
 def apply(request,j_id):
     if request.user.is_authenticated:
         appli=Application.objects.get(id=j_id)
-        app=AppliedCompany(user_id=request.user,application_id=appli)
-        app.save()
+        app=AppliedCompany.objects.get_or_create(user_id=request.user,application_id=appli)
         return dashboard(request)
     else:
         return render(request,'landing_page/home.html')
