@@ -2,7 +2,15 @@ from django.urls import path
 from . import views
 from dashboard import views
 
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CollegeViewSet
+
+router = DefaultRouter()
+router.register(r'College', CollegeViewSet)
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('', views.dashboard, name='dashboard'),
     path('applied_company/', views.appliedCompany, name='applied_company'),
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
