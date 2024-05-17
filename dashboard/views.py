@@ -27,7 +27,8 @@ def appliedCompany(request):
 def apply(request,j_id):
     if request.user.is_authenticated:
         appli=Application.objects.get(id=j_id)
-        app=AppliedCompany.objects.get_or_create(user_id=request.user,application_id=appli)
+        app=AppliedCompany(user_id=request.user,application_id=appli)
+        app.save()
         return dashboard(request)
     else:
         return render(request,'landing_page/home.html')
@@ -241,33 +242,50 @@ def common_company_form(request):
 def full_detail_visibility(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
-            hr_obj = HRContact.objects.filter(id=cnt).values()
-            # print(type(hr_obj))
-            comp_id = HRContact.objects.filter(id=cnt).values('company_id').first()
-            val = comp_id['company_id']
-            company_values = Company.objects.filter(id=val).values()
-            print(company_values)
-            call_his_obj = CallHistory.objects.filter(hr_id=cnt).values()
-            return render(request,'dashboard/full_visibility.html',{'hr_list':hr_obj,'comp_values':company_values,'call_history':call_his_obj})
-        else:
-            PermissionDenied()
-    return render(request,'landing_page/home.html')
-
-
-def response_submisions(request,id):
-    if request.user.is_authenticated:
-        if request.user.userprofile.role==3 or request.user.userdetails.role==4:
             if request.method == 'POST':
                 comment = request.POST.get('comment')
                 color = request.POST.get('color')
-                his_obj = CallHistory.objects.filter(hr_id=id)
-                if his_obj==True:
-                    his_obj.color = color
-                    his_obj.comment=comment
+                his_obj = CallHistory.objects.filter(hr_id=cnt)
+                print(his_obj)
+                if len(his_obj)>0:
+                    print("his_obj")
+                    ch=CallHistory(hr_id=cnt, color=color,student_id=request.user.id,college_branch=request.user.userdetails.college_branch,comment=comment)
+                    ch.save()
                 else:
-                    CallHistory.objects.create(hr_id=id, color=color,comment=comment)
+                    print("new_obj")
+                    call_his_obj1 = CallHistory.objects.create(hr_id=cnt ,color=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=request.user.id)
+                    call_his_obj1.save()
                 return redirect('/')
+            else:
+                print(cnt)
+                hr_obj = HRContact.objects.filter(id=cnt).values()
+                comp_id = HRContact.objects.filter(id=cnt).values('company_id').first()
+                val = comp_id['company_id']
+                company_values = Company.objects.filter(id=val).values()
+                print(company_values)
+                clg_branch = request.user.userdetails.college_branch
+                call_his_obj = CallHistory.objects.filter(hr_id=cnt).values()
+                return render(request,'dashboard/full_visibility.html',{'hr_list':hr_obj,'comp_values':company_values,'call_history':call_his_obj})
         else:
             PermissionDenied()
     return render(request,'landing_page/home.html')
+
+
+# def response_submisions(request,id):
+#     if request.user.is_authenticated:
+#         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+#             if request.method == 'POST':
+#                 comment = request.POST.get('comment')
+#                 color = request.POST.get('color')
+# {% url 'full_detail_visibility' cnt=hr_list.id %}
+#                 his_obj = CallHistory.objects.filter(hr_id=id)
+#                 if his_obj==True:
+#                     his_obj.color = color
+#                     his_obj.comment=comment
+#                 else:
+#                     CallHistory.objects.create(hr_id=id, color=color,comment=comment)
+#                 return redirect('/')
+#         else:
+#             PermissionDenied()
+#     return render(request,'landing_page/home.html')
 

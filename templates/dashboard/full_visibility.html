@@ -45,7 +45,8 @@
                 </table>
             </div>
             <div id="call-his-form">
-                <form action="" method="post">{% csrf_token %}
+                {% for hr in hr_list%}
+                <form action="{% url 'full_detail_visibility' cnt=hr.hr_id%}" method="post">{% csrf_token %}
                     <label for="comment">Feedback</label><br>
                     <textarea name="text-box" type="text" id="text-bk" required></textarea><br>
                     <label for="color"> Response-color </label>
@@ -56,6 +57,7 @@
                     </select><br>
                     <button type="submit" class="btn btn-"> Submit <submit>
                 </form>
+                {% endfor %}
             </div>
         </div>
   </div>
