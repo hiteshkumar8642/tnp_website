@@ -1,4 +1,4 @@
-.env
+*.env
 **/__pycache__
 /landing_page/__pycache__/*.pyc
 /userDetails/__pycache__/*.pyc
@@ -8,4 +8,5 @@
 /userDetails/migrations/__pycache__/*.pyc
 /tnp_website/__pycache__/*.pyc
 *.pyc
-.venv
+/backend/.venv
+/frontend/node_modules

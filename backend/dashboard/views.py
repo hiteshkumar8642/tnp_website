@@ -8,6 +8,15 @@ from .models import College
 from django.http import HttpResponse
 from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory
 
+from rest_framework import viewsets
+from .models import College
+from .serializers import CollegeSerializer
+
+class CollegeViewSet(viewsets.ModelViewSet):
+    queryset = College.objects.all()
+    serializer_class = CollegeSerializer
+
+
 def dashboard(request):
     if request.user.is_authenticated:
         announcement=Announcement.objects.all().order_by('created')[:10]
