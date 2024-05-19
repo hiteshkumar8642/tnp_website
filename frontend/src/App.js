@@ -16,7 +16,7 @@ const App = () => {
       <h1>My Data</h1>
       <ul>
         {data.map(item => (
-          <li key={item.subdomain}>{item.name}</li>
+          <li key={item.created}>{item.created} {item.name}</li>
         ))}
       </ul>
     </div>
