@@ -257,25 +257,18 @@ def full_detail_visibility(request,cnt):
                 his_obj = CallHistory.objects.filter(hr_id=cnt)
                 hr_inst = HRContact.objects.get(id=cnt)
                 std_inst = User.objects.get(id=request.user.id)
-                print(his_obj)
                 if len(his_obj)>0:
-                    print("his_obj")
-                    print(comment)
                     ch=CallHistory(hr_id=hr_inst, colour=color,student_id=std_inst,college_branch=request.user.userdetails.college_branch,comment=comment)
                     ch.save()
                 else:
-                    print("new_obj")
                     call_his_obj1 = CallHistory.objects.create(hr_id=hr_inst ,colour=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=std_inst)
                     call_his_obj1.save()
-                return redirect('/')
+                return redirect(request.path)
             else:
-                print(cnt)
                 hr_obj = HRContact.objects.filter(id=cnt).values()
                 comp_id = HRContact.objects.filter(id=cnt).values('company_id').first()
                 val = comp_id['company_id']
                 company_values = Company.objects.filter(id=val).values()
-                print(company_values)
-                clg_branch = request.user.userdetails.college_branch
                 call_his_obj = CallHistory.objects.filter(hr_id=cnt).values()
                 return render(request,'dashboard/full_visibility.html',{'hr_list':hr_obj,'comp_values':company_values,'call_history':call_his_obj})
         else:
@@ -283,21 +276,5 @@ def full_detail_visibility(request,cnt):
     return render(request,'landing_page/home.html')
 
 
-# def response_submisions(request,id):
-#     if request.user.is_authenticated:
-#         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
-#             if request.method == 'POST':
-#                 comment = request.POST.get('comment')
-#                 color = request.POST.get('color')
-# {% url 'full_detail_visibility' cnt=hr_list.id %}
-#                 his_obj = CallHistory.objects.filter(hr_id=id)
-#                 if his_obj==True:
-#                     his_obj.color = color
-#                     his_obj.comment=comment
-#                 else:
-#                     CallHistory.objects.create(hr_id=id, color=color,comment=comment)
-#                 return redirect('/')
-#         else:
-#             PermissionDenied()
-#     return render(request,'landing_page/home.html')
+
 
