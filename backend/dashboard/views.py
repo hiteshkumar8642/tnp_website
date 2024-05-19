@@ -252,17 +252,20 @@ def full_detail_visibility(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
             if request.method == 'POST':
-                comment = request.POST.get('comment')
-                color = request.POST.get('color')
+                comment = request.POST.get('text-box')
+                color = request.POST.get('is_color')
                 his_obj = CallHistory.objects.filter(hr_id=cnt)
+                hr_inst = HRContact.objects.get(id=cnt)
+                std_inst = User.objects.get(id=request.user.id)
                 print(his_obj)
                 if len(his_obj)>0:
                     print("his_obj")
-                    ch=CallHistory(hr_id=cnt, color=color,student_id=request.user.id,college_branch=request.user.userdetails.college_branch,comment=comment)
+                    print(comment)
+                    ch=CallHistory(hr_id=hr_inst, colour=color,student_id=std_inst,college_branch=request.user.userdetails.college_branch,comment=comment)
                     ch.save()
                 else:
                     print("new_obj")
-                    call_his_obj1 = CallHistory.objects.create(hr_id=cnt ,color=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=request.user.id)
+                    call_his_obj1 = CallHistory.objects.create(hr_id=hr_inst ,colour=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=std_inst)
                     call_his_obj1.save()
                 return redirect('/')
             else:
