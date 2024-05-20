@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-from . forms import createUserForm
+from . forms import createUserForm , CollegeRegistrationForm
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -160,6 +160,41 @@ def UpdateDetails(request):
         return redirect('userProfile')
     else:
         return redirect('userProfile')
+
+def CollegeRegister(request):
+    form = CollegeRegistrationForm()
+    BRANCH_CHOICES = [course for course in Course.objects.all()]
+    if(request.method=="POST"):
+        form = CollegeRegistrationForm(request.POST)
+        
+        if form.is_valid() :
+
+            user = form.save(commit = False)
+            user.is_active = False
+            user.save()
+            email = form.cleaned_data.get('email')
+            activate_email(request, user, email)
+
+            college_name = form.cleaned_data.get('college1')
+            subdomain = form.cleaned_data.get('subdomain')
+            college_obj = College(name=college_name, subdomain=subdomain, user=user)
+            college_obj.save()
+
+            user_profile_obj = UserProfile(user=user, role=4, college=college_obj)
+            user_profile_obj.save()
+
+            branches = request.POST.getlist('branches')
+            for id in branches:
+                clg_obj = College.objects.get(name = college_name)
+                course_obj = Course.objects.get(id = id)
+                College_course_obj = CollegeCourse(college=clg_obj,course=course_obj)
+                College_course_obj.save()
+            return redirect('login')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request,error)
+
+    return render(request,'UserDetails/CollegeRegister.html',{'form':form , 'branches':BRANCH_CHOICES})
 
 
 

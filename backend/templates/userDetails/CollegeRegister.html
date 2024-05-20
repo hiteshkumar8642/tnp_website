@@ -1,0 +1,73 @@
+<!-- <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script> -->
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>College Registeration</title>
+    <link rel="stylesheet" href="{%static 'css/CollegeRegister.css' %}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1 id="title"> College Registration Form</h1>
+        <p id="description">Fill your Details Here</p>
+    </header>
+    <div class="form-wrapper">
+        <form id="reg-form" action="{% url 'CollegeRegister' %}" method="POST">
+            {% csrf_token %}
+            <div class="username">
+                <label id="username-label">Username</label><br>
+                {{form.username}}
+            </div>
+            <div class="first-name">
+                <label id="name-label">First Name</label><br>
+                {{form.first_name}}
+            </div>
+            <div class="last-name">
+                <label id="name-label">Last Name</label><br>
+                {{form.last_name}}
+            </div>
+            <div class="email">
+                <label id="email-label">Email address</label><br>
+                {{form.email}}
+            </div>
+            
+          <div class="college1">
+                <label id="college-label1">College </label><br>     
+                {{form.college1}}
+            </div>
+            <div class="college2">
+                <label id="college-label2">Confirm College </label><br>     
+                {{form.college2}}
+            </div>
+            <div class="subdomain">
+                <label id="college-label2">Subdomain </label><br>     
+                {{form.subdomain}}
+            </div>
+            <div class="branches">        
+                <label id="branches">Select the branches in your college :</label><br>
+                {% for branch in branches %}
+                <input type="checkbox" name="branches" value="{{branch.id}}">{{branch.degree}} ({{branch.specialization}})<br>
+                {% endfor %}
+            </div>
+            <div class="password1">
+                <label id="password1">Password </label><br>     
+                {{form.password1}}
+            </div>
+            <div class="password2">
+                <label id="password2">Confirm Password  </label><br>     
+                {{form.password2}}
+            </div>
+            {% for msg in messages %} 
+                                <p>{{msg}}</p>
+                            {% endfor %}
+            <div class="submit">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

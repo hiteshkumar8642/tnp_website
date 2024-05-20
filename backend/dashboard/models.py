@@ -16,7 +16,6 @@ class Course(models.Model):
         ('MCA', 'Master of Computer Applications'),
         ('B.Sc', 'Bachelor of Science'),
         ('M.Sc', 'Master of Science'),
-        
     ]
 
     degree = models.CharField(max_length=20, choices=DEGREE_CHOICES)
