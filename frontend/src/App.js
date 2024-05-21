@@ -1,26 +1,45 @@
-// src/App.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import LandingPage from "./LandingPage";
 
-const App = () => {
-  const [data, setData] = useState([]);
+export default function App() {
+  const [logIn, setLogIn] = useState(false);
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:8000/dashboard/api/College/')
-      .then(response => setData(response.data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  function handleLogInPageOpening() {
+    setLogIn((logIn) => !logIn);
+  }
 
   return (
-    <div>
-      <h1>My Data</h1>
-      <ul>
-        {data.map(item => (
-          <li key={item.created}>{item.created} {item.name}</li>
-        ))}
-      </ul>
-    </div>
+    <>
+      {!logIn && <LandingPage onLogInPageOpening={handleLogInPageOpening} />};
+      {logIn && <LogInPage onLogInPageClosing={handleLogInPageOpening} />}
+    </>
   );
-};
+}
 
-export default App;
+function LogInPage({ onLogInPageClosing }) {
+  return (
+    <>
+      <header>
+        <nav>
+          <button className="home-button" onClick={onLogInPageClosing}>
+            Back to Home
+          </button>
+        </nav>
+      </header>
+      <form className="login-page">
+        <div className="login-form">
+          <h2>Login</h2>
+          <form>
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+          </form>
+          <p className="register-link">
+            Don't have an account?{" "}
+            <span className="register-link-button">Register</span>
+          </p>
+        </div>
+      </form>
+    </>
+  );
+}
