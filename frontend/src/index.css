@@ -5,7 +5,6 @@
 body {
   background-color: #f3f6fd;
   font-family: "Open Sans", sans-serif;
-  overflow: hidden;
 }
 a {
   text-decoration: none;
@@ -41,90 +40,68 @@ ul {
 }
 /* End Global Rules */
 
-/* Start Landing Page */
-.landing-page header {
+/* Header */
+.header {
   min-height: 80px;
+  background-color: #f3f6fd;
   display: flex;
+  align-items: center;
 }
-@media (max-width: 767px) {
-  .landing-page header {
-    min-height: auto;
-    display: initial;
-  }
-}
-.landing-page header .container {
+.header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-@media (max-width: 767px) {
-  .landing-page header .container {
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-.landing-page header .logo {
+.logo {
   color: #5d5d5d;
   font-style: italic;
-  text-transform: uppercase;
-  font-size: 20px;
+  font-size: 24px;
 }
-@media (max-width: 767px) {
-  .landing-page header .logo {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-}
-.landing-page header .links {
+.nav-links {
   display: flex;
   align-items: center;
 }
-@media (max-width: 767px) {
-  .landing-page header .links {
-    text-align: center;
-    gap: 10px;
-  }
-}
-.landing-page header .links li {
+.nav-links li {
   margin-left: 30px;
   color: #5d5d5d;
   cursor: pointer;
   transition: 0.3s;
 }
-@media (max-width: 767px) {
-  .landing-page header .links li {
-    margin-left: auto;
-  }
-}
-.landing-page header .links li:last-child {
+.nav-links li:last-child .nav-button {
   border-radius: 20px;
   padding: 10px 20px;
   color: #fff;
   background-color: #6c63ff;
+  border: none;
+  cursor: pointer;
 }
-.landing-page header .links li:not(:last-child):hover {
+.nav-links li:not(:last-child):hover {
   color: #6c63ff;
 }
-.landing-page .content .container {
+.nav-button {
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #6c63ff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.nav-button:hover {
+  background-color: #5752d8;
+}
+
+/* Landing Page */
+.landing-page .content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 140px;
+  gap: 20px; /* Adjust gap between info and image if needed */
   min-height: calc(100vh - 80px);
 }
-@media (max-width: 767px) {
-  .landing-page .content .container {
-    gap: 0;
-    min-height: calc(100vh - 101px);
-    justify-content: center;
-    flex-direction: column-reverse;
-  }
-}
-@media (max-width: 767px) {
-  .landing-page .content .info {
-    text-align: center;
-    margin-bottom: 15px;
-  }
+.landing-page .content .info {
+  max-width: 50%; /* Adjust width as necessary */
+  flex: 1;
 }
 .landing-page .content .info h1 {
   color: #5d5d5d;
@@ -136,7 +113,7 @@ ul {
   font-size: 15px;
   color: #5d5d5d;
 }
-.landing-page .content .info button {
+.landing-page .content .primary-button {
   border: 0;
   border-radius: 20px;
   padding: 12px 30px;
@@ -145,19 +122,23 @@ ul {
   color: #fff;
   background-color: #6c63ff;
 }
+.landing-page .content .image {
+  max-width: 50%; /* Adjust width as necessary */
+  flex: 1;
+}
 .landing-page .content .image img {
   max-width: 100%;
+  display: block;
+  margin: 0 auto; /* Center the image */
 }
-/* End Landing Page */
 
-/* Start Login Page */
+/* Login Page */
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 80px);
 }
-
 .login-form {
   background-color: #fff;
   padding: 40px;
@@ -166,13 +147,11 @@ ul {
   width: 100%;
   max-width: 400px;
 }
-
 .login-form h2 {
   color: #5d5d5d;
   margin-bottom: 20px;
   text-align: center;
 }
-
 .login-form input {
   width: 100%;
   padding: 10px;
@@ -181,7 +160,6 @@ ul {
   border-radius: 5px;
   font-size: 16px;
 }
-
 .login-form button {
   width: 100%;
   padding: 10px;
@@ -193,44 +171,13 @@ ul {
   font-size: 16px;
   cursor: pointer;
 }
-
 .login-form button:hover {
   background-color: #5752d8;
 }
-
-.login-form .register-link {
+.register-link {
   text-align: center;
   color: #5d5d5d;
 }
-/* End Login Page */
-
-/* Navigation */
-.header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  background-color: #f3f6fd;
-}
-
-.home-button {
-  align-items: center;
-  font-size: 16px;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  color: #fff;
-  background-color: #6c63ff;
-  text-decoration: none;
-  transition: background-color 0.3s;
-  cursor: pointer;
-}
-
-.home-button:hover {
-  background-color: #5752d8;
-}
-
 .register-link-button {
   cursor: pointer;
   text-decoration: underline;
