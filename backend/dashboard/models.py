@@ -199,6 +199,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
 
 class Announcement(models.Model):
     created = models.DateTimeField(auto_now_add=True)
