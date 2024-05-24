@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import LandingPage from "./Components/LandingPage";
-import LoginPage from "./Components/LoginPage";
-import SignUpPage from "./Components/SignUpPage";
-import CollegeRegistrationPage from "./Components/CollegeRegistrationPage";
+import LandingPage from "./components/LandingPage";
+import LoginPage from "./components/LoginPage";
+import SignUpPage from "./components/SignUpPage";
+import CollegeRegistrationPage from "./components/CollegeRegistrationPage";
 
 export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
