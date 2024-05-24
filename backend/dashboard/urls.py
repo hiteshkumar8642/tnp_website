@@ -27,6 +27,6 @@ urlpatterns = [
     path('assign_me/<str:cnt>',views.assign_me,name="assign_me"),
     path('apply/<int:j_id>',views.apply,name="apply"),
     path('full_detail_visibility/<int:cnt>',views.full_detail_visibility,name="full_detail_visibility"),
-    # path('submission/<int:id>',views.response_submisions,name="submission"),
+    path('student_list/',views.student_list,name="student_list"),
     path('logout/',views.logout,name='logout')
 ]

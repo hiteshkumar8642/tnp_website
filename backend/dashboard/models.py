@@ -180,7 +180,6 @@ class AppliedCompany(models.Model):
         ('applied', 'Applied'),
         ('rejected', 'Rejected'),
         ('selected', 'Selected'),
-
     ]
     is_selected = models.CharField(max_length=10, choices=STATUS_CHOICES, default='applied')
     comment = models.TextField(null=True, blank=True)

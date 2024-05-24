@@ -199,9 +199,6 @@ def common_form(request):
                 return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
             else:
                 return render(request , 'dashboard/hr_common_form.html')
-        # elif request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-        #     res = Shared_HR_contact.objects.all()
-        #     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
@@ -275,6 +272,18 @@ def full_detail_visibility(request,cnt):
             PermissionDenied()
     return render(request,'landing_page/home.html')
 
+
+def student_list(request):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+            tnp_branch = request.user.userdetails.college_branch
+            student = UserDetails.objects.filter(college_branch=tnp_branch)
+            list_of_student = [i.user.first_name for i in student]
+            return render(request, 'dashboard/student_list.html',{'res':list_of_student})
+        else:
+            PermissionDenied()
+    else:
+        return render(request,'landing_page/home.html')
 
 
 
