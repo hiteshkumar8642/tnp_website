@@ -1,15 +1,20 @@
 import Header from "./Header";
 
-export default function LandingPage({ onLogInPageOpening }) {
+export default function LandingPage({
+  onLogInPageOpening,
+  onCollegeRegistrationPageOpening,
+}) {
   return (
     <div className="landing-page">
       <Header onLogInPageOpening={onLogInPageOpening}>Student Login</Header>
-      <LandingPageContent />
+      <LandingPageContent
+        onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
+      />
     </div>
   );
 }
 
-function LandingPageContent() {
+function LandingPageContent({ onCollegeRegistrationPageOpening }) {
   return (
     <div className="content container">
       <div className="info">
@@ -20,7 +25,12 @@ function LandingPageContent() {
           embrace innovation for student success. Elevate your campus dynamics
           with HireEase – where smart placements meet smarter careers!
         </p>
-        <button className="primary-button">Register your College</button>
+        <button
+          className="primary-button"
+          onClick={onCollegeRegistrationPageOpening}
+        >
+          Register your College
+        </button>
       </div>
       <div className="image">
         <img
