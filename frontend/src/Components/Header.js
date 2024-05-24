@@ -4,8 +4,8 @@ export default function Header({ onLogInPageOpening, isLoginPage, children }) {
       <nav className="container">
         <span
           className="logo"
-          onClick={isLoginPage && onLogInPageOpening}
-          style={isLoginPage && { cursor: "pointer" }}
+          onClick={isLoginPage ? onLogInPageOpening : undefined}
+          style={isLoginPage ? { cursor: "pointer" } : {}}
         >
           <b>HireEase</b>
         </span>

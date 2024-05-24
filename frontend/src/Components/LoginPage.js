@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 
-export default function LoginPage({ onLogInPageClosing }) {
+export default function LoginPage({ onLogInPageClosing, onSignUpPageOpening }) {
   return (
     <>
       <Header onLogInPageOpening={onLogInPageClosing} isLoginPage>
@@ -11,8 +11,14 @@ export default function LoginPage({ onLogInPageClosing }) {
         <div className="login-form">
           <h2>Login</h2>
           <form>
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
+            <div className="input-group">
+              <i className="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" required />
+            </div>
+            <div className="input-group">
+              <i className="fas fa-lock"></i>
+              <input type="password" placeholder="Password" required />
+            </div>
             <button type="submit">Login</button>
           </form>
           <p className="register-link">
@@ -20,7 +26,12 @@ export default function LoginPage({ onLogInPageClosing }) {
           </p>
           <p className="register-link">
             Don't have an account?{" "}
-            <span className="register-link-button">Register</span>
+            <span
+              className="register-link-button"
+              onClick={onSignUpPageOpening}
+            >
+              Register
+            </span>
           </p>
         </div>
       </div>
