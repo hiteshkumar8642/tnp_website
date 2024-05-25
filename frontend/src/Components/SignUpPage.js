@@ -4,6 +4,7 @@ import Header from "./Header";
 export default function SignUpPage({
   onLandingPageOpening,
   onLogInPageOpening,
+  college,
 }) {
   return (
     <>
@@ -18,7 +19,11 @@ export default function SignUpPage({
               <i className="fas fa-university"></i>
               <select required>
                 <option value="">---Select your college---</option>
-                {/* Add options here */}
+                {college.map((col) => (
+                  <option key={col.id} value={col.id}>
+                    {col.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group input-group">
