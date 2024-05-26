@@ -1,6 +1,8 @@
 import "../Styles/Header.css";
 
 export default function Header({ onLogInPageOpening, isLoginPage, children }) {
+  let PageName = "Placement";
+
   return (
     <header className="header">
       <nav className="container">
@@ -9,7 +11,7 @@ export default function Header({ onLogInPageOpening, isLoginPage, children }) {
           onClick={isLoginPage ? onLogInPageOpening : undefined}
           style={isLoginPage ? { cursor: "pointer" } : {}}
         >
-          <b>HireEase</b>
+          <b>{PageName}</b>
         </span>
         {!isLoginPage && (
           <ul className="nav-links">

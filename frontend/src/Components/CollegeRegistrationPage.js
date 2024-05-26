@@ -22,28 +22,34 @@ export default function CollegeRegistrationPage({
     confirmPassword: "",
   });
 
-  useEffect(() => {
-    if (showModal) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, [showModal]);
+  useEffect(
+    function () {
+      if (showModal) {
+        document.body.classList.add("no-scroll");
+      } else {
+        document.body.classList.remove("no-scroll");
+      }
+      return () => {
+        document.body.classList.remove("no-scroll");
+      };
+    },
+    [showModal]
+  );
 
-  useEffect(() => {
-    setFilteredBranches(
-      branches.filter(
-        (branch) =>
-          branch.degree.toLowerCase().includes(searchInput.toLowerCase()) ||
-          branch.specialization
-            .toLowerCase()
-            .includes(searchInput.toLowerCase())
-      )
-    );
-  }, [searchInput, branches]);
+  useEffect(
+    function () {
+      setFilteredBranches(
+        branches.filter(
+          (branch) =>
+            branch.degree.toLowerCase().includes(searchInput.toLowerCase()) ||
+            branch.specialization
+              .toLowerCase()
+              .includes(searchInput.toLowerCase())
+        )
+      );
+    },
+    [searchInput, branches]
+  );
 
   const handleProceed = (e) => {
     e.preventDefault();

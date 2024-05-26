@@ -15,7 +15,7 @@ export default function App() {
 
   useEffect(
     function () {
-      async function fetchData() {
+      async function fetchColleges() {
         try {
           const response = await axios.get(
             "http://127.0.0.1:8000/dashboard/api/College/"
@@ -25,7 +25,7 @@ export default function App() {
           console.error("Error fetching data:", error);
         }
       }
-      fetchData();
+      fetchColleges();
     },
     [isSignUpOpen]
   );

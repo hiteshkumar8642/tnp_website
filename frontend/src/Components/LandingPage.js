@@ -16,15 +16,16 @@ export default function LandingPage({
 }
 
 function LandingPageContent({ onCollegeRegistrationPageOpening }) {
+  let PageName = "Placement";
   return (
     <div className="content container">
       <div className="info">
         <h1>From Manual to Marvelous: Elevate Your Placements!</h1>
         <p>
-          Welcome to HireEase – revolutionizing campus placements with our
+          Welcome to {PageName} – revolutionizing campus placements with our
           streamlined, automated platform. Bid farewell to manual hassles, and
           embrace innovation for student success. Elevate your campus dynamics
-          with HireEase – where smart placements meet smarter careers!
+          with {PageName} – where smart placements meet smarter careers!
         </p>
         <button
           className="primary-button"
