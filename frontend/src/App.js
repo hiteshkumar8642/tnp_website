@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import LandingPage from "./Components/LandingPage";
 import LoginPage from "./Components/LoginPage";
 import SignUpPage from "./Components/SignUpPage";
@@ -9,6 +10,24 @@ export default function App() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCollegeRegistrationOpen, setIsCollegeRegistrationOpen] =
     useState(false);
+  const [college, setCollege] = useState([]);
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          const response = await axios.get(
+            "http://127.0.0.1:8000/dashboard/api/College/"
+          );
+          setCollege(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      fetchData();
+    },
+    [isSignUpOpen]
+  );
 
   function handleLogInPageOpening() {
     setIsLoginOpen(true);
@@ -58,6 +77,7 @@ export default function App() {
         <SignUpPage
           onLandingPageOpening={handleLandingPageOpening}
           onLogInPageOpening={handleLogInPageOpening}
+          college={college}
         />
       )}
       {isCollegeRegistrationOpen && (
