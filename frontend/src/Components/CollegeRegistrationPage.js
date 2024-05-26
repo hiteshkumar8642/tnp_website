@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import "../Styles/Modal.css"; // Correct path to import Modal.css
+import "../Styles/CollegeRegistrationPage.css";
 
 export default function CollegeRegistrationPage({
   onLandingPageOpening,
@@ -28,7 +28,6 @@ export default function CollegeRegistrationPage({
     } else {
       document.body.classList.remove("no-scroll");
     }
-
     return () => {
       document.body.classList.remove("no-scroll");
     };

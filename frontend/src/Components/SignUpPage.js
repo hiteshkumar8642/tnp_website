@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import "../Styles/SignUpPage.css";
 
 export default function SignUpPage({
   onLandingPageOpening,

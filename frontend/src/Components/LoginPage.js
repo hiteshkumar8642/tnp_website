@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import "../Styles/LoginPage.css";
 
 export default function LoginPage({ onLogInPageClosing, onSignUpPageOpening }) {
   return (

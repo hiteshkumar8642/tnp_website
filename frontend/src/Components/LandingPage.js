@@ -1,4 +1,5 @@
 import Header from "./Header";
+import "../Styles/LandingPage.css";
 
 export default function LandingPage({
   onLogInPageOpening,

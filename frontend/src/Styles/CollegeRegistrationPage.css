@@ -1,3 +1,81 @@
+/* College Registration Page */
+.college-registration-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(125vh - 80px);
+}
+.college-registration-form {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+}
+.college-registration-form h2 {
+  color: #5d5d5d;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.college-registration-form .form-group {
+  margin: 10px 0;
+}
+.college-registration-form .form-group input,
+.college-registration-form .form-group select {
+  width: calc(100% - 20px);
+  padding: 10px 10px 10px 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.college-registration-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #5d5d5d;
+}
+.college-registration-form .form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+.college-registration-form .input-group {
+  position: relative;
+}
+.college-registration-form .input-group i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+.college-registration-form button {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #6c63ff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+.college-registration-form button:hover {
+  background-color: #5752d8;
+}
+.college-registration-form .form-group {
+  display: flex; /* Set display to flex */
+  align-items: center; /* Align items vertically */
+  margin: 10px 0;
+}
+
+.college-registration-form .form-group input[type="checkbox"] {
+  margin-right: 10px; /* Adjust spacing between checkbox and label */
+}
+
+.college-registration-form .form-group label {
+  margin-bottom: 0; /* Remove margin bottom to keep items aligned */
+}
+
 /* Modal Styles */
 .modal {
   position: fixed;

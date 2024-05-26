@@ -1,0 +1,40 @@
+/* Landing Page */
+.landing-page .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px; /* Adjust gap between info and image if needed */
+  min-height: calc(100vh - 80px);
+}
+.landing-page .content .info {
+  max-width: 50%; /* Adjust width as necessary */
+  flex: 1;
+}
+.landing-page .content .info h1 {
+  color: #5d5d5d;
+  font-size: 40px;
+}
+.landing-page .content .info p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 18px;
+  color: #5d5d5d;
+}
+.landing-page .content .primary-button {
+  border: 0;
+  border-radius: 20px;
+  padding: 12px 30px;
+  margin-top: 30px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #6c63ff;
+}
+.landing-page .content .image {
+  max-width: 50%; /* Adjust width as necessary */
+  flex: 1;
+}
+.landing-page .content .image img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto; /* Center the image */
+}
