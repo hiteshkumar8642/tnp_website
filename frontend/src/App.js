@@ -10,7 +10,9 @@ export default function App() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCollegeRegistrationOpen, setIsCollegeRegistrationOpen] =
     useState(false);
-  const [college, setCollege] = useState([]);
+  const [colleges, setColleges] = useState([]);
+  const [branches, setBranches] = useState([]);
+
   useEffect(
     function () {
       async function fetchData() {
@@ -18,15 +20,31 @@ export default function App() {
           const response = await axios.get(
             "http://127.0.0.1:8000/dashboard/api/College/"
           );
-          setCollege(response.data);
+          setColleges(response.data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
-
       fetchData();
     },
     [isSignUpOpen]
+  );
+
+  useEffect(
+    function () {
+      async function fetchBranches() {
+        try {
+          const response = await axios.get(
+            "http://127.0.0.1:8000/dashboard/api/Course/"
+          );
+          setBranches(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+      fetchBranches();
+    },
+    [isCollegeRegistrationOpen]
   );
 
   function handleLogInPageOpening() {
@@ -77,12 +95,13 @@ export default function App() {
         <SignUpPage
           onLandingPageOpening={handleLandingPageOpening}
           onLogInPageOpening={handleLogInPageOpening}
-          college={college}
+          college={colleges}
         />
       )}
       {isCollegeRegistrationOpen && (
         <CollegeRegistrationPage
           onLandingPageOpening={handleLandingPageOpening}
+          branches={branches}
         />
       )}
     </>
