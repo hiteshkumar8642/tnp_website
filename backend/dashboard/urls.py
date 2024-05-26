@@ -3,10 +3,11 @@ from . import views
 from dashboard import views
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CollegeViewSet
+from .views import CollegeViewSet,CourseViewSet
 
 router = DefaultRouter()
 router.register(r'College', CollegeViewSet)
+router.register(r'Course', CourseViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
