@@ -3,7 +3,7 @@ from . import views
 from dashboard import views
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CollegeViewSet,CourseViewSet,CollegeCourseViewSet,CompanyViewSet,Shared_CompanyViewSet,Shared_HRViewSet,HRContactViewSet,CallHistoryViewSet,UserDetailsSerializer,ApplicationViewSet,AppliedCompanyViewSet,UserProfileViewSet,AnnouncementViewSet
+from .views import CollegeViewSet,CourseViewSet,CollegeCourseViewSet,CompanyViewSet,Shared_CompanyViewSet,Shared_HRViewSet,HRContactViewSet,CallHistoryViewSet,UserDetailsViewSet,ApplicationViewSet,AppliedCompanyViewSet,UserProfileViewSet,AnnouncementViewSet
 
 router = DefaultRouter()
 router.register(r'College', CollegeViewSet)
@@ -14,7 +14,7 @@ router.register(r'Shared_Company', Shared_CompanyViewSet)
 router.register(r'Shared_HR', Shared_HRViewSet)
 router.register(r'HRContact', HRContactViewSet)
 router.register(r'CallHistory', CallHistoryViewSet)
-router.register(r'UserDetails', UserDetailsSerializer)
+router.register(r'UserDetails', UserDetailsViewSet)
 router.register(r'Application', ApplicationViewSet)
 router.register(r'AppliedCompany', AppliedCompanyViewSet)
 router.register(r'UserProfile', UserProfileViewSet)
