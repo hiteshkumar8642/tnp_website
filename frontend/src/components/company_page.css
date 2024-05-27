@@ -1,0 +1,15 @@
+.container-fluid{
+    background-color: azure;
+    color:blue;
+    height:100%;
+}
+.header{
+    background-color: aqua;
+}
+nav .links{
+    background-color: aqua;
+}
+main{
+    border:1px solid black;
+    border-radius: 5px;
+}
