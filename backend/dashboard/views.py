@@ -6,11 +6,11 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Course,Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory
+from dashboard.models import Course,Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory,CollegeCourse,Application,UserProfile
 
 from rest_framework import viewsets
 from .models import College
-from .serializers import CollegeSerializer,CourseSerializer
+from .serializers import CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
 class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
@@ -19,6 +19,50 @@ class CollegeViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+class CollegeCourseViewSet(viewsets.ModelViewSet):
+    queryset = CollegeCourse.objects.all()
+    serializer_class = College_CourseSerializer
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+class Shared_CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Shared_Company.objects.all()
+    serializer_class = Shared_CompanySerializer
+
+class Shared_HRViewSet(viewsets.ModelViewSet):
+    queryset = Shared_HR_contact.objects.all()
+    serializer_class = Shared_HR_contactSerializer
+
+class HRContactViewSet(viewsets.ModelViewSet):
+    queryset = HRContact.objects.all()
+    serializer_class = HRContactSerializer
+
+class CallHistoryViewSet(viewsets.ModelViewSet):
+    queryset = CallHistory.objects.all()
+    serializer_class = CallHistorySerializer
+
+class UserDetailsViewSet(viewsets.ModelViewSet):
+    queryset = UserDetails.objects.all()
+    serializer_class = UserDetailsSerializer
+
+class ApplicationViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
+
+class AppliedCompanyViewSet(viewsets.ModelViewSet):
+    queryset = AppliedCompany.objects.all()
+    serializer_class = AppliedCompanySerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
 
 
 def dashboard(request):
