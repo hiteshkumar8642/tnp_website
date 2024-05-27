@@ -1,5 +1,6 @@
 import Header from "./Header";
 import "../Styles/LandingPage.css";
+import Footer from "./Footer";
 
 export default function LandingPage({
   onLogInPageOpening,
@@ -11,6 +12,7 @@ export default function LandingPage({
       <LandingPageContent
         onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
       />
+      <Footer />
     </div>
   );
 }
