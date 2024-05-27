@@ -16,8 +16,10 @@ export default function Header({ onLogInPageOpening, isLoginPage, children }) {
         {!isLoginPage && (
           <ul className="nav-links">
             <li>Home</li>
-            <li>About Us</li>
-            <li>Info</li>
+            <li>Features</li>
+            <li>Team</li>
+            <li>Pricing</li>
+            <li>Contact Us</li>
           </ul>
         )}
         <button className="nav-button" onClick={onLogInPageOpening}>

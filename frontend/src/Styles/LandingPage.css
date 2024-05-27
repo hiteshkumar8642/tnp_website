@@ -38,3 +38,7 @@
   display: block;
   margin: 0 auto; /* Center the image */
 }
+
+.landing-page .content .primary-button:hover {
+  background-color: #5752d8;
+}

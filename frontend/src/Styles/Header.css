@@ -33,7 +33,7 @@
   border: none;
   cursor: pointer;
 }
-.nav-links li:not(:last-child):hover {
+.nav-links li:hover {
   color: #6c63ff;
 }
 .nav-button {
