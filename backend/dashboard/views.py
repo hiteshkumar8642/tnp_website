@@ -6,15 +6,63 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory
+from dashboard.models import Course,Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory,CollegeCourse,Application,UserProfile
 
 from rest_framework import viewsets
 from .models import College
-from .serializers import CollegeSerializer
+from .serializers import CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
 class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
     serializer_class = CollegeSerializer
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class CollegeCourseViewSet(viewsets.ModelViewSet):
+    queryset = CollegeCourse.objects.all()
+    serializer_class = College_CourseSerializer
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+class Shared_CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Shared_Company.objects.all()
+    serializer_class = Shared_CompanySerializer
+
+class Shared_HRViewSet(viewsets.ModelViewSet):
+    queryset = Shared_HR_contact.objects.all()
+    serializer_class = Shared_HR_contactSerializer
+
+class HRContactViewSet(viewsets.ModelViewSet):
+    queryset = HRContact.objects.all()
+    serializer_class = HRContactSerializer
+
+class CallHistoryViewSet(viewsets.ModelViewSet):
+    queryset = CallHistory.objects.all()
+    serializer_class = CallHistorySerializer
+
+class UserDetailsViewSet(viewsets.ModelViewSet):
+    queryset = UserDetails.objects.all()
+    serializer_class = UserDetailsSerializer
+
+class ApplicationViewSet(viewsets.ModelViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
+
+class AppliedCompanyViewSet(viewsets.ModelViewSet):
+    queryset = AppliedCompany.objects.all()
+    serializer_class = AppliedCompanySerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
 
 
 def dashboard(request):
@@ -199,9 +247,6 @@ def common_form(request):
                 return redirect(request.path,{'msg':'Data Saved successfully!!!!'})
             else:
                 return render(request , 'dashboard/hr_common_form.html')
-        # elif request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-        #     res = Shared_HR_contact.objects.all()
-        #     return render(request,'dashboard/tnp_view.html',{'hr_list':res})
         else:
             raise PermissionDenied
     return render(request,'landing_page/home.html')
@@ -252,27 +297,23 @@ def full_detail_visibility(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
             if request.method == 'POST':
-                comment = request.POST.get('comment')
-                color = request.POST.get('color')
+                comment = request.POST.get('text-box')
+                color = request.POST.get('is_color')
                 his_obj = CallHistory.objects.filter(hr_id=cnt)
-                print(his_obj)
+                hr_inst = HRContact.objects.get(id=cnt)
+                std_inst = User.objects.get(id=request.user.id)
                 if len(his_obj)>0:
-                    print("his_obj")
-                    ch=CallHistory(hr_id=cnt, color=color,student_id=request.user.id,college_branch=request.user.userdetails.college_branch,comment=comment)
+                    ch=CallHistory(hr_id=hr_inst, colour=color,student_id=std_inst,college_branch=request.user.userdetails.college_branch,comment=comment)
                     ch.save()
                 else:
-                    print("new_obj")
-                    call_his_obj1 = CallHistory.objects.create(hr_id=cnt ,color=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=request.user.id)
+                    call_his_obj1 = CallHistory.objects.create(hr_id=hr_inst ,colour=color,comment=comment,college_branch=request.user.userdetails.college_branch,student_id=std_inst)
                     call_his_obj1.save()
-                return redirect('/')
+                return redirect(request.path)
             else:
-                print(cnt)
                 hr_obj = HRContact.objects.filter(id=cnt).values()
                 comp_id = HRContact.objects.filter(id=cnt).values('company_id').first()
                 val = comp_id['company_id']
                 company_values = Company.objects.filter(id=val).values()
-                print(company_values)
-                clg_branch = request.user.userdetails.college_branch
                 call_his_obj = CallHistory.objects.filter(hr_id=cnt).values()
                 return render(request,'dashboard/full_visibility.html',{'hr_list':hr_obj,'comp_values':company_values,'call_history':call_his_obj})
         else:
@@ -280,21 +321,17 @@ def full_detail_visibility(request,cnt):
     return render(request,'landing_page/home.html')
 
 
-# def response_submisions(request,id):
-#     if request.user.is_authenticated:
-#         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
-#             if request.method == 'POST':
-#                 comment = request.POST.get('comment')
-#                 color = request.POST.get('color')
-# {% url 'full_detail_visibility' cnt=hr_list.id %}
-#                 his_obj = CallHistory.objects.filter(hr_id=id)
-#                 if his_obj==True:
-#                     his_obj.color = color
-#                     his_obj.comment=comment
-#                 else:
-#                     CallHistory.objects.create(hr_id=id, color=color,comment=comment)
-#                 return redirect('/')
-#         else:
-#             PermissionDenied()
-#     return render(request,'landing_page/home.html')
+def student_list(request):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+            tnp_branch = request.user.userdetails.college_branch
+            student = UserDetails.objects.filter(college_branch=tnp_branch)
+            list_of_student = [i.user.first_name for i in student]
+            return render(request, 'dashboard/student_list.html',{'res':list_of_student})
+        else:
+            PermissionDenied()
+    else:
+        return render(request,'landing_page/home.html')
+
+
 

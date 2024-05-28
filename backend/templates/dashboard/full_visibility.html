@@ -46,14 +46,14 @@
             </div>
             <div id="call-his-form">
                 {% for hr in hr_list%}
-                <form action="{% url 'full_detail_visibility' cnt=hr.hr_id%}" method="post">{% csrf_token %}
+                <form action="{% url 'full_detail_visibility' cnt=hr.id %}" method="post">{% csrf_token %}
                     <label for="comment">Feedback</label><br>
                     <textarea name="text-box" type="text" id="text-bk" required></textarea><br>
                     <label for="color"> Response-color </label>
-                    <select id="is_company" name="is_company" class="field-select">
+                    <select id="is_company" name="is_color" class="field-select">
                         <option value="Green">Green</option>
                         <option value="Red">Red</option>
-                        <option value="Bed">Blue</option>
+                        <option value="Blue">Blue</option>
                     </select><br>
                     <button type="submit" class="btn btn-"> Submit <submit>
                 </form>

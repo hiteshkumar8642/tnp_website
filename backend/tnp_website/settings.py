@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
 # }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:3000","http://localhost:3001"
 ]
 
 # Optional: Allow all origins (not recommended for production)

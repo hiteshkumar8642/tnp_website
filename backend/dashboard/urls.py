@@ -1,13 +1,24 @@
 from django.urls import path
 from . import views
 from dashboard import views
-
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CollegeViewSet
+from .views import CollegeViewSet,CourseViewSet,CollegeCourseViewSet,CompanyViewSet,Shared_CompanyViewSet,Shared_HRViewSet,HRContactViewSet,CallHistoryViewSet,UserDetailsViewSet,ApplicationViewSet,AppliedCompanyViewSet,UserProfileViewSet,AnnouncementViewSet
 
 router = DefaultRouter()
 router.register(r'College', CollegeViewSet)
+router.register(r'Course', CourseViewSet)
+router.register(r'CollegeCourse', CollegeCourseViewSet)
+router.register(r'Company', CompanyViewSet)
+router.register(r'Shared_Company', Shared_CompanyViewSet)
+router.register(r'Shared_HR', Shared_HRViewSet)
+router.register(r'HRContact', HRContactViewSet)
+router.register(r'CallHistory', CallHistoryViewSet)
+router.register(r'UserDetails', UserDetailsViewSet)
+router.register(r'Application', ApplicationViewSet)
+router.register(r'AppliedCompany', AppliedCompanyViewSet)
+router.register(r'UserProfile', UserProfileViewSet)
+router.register(r'Announcement', AnnouncementViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -28,6 +39,6 @@ urlpatterns = [
     path('assign_me/<str:cnt>',views.assign_me,name="assign_me"),
     path('apply/<int:j_id>',views.apply,name="apply"),
     path('full_detail_visibility/<int:cnt>',views.full_detail_visibility,name="full_detail_visibility"),
-    # path('submission/<int:id>',views.response_submisions,name="submission"),
+    path('student_list/',views.student_list,name="student_list"),
     path('logout/',views.logout,name='logout')
 ]

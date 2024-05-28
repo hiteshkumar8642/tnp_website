@@ -16,7 +16,6 @@ class Course(models.Model):
         ('MCA', 'Master of Computer Applications'),
         ('B.Sc', 'Bachelor of Science'),
         ('M.Sc', 'Master of Science'),
-        
     ]
 
     degree = models.CharField(max_length=20, choices=DEGREE_CHOICES)
@@ -181,7 +180,6 @@ class AppliedCompany(models.Model):
         ('applied', 'Applied'),
         ('rejected', 'Rejected'),
         ('selected', 'Selected'),
-
     ]
     is_selected = models.CharField(max_length=10, choices=STATUS_CHOICES, default='applied')
     comment = models.TextField(null=True, blank=True)
@@ -201,6 +199,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
 
 class Announcement(models.Model):
     created = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,85 @@
+body{
+    margin:0;
+    padding: 0;    
+    background-image:url('https://images.unsplash.com/photo-1525921429624-479b6a26d84d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');
+    background-repeat: no-repeat;
+   background-size: cover;
+   font-family: Georgia, 'Times New Roman', Times, serif;
+   color: rgb(77, 74, 74);
+   
+}
+header{
+    text-align: center;
+}
+header h1{
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 70px;
+}
+header p{
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+.form-wrapper{
+    color: white;
+    margin-left: auto;
+    margin-right:auto ;
+    height: auto;
+    width:700px;
+    background: rgba(0, 0, 0, 0.5);     
+    padding:20px; 
+    
+}
+*{
+    box-sizing: border-box;
+}
+#reg-form>div{
+    margin: 20px;
+}
+#reg-form{
+    font-size: 25px;
+}
+.input-styling{
+    width:100%;
+    height: 30px;
+    border:rgb(141, 137, 137) 1px solid;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+button{
+    width: 100%;
+    height: 40px;
+    background-color:rgb(77, 74, 74);
+    border:rgb(77, 74, 74) 1px solid;
+    border-radius: 5px;
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 25px;
+}
+
+/* Responsive */
+@media (max-width:600px){
+    body {
+        width: auto;
+      display:block;
+      text-align: center;
+    }
+    header{
+        color: black;
+    }
+    .form-wrapper{
+        color: white;
+        margin-left: auto;
+        margin-right:auto ;
+        height: auto;
+        width:400px;
+        background: rgba(0, 0, 0, 0.5);     
+        padding:20px; 
+        font-size: 20px;
+        
+    }
+
+      
+
+
+}

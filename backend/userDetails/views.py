@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-from . forms import createUserForm
+from . forms import createUserForm , CollegeRegistrationForm
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -14,6 +14,10 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .tokens import account_activation_token
 from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,UserProfile,UserDetails,CollegeCourse,College,Course
+
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 # Create your views here.
@@ -161,6 +165,52 @@ def UpdateDetails(request):
     else:
         return redirect('userProfile')
 
+def CollegeRegister(request):
+    form = CollegeRegistrationForm()
+    BRANCH_CHOICES = [course for course in Course.objects.all()]
+    if(request.method=="POST"):
+        form = CollegeRegistrationForm(request.POST)
+        
+        if form.is_valid() :
+
+            user = form.save(commit = False)
+            user.is_active = False
+            user.save()
+            email = form.cleaned_data.get('email')
+            activate_email(request, user, email)
+
+            college_name = form.cleaned_data.get('college1')
+            subdomain = form.cleaned_data.get('subdomain')
+            college_obj = College(name=college_name, subdomain=subdomain, user=user)
+            college_obj.save()
+
+            user_profile_obj = UserProfile(user=user, role=4, college=college_obj)
+            user_profile_obj.save()
+
+            branches = request.POST.getlist('branches')
+            for id in branches:
+                clg_obj = College.objects.get(name = college_name)
+                course_obj = Course.objects.get(id = id)
+                College_course_obj = CollegeCourse(college=clg_obj,course=course_obj)
+                College_course_obj.save()
+            return redirect('login')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request,error)
+
+    return render(request,'UserDetails/CollegeRegister.html',{'form':form , 'branches':BRANCH_CHOICES})
+
+
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'userDetails/password_reset.html'
+    email_template_name = 'userDetails/password_reset_email.html'
+    subject_template_name = 'userDetails/password_reset_subject.txt'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('login')
 
 
 

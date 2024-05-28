@@ -1,0 +1,13 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %} Student List {% endblock %}
+{% block head %}
+    <link href="{%static 'css/full_visibility.css' %}" rel="stylesheet"> 
+{% endblock%}
+{% block content %}
+    <div>
+        {% for student in res %}
+            Student Name : {{student}}<br>
+        {% endfor %}
+    </div>
+{% endblock content %} 
