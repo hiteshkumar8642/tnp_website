@@ -21,6 +21,7 @@ export default function CollegeRegistrationPage({
     password: "",
     confirmPassword: "",
   });
+  const [registrationData, setRegistrationData] = useState({});
 
   useEffect(
     function () {
@@ -56,11 +57,50 @@ export default function CollegeRegistrationPage({
     const allFieldsFilled = Object.values(formData).every(
       (field) => field.trim() !== ""
     );
-    if (allFieldsFilled) {
-      setShowModal(true);
-    } else {
+
+    if (!allFieldsFilled) {
       alert("Please fill in all fields before proceeding.");
+      return;
     }
+
+    if (formData.college !== formData.confirmCollege) {
+      alert("College and Confirm College fields do not match.");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Password and Confirm Password fields do not match.");
+      return;
+    }
+
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    const nameRegex = /^[a-zA-Z]+$/;
+
+    if (!passwordRegex.test(formData.password)) {
+      alert(
+        "Password must be at least 6 characters long, contain at least one uppercase letter, one special character, and one number."
+      );
+      return;
+    }
+
+    if (!usernameRegex.test(formData.username)) {
+      alert("Username can only contain alphanumeric characters.");
+      return;
+    }
+
+    if (!nameRegex.test(formData.firstName)) {
+      alert("First Name can only contain alphabetic characters.");
+      return;
+    }
+
+    if (!nameRegex.test(formData.lastName)) {
+      alert("Last Name can only contain alphabetic characters.");
+      return;
+    }
+
+    setShowModal(true);
   };
 
   const handleBranchClick = (branchId) => {
@@ -73,8 +113,26 @@ export default function CollegeRegistrationPage({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Selected branches:", selectedBranches);
+    const { confirmCollege, confirmPassword, ...dataToStore } = formData;
+    const data = {
+      ...dataToStore,
+      selectedBranches,
+    };
+    setRegistrationData(data);
     setShowModal(false);
+    console.log("Registration Data:", data);
+    setFormData({
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      college: "",
+      confirmCollege: "",
+      subdomain: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setSelectedBranches([]);
   };
 
   const handleCloseModal = () => {

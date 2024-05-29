@@ -13,20 +13,21 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+<<<<<<< HEAD
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color:black;
-
+=======
 }
 .container {
   padding-left: 15px;
   padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
-
+>>>>>>> 1aa4fbc9c957e26e886ef03879fcbf685ef8ed84
 }
 
 /* Small */
