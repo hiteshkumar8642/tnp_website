@@ -4,7 +4,7 @@ import ShareHrContact from "./ShareHrConatct";
 import Companies from "./Companies";
 import MyHRList from "./MyHRList";
 import HRList from "./HRList";
-import './company_page.css';
+import '../Styles/companypage.css';
 export default function company_page() {
 
     //     return (

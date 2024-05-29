@@ -8,6 +8,7 @@
 }
 nav .links{
     background-color: aqua;
+    border-radius: 9%;;
 }
 main{
     border:1px solid black;
