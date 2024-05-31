@@ -35,7 +35,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
 
   const Name = "Jhon";
 
-  useEffect(function () {
+  useEffect(() => {
     async function fetchBranches() {
       try {
         const response = await axios.get(
@@ -49,18 +49,34 @@ export default function FirstLogIn({ onLandingPageOpening }) {
     fetchBranches();
   }, []);
 
+  const getUniqueValues = (data, key) => {
+    return [...new Set(data.map((item) => item[key]))];
+  };
+
+  const uniqueDegrees = getUniqueValues(branches, "degree");
+  const uniqueDepartments = getUniqueValues(branches, "specialization");
+
   const handlePhotoChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setPhoto(URL.createObjectURL(event.target.files[0]));
+      const file = event.target.files[0];
+      if (file.type === "image/jpeg" || file.type === "image/jpg") {
+        setPhoto(URL.createObjectURL(file));
+      } else {
+        alert("Please upload a .jpg or .jpeg file.");
+      }
     }
   };
 
   const handleFileChange = (event) => {
     const { id, files } = event.target;
-    setFiles((prevFiles) => ({
-      ...prevFiles,
-      [id]: files[0],
-    }));
+    if (files[0].type === "application/pdf") {
+      setFiles((prevFiles) => ({
+        ...prevFiles,
+        [id]: files[0],
+      }));
+    } else {
+      alert("Please upload a .pdf file.");
+    }
   };
 
   const handleInputChange = (event) => {
@@ -121,6 +137,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               <input
                 type="file"
                 id="photo-upload"
+                accept=".jpg, .jpeg"
                 onChange={handlePhotoChange}
               />
               <label htmlFor="photo-upload">
@@ -137,7 +154,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-university"></i>
                 <select
                   name="branch"
@@ -145,28 +162,33 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="">---Select Branch---</option>
-                  {branches.map((brn) => (
-                    <option key={brn.id} value={brn.id}>
-                      {brn.degree}
+                  <option value="">---Select Degree---</option>
+                  {uniqueDegrees.map((branch, index) => (
+                    <option key={index} value={branch}>
+                      {branch}
                     </option>
                   ))}
                 </select>
               </div>
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-building"></i>
-                <input
-                  type="text"
+                <select
                   name="department"
-                  placeholder="Department"
                   value={formData.department}
                   onChange={handleInputChange}
                   required
-                />
+                >
+                  <option value="">---Select Department---</option>
+                  {uniqueDepartments.map((department, index) => (
+                    <option key={index} value={department}>
+                      {department}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-id-badge"></i>
                 <input
                   type="text"
@@ -177,7 +199,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-phone"></i>
                 <input
                   type="text"
@@ -190,7 +212,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-percentage"></i>
                 <input
                   type="text"
@@ -201,11 +223,12 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input">
+              <div className="input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
                   id="tenthMarksheet"
+                  accept=".pdf"
                   onChange={handleFileChange}
                   required
                 />
@@ -217,7 +240,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-percentage"></i>
                 <input
                   type="text"
@@ -228,11 +251,12 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input">
+              <div className="input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
                   id="twelfthMarksheet"
+                  accept=".pdf"
                   onChange={handleFileChange}
                   required
                 />
@@ -244,7 +268,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-graduation-cap"></i>
                 <input
                   type="text"
@@ -255,11 +279,12 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input">
+              <div className="input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
                   id="graduationMarksheet"
+                  accept=".pdf"
                   onChange={handleFileChange}
                   required
                 />
@@ -271,7 +296,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-chart-line"></i>
                 <input
                   type="text"
@@ -282,11 +307,12 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input">
+              <div className="input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
                   id="resume"
+                  accept=".pdf"
                   onChange={handleFileChange}
                   required
                 />
@@ -296,7 +322,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-tasks"></i>
                 <input
                   type="text"
@@ -307,7 +333,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-clock"></i>
                 <input
                   type="text"
@@ -320,7 +346,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fas fa-clock"></i>
                 <input
                   type="text"
@@ -339,12 +365,11 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   placeholder="Portfolio"
                   value={formData.portfolio}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
             </div>
             <div className="form-group">
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fab fa-linkedin"></i>
                 <input
                   type="text"
@@ -355,7 +380,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group">
+              <div className="input-group required">
                 <i className="fab fa-github"></i>
                 <input
                   type="text"
@@ -376,7 +401,6 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   placeholder=" CodeChef"
                   value={formData.codeChef}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
               <div className="input-group">
@@ -387,7 +411,6 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   placeholder=" Codeforces"
                   value={formData.codeforces}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
             </div>
@@ -400,7 +423,6 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   placeholder=" Leetcode"
                   value={formData.leetcode}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
               <div className="input-group">
@@ -411,7 +433,6 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   placeholder="Website"
                   value={formData.website}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
             </div>
