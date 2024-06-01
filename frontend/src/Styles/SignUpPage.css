@@ -3,7 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px);
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 .signup-form {
   background-color: #fff;
