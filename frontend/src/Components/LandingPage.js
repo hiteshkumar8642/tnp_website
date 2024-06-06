@@ -5,14 +5,21 @@ import Footer from "./Footer";
 export default function LandingPage({
   onLogInPageOpening,
   onCollegeRegistrationPageOpening,
+  onPageChange,
 }) {
   return (
     <div className="landing-page">
-      <Header onLogInPageOpening={onLogInPageOpening}>Student Login</Header>
+      <Header
+        onLogInPageOpening={onLogInPageOpening}
+        onPageChange={onPageChange}
+        currentPage="LandingPage"
+      >
+        Student Login
+      </Header>
       <LandingPageContent
         onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
       />
-      <Footer />
+      <Footer onPageChange={onPageChange} currentPage="LandingPage" />
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import "../Styles/Footer.css";
 
-export default function Footer() {
+export default function Footer({ onPageChange, currentPage }) {
   let PageName = "Placement";
+
   return (
     <footer className="footer-section">
       <div className="container">
@@ -67,7 +68,12 @@ export default function Footer() {
                   <h3>Useful Links</h3>
                 </div>
                 <ul>
-                  <li>Home</li>
+                  <li
+                    className={currentPage === "LandingPage" ? "active" : ""}
+                    onClick={() => onPageChange("LandingPage")}
+                  >
+                    Home
+                  </li>
                   <li>About</li>
                   <li>Services</li>
                   <li>Portfolio</li>
@@ -75,7 +81,12 @@ export default function Footer() {
                   <li>About us</li>
                   <li>Our Services</li>
                   <li>Expert Team</li>
-                  <li>Contact us</li>
+                  <li
+                    className={currentPage === "PricingPanel" ? "active" : ""}
+                    onClick={() => onPageChange("PricingPanel")}
+                  >
+                    Pricing
+                  </li>
                   <li>Latest News</li>
                 </ul>
               </div>
@@ -110,17 +121,6 @@ export default function Footer() {
             <div className="col-xl-6 col-lg-6 text-center text-lg-left">
               <div className="copyright-text">
                 <p>Copyright &copy; 2024, All Right Reserved {PageName}</p>
-              </div>
-            </div>
-            <div className="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-              <div className="footer-menu">
-                <ul>
-                  <li>Home</li>
-                  <li>Terms</li>
-                  <li>Privacy</li>
-                  <li>Policy</li>
-                  <li>Contact</li>
-                </ul>
               </div>
             </div>
           </div>

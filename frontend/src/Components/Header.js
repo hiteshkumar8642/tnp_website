@@ -1,6 +1,12 @@
 import "../Styles/Header.css";
 
-export default function Header({ onLogInPageOpening, isLoginPage, children }) {
+export default function Header({
+  onLogInPageOpening,
+  isLoginPage,
+  children,
+  onPageChange,
+  currentPage,
+}) {
   let PageName = "Placement";
 
   return (
@@ -15,10 +21,20 @@ export default function Header({ onLogInPageOpening, isLoginPage, children }) {
         </span>
         {!isLoginPage && (
           <ul className="nav-links">
-            <li>Home</li>
+            <li
+              className={currentPage === "LandingPage" ? "active" : ""}
+              onClick={() => onPageChange("LandingPage")}
+            >
+              Home
+            </li>
             <li>Features</li>
             <li>Team</li>
-            <li>Pricing</li>
+            <li
+              className={currentPage === "PricingPanel" ? "active" : ""}
+              onClick={() => onPageChange("PricingPanel")}
+            >
+              Pricing
+            </li>
             <li>Contact Us</li>
           </ul>
         )}
