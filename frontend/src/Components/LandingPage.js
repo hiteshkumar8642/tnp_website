@@ -1,25 +1,29 @@
 import Header from "./Header";
 import "../Styles/LandingPage.css";
 import Footer from "./Footer";
+import PricingPanel from "./PricingPanel";
 
 export default function LandingPage({
   onLogInPageOpening,
   onCollegeRegistrationPageOpening,
-  onPageChange,
+  onLandingPageSet,
+  currLanding,
 }) {
   return (
     <div className="landing-page">
       <Header
         onLogInPageOpening={onLogInPageOpening}
-        onPageChange={onPageChange}
-        currentPage="LandingPage"
+        onLandingPageSet={onLandingPageSet}
       >
         Student Login
       </Header>
-      <LandingPageContent
-        onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
-      />
-      <Footer onPageChange={onPageChange} currentPage="LandingPage" />
+      {currLanding === "Home" && (
+        <LandingPageContent
+          onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
+        />
+      )}
+      {currLanding === "Pricing" && <PricingPanel />}
+      <Footer onLandingPageSet={onLandingPageSet} />
     </div>
   );
 }

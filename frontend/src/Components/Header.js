@@ -4,10 +4,13 @@ export default function Header({
   onLogInPageOpening,
   isLoginPage,
   children,
-  onPageChange,
-  currentPage,
+  onLandingPageSet,
 }) {
   let PageName = "Placement";
+
+  function handleCurrentLandingPage(name) {
+    onLandingPageSet(name);
+  }
 
   return (
     <header className="header">
@@ -21,20 +24,10 @@ export default function Header({
         </span>
         {!isLoginPage && (
           <ul className="nav-links">
-            <li
-              className={currentPage === "LandingPage" ? "active" : ""}
-              onClick={() => onPageChange("LandingPage")}
-            >
-              Home
-            </li>
+            <li onClick={() => handleCurrentLandingPage("Home")}>Home</li>
             <li>Features</li>
             <li>Team</li>
-            <li
-              className={currentPage === "PricingPanel" ? "active" : ""}
-              onClick={() => onPageChange("PricingPanel")}
-            >
-              Pricing
-            </li>
+            <li onClick={() => handleCurrentLandingPage("Pricing")}>Pricing</li>
             <li>Contact Us</li>
           </ul>
         )}

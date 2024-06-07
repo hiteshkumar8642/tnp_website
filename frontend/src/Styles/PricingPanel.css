@@ -6,7 +6,7 @@ body {
 }
 
 /* Pricing Page */
-.pricing-page .pricing-content {
+.pricing-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,23 +14,23 @@ body {
   padding: 20px;
 }
 
-.pricing-page .info {
+.pricing-content .info {
   text-align: center;
   margin-bottom: 2em;
 }
 
-.pricing-page .info h1 {
+.pricing-content .info h1 {
   font-size: 2.5em;
   margin-bottom: 0.5em;
 }
 
-.pricing-page .info h5 {
+.pricing-content .info h5 {
   font-size: 1.2em;
   color: #666;
   margin: 0;
 }
 
-.pricing-page .plans-list {
+.plans-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -38,7 +38,7 @@ body {
   margin: 2em 0;
 }
 
-.pricing-page .plan-item {
+.plan-item {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Default subtle shadow */
@@ -52,37 +52,37 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.pricing-page .plan-item:hover {
+.plan-item:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
 }
 
-.pricing-page .plan-item.active {
+.plan-item.active {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* More distinct shadow for active state */
 }
 
-.pricing-page .plan-header {
+.plan-header {
   padding-bottom: 1em;
 }
 
-.pricing-page .plan-header h2 {
+.plan-header h2 {
   color: #6d6ae2;
   font-size: 1.5em;
 }
 
-.pricing-page .plan-price {
+.plan-price {
   font-size: 2.5em;
   margin: 0.5em 0;
 }
 
-.pricing-page .plan-price:before {
+.plan-price:before {
   content: "₹";
   font-size: 0.6em;
   vertical-align: super;
   margin-right: 0.1em;
 }
 
-.pricing-page .primary-button {
+.primary-button {
   background-color: #6865ff;
   color: white;
   padding: 1em 2em;
@@ -94,12 +94,12 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.pricing-page .primary-button:hover,
-.pricing-page .primary-button.active {
+.primary-button:hover,
+.primary-button.active {
   background-color: #5752d8;
 }
 
-.pricing-page .plan-feature-list {
+.plan-feature-list {
   display: flex;
   flex-direction: column;
   gap: 1em;

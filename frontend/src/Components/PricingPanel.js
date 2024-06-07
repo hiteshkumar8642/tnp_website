@@ -1,13 +1,8 @@
 import "../Styles/PricingPanel.css";
-import Header from "./Header";
-import Footer from "./Footer";
 
-export default function PricingPanel({ onPageChange }) {
+export default function PricingPanel() {
   return (
-    <div className="pricing-page">
-      <Header onPageChange={onPageChange} currentPage="PricingPanel">
-        Student Login
-      </Header>
+    <>
       <div className="pricing-content">
         <header className="info">
           <h1>Pricing plans</h1>
@@ -52,7 +47,6 @@ export default function PricingPanel({ onPageChange }) {
           </article>
         </div>
       </div>
-      <Footer onPageChange={onPageChange} currentPage="PricingPanel" />
-    </div>
+    </>
   );
 }

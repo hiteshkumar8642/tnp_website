@@ -1,8 +1,12 @@
 import React from "react";
 import "../Styles/Footer.css";
 
-export default function Footer({ onPageChange, currentPage }) {
+export default function Footer({ onLandingPageSet }) {
   let PageName = "Placement";
+
+  function handleCurrentLandingPage(name) {
+    onLandingPageSet(name);
+  }
 
   return (
     <footer className="footer-section">
@@ -68,12 +72,7 @@ export default function Footer({ onPageChange, currentPage }) {
                   <h3>Useful Links</h3>
                 </div>
                 <ul>
-                  <li
-                    className={currentPage === "LandingPage" ? "active" : ""}
-                    onClick={() => onPageChange("LandingPage")}
-                  >
-                    Home
-                  </li>
+                  <li onClick={() => handleCurrentLandingPage("Home")}>Home</li>
                   <li>About</li>
                   <li>Services</li>
                   <li>Portfolio</li>
@@ -81,10 +80,7 @@ export default function Footer({ onPageChange, currentPage }) {
                   <li>About us</li>
                   <li>Our Services</li>
                   <li>Expert Team</li>
-                  <li
-                    className={currentPage === "PricingPanel" ? "active" : ""}
-                    onClick={() => onPageChange("PricingPanel")}
-                  >
+                  <li onClick={() => handleCurrentLandingPage("Pricing")}>
                     Pricing
                   </li>
                   <li>Latest News</li>

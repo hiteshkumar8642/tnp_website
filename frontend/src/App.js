@@ -4,16 +4,15 @@ import LandingPage from "./Components/LandingPage";
 import LoginPage from "./Components/LoginPage";
 import SignUpPage from "./Components/SignUpPage";
 import CollegeRegistrationPage from "./Components/CollegeRegistrationPage";
-import PricingPanel from "./Components/PricingPanel";
 
 export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCollegeRegistrationOpen, setIsCollegeRegistrationOpen] =
     useState(false);
-  const [currentPage, setCurrentPage] = useState("LandingPage");
   const [colleges, setColleges] = useState([]);
   const [branches, setBranches] = useState([]);
+  const [currLanding, setCurrLanding] = useState("Home");
 
   useEffect(
     function () {
@@ -49,13 +48,6 @@ export default function App() {
     [isCollegeRegistrationOpen]
   );
 
-  function handlePageChange(page) {
-    setCurrentPage(page);
-    setIsLoginOpen(false);
-    setIsSignUpOpen(false);
-    setIsCollegeRegistrationOpen(false);
-  }
-
   function handleLogInPageOpening() {
     setIsLoginOpen(true);
     setIsSignUpOpen(false);
@@ -64,6 +56,7 @@ export default function App() {
 
   function handleLogInPageClosing() {
     setIsLoginOpen(false);
+    setCurrLanding("Home");
   }
 
   function handleSignUpPageOpening() {
@@ -73,7 +66,10 @@ export default function App() {
   }
 
   function handleLandingPageOpening() {
-    handlePageChange("LandingPage");
+    setIsLoginOpen(false);
+    setIsSignUpOpen(false);
+    setIsCollegeRegistrationOpen(false);
+    setCurrLanding("Home");
   }
 
   function handleCollegeRegistrationPageOpening() {
@@ -84,18 +80,16 @@ export default function App() {
 
   return (
     <>
-      {currentPage === "LandingPage" &&
-        !isLoginOpen &&
-        !isSignUpOpen &&
-        !isCollegeRegistrationOpen && (
-          <LandingPage
-            onLogInPageOpening={handleLogInPageOpening}
-            onCollegeRegistrationPageOpening={
-              handleCollegeRegistrationPageOpening
-            }
-            onPageChange={handlePageChange}
-          />
-        )}
+      {!isLoginOpen && !isSignUpOpen && !isCollegeRegistrationOpen && (
+        <LandingPage
+          onLogInPageOpening={handleLogInPageOpening}
+          onCollegeRegistrationPageOpening={
+            handleCollegeRegistrationPageOpening
+          }
+          onLandingPageSet={setCurrLanding}
+          currLanding={currLanding}
+        />
+      )}
       {isLoginOpen && (
         <LoginPage
           onLogInPageClosing={handleLogInPageClosing}
@@ -114,9 +108,6 @@ export default function App() {
           onLandingPageOpening={handleLandingPageOpening}
           branches={branches}
         />
-      )}
-      {currentPage === "PricingPanel" && (
-        <PricingPanel onPageChange={handlePageChange} />
       )}
     </>
   );
