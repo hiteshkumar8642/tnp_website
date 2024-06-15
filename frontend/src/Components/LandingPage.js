@@ -2,6 +2,7 @@ import Header from "./Header";
 import "../Styles/LandingPage.css";
 import Footer from "./Footer";
 import PricingPanel from "./PricingPanel";
+import Team from "./Team";
 
 export default function LandingPage({
   onLogInPageOpening,
@@ -23,6 +24,7 @@ export default function LandingPage({
         />
       )}
       {currLanding === "Pricing" && <PricingPanel />}
+      {currLanding === "Team" && <Team />}
       <Footer onLandingPageSet={onLandingPageSet} />
     </div>
   );

@@ -26,7 +26,7 @@ export default function Header({
           <ul className="nav-links">
             <li onClick={() => handleCurrentLandingPage("Home")}>Home</li>
             <li>Features</li>
-            <li>Team</li>
+            <li onClick={() => handleCurrentLandingPage("Team")}>Team</li>
             <li onClick={() => handleCurrentLandingPage("Pricing")}>Pricing</li>
             <li>Contact Us</li>
           </ul>
