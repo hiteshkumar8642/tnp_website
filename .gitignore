@@ -10,3 +10,4 @@
 *.pyc
 /backend/.venv
 /frontend/node_modules
+.vercel

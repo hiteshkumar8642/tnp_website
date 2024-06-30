@@ -23,6 +23,7 @@ router.register(r'Announcement', AnnouncementViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.dashboard, name='dashboard'),
+    path('login', views.login, name='login'),
     path('applied_company/', views.appliedCompany, name='applied_company'),
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),

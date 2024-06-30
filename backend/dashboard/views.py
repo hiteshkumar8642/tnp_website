@@ -2,6 +2,10 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth  
 from django.core.exceptions import PermissionDenied
 # Create your views here.
+from django.contrib.auth import authenticate
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from .models import College
@@ -10,7 +14,7 @@ from dashboard.models import Course,Shared_Company,Shared_HR_contact,UserDetails
 
 from rest_framework import viewsets
 from .models import College
-from .serializers import CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
+from .serializers import UserSerializer, CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
 class CollegeViewSet(viewsets.ModelViewSet):
     queryset = College.objects.all()
@@ -63,6 +67,31 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
+
+@api_view(['POST'])
+def login(request):
+    print(request)
+    username = request.data.get('username')
+    password = request.data.get('password')
+    print(username)
+    print(password)
+    
+    if not username or not password:
+        return Response({"error": "Please provide both username and password"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    user = authenticate(request, username=username, password=password)
+    
+    if user is not None:
+        # Serialize the user object
+        details = UserDetails.objects.filter(user=user)
+        profile = UserProfile.objects.filter(user=user)
+        s1 = UserSerializer(user)
+        s2 = UserDetailsSerializer(details)
+        s3 = UserProfileSerializer(profile)
+        return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 def dashboard(request):
