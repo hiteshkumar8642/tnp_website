@@ -86,8 +86,8 @@ def login(request):
         details = UserDetails.objects.filter(user=user)
         profile = UserProfile.objects.filter(user=user)
         s1 = UserSerializer(user)
-        s2 = UserDetailsSerializer(details)
-        s3 = UserProfileSerializer(profile)
+        s2 = UserDetailsSerializer(details,many=True)
+        s3 = UserProfileSerializer(profile,many=True)
         return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
