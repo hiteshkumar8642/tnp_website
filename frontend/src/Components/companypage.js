@@ -4,9 +4,21 @@ import ShareHrContact from "./ShareHrConatct";
 import Companies from "./Companies";
 import MyHRList from "./MyHRList";
 import HRList from "./HRList";
+import AddCompany from "./AddComapny";
 import '../Styles/compage.css'
+import Announcement from './Announcement'
+import ShareCompanyContact from "./ShareCompanyContact";
 export default function company_page() {
-  //     return (
+
+  function handleClick(e) {
+    document.getElementById('active').id = 'a';
+    e.target.id = 'active';
+  }
+
+
+
+
+  //     retu
   //     <div className="conatiner-fluid">
   // <div className="bg-danger">
   //    <div className="col-5 "><h1>Tnp_website</h1></div>
@@ -44,57 +56,83 @@ export default function company_page() {
   // )
   return (
     <div className="container-fluid">
-      <header className="text-center mt-2 p-2 header row">
+      <header className=" mt-2 header row">
         <h3 className="col-4">Tnp Website</h3>
-        <input
-          className="search-input col-4"
-          type="text"
-          placeholder="Search"
-        ></input>
+        <div className="col-4"></div>
+        <div className='col-4'> </div>
       </header>
-      <section className="mt-2 p-2 row">
+      <section className="mt-2 row">
         <BrowserRouter>
-          <nav className="col-3">
-            <div className="col-12 btn mt-2 p-2 links">
-              <Link to="/Companies">
-                <h6> Companies</h6>
-              </Link>
+          <nav className="col-2">
+
+            <Link to="/Companies">
+              <div className="col-12 p-2 mt-2 .lnav" id="active" onClick={handleClick}>
+                <h5>Companies</h5></div>
+            </Link>
+
+            <Link to="/Applied">
+              <div className="col-12 p-2  mt-2 .lnav "  onClick={handleClick}>
+                <h5> Applied Companies</h5>
+              </div>
+            </Link>
+
+
+            <Link to="/ShareHrContact">
+            <div className="col-12 p-2 mt-2 ,lnav" onClick={handleClick}>
+              <h5>Share Hr Conatct</h5>
+              </div>
+            </Link>
+            <Link to="/ShareCompanyContact">
+            <div className="col-12 p-2 mt-2 ,lnav" onClick={handleClick}>
+              <h5>Share Company Conatct</h5>
+              </div>
+            </Link>
+
+
+            <Link to="/MyHrList">
+              <div className=" col-12 p-2 mt-2  lnav" onClick={handleClick}>
+              <h5>MyHRList</h5>
+              </div>
+
+            </Link>
+
+
+            <Link to="/HrList">
+              <div className="col-12 p-2 mt-2 " onClick={handleClick}>
+              <h5>HRList</h5>
+              </div>
+
+            </Link>
+            <Link to="/AddCompany">
+              <div className="col-12 p-2 mt-2 " onClick={handleClick}>
+              <h5>AddComapny</h5>
+              </div>
+
+            </Link>
+
+            <Link to="/logout" onClick={handleClick}>
+             <div className="col-12 p-2 mt-2" >
+            <h5>logout</h5>
             </div>
-            <div className="col-12 btn  mt-2 p-2 links">
-              <Link to="/Applied">
-                <h6>Applied Companies</h6>
-              </Link>
-            </div>
-            <div className="col-12 btn  mt-2 p-2 links">
-              <Link to="/ShareHrContact">
-                <h6>ShareHrContact</h6>
-              </Link>
-            </div>
-            <div className=" col-12 btn  mt-2 p-2 links">
-              <Link to="/MyHrList">
-                <h6>MyHrList</h6>
-              </Link>
-            </div>
-            <div className="col-12 btn mt-2 p-2 links">
-              <Link to="/HrList">
-                <h6>HRList</h6>
-              </Link>
-            </div>
-            <div className="col-12 btn mt-2 p-2 links">
-              <Link to="/logout">logout</Link>
-            </div>
+            </Link>
+
           </nav>
-          <main className="col-9">
+          <main className="col-6 m-2">
             <Routes>
               <Route path="Companies" element={<Companies />} />
               <Route path="Applied" element={<Applied_Companies />} />
               <Route path="ShareHrContact" element={<ShareHrContact />} />
               <Route path="HRList" element={<HRList />} />
               <Route path="MyHRList" element={<MyHRList />} />
+              <Route path="AddCompany" element={<AddCompany />} />
+              <Route path="ShareCompanyContact" element={<ShareCompanyContact />} />
               {/* <Route path="logout" element={<Logout />} /> */}
             </Routes>
             <Outlet />
           </main>
+          <div className="col-3 m-2 announcement">
+            <Announcement />
+          </div>
         </BrowserRouter>
       </section>
     </div>

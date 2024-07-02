@@ -1,16 +1,41 @@
 .container-fluid{
-    background-color: azure;
-    color:blue;
-    height:100%;
+    background-color: #f5f7fd
+
 }
 .header{
-    background-color: aqua;
+ 
 }
 nav .links{
-    background-color: aqua;
-    border-radius: 9%;;
+ 
+    border-radius: 8%;;
 }
 main{
-    border:1px solid black;
-    border-radius: 5px;
+   
+    border-radius: 5%
+}
+#active{
+ background-color:black;
+ display:block;
+ color:white;
+ height:100%;
+}
+
+.announcement{
+   
+    border-radius: 5%;
+}
+.lnav :hover{
+   width:100%;
+  
+  background-color: rgb(148, 130, 130);
+  color:white;
+}
+Main{
+    background-color: white;
+}
+.announcement{
+    background-color:white;
+}
+a{
+    display: block;
 }
