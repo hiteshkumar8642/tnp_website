@@ -14,11 +14,18 @@
   color: #5d5d5d;
   font-style: italic;
   font-size: 24px;
+  text-decoration: none; /* Prevent underline */
+}
+.logo a {
+  color: #5d5d5d;
+  text-decoration: none;
 }
 .nav-links {
   display: flex;
   align-items: center;
   font-size: 18px;
+  list-style: none; /* Remove bullets from list */
+  padding: 0; /* Remove default padding */
 }
 .nav-links li {
   margin-left: 30px;
@@ -36,6 +43,12 @@
 }
 .nav-links li:hover {
   color: #6c63ff;
+}
+.nav-links a {
+  text-decoration: none; /* Prevent underline */
+}
+.active a {
+  color: #6c63ff; /* Color for active link */
 }
 .nav-button {
   border-radius: 20px;

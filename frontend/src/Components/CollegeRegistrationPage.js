@@ -1,15 +1,13 @@
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "../Styles/CollegeRegistrationPage.css";
 
-export default function CollegeRegistrationPage({
-  onLandingPageOpening,
-  branches,
-}) {
+export default function CollegeRegistrationPage({ branches }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [filteredBranches, setFilteredBranches] = useState(branches);
+  //const [filteredBranches, setFilteredBranches] = useState(branches);
   const [formData, setFormData] = useState({
     username: "",
     firstName: "",
@@ -21,7 +19,7 @@ export default function CollegeRegistrationPage({
     password: "",
     confirmPassword: "",
   });
-  const [registrationData, setRegistrationData] = useState({});
+  //const [registrationData, setRegistrationData] = useState({});
 
   useEffect(
     function () {
@@ -37,20 +35,20 @@ export default function CollegeRegistrationPage({
     [showModal]
   );
 
-  useEffect(
-    function () {
-      setFilteredBranches(
-        branches.filter(
-          (branch) =>
-            branch.degree.toLowerCase().includes(searchInput.toLowerCase()) ||
-            branch.specialization
-              .toLowerCase()
-              .includes(searchInput.toLowerCase())
-        )
-      );
-    },
-    [searchInput, branches]
-  );
+  // useEffect(
+  //   function () {
+  //     setFilteredBranches(
+  //       branches.filter(
+  //         (branch) =>
+  //           branch.degree.toLowerCase().includes(searchInput.toLowerCase()) ||
+  //           branch.specialization
+  //             .toLowerCase()
+  //             .includes(searchInput.toLowerCase())
+  //       )
+  //     );
+  //   },
+  //   [searchInput, branches]
+  // );
 
   const handleProceed = (e) => {
     e.preventDefault();
@@ -103,13 +101,13 @@ export default function CollegeRegistrationPage({
     setShowModal(true);
   };
 
-  const handleBranchClick = (branchId) => {
-    setSelectedBranches((prevSelectedBranches) =>
-      prevSelectedBranches.includes(branchId)
-        ? prevSelectedBranches.filter((b) => b !== branchId)
-        : [...prevSelectedBranches, branchId]
-    );
-  };
+  // const handleBranchClick = (branchId) => {
+  //   setSelectedBranches((prevSelectedBranches) =>
+  //     prevSelectedBranches.includes(branchId)
+  //       ? prevSelectedBranches.filter((b) => b !== branchId)
+  //       : [...prevSelectedBranches, branchId]
+  //   );
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -118,7 +116,7 @@ export default function CollegeRegistrationPage({
       ...dataToStore,
       selectedBranches,
     };
-    setRegistrationData(data);
+    //setRegistrationData(data);
     setShowModal(false);
     console.log("Registration Data:", data);
     setFormData({
@@ -149,8 +147,10 @@ export default function CollegeRegistrationPage({
 
   return (
     <>
-      <Header onLogInPageOpening={onLandingPageOpening} isLoginPage>
-        Back to Home
+      <Header isLoginPage>
+        <Link to="/">
+          <button className="nav-button">Back To Home</button>
+        </Link>
       </Header>
       <div className="college-registration-page">
         <div className="college-registration-form">
@@ -277,7 +277,7 @@ export default function CollegeRegistrationPage({
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <form onSubmit={handleSubmit}>
-              <div
+              {/* <div
                 className={`branches-grid ${
                   filteredBranches.length > 25 ? "scrollable" : ""
                 }`}
@@ -294,7 +294,7 @@ export default function CollegeRegistrationPage({
                     {`(${branch.specialization})`}
                   </div>
                 ))}
-              </div>
+              </div> */}
               <button type="submit">Submit</button>
             </form>
           </div>

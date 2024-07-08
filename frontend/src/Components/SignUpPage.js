@@ -1,22 +1,21 @@
 import React from "react";
 import Header from "./Header";
 import "../Styles/SignUpPage.css";
+import { Link } from "react-router-dom";
 
-export default function SignUpPage({
-  onLandingPageOpening,
-  onLogInPageOpening,
-  college,
-}) {
+export default function SignUpPage({ college }) {
   return (
     <>
-      <Header onLogInPageOpening={onLandingPageOpening} isLoginPage>
-        Back to Home
+      <Header isLoginPage>
+        <Link to="/">
+          <button className="nav-button">Back To Home</button>
+        </Link>
       </Header>
       <div className="signup-page">
         <div className="signup-form">
           <h2>Register Account</h2>
           <form>
-            <div className="form-group input-group">
+            {/* <div className="form-group input-group">
               <i className="fas fa-university"></i>
               <select required>
                 <option value="">---Select your college---</option>
@@ -26,7 +25,7 @@ export default function SignUpPage({
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
             <div className="form-group input-group">
               <i className="fas fa-id-card"></i>
               <input type="text" placeholder="Registration no..." required />
@@ -59,9 +58,9 @@ export default function SignUpPage({
           </form>
           <p className="login-link">
             Already have an account?{" "}
-            <span className="login-link-button" onClick={onLogInPageOpening}>
-              Login
-            </span>
+            <Link to="/login">
+              <span className="login-link-button">Login</span>
+            </Link>
           </p>
         </div>
       </div>

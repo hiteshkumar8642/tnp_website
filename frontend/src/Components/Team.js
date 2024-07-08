@@ -1,7 +1,10 @@
 import React from "react";
 import "../Styles/Team.css";
+import Header from "./Header";
+import Footer from "./Footer";
 import Bansal from "./Image/Bansal.jpg";
 import Sayantan from "./Image/Sayantan.jpg";
+import { Link } from "react-router-dom";
 export default function Team() {
   const teamMembers = [
     {
@@ -47,6 +50,11 @@ export default function Team() {
 
   return (
     <>
+      <Header>
+        <Link to="/">
+          <button className="nav-button">Student LogIn</button>
+        </Link>
+      </Header>
       <div className="team-content">
         <header className="info">
           <h1>Meet Our Team</h1>
@@ -67,6 +75,7 @@ export default function Team() {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
