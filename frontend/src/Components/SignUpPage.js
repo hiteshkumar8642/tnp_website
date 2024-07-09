@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import Header from "./Header";
 import "../Styles/SignUpPage.css";
-import { Link } from "react-router-dom";
 
-export default function SignUpPage({ college }) {
+export default function SignUpPage() {
+  const [college, setCollege] = useState([]);
+
+  useEffect(function () {
+    async function fetchColleges() {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/dashboard/api/College/"
+        );
+        setCollege(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchColleges();
+  }, []);
+
   return (
     <>
       <Header isLoginPage>
@@ -15,7 +32,7 @@ export default function SignUpPage({ college }) {
         <div className="signup-form">
           <h2>Register Account</h2>
           <form>
-            {/* <div className="form-group input-group">
+            <div className="form-group input-group">
               <i className="fas fa-university"></i>
               <select required>
                 <option value="">---Select your college---</option>
@@ -25,7 +42,7 @@ export default function SignUpPage({ college }) {
                   </option>
                 ))}
               </select>
-            </div> */}
+            </div>
             <div className="form-group input-group">
               <i className="fas fa-id-card"></i>
               <input type="text" placeholder="Registration no..." required />
