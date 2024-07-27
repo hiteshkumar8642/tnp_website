@@ -1,0 +1,204 @@
+/* College Registration Page */
+.college-registration-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.college-registration-form {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+}
+.college-registration-form h2 {
+  color: #5d5d5d;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.college-registration-form .form-group {
+  margin: 10px 0;
+}
+.college-registration-form .form-group input,
+.college-registration-form .form-group select {
+  width: calc(100% - 20px);
+  padding: 10px 10px 10px 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.college-registration-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #5d5d5d;
+}
+.college-registration-form .form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+.college-registration-form .input-group {
+  position: relative;
+}
+.college-registration-form .input-group i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+.college-registration-form button {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #6c63ff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+.college-registration-form button:hover {
+  background-color: #5752d8;
+}
+.college-registration-form .form-group {
+  display: flex; /* Set display to flex */
+  align-items: center; /* Align items vertically */
+  margin: 10px 0;
+}
+
+.college-registration-form .form-group input[type="checkbox"] {
+  margin-right: 10px; /* Adjust spacing between checkbox and label */
+}
+
+.college-registration-form .form-group label {
+  margin-bottom: 0; /* Remove margin bottom to keep items aligned */
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1050px; /* Default max-width */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative; /* Add relative positioning for the close button */
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.branches-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Five columns */
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-right: 10px; /* Padding for scrollbar space */
+  max-height: calc(5 * 60px + 4 * 10px);
+}
+
+.branches-grid.scrollable {
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.branch-item {
+  background: #f3f6fd;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 60px; /* Fixed height for items */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.branch-item:hover {
+  background: #e0e7ff;
+}
+
+.branch-item.selected {
+  background: #d1d5ff;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6c63ff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #5752d8;
+}
+
+/* Minimalistic Scrollbar Styling */
+.branches-grid::-webkit-scrollbar {
+  width: 8px; /* Set width of the scrollbar */
+}
+
+.branches-grid::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.branches-grid::-webkit-scrollbar-thumb {
+  background: #c1c1c1; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.branches-grid::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1; /* Darker color on hover */
+}
+
+/* Styling for the search bar */
+.modal-search-bar {
+  background: #f3f6fd;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: calc(100% - 20px); /* Adjust for padding */
+  margin-bottom: 20px;
+  outline: none;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.modal-search-bar:focus {
+  border-color: #6c63ff;
+}
+
+.no-scroll {
+  overflow: hidden;
+}

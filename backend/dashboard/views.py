@@ -70,12 +70,8 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def login(request):
-    print(request)
     username = request.data.get('username')
     password = request.data.get('password')
-    print(username)
-    print(password)
-    
     if not username or not password:
         return Response({"error": "Please provide both username and password"}, status=status.HTTP_400_BAD_REQUEST)
     

@@ -1,0 +1,109 @@
+/* Team Page */
+.team-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.team-content .info {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.team-content .info h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+}
+
+.team-content .info h5 {
+  font-size: 1.2em;
+  color: #666;
+  margin: 0;
+}
+
+.team-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 2em 0;
+}
+
+.team-item {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Default subtle shadow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5em;
+  width: 375px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 525px; /* Fixed height to ensure consistency */
+}
+
+.team-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}
+
+.team-item.active {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* More distinct shadow for active state */
+}
+
+.team-photo img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 1em;
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  flex-grow: 1;
+}
+
+.team-info h2 {
+  color: #6d6ae2;
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.team-info h3 {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0;
+}
+
+.team-info p {
+  font-size: 1em;
+  color: #555;
+  text-align: center;
+  margin: 1em 0;
+  max-width: 90%;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: auto; /* Ensures the social links are always at the bottom */
+  padding-top: 1em;
+}
+
+.social-links a {
+  color: #6865ff;
+  font-size: 1.5em;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #5752d8;
+}
