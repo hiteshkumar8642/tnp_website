@@ -4,15 +4,15 @@ import axios from "axios";
 import Header from "../../Components/Header/Header";
 import "./SignUpPage.css";
 
+const host = "http://127.0.0.1:8000";
+
 export default function SignUpPage() {
   const [college, setCollege] = useState([]);
 
   useEffect(function () {
     async function fetchColleges() {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/dashboard/api/College/"
-        );
+        const response = await axios.get(`${host}/dashboard/api/College/`);
         setCollege(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
