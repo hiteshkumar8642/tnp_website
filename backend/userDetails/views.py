@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
 from . forms import createUserForm , CollegeRegistrationForm
+from django.views.decorators.csrf import csrf_exempt
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -220,16 +221,29 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == status.HTTP_200_OK:
+            refresh = response.data['refresh']
+            access = response.data['access']
+            response.set_cookie('refresh_token', refresh, httponly=True)
+            response.set_cookie('access_token', access, httponly=True)
+        return response
+
 @api_view(['POST'])
-def jwt_login(request):
-    print("hii")
-    username = request.data.get('username')
-    password = request.data.get('password')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None:
-        refresh = RefreshToken.for_user(user)
-        return Response({
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
-        })
-    return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+def logout_view(request):
+    try:
+        refresh_token = request.data["refresh_token"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
