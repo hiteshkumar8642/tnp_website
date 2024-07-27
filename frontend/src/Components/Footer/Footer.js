@@ -1,12 +1,13 @@
 import React from "react";
 import "../Styles/Footer.css";
+import { Link } from "react-router-dom";
 
 export default function Footer({ onLandingPageSet }) {
   let PageName = "Placement";
 
-  function handleCurrentLandingPage(name) {
-    onLandingPageSet(name);
-  }
+  // function handleCurrentLandingPage(name) {
+  //   onLandingPageSet(name);
+  // }
 
   return (
     <footer className="footer-section">
@@ -72,7 +73,9 @@ export default function Footer({ onLandingPageSet }) {
                   <h3>Useful Links</h3>
                 </div>
                 <ul>
-                  <li onClick={() => handleCurrentLandingPage("Home")}>Home</li>
+                  <Link to="/">
+                    <li>Home</li>
+                  </Link>
                   <li>About</li>
                   <li>Services</li>
                   <li>Portfolio</li>
@@ -80,9 +83,9 @@ export default function Footer({ onLandingPageSet }) {
                   <li>About us</li>
                   <li>Our Services</li>
                   <li>Expert Team</li>
-                  <li onClick={() => handleCurrentLandingPage("Pricing")}>
-                    Pricing
-                  </li>
+                  <Link to="/pricing">
+                    <li>Pricing</li>
+                  </Link>
                   <li>Latest News</li>
                 </ul>
               </div>

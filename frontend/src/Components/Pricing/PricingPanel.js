@@ -1,8 +1,16 @@
 import "../Styles/PricingPanel.css";
+import Header from "./Header";
+import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 export default function PricingPanel() {
   return (
     <>
+      <Header>
+        <Link to="/">
+          <button className="nav-button">Student LogIn</button>
+        </Link>
+      </Header>
       <div className="pricing-content">
         <header className="info">
           <h1>Pricing plans</h1>
@@ -47,6 +55,7 @@ export default function PricingPanel() {
           </article>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

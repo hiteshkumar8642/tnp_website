@@ -74,21 +74,46 @@ def login(request):
     password = request.data.get('password')
     if not username or not password:
         return Response({"error": "Please provide both username and password"}, status=status.HTTP_400_BAD_REQUEST)
+
+    users = authenticate(request, username=username, password=password)
     
-    user = authenticate(request, username=username, password=password)
-    
-    if user is not None:
-        # Serialize the user object
-        details = UserDetails.objects.filter(user=user)
-        profile = UserProfile.objects.filter(user=user)
-        s1 = UserSerializer(user)
+    if users is not None:
+        details = UserDetails.objects.filter(user=users)
+        profile = UserProfile.objects.filter(user=users)
+        app_com = AppliedCompany.objects.filter(user_id=users.id)
+        app_obj = app_com[0].application_id
+        comp_obj = app_obj.company_id
+        company = Company.objects.filter(id=comp_obj.id)
+        hr_cnt = HRContact.objects.filter(company_id=comp_obj.id)
+        s1 = UserSerializer(users)
         s2 = UserDetailsSerializer(details,many=True)
         s3 = UserProfileSerializer(profile,many=True)
-        return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data}, status=status.HTTP_200_OK)
+        s4 = CompanySerializer(company,many=True)
+        s5 = HRContactSerializer(hr_cnt,many=True)
+        if profile[0].role==3 or profile[0].role==4 :
+            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"HRContact":s5.data}, status=status.HTTP_200_OK)
+        if profile[0].role==1:
+            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(['POST'])
+def signup(request):
+    serial = UserSerializer(data=request.data)
+    if user.is_valid():
+        user = serial.save()
+        username = request.data.get('username')
+        password = request.data.get('password')
+        details = UserDetails.objects.filter(user=user)
+        profile = UserProfile.objects.filter(user=user)
+        user_serializer = UserSerializer(user)
+        details_serializer = UserDetailsSerializer(details, many=True)
+        profile_serializer = UserProfileSerializer(profile, many=True)
 
+        return Response({"message": "Signup successful","user": user_serializer.data,"detail": details_serializer.data,"role": profile_serializer.data
+        }, status=status.HTTP_201_CREATED)
+    else:
+        return Response({"error": "Somethind went Wrong!"}, status=status.HTTP_400_BAD_REQUEST)
 
 def dashboard(request):
     if request.user.is_authenticated:

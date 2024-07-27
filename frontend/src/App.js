@@ -1,114 +1,27 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./Components/LandingPage";
 import LoginPage from "./Components/LoginPage";
 import SignUpPage from "./Components/SignUpPage";
 import CollegeRegistrationPage from "./Components/CollegeRegistrationPage";
+import PricingPanel from "./Components/PricingPanel";
+import Team from "./Components/Team";
 
-export default function App() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isCollegeRegistrationOpen, setIsCollegeRegistrationOpen] =
-    useState(false);
-  const [colleges, setColleges] = useState([]);
-  const [branches, setBranches] = useState([]);
-  const [currLanding, setCurrLanding] = useState("Home");
-
-  useEffect(
-    function () {
-      async function fetchColleges() {
-        try {
-          const response = await axios.get(
-            "http://127.0.0.1:8000/dashboard/api/College/"
-          );
-          setColleges(response.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-      fetchColleges();
-    },
-    [isSignUpOpen]
-  );
-
-  useEffect(
-    function () {
-      async function fetchBranches() {
-        try {
-          const response = await axios.get(
-            "http://127.0.0.1:8000/dashboard/api/Course/"
-          );
-          setBranches(response.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-      fetchBranches();
-    },
-    [isCollegeRegistrationOpen]
-  );
-
-  function handleLogInPageOpening() {
-    setIsLoginOpen(true);
-    setIsSignUpOpen(false);
-    setIsCollegeRegistrationOpen(false);
-  }
-
-  function handleLogInPageClosing() {
-    setIsLoginOpen(false);
-    setCurrLanding("Home");
-  }
-
-  function handleSignUpPageOpening() {
-    setIsSignUpOpen(true);
-    setIsLoginOpen(false);
-    setIsCollegeRegistrationOpen(false);
-  }
-
-  function handleLandingPageOpening() {
-    setIsLoginOpen(false);
-    setIsSignUpOpen(false);
-    setIsCollegeRegistrationOpen(false);
-    setCurrLanding("Home");
-  }
-
-  function handleCollegeRegistrationPageOpening() {
-    setIsCollegeRegistrationOpen(true);
-    setIsLoginOpen(false);
-    setIsSignUpOpen(false);
-  }
-
+function App() {
   return (
-    <>
-      {!isLoginOpen && !isSignUpOpen && !isCollegeRegistrationOpen && (
-        <LandingPage
-          onLogInPageOpening={handleLogInPageOpening}
-          onCollegeRegistrationPageOpening={
-            handleCollegeRegistrationPageOpening
-          }
-          onLandingPageSet={setCurrLanding}
-          currLanding={currLanding}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/collegeRegistration"
+          element={<CollegeRegistrationPage />}
         />
-      )}
-      {isLoginOpen && (
-        <LoginPage
-          onLogInPageClosing={handleLogInPageClosing}
-          onSignUpPageOpening={handleSignUpPageOpening}
-        />
-      )}
-      {isSignUpOpen && (
-        <SignUpPage
-          onLandingPageOpening={handleLandingPageOpening}
-          onLogInPageOpening={handleLogInPageOpening}
-          college={colleges}
-        />
-      )}
-      {isCollegeRegistrationOpen && (
-        <CollegeRegistrationPage
-          onLandingPageOpening={handleLandingPageOpening}
-          branches={branches}
-        />
-      )}
-    </>
+        <Route path="/Team" element={<Team />} />
+        <Route path="/pricing" element={<PricingPanel />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+export default App;

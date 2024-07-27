@@ -1,36 +1,23 @@
+import { Link } from "react-router-dom";
 import Header from "./Header";
 import "../Styles/LandingPage.css";
 import Footer from "./Footer";
-import PricingPanel from "./PricingPanel";
-import Team from "./Team";
 
-export default function LandingPage({
-  onLogInPageOpening,
-  onCollegeRegistrationPageOpening,
-  onLandingPageSet,
-  currLanding,
-}) {
+export default function LandingPage() {
   return (
     <div className="landing-page">
-      <Header
-        onLogInPageOpening={onLogInPageOpening}
-        onLandingPageSet={onLandingPageSet}
-      >
-        Student Login
+      <Header>
+        <Link to="/login">
+          <button className="nav-button">Student Login</button>
+        </Link>
       </Header>
-      {currLanding === "Home" && (
-        <LandingPageContent
-          onCollegeRegistrationPageOpening={onCollegeRegistrationPageOpening}
-        />
-      )}
-      {currLanding === "Pricing" && <PricingPanel />}
-      {currLanding === "Team" && <Team />}
-      <Footer onLandingPageSet={onLandingPageSet} />
+      <LandingPageContent />
+      <Footer />
     </div>
   );
 }
 
-function LandingPageContent({ onCollegeRegistrationPageOpening }) {
+function LandingPageContent() {
   let PageName = "Placement";
   return (
     <div className="content container">
@@ -42,12 +29,10 @@ function LandingPageContent({ onCollegeRegistrationPageOpening }) {
           embrace innovation for student success. Elevate your campus dynamics
           with {PageName} – where smart placements meet smarter careers!
         </p>
-        <button
-          className="primary-button"
-          onClick={onCollegeRegistrationPageOpening}
-        >
-          Register your College
-        </button>
+        <Link to="/collegeRegistration">
+          {" "}
+          <button className="primary-button">Register your College</button>
+        </Link>
       </div>
       <div className="image">
         <img

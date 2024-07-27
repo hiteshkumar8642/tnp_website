@@ -1,39 +1,35 @@
+import { Link, NavLink } from "react-router-dom";
 import "../Styles/Header.css";
 
-export default function Header({
-  onLogInPageOpening,
-  isLoginPage,
-  children,
-  onLandingPageSet,
-}) {
+export default function Header({ isLoginPage, children }) {
   let PageName = "Placement";
-
-  function handleCurrentLandingPage(name) {
-    onLandingPageSet(name);
-  }
 
   return (
     <header className="header">
       <nav className="container">
-        <span
-          className="logo"
-          onClick={isLoginPage ? onLogInPageOpening : undefined}
-          style={isLoginPage ? { cursor: "pointer" } : {}}
-        >
-          <b>{PageName}</b>
+        <span className="logo">
+          <Link to="/">
+            {" "}
+            <b>{PageName}</b>{" "}
+          </Link>
         </span>
+
         {!isLoginPage && (
           <ul className="nav-links">
-            <li onClick={() => handleCurrentLandingPage("Home")}>Home</li>
+            <NavLink to="/">
+              <li>Home</li>
+            </NavLink>
             <li>Features</li>
-            <li onClick={() => handleCurrentLandingPage("Team")}>Team</li>
-            <li onClick={() => handleCurrentLandingPage("Pricing")}>Pricing</li>
+            <NavLink to="/team">
+              <li>Team</li>
+            </NavLink>
+            <NavLink to="/pricing">
+              <li>Pricing</li>
+            </NavLink>
             <li>Contact Us</li>
           </ul>
         )}
-        <button className="nav-button" onClick={onLogInPageOpening}>
-          {children}
-        </button>
+        <span>{children}</span>
       </nav>
     </header>
   );

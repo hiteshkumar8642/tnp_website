@@ -1,10 +1,14 @@
 import React from "react";
 import "../Styles/Team.css";
-
+import Header from "./Header";
+import Footer from "./Footer";
+import Bansal from "./Image/Bansal.jpg";
+import Sayantan from "./Image/Sayantan.jpg";
+import { Link } from "react-router-dom";
 export default function Team() {
   const teamMembers = [
     {
-      name: "James Anderson",
+      name: "Hitesh Kumar",
       imageUrl: "https://shorturl.at/47wjK",
       position: "Creative Director",
       description:
@@ -17,9 +21,9 @@ export default function Team() {
       ],
     },
     {
-      name: "Alex Thompson",
-      imageUrl: "https://shorturl.at/47wjK",
-      position: "Account Manager",
+      name: "Sayantan Bairagi",
+      imageUrl: Sayantan,
+      position: "Frontend Developer",
       description:
         "As an Account Manager, I bridge the gap between clients and our agency, ensuring we understand their needs and deliver exceptional results, fostering strong relationships and client satisfaction.",
       socialLinks: [
@@ -30,9 +34,9 @@ export default function Team() {
       ],
     },
     {
-      name: "Sophia Ramirez",
-      imageUrl: "https://shorturl.at/47wjK",
-      position: "Social Media Manager",
+      name: "Ritik Bansal",
+      imageUrl: Bansal,
+      position: "Backend Developer",
       description:
         "As Social Media Manager, I connect with our audience, crafting engaging content that enhances clients' online presence, drives engagement, and fosters community, contributing to our clients' digital success.",
       socialLinks: [
@@ -46,6 +50,11 @@ export default function Team() {
 
   return (
     <>
+      <Header>
+        <Link to="/">
+          <button className="nav-button">Student LogIn</button>
+        </Link>
+      </Header>
       <div className="team-content">
         <header className="info">
           <h1>Meet Our Team</h1>
@@ -66,6 +75,7 @@ export default function Team() {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

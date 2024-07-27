@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import Header from "./Header";
 import "../Styles/SignUpPage.css";
 
-export default function SignUpPage({
-  onLandingPageOpening,
-  onLogInPageOpening,
-  college,
-}) {
+export default function SignUpPage() {
+  const [college, setCollege] = useState([]);
+
+  useEffect(function () {
+    async function fetchColleges() {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/dashboard/api/College/"
+        );
+        setCollege(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchColleges();
+  }, []);
+
   return (
     <>
-      <Header onLogInPageOpening={onLandingPageOpening} isLoginPage>
-        Back to Home
+      <Header isLoginPage>
+        <Link to="/">
+          <button className="nav-button">Back To Home</button>
+        </Link>
       </Header>
       <div className="signup-page">
         <div className="signup-form">
@@ -59,9 +75,9 @@ export default function SignUpPage({
           </form>
           <p className="login-link">
             Already have an account?{" "}
-            <span className="login-link-button" onClick={onLogInPageOpening}>
-              Login
-            </span>
+            <Link to="/login">
+              <span className="login-link-button">Login</span>
+            </Link>
           </p>
         </div>
       </div>

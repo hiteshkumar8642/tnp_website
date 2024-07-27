@@ -1,11 +1,11 @@
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Header from "./Header";
 import "../Styles/CollegeRegistrationPage.css";
 
-export default function CollegeRegistrationPage({
-  onLandingPageOpening,
-  branches,
-}) {
+export default function CollegeRegistrationPage() {
+  const [branches, setBranches] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -22,6 +22,20 @@ export default function CollegeRegistrationPage({
     confirmPassword: "",
   });
   const [registrationData, setRegistrationData] = useState({});
+
+  useEffect(function () {
+    async function fetchBranches() {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/dashboard/api/Course/"
+        );
+        setBranches(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchBranches();
+  }, []);
 
   useEffect(
     function () {
@@ -149,8 +163,10 @@ export default function CollegeRegistrationPage({
 
   return (
     <>
-      <Header onLogInPageOpening={onLandingPageOpening} isLoginPage>
-        Back to Home
+      <Header isLoginPage>
+        <Link to="/">
+          <button className="nav-button">Back To Home</button>
+        </Link>
       </Header>
       <div className="college-registration-page">
         <div className="college-registration-form">
