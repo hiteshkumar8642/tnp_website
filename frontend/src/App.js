@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LandingPage from "./Components/LandingPage";
-import LoginPage from "./Components/LoginPage";
-import SignUpPage from "./Components/SignUpPage";
-import CollegeRegistrationPage from "./Components/CollegeRegistrationPage";
-import PricingPanel from "./Components/PricingPanel";
-import Team from "./Components/Team";
+import LandingPage from "./Pages/LangingPage/LandingPage";
+import LoginPage from "./Pages/Login/LoginPage";
+import SignUpPage from "./Pages/SignUp/SignUpPage";
+import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistrationPage";
+import PricingPanel from "./Pages/Pricing/PricingPanel";
+import Team from "./Pages/Team/Team";
 
 function App() {
   return (

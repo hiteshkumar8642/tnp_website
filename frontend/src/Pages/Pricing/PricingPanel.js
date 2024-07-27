@@ -1,6 +1,6 @@
-import "../Styles/PricingPanel.css";
-import Header from "./Header";
-import Footer from "./Footer";
+import "./PricingPanel.css";
+import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 import { Link } from "react-router-dom";
 
 export default function PricingPanel() {

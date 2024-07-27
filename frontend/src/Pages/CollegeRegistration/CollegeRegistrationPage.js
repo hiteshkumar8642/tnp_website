@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Header from "./Header";
-import "../Styles/CollegeRegistrationPage.css";
+import Header from "../../Components/Header/Header";
+import "./CollegeRegistrationPage.css";
 
 export default function CollegeRegistrationPage() {
   const [branches, setBranches] = useState([]);
@@ -133,6 +133,7 @@ export default function CollegeRegistrationPage() {
       selectedBranches,
     };
     setRegistrationData(data);
+    console.log(registrationData);
     setShowModal(false);
     console.log("Registration Data:", data);
     setFormData({

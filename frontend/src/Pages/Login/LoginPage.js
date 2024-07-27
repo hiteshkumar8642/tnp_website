@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./Header";
-import "../Styles/LoginPage.css";
+import Header from "../../Components/Header/Header";
+import "./LoginPage.css";
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 import { Link } from "react-router-dom";

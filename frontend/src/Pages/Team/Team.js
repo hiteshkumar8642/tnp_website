@@ -1,7 +1,7 @@
 import React from "react";
-import "../Styles/Team.css";
-import Header from "./Header";
-import Footer from "./Footer";
+import "./Team.css";
+import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 import Bansal from "./Image/Bansal.jpg";
 import Sayantan from "./Image/Sayantan.jpg";
 import { Link } from "react-router-dom";

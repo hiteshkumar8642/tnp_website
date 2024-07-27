@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Header from "./Header";
-import "../Styles/SignUpPage.css";
+import Header from "../../Components/Header/Header";
+import "./SignUpPage.css";
 
 export default function SignUpPage() {
   const [college, setCollege] = useState([]);

@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import "../Styles/Header.css";
+import "./Header.css";
 
 export default function Header({ isLoginPage, children }) {
   let PageName = "Placement";
