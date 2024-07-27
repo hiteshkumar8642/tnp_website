@@ -4,6 +4,8 @@ import axios from "axios";
 import Header from "../../Components/Header/Header";
 import "./CollegeRegistrationPage.css";
 
+const host = "http://127.0.0.1:8000";
+
 export default function CollegeRegistrationPage() {
   const [branches, setBranches] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -26,9 +28,7 @@ export default function CollegeRegistrationPage() {
   useEffect(function () {
     async function fetchBranches() {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/dashboard/api/Course/"
-        );
+        const response = await axios.get(`${host}/dashboard/api/Course/`);
         setBranches(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

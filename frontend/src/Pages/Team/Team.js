@@ -51,7 +51,7 @@ export default function Team() {
   return (
     <>
       <Header>
-        <Link to="/">
+        <Link to="/login">
           <button className="nav-button">Student LogIn</button>
         </Link>
       </Header>
