@@ -222,6 +222,7 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 @api_view(['POST'])
 def jwt_login(request):
+    print("hii")
     username = request.data.get('username')
     password = request.data.get('password')
     user = auth.authenticate(username=username, password=password)
