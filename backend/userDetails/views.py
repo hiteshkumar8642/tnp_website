@@ -19,7 +19,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 # Create your views here.
 
 def activate_email(request, user, to_email):
@@ -74,6 +79,7 @@ def register(request):
                 messages.error(request,error)
     
     return render(request, 'userDetails/register.html',{'form':form})
+
 
 def login(request):
     if(request.method=='POST'):
@@ -214,4 +220,15 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 
 
-
+@api_view(['POST'])
+def jwt_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = auth.authenticate(username=username, password=password)
+    if user is not None:
+        refresh = RefreshToken.for_user(user)
+        return Response({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+        })
+    return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
