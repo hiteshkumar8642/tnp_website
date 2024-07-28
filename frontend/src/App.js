@@ -6,6 +6,7 @@ import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistra
 import PricingPanel from "./Pages/Pricing/PricingPanel";
 import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         />
         <Route path="/Team" element={<Team />} />
         <Route path="/pricing" element={<PricingPanel />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
