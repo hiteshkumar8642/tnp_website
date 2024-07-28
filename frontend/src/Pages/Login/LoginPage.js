@@ -4,29 +4,33 @@ import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export default function LoginPage({ onLogInPageClosing, onSignUpPageOpening }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const submit = async e => {
+  const submit = async (e) => {
     e.preventDefault();
     const user = {
       username: username,
-      password: password
+      password: password,
     };
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/user/api/login/', user, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/user/api/login/",
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const { access, refresh } = response.data;
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-      window.location.href = '/';
+      localStorage.setItem("access_token", access);
+      localStorage.setItem("refresh_token", refresh);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      window.location.href = "/";
     } catch (error) {
       console.error("Login failed", error);
     }
@@ -34,7 +38,7 @@ export default function LoginPage({ onLogInPageClosing, onSignUpPageOpening }) {
 
   return (
     <>
-      <Header onLogInPageOpening={onLogInPageClosing} isLoginPage>
+      <Header isLoginPage>
         <Link to="/">
           <button className="nav-button">Back To Home</button>
         </Link>
@@ -45,30 +49,33 @@ export default function LoginPage({ onLogInPageClosing, onSignUpPageOpening }) {
           <form onSubmit={submit}>
             <div className="input-group">
               <i className="fas fa-envelope"></i>
-              <input type="text" placeholder="Email" required 
-                onChange={e => setUsername(e.target.value)}
+              <input
+                type="text"
+                placeholder="Email"
+                required
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="input-group">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Password" required 
-                onChange={e => setPassword(e.target.value)}
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <button type="submit">Login</button>
           </form>
           <p className="register-link">
-            <span className="register-link-button">Forgot Password?</span>
+            <Link to="/forgotPassword">
+              <span className="register-link-button">Forgot Password?</span>
+            </Link>
           </p>
           <p className="register-link">
             Don't have an account?{" "}
             <Link to="/signup">
-              <span
-                className="register-link-button"
-                onClick={onSignUpPageOpening}
-              >
-                Register
-              </span>
+              <span className="register-link-button">Register</span>
             </Link>
           </p>
         </div>

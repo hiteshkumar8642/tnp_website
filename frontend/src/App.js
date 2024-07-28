@@ -5,6 +5,7 @@ import SignUpPage from "./Pages/SignUp/SignUpPage";
 import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistrationPage";
 import PricingPanel from "./Pages/Pricing/PricingPanel";
 import Team from "./Pages/Team/Team";
+import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route
           path="/collegeRegistration"
           element={<CollegeRegistrationPage />}
