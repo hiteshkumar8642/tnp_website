@@ -1,12 +1,17 @@
+import axios from "axios";
+
 function Sidebar() {
   const handleLogout = async () => {
-      
     try {
       // Remove tokens from local storage
-      await  axios.post('http://localhost:8000/user/api/logout/',{
-               refresh_token:localStorage.getItem('refresh_token')
-               } ,{headers: {'Content-Type': 'application/json'}},  
-               {withCredentials: true});
+      await axios.post(
+        "http://localhost:8000/user/api/logout/",
+        {
+          refresh_token: localStorage.getItem("refresh_token"),
+        },
+        { headers: { "Content-Type": "application/json" } },
+        { withCredentials: true }
+      );
 
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -20,8 +25,6 @@ function Sidebar() {
       console.error("Logout failed", error);
     }
   };
-
-  
 
   return (
     <div className="app-sidebar">
