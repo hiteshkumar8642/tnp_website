@@ -1,9 +1,45 @@
 function Companies() {
+  const currentDate = new Date();
+
+  const day = currentDate.getDate();
+  const year = currentDate.getFullYear();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthName = monthNames[currentDate.getMonth()];
+
+  const getOrdinalSuffix = (day) => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  const formattedDate = `${day}${getOrdinalSuffix(day)} ${monthName} ${year}`;
+
   return (
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Companies</p>
-        <p class="time">26 JULY 2019</p>
+        <p class="time">{formattedDate}</p>
       </div>
       <div className="projects-section-line">
         <div className="projects-status">
