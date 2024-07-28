@@ -85,15 +85,19 @@ def login(request):
         comp_obj = app_obj.company_id
         company = Company.objects.filter(id=comp_obj.id)
         hr_cnt = HRContact.objects.filter(company_id=comp_obj.id)
+        announcement = Announcement.objects.all().order_by('created')[:10]
+        print(announcement)
         s1 = UserSerializer(users)
         s2 = UserDetailsSerializer(details,many=True)
         s3 = UserProfileSerializer(profile,many=True)
         s4 = CompanySerializer(company,many=True)
         s5 = HRContactSerializer(hr_cnt,many=True)
+        announcement_serializer = AnnouncementSerializer(announcement, many=True)
+        print(announcement_serializer)
         if profile[0].role==3 or profile[0].role==4 :
-            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"HRContact":s5.data}, status=status.HTTP_200_OK)
+            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"HRContact":s5.data,"Announcement":announcement_serializer.data}, status=status.HTTP_200_OK)
         if profile[0].role==1:
-            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data}, status=status.HTTP_200_OK)
+            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"Announcement":announcement_serializer.data}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 @api_view(['GET'])
@@ -126,6 +130,17 @@ def signup(request):
     else:
         return Response({"error": "Somethind went Wrong!"}, status=status.HTTP_400_BAD_REQUEST)
 
+# @api_view(['GET'])
+# def dashboard(request):
+#     announcement = Announcement.objects.all().order_by('created')[:10]
+#     application = Application.objects.all().order_by('last_date')
+#     announcement_serializer = AnnouncementSerializer(announcement, many=True)
+#     application_serializer = ApplicationSerializer(application, many=True)
+#     return Response({
+#         'announcements': announcement_serializer.data,
+#         'applications': application_serializer.data
+#     })
+
 def dashboard(request):
     if request.user.is_authenticated:
         announcement=Announcement.objects.all().order_by('created')[:10]
@@ -152,8 +167,29 @@ def apply(request,j_id):
         return render(request,'landing_page/home.html')
 
 
+@api_view(['POST'])
+def handle_comapany_contact(request):
+    users = request.user
+    data = {
+            'company' : request.data.get('company-name'),
+            'comp_email' : request.data.get('company-email'),
+            'comp_contact' : request.data.get('company-number'),
+            'ctc' : request.data.get('ctc'),
+            'clg_visited' : request.data.get('clg-vis'),
+            'selected_options' : request.data.getlist('intern1'),
+            'is_company' : request.data.get('is_company'),
+            'locations' : request.data.get('location-id'),
+            'users' : users,
+            'branch':users.userdetails.college_branch
+        }
+    company_serializer = Shared_CompanySerializer(data=data)
+    if company_serializer.is_valid():
+        return Response({'message':'Data Saved Successfully!!'},status=status.HTTP_200_ok)
+    else:
+        return Response({'message':"Something is Wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # company_contact_handler
-        
 def handle_comapany_contact(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==2 : 
@@ -189,8 +225,29 @@ def handle_comapany_contact(request):
 # def hr_contact(request):
 #     return render(request,'dashboard/hr_contact.html')
      
-# HR_contact_handler
+# hr_contact API
 
+@api_view(['POST'])
+def handle_hr_contact(request):
+    users = request.user
+    data = {
+            'name': request.data.get('name'),
+            'company_name': request.data.get('company-name'),
+            'email': request.data.get('company-email'),
+            'contact_number': request.data.get('number'),
+            'linkedin_id': request.data.get('linkedin'),
+            'college_branch': users.userdetails.college_branch,
+            'user': users.id 
+        }
+    he_contact_serial = Shared_HR_contactSerializer(data=data)
+    if he_contact_serial.is_valid(): 
+        return Response({"message": "Data Saved Successfully!!"},status=status.HTTP_200_OK)
+    else:
+        return Response({'message':"Something is Wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# HR_contact_handler
+# permission_classes = [IsAuthenticated]
 def handle_hr_contact(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==2 :     
@@ -216,14 +273,30 @@ def handle_hr_contact(request):
 
 # TNP View of HR contact 
     
+@api_view(['GET'])
 def print_list(request):
-    if request.user.is_authenticated:
-        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            res = HRContact.objects.filter(assigned=None)
-            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+    user = request.user
+    print(user)
+    if user.is_authenticated:
+        if user.profile.role == 3 or user.profile.role ==4:
+            hr_contacts = HRContact.objects.filter(assigned=None)
+            print(hr_contacts)
+            hr_contact_serializer = HRContactSerializer(hr_contacts, many=True)
+            return Response({"HR_LIST":hr_contact_serializer.data}, status=status.HTTP_200_OK)
         else:
-            raise PermissionDenied
-    return render(request,'landing_page/home.html')
+            raise PermissionDenied("You are not Autherized to see this content")
+    else:
+        return Response({"error": "Invalid credentialsrigjru"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# def print_list(request):
+#     if request.user.is_authenticated:
+#         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+#             res = HRContact.objects.filter(assigned=None)
+#             return render(request,'dashboard/hr_list.html',{'hr_list':res})
+#         else:
+#             raise PermissionDenied
+#     return render(request,'landing_page/home.html')
 
 def my_print_list(request):
     if request.user.is_authenticated:
@@ -258,11 +331,15 @@ def transfer_contact(request,hr_id):
     # cmp_obj = Company.objects.get(name=company)
     hr_cont_obj = HRContact.objects.create(name=name,mail_id=email, mobile_numbers=[contact],linkedin=linkedin,college_branch=clg_branch)
     hr_cont_obj.save()
-
     return render(request,'dashboard/tnp_view.html') 
     
-
 # TNP View of Company Details 
+
+@api_view(['GET'])
+def tnp_company_view(request):
+    sharedcompany = Shared_Company.objects.all()
+    sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
+    return Response({"Shared_Company": sharedcompany_serializer.data},status=status.HTTP_200_OK)
  
 def tnp_company_view(request):
     res = Shared_Company.objects.all()
