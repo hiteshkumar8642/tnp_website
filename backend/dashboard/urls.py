@@ -42,5 +42,7 @@ urlpatterns = [
     path('full_detail_visibility/<int:cnt>',views.full_detail_visibility,name="full_detail_visibility"),
     path('student_list/',views.student_list,name="student_list"),
     path('logout/',views.logout,name='logout'),
-    path('announcement/',views.announcement,name='announcement')
+    path('announcement/',views.announcement,name='announcement'),
+    path('application/',views.application,name='application')
+
 ]

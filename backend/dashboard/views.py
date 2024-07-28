@@ -102,6 +102,12 @@ def announcement(request):
     announcement_serializer = AnnouncementSerializer(announcement, many=True)
     return Response({'announcements': announcement_serializer.data})
 
+@api_view(['GET'])
+def application(request):
+    application = Application.objects.all().order_by('last_date')
+    application_serializer = ApplicationSerializer(application, many=True)
+    return Response({'applications': application_serializer.data})
+
 @api_view(['POST'])
 def signup(request):
     serial = UserSerializer(data=request.data)
