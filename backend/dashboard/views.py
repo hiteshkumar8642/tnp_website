@@ -96,6 +96,11 @@ def login(request):
             return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+@api_view(['GET'])
+def announcement(request):
+    announcement = Announcement.objects.all().order_by('created')[:10]
+    announcement_serializer = AnnouncementSerializer(announcement, many=True)
+    return Response({'announcements': announcement_serializer.data})
 
 @api_view(['POST'])
 def signup(request):

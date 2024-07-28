@@ -30,7 +30,7 @@ export default function LoginPage() {
       localStorage.setItem("access_token", access);
       localStorage.setItem("refresh_token", refresh);
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error("Login failed", error);
     }
