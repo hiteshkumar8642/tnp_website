@@ -1,19 +1,19 @@
 function DashboardHeader() {
   return (
     <div className="app-header">
-      <div class="app-header-left">
-        <span class="app-icon"></span>
-        <p class="app-name">TNP Website</p>
+      <div className="app-header-left">
+        <span className="app-icon"></span>
+        <p className="app-name">TNP Website</p>
       </div>
-      <div class="app-header-right">
-        <button class="mode-switch" title="Switch Theme">
+      <div className="app-header-right">
+        <button className="mode-switch" title="Switch Theme">
           <svg
-            class="moon"
+            className="moon"
             fill="none"
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -23,7 +23,7 @@ function DashboardHeader() {
           </svg>
         </button>
         <a href="{% url 'userProfile' %}">
-          <button class="profile-btn">
+          <button className="profile-btn">
             <img
               src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
               alt="s"
@@ -32,7 +32,6 @@ function DashboardHeader() {
           </button>
         </a>
       </div>
-      <button className="btn">Logout</button>
     </div>
   );
 }
