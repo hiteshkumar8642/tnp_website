@@ -12,7 +12,7 @@ function Announcements() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          class="feather feather-x-circle"
+          className="feather feather-x-circle"
         >
           <circle cx="12" cy="12" r="10" />
           <line x1="15" y1="9" x2="9" y2="15" />
