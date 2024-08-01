@@ -222,9 +222,10 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -235,6 +236,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
             access = response.data['access']
             response.set_cookie('refresh_token', refresh, httponly=True)
             response.set_cookie('access_token', access, httponly=True)
+            token = AccessToken(access)
+            user_id = token['user_id']
+            print(f'User ID: {user_id}')
         return response
 
 @api_view(['POST'])
