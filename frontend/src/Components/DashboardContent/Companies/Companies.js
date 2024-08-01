@@ -39,7 +39,7 @@ function Companies() {
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Companies</p>
-        <p class="time">{formattedDate}</p>
+        <p className="time">{formattedDate}</p>
       </div>
       <div className="projects-section-line">
         <div className="projects-status">

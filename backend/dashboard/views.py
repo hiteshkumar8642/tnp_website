@@ -100,6 +100,8 @@ def login(request):
             return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"Announcement":announcement_serializer.data}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 @api_view(['GET'])
 def announcement(request):
     announcement = Announcement.objects.all().order_by('created')[:10]
@@ -170,6 +172,8 @@ def apply(request,j_id):
 @api_view(['POST'])
 def handle_comapany_contact(request):
     users = request.user
+    branch = users.get('branch')
+    print(branch)
     data = {
             'company' : request.data.get('company-name'),
             'comp_email' : request.data.get('company-email'),
@@ -230,6 +234,8 @@ def handle_comapany_contact(request):
 @api_view(['POST'])
 def handle_hr_contact(request):
     users = request.user
+    branch = users.userdetails.college_branch
+    print(branch)
     data = {
             'name': request.data.get('name'),
             'company_name': request.data.get('company-name'),
@@ -273,35 +279,40 @@ def handle_hr_contact(request):
 
 # TNP View of HR contact 
     
-@api_view(['GET'])
-def print_list(request):
-    user = request.user
-    print(user)
-    if user.is_authenticated:
-        if user.profile.role == 3 or user.profile.role ==4:
-            hr_contacts = HRContact.objects.filter(assigned=None)
-            print(hr_contacts)
-            hr_contact_serializer = HRContactSerializer(hr_contacts, many=True)
-            return Response({"HR_LIST":hr_contact_serializer.data}, status=status.HTTP_200_OK)
-        else:
-            raise PermissionDenied("You are not Autherized to see this content")
-    else:
-        return Response({"error": "Invalid credentialsrigjru"}, status=status.HTTP_401_UNAUTHORIZED)
-
-
+# @api_view(['GET'])
 # def print_list(request):
-#     if request.user.is_authenticated:
-#         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-#             res = HRContact.objects.filter(assigned=None)
-#             return render(request,'dashboard/hr_list.html',{'hr_list':res})
+#     users = request.user
+#     branch = users.userdetails.college_branch
+#     print(branch)
+#     if users.is_authenticated:
+#         if users.profile.role == 3 or users.profile.role ==4:
+#             hr_contacts = HRContact.objects.filter(assigned=None)
+#             print(hr_contacts)
+#             hr_contact_serializer = HRContactSerializer(hr_contacts, many=True)
+#             return Response({"HR_LIST":hr_contact_serializer.data}, status=status.HTTP_200_OK)
 #         else:
-#             raise PermissionDenied
-#     return render(request,'landing_page/home.html')
+#             raise PermissionDenied("You are not Autherized to see this content")
+#     else:
+#         return Response({"error": "Invalid credentialsrigjru"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+def print_list(request):
+    if request.user.is_authenticated:
+        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+            users = request.user
+            branch = users.userdetails.college_branch
+            res = HRContact.objects.filter(assigned=None,college_branch=branch)
+            return render(request,'dashboard/hr_list.html',{'hr_list':res})
+        else:
+            raise PermissionDenied
+    return render(request,'landing_page/home.html')
 
 def my_print_list(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            res = HRContact.objects.filter(assigned=request.user)
+            users = request.user
+            branch = users.userdetails.college_branch
+            res = HRContact.objects.filter(assigned=request.user,college_branch=branch)
             return render(request,'dashboard/my_hr_list.html',{'hr_list':res})
         else:
             raise PermissionDenied
@@ -314,7 +325,9 @@ def tnp_view(request):
 def delete_all_contact(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            Shared_HR_contact.objects.all().delete()
+            users = request.user
+            branch = users.userdetails.college_branch
+            Shared_HR_contact.objects.all().delete(college_branch=branch)
             return render(request,'dashboard/tnp_view.html')
         else:
             raise PermissionDenied
@@ -337,18 +350,24 @@ def transfer_contact(request,hr_id):
 
 @api_view(['GET'])
 def tnp_company_view(request):
-    sharedcompany = Shared_Company.objects.all()
+    users = request.user
+    branch = users.userdetails.college_branch
+    sharedcompany = Shared_Company.objects.all(college_branch=branch)
     sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
     return Response({"Shared_Company": sharedcompany_serializer.data},status=status.HTTP_200_OK)
  
 def tnp_company_view(request):
-    res = Shared_Company.objects.all()
+    users = request.user
+    branch = users.userdetails.college_branch
+    res = Shared_Company.objects.all(college_branch=branch)
     return render(request,'dashboard/tnp_company_view.html',{'company_list':res})
 
 def delete_all_company_contact(request):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            Shared_Company.objects.all().delete()
+            users = request.user
+            branch = users.userdetails.college_branch
+            Shared_Company.objects.all(college_branch=branch).delete()
             return render(request,'dashboard/tnp_view.html')
         else:
             raise PermissionDenied
@@ -357,7 +376,9 @@ def delete_all_company_contact(request):
 def assign_me(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            res = HRContact.objects.get(name=cnt)
+            users = request.user
+            branch = users.userdetails.college_branch
+            res = HRContact.objects.get(name=cnt,college_branch=branch)
             res.assigned = request.user
             res.save()
             return redirect('hr_list')  
@@ -370,6 +391,9 @@ def logout(request):
     return render(request,'landing_page/home.html')
 
 def common_form(request):
+    users = request.user
+    branch = users.userdetails.college_branch
+    print(branch)
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userprofile.role==4:     
             if request.method == 'POST':
@@ -434,11 +458,13 @@ def common_company_form(request):
 def full_detail_visibility(request,cnt):
     if request.user.is_authenticated:
         if request.user.userprofile.role==3 or request.user.userdetails.role==4:
+            users = request.user
+            branch = users.userdetails.college_branch
             if request.method == 'POST':
                 comment = request.POST.get('text-box')
                 color = request.POST.get('is_color')
-                his_obj = CallHistory.objects.filter(hr_id=cnt)
-                hr_inst = HRContact.objects.get(id=cnt)
+                his_obj = CallHistory.objects.filter(hr_id=cnt,college_branch=branch)
+                hr_inst = HRContact.objects.get(id=cnt,college_branch=branch)
                 std_inst = User.objects.get(id=request.user.id)
                 if len(his_obj)>0:
                     ch=CallHistory(hr_id=hr_inst, colour=color,student_id=std_inst,college_branch=request.user.userdetails.college_branch,comment=comment)
