@@ -1,4 +1,4 @@
-function Companies() {
+function CompanyDetails() {
   const currentDate = new Date();
 
   const day = currentDate.getDate();
@@ -127,4 +127,4 @@ function Companies() {
   );
 }
 
-export default Companies;
+export default CompanyDetails;
