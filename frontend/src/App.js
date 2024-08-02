@@ -8,11 +8,12 @@ import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-
 import Companies from "./Components/Companies/Companies";
 import AppliedCompanies from "./Components/AppliedCompanies/AppliedCompanies";
 import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
 import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
+import HrList from "./Components/HrList/HrList";
+import MyHrList from "./Components/MyHrList/MyHrList";
 
 function App() {
   return (
@@ -47,8 +48,8 @@ function App() {
             path="share-company-contact"
             element={<ShareCompanyContact />}
           ></Route>
-          <Route path="companies" element={<Companies />}></Route>
-          <Route path="companies" element={<Companies />}></Route>
+          <Route path="hr-list" element={<HrList />}></Route>
+          <Route path="my-hr-list" element={<MyHrList />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
