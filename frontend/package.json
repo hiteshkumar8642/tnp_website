@@ -9,20 +9,21 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "dom": "^0.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.24.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "tailwindcss": "^3.4.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+    "eject": "react-scripts eject",
+    "postinstall": "npx tailwindcss init -p" 
+    },
   "eslintConfig": {
     "extends": [
       "react-app",

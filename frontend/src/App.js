@@ -1,5 +1,7 @@
+
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import LandingPage from "./Pages/LangingPage/LandingPage";
+import LandingPage from "./Pages/LandingPage/LandingPage";
+
 import LoginPage from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/SignUp/SignUpPage";
 import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistrationPage";
@@ -18,6 +20,9 @@ import MyHrList from "./Components/MyHrList/MyHrList";
 function App() {
   return (
     <BrowserRouter>
+
+  
+   <div className="flex flex-col min-h-screen overflow-auto">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
@@ -52,6 +57,8 @@ function App() {
           <Route path="my-hr-list" element={<MyHrList />}></Route>
         </Route>
       </Routes>
+ </div>
+
     </BrowserRouter>
   );
 }
