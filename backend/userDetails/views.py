@@ -241,13 +241,32 @@ class MyTokenObtainPairView(TokenObtainPairView):
             print(f'User ID: {user_id}')
         return response
 
-@api_view(['POST'])
-def logout_view(request):
-    try:
-        refresh_token = request.data["refresh_token"]
-        token = RefreshToken(refresh_token)
-        token.blacklist()
-        return Response(status=status.HTTP_205_RESET_CONTENT)
-    except Exception as e:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+
+class LogoutView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            refresh_token = request.data.get("refresh_token")
+            if not refresh_token:
+                return Response({'detail': 'Refresh token is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Blacklist the refresh token
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            # Clear the tokens from cookies
+            response = Response({'detail': 'Logout successful.'}, status=status.HTTP_205_RESET_CONTENT)
+            response.delete_cookie('refresh_token')
+            response.delete_cookie('access_token')
+
+            return response
+        except TokenError as e:
+            return Response({'detail': 'Invalid refresh token.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 

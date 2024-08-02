@@ -3,7 +3,7 @@ from . import views
 from django.urls import path
 from userDetails.views import ResetPasswordView
 from django.contrib.auth import views as auth_views
-from .views import MyTokenObtainPairView, logout_view
+from .views import MyTokenObtainPairView, LogoutView
 from rest_framework_simplejwt.views import TokenRefreshView
 urlpatterns = [
     path("register" , views.register , name = "register"),
@@ -24,6 +24,6 @@ urlpatterns = [
 
     path('api/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/logout/', logout_view, name='auth_logout'),
+    path('api/logout/', LogoutView.as_view(), name='auth_logout'),
     
 ]

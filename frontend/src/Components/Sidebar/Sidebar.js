@@ -1,40 +1,42 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 function Sidebar() {
-  const handleLogout = async () => {
+  const logout = async (refreshToken) => {
     try {
-      // Remove tokens from local storage
-      await axios.post(
-        "http://localhost:8000/user/api/logout/",
-        {
-          refresh_token: localStorage.getItem("refresh_token"),
-        },
-        { headers: { "Content-Type": "application/json" } },
-        { withCredentials: true }
-      );
+      await axios.post('/api/logout/', { refresh_token: refreshToken });
+    } catch (error) {
+      throw error.response.data;
+    }
+  };
 
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem('refresh_token');
+    try {
+      await logout(refreshToken);
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      
       // Remove the Authorization header
       axios.defaults.headers.common["Authorization"] = null;
 
       // Redirect to login page
       window.location.href = "/";
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error('Logout failed:', error);
     }
   };
 
   return (
     <div className="app-sidebar">
-      <span className="app-sidebar-link active">Companies</span>
-      <span className="app-sidebar-link">Applied Companies</span>
-      <span className="app-sidebar-link">Share HR Contact</span>
-      <span className="app-sidebar-link">Share Company Contact</span>
-      <span className="app-sidebar-link">HR List</span>
-      <span className="app-sidebar-link">My HR List</span>
-      <span className="app-sidebar-link">Logout</span>
+      <Link to="/companies" className="app-sidebar-link active">Companies</Link>
+      <Link to="/applied-companies" className="app-sidebar-link">Applied Companies</Link>
+      <Link to="/share-hr-contact" className="app-sidebar-link">Share HR Contact</Link>
+      <Link to="/share-company-contact" className="app-sidebar-link">Share Company Contact</Link>
+      <Link to="/hr-list" className="app-sidebar-link">HR List</Link>
+      <Link to="/my-hr-list" className="app-sidebar-link">My HR List</Link>
+      <span className="app-sidebar-link" onClick={handleLogout}>Logout</span>
     </div>
   );
 }
