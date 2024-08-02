@@ -7,6 +7,8 @@ import PricingPanel from "./Pages/Pricing/PricingPanel";
 import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+
 
 function App() {
   return (
@@ -22,8 +24,7 @@ function App() {
         />
         <Route path="/Team" element={<Team />} />
         <Route path="/pricing" element={<PricingPanel />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /></Routes>
     </BrowserRouter>
   );
 }

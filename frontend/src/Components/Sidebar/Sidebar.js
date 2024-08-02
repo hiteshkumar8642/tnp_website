@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import apiClient from '../../services/api';
+
 
 function Sidebar() {
   const logout = async (refreshToken) => {
     try {
-      await axios.post('/api/logout/', { refresh_token: refreshToken });
+      await apiClient.post('user/api/logout/', { refresh_token: refreshToken });
     } catch (error) {
       throw error.response.data;
     }
