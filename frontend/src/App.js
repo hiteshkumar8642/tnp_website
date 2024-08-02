@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LangingPage/LandingPage";
 import LoginPage from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/SignUp/SignUpPage";
@@ -7,8 +7,12 @@ import PricingPanel from "./Pages/Pricing/PricingPanel";
 import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 
+import Companies from "./Components/Companies/Companies";
+import AppliedCompanies from "./Components/AppliedCompanies/AppliedCompanies";
+import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
+import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
 
 function App() {
   return (
@@ -24,7 +28,29 @@ function App() {
         />
         <Route path="/Team" element={<Team />} />
         <Route path="/pricing" element={<PricingPanel />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /></Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate replace to="companies" />} />
+          <Route path="companies" element={<Companies />}></Route>
+          <Route
+            path="applied-companies"
+            element={<AppliedCompanies />}
+          ></Route>
+          <Route path="share-hr-contact" element={<SharedHrContact />}></Route>
+          <Route
+            path="share-company-contact"
+            element={<ShareCompanyContact />}
+          ></Route>
+          <Route path="companies" element={<Companies />}></Route>
+          <Route path="companies" element={<Companies />}></Route>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
