@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
+import { useLoading } from "../LoadingContext/LoadingContext"; // Import the useLoading hook
 
 function Sidebar() {
+  const { setIsLoading } = useLoading(); 
+
   const logout = async (refreshToken) => {
     try {
       await apiClient.post("user/api/logout/", { refresh_token: refreshToken });
@@ -15,6 +18,7 @@ function Sidebar() {
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
     try {
+      setIsLoading(true); 
       await logout(refreshToken);
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -24,9 +28,10 @@ function Sidebar() {
 
       // Redirect to login page
       window.location.href = "/";
+      setIsLoading(false);
     } catch (error) {
       console.error("Logout failed:", error);
-    }
+    } 
   };
 
   return (

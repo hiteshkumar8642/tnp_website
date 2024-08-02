@@ -16,11 +16,12 @@ import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
 import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
 import HrList from "./Components/HrList/HrList";
 import MyHrList from "./Components/MyHrList/MyHrList";
+import Loader from "./Components/Loader/Loader";
 
 function App() {
   return (
     <BrowserRouter>
-
+    <Loader /> {/* Include the Loader component */}
   
    <div className="flex flex-col min-h-screen overflow-auto">
       <Routes>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
+import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
 import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -7,8 +8,11 @@ import axios from "axios";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setIsLoading } = useLoading(); 
+
 
   const submit = async (e) => {
+    setIsLoading(true); 
     e.preventDefault();
     const user = {
       username: username,
@@ -31,6 +35,7 @@ export default function LoginPage() {
       localStorage.setItem("refresh_token", refresh);
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
       window.location.href = "/dashboard";
+      setIsLoading(false);
     } catch (error) {
       console.error("Login failed", error);
     }
