@@ -27,12 +27,20 @@ class CollegeRegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
     college1 = forms.CharField(max_length=100, required=True)
     college2 = forms.CharField(max_length=100, required=True)
-    subdomain = forms.CharField(max_length=100, required = False)
-    BRANCH_CHOICES = [(course.id,course.degree) for course in Course.objects.all()]
-    branches = forms.MultipleChoiceField(label="Select branches", choices=BRANCH_CHOICES, widget=forms.SelectMultiple, required=True)
+    subdomain = forms.CharField(max_length=100, required=False)
+    branches = forms.MultipleChoiceField(
+        label="Select branches",
+        widget=forms.SelectMultiple,
+        required=True
+    )
+    
     class Meta:
         model = User
         fields = ['college1', 'college2', 'subdomain', 'branches', 'first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super(CollegeRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['branches'].choices = [(course.id, course.degree) for course in Course.objects.all()]
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
