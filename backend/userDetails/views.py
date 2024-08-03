@@ -26,6 +26,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+import json
 # Create your views here.
 
 def activate_email(request, user, to_email):
@@ -37,6 +38,7 @@ def activate_email(request, user, to_email):
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
     })
+    print(message)
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
         messages.success(request , "Registered succesfully ! Please confirm your email to login. If you didn't recieve any email, check if you typed your email correctly. ")
@@ -61,25 +63,6 @@ def activate(request, uidb64, token):
     
     return redirect('login')
     
-
-def register(request):
-    form = createUserForm()
-    if(request.method == 'POST'):
-        form = createUserForm(request.POST)
-        if form.is_valid() :
-            user = form.save(commit = False)
-            user.is_active = False
-            user.save()
-            clg=College.objects.get(name=request.POST.get('college'))
-            user_profile_obj = UserProfile(user = user , role = 1,college = clg)
-            user_profile_obj.save()
-            activate_email(request , user , form.cleaned_data.get('email'))
-            return redirect('login')
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request,error)
-    
-    return render(request, 'userDetails/register.html',{'form':form})
 
 
 def login(request):
@@ -270,3 +253,33 @@ class LogoutView(APIView):
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def register(request):
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return Response({"errors": "Invalid JSON"}, status=400)
+
+    print("Received data: ", data)  # Debug: print the received data
+    form = createUserForm(data)
+    id=0
+    try:
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            id=user.id
+            print(data.get('college'))
+            clg = College.objects.get(name=data.get('college'))
+            user_profile_obj = UserProfile(user=user, role=1, college=clg)
+            user_profile_obj.save()
+            activate_email(request, user, form.cleaned_data.get('email'))
+            return Response({'detail': 'Registration successful.'}, status=status.HTTP_200_OK)
+        else:
+            errors = form.errors.as_json()
+            print(errors,"gyaaaaa")
+            return Response({"errors": errors}, status=400)
+    except Exception as e:
+        u = User.objects.get(id = id)
+        u.delete()
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

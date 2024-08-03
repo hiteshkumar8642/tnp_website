@@ -5,9 +5,7 @@ from dashboard.models import College,Course
 
 class createUserForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
-    college_names = College.objects.all()
-    college_choices = [(college.name, college.name) for college in college_names]
-    college = forms.ChoiceField(choices=[('', '---Select your college---')] + college_choices, required=True)
+    college = forms.CharField(max_length=254, required=True)
     class Meta:
         model = User
         fields = ['college','first_name', 'last_name', 'username', 'email', 'password1', 'password2']
