@@ -23,6 +23,7 @@ urlpatterns = [
     # path('api/login/', views.jwt_login, name='jwt_login'),
 
     path("api/register/" , views.register , name = "register"),
+    path('api/CollegeRegister/',views.CollegeRegister,name='CollegeRegister'),
     path('api/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),

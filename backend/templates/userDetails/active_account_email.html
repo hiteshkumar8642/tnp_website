@@ -2,8 +2,6 @@
 Hi {{ user.username }},
 
 Please click on the link below to confirm your registration:
-<!DOCTYPE HTML>
-<html>
-    <a href = "http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
-{% endautoescape %}">link</a>
-</html>
+
+"http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}"

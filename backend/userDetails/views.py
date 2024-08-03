@@ -155,41 +155,8 @@ def UpdateDetails(request):
     else:
         return redirect('userProfile')
 
-@api_view(['POST'])
-def CollegeRegister(request):
-    form = CollegeRegistrationForm()
-    BRANCH_CHOICES = [course for course in Course.objects.all()]
-    if(request.method=="POST"):
-        form = CollegeRegistrationForm(request.POST)
-        
-        if form.is_valid() :
 
-            user = form.save(commit = False)
-            user.is_active = False
-            user.save()
-            email = form.cleaned_data.get('email')
-            activate_email(request, user, email)
 
-            college_name = form.cleaned_data.get('college1')
-            subdomain = form.cleaned_data.get('subdomain')
-            college_obj = College(name=college_name, subdomain=subdomain, user=user)
-            college_obj.save()
-
-            user_profile_obj = UserProfile(user=user, role=4, college=college_obj)
-            user_profile_obj.save()
-
-            branches = request.POST.getlist('branches')
-            for id in branches:
-                clg_obj = College.objects.get(name = college_name)
-                course_obj = Course.objects.get(id = id)
-                College_course_obj = CollegeCourse(college=clg_obj,course=course_obj)
-                College_course_obj.save()
-            return redirect('login')
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request,error)
-
-    return render(request,'UserDetails/CollegeRegister.html',{'form':form , 'branches':BRANCH_CHOICES})
 
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
@@ -260,7 +227,7 @@ def register(request):
     except json.JSONDecodeError:
         return Response({"errors": "Invalid JSON"}, status=400)
 
-    print("Received data: ", data)  # Debug: print the received data
+    #print("Received data: ", data)  # Debug: print the received data
     form = createUserForm(data)
     id=0
     try:
@@ -285,31 +252,36 @@ def register(request):
 
 @api_view(['POST'])
 def CollegeRegister(request):
-    if request.method == "POST":
+    try:
         data = json.loads(request.body)
-        form = CollegeRegistrationForm(data)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-            email = form.cleaned_data.get('email')
-            activate_email(request, user, email)
+    except json.JSONDecodeError:
+        return Response({"errors": "Invalid JSON"}, status=400)
+    
+    print("Received data: ", data) 
+    form = CollegeRegistrationForm(data)
+    
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+        email = form.cleaned_data.get('email')
+        activate_email(request, user, email)
 
-            college_name = form.cleaned_data.get('college')
-            subdomain = form.cleaned_data.get('subdomain')
-            college_obj = College(name=college_name, subdomain=subdomain, user=user)
-            college_obj.save()
+        college_name = form.cleaned_data.get('college1')
+        subdomain = form.cleaned_data.get('subdomain')
+        college_obj = College(name=college_name, subdomain=subdomain, user=user)
+        college_obj.save()
 
-            user_profile_obj = UserProfile(user=user, role=4, college=college_obj)
-            user_profile_obj.save()
+        user_profile_obj = UserProfile(user=user, role=4, college=college_obj)
+        user_profile_obj.save()
 
-            branches = data.get('selectedBranches', [])
-            for branch_id in branches:
-                course_obj = Course.objects.get(id=branch_id)
-                CollegeCourse.objects.create(college=college_obj, course=course_obj)
+        branches = data.get('selectedBranches', [])
+        for branch_id in branches:
+            course_obj = Course.objects.get(id=branch_id)
+            CollegeCourse.objects.create(college=college_obj, course=course_obj)
 
-            return JsonResponse({"message": "Registration successful"}, status=201)
-        else:
-            return JsonResponse({"errors": form.errors}, status=400)
-
-    return render(request, 'UserDetails/CollegeRegister.html', {'form': CollegeRegistrationForm(), 'branches': Course.objects.all()})
+        return Response({'detail': 'Registration successful.'}, status=status.HTTP_200_OK)
+    else:
+        print("form not valid")
+        print("Form errors: ", form.errors)
+        return Response({"errors": form.errors}, status=400)

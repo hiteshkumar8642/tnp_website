@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link  } from "react-router-dom";
 import axios from "axios";
+import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./SignUpPage.css";
 
 const host = "http://127.0.0.1:8000";
 
 export default function SignUpPage() {
+  const { setIsLoading } = useLoading();
   const [college, setCollege] = useState([]);
   const [formData, setFormData] = useState({
     college: "",
@@ -34,6 +36,7 @@ export default function SignUpPage() {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     if (formData.password1 !== formData.password2) {
       alert("Passwords do not match!");
@@ -57,6 +60,9 @@ export default function SignUpPage() {
       } else {
         console.error("Error registering user:", error.message);
       }
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
