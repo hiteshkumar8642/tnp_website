@@ -80,6 +80,7 @@ function Sidebar() {
         to="/dashboard/my-hr-list"
         className={({ isActive }) =>
           isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          
         }
       >
         My HR List

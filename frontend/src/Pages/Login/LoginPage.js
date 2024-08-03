@@ -46,11 +46,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <Header isLoginPage>
-        <Link to="/">
-          <button className="nav-button">Back To Home</button>
-        </Link>
-      </Header>
+      <Header/>
       <div className="login-page">
         <div className="login-form">
           <h2>Login</h2>
