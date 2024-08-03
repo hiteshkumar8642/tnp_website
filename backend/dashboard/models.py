@@ -102,11 +102,8 @@ class HRContact(models.Model):
         ('Do_Not_Contact','Do Not Contact'),
         ('Already_Contacted','Already Contacted'),
         ('To_Be_Contacted','To Be Contacted'),
-        
     ]
     status = models.CharField(max_length=50, choices=HR_types, null=True, blank=True)
-
-    
 
 class CallHistory(models.Model):
     created = models.DateTimeField(auto_now_add=True)
