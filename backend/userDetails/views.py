@@ -57,11 +57,11 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
-        return redirect('login')
+        return redirect('http://localhost:3000/login')
     else:
         messages.error(request, 'Activation link is invalid!')
     
-    return redirect('login')
+    return redirect('http://localhost:3000/login')
     
 
 
@@ -236,7 +236,7 @@ def register(request):
             user.is_active = False
             user.save()
             id=user.id
-            print(data.get('college'))
+            #print(data.get('college'))
             clg = College.objects.get(name=data.get('college'))
             user_profile_obj = UserProfile(user=user, role=1, college=clg)
             user_profile_obj.save()

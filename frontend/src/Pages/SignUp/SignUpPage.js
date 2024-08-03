@@ -53,6 +53,8 @@ export default function SignUpPage() {
       if (response.status === 200) {
         console.log(response)
         window.location.href = "/login";
+        alert("Registered successfully ! Confirm email to login .");
+        //return;
       }
     } catch (error) {
       if (error.response) {
