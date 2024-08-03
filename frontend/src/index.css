@@ -6,7 +6,8 @@
 * {
   @apply box-border;
 }
-html, body {
+html,
+body {
   @apply h-full;
   background-color: #f3f6fd;
   font-family: "Open Sans", sans-serif;
