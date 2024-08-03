@@ -30,7 +30,7 @@ Landing Page
   background-color: #6c63ff;
 }
 .landing-page .content .image {
-  max-width: 50%; /* Adjust width as necessary */
+  max-width: 20%; /* Adjust width as necessary */
   flex: 1;
 }
 .landing-page .content .image img {
