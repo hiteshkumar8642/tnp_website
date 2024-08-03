@@ -50,11 +50,8 @@ export default function Team() {
 
   return (
     <>
-      <Header>
-        <Link to="/login">
-          <button className="nav-button">Student LogIn</button>
-        </Link>
-      </Header>
+      <Header />
+      
       <div className="team-content">
         <header className="info">
           <h1>Meet Our Team</h1>
