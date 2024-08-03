@@ -5,11 +5,56 @@ import Bansal from "./Image/Bansal.jpg";
 import Sayantan from "./Image/Sayantan.jpg";
 import Hitesh from "./Image/Hitesh.jpeg";
 import Devvrat from "./Image/Devvrat.jpg";
+import Vinay from "./Image/Vinay.jpg";
+import Gaurav from "./Image/Gaurav.jpeg";
+import Somdeep from "./Image/Somdeep.jpeg";
+import Bilal from "./Image/Bilal.jpg";
+
+
 import { Link } from "react-router-dom";
 import "../../index.css";
 
 export default function Team() {
   const teamMembers = [
+    {
+      name: "Gaurav",
+      imageUrl: Gaurav,
+      position: "Frontend Developer",
+      description:
+        "I'm a web developer passionate about creating dynamic, user-friendly websites. I specialize in front-end and back-end technologies, always eager to innovate.",
+      socialLinks: [
+        { url: "https://www.linkedin.com/in/gaurav-sharma-62434224a/", iconClass: "fab fa-linkedin" },
+        { url: "https://www.instagram.com/gaurav_.0216?igsh=amR0MmF0anRxMzQw", iconClass: "fab fa-instagram" },
+        { url: "#", iconClass: "fab fa-twitter" },
+        { url: "mailto:gauravkcity16@gmail.com", iconClass: "fas fa-envelope" },
+      ],
+    },
+    {
+      name: "Somdeep",
+      imageUrl: Somdeep,
+      position: "Frontend Developer",
+      description:
+        "I'm a web developer passionate about crafting responsive, user-friendly websites. I specialize in front-end and back-end technologies to build dynamic, scalable solutions.",
+      socialLinks: [
+        { url: "https://www.linkedin.com/in/somdeepmisra/", iconClass: "fab fa-linkedin" },
+        { url: "#", iconClass: "fab fa-instagram" },
+        { url: "#", iconClass: "fab fa-twitter" },
+        { url: "#", iconClass: "fas fa-envelope" },
+      ],
+    },
+    {
+      name: "Bilal",
+      imageUrl: Bilal,
+      position: "Backend Developer",
+      description:
+        "I specialize in software development with a focus on game development and AI/ML. Skilled in problem-solving, teamwork, and adapting under pressure.",
+      socialLinks: [
+        { url: "#", iconClass: "fab fa-linkedin" },
+        { url: "https://www.instagram.com/belal4hmed?igsh=YjBkcTd5cnN5MGRl", iconClass: "fab fa-instagram" },
+        { url: "#", iconClass: "fab fa-twitter" },
+        { url: "#", iconClass: "fas fa-envelope" },
+      ],
+    },
     {
       name: "Hitesh Kumar",
       imageUrl: Hitesh,
@@ -64,56 +109,18 @@ export default function Team() {
     },
     {
       name: "Vinay Gupta",
-      imageUrl: Devvrat,
+      imageUrl: Vinay,
       position: "Frontend Developer",
       description:
-        "As Social Media Manager, I connect with our audience, crafting engaging content that enhances clients' online presence, drives engagement, and fosters community, contributing to our clients' digital success.",
+        "I’m a web developer specializing in creating dynamic, user-friendly websites and applications. I excel in front-end and back-end technologies.",
       socialLinks: [
-        { url: "#", iconClass: "fab fa-linkedin" },
-        { url: "#", iconClass: "fab fa-instagram" },
+        { url: "https://www.linkedin.com/in/vinaygupta-nitjsr/", iconClass: "fab fa-linkedin" },
+        { url: "https://www.instagram.com/vinaygupta017?igsh=YjBkcTd5cnN5MGRl", iconClass: "fab fa-instagram" },
         { url: "#", iconClass: "fab fa-twitter" },
-        { url: "#", iconClass: "fas fa-envelope" },
+        { url: "mailto:vinaygupta.nitjsr@gmail.com", iconClass: "fas fa-envelope" },
       ],
     },
-    {
-      name: "Gaurav",
-      imageUrl: Bansal,
-      position: "Backend Developer",
-      description:
-        "As Social Media Manager, I connect with our audience, crafting engaging content that enhances clients' online presence, drives engagement, and fosters community, contributing to our clients' digital success.",
-      socialLinks: [
-        { url: "#", iconClass: "fab fa-linkedin" },
-        { url: "#", iconClass: "fab fa-instagram" },
-        { url: "#", iconClass: "fab fa-twitter" },
-        { url: "#", iconClass: "fas fa-envelope" },
-      ],
-    },
-    {
-      name: "Somdeep",
-      imageUrl: Bansal,
-      position: "Backend Developer",
-      description:
-        "As Social Media Manager, I connect with our audience, crafting engaging content that enhances clients' online presence, drives engagement, and fosters community, contributing to our clients' digital success.",
-      socialLinks: [
-        { url: "#", iconClass: "fab fa-linkedin" },
-        { url: "#", iconClass: "fab fa-instagram" },
-        { url: "#", iconClass: "fab fa-twitter" },
-        { url: "#", iconClass: "fas fa-envelope" },
-      ],
-    },
-    {
-      name: "Bilal",
-      imageUrl: Bansal,
-      position: "Backend Developer",
-      description:
-        "As Social Media Manager, I connect with our audience, crafting engaging content that enhances clients' online presence, drives engagement, and fosters community, contributing to our clients' digital success.",
-      socialLinks: [
-        { url: "#", iconClass: "fab fa-linkedin" },
-        { url: "#", iconClass: "fab fa-instagram" },
-        { url: "#", iconClass: "fab fa-twitter" },
-        { url: "#", iconClass: "fas fa-envelope" },
-      ],
-    },
+    
   ];
 
   const scrollContainerRef = useRef(null);
@@ -161,12 +168,6 @@ export default function Team() {
         <header className="text-center mb-8">
           <h1 className="text-4xl mb-2">Meet Our Team</h1>
           <h5 className="text-lg text-gray-600">
-      <Header />
-      
-      <div className="team-content">
-        <header className="info">
-          <h1>Meet Our Team</h1>
-          <h5>
             Get to know the talented individuals behind our exceptional work.
           </h5>
         </header>
