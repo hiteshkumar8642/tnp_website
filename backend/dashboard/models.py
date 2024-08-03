@@ -27,7 +27,8 @@ class College(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
-    subdomain = models.CharField(max_length=50, unique=True)
+    subdomain = models.CharField(max_length=50)
+    is_verified = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   
@@ -89,13 +90,21 @@ class HRContact(models.Model):
     name = models.CharField(max_length=100)
     linkedin = models.URLField(null=True, blank=True)
     mobile_numbers = ArrayField(models.CharField(max_length=15), blank=True, null=True)
-    mail_id = models.EmailField(null=True, blank=True)
+    mail_id = ArrayField(models.EmailField(null=True, blank=True),blank=True, null=True)
     company_id = models.ForeignKey(Company, null=True, blank=True,on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, null=True, blank=True)
-    date_of_contact = models.DateField(null=True, blank=True)
+    last_date_of_contact = models.DateField(null=True, blank=True)
+    next_date_of_contact = models.DateField(null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
     assigned = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='assigned_hr')
     reassigned = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reassigned_hr')
+    HR_types = [
+        ('Do_Not_Contact','Do Not Contact'),
+        ('Already_Contacted','Already Contacted'),
+        ('To_Be_Contacted','To Be Contacted'),
+        
+    ]
+    status = models.CharField(max_length=50, choices=HR_types, null=True, blank=True)
 
     
 
@@ -110,6 +119,21 @@ class CallHistory(models.Model):
         ('blue', 'Blue'),
         ('yellow', 'Yellow'),
         ('green', 'Green'),
+        ('orange', 'Orange'),
+        ('purple', 'Purple'),
+        ('pink', 'Pink'),
+        ('brown', 'Brown'),
+        ('black', 'Black'),
+        ('white', 'White'),
+        ('gray', 'Gray'),
+        ('cyan', 'Cyan'),
+        ('magenta', 'Magenta'),
+        ('lime', 'Lime'),
+        ('indigo', 'Indigo'),
+        ('violet', 'Violet'),
+        ('teal', 'Teal'),
+        ('maroon', 'Maroon'),
+        ('navy', 'Navy')
     ]
     colour = models.CharField(max_length=10, choices=COLOR_CHOICES, null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)

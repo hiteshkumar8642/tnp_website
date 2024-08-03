@@ -14,6 +14,7 @@ from pathlib import Path
 from decouple import config
 import os
 from datetime import timedelta
+# from .middleware import JWTAuthMiddleware
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist'
 ]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -72,6 +74,7 @@ CORS_ALLOWED_ORIGINS = [
 # Optional: Allow all origins (not recommended for production)
 # CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
+    # 'JWTAuthMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
