@@ -35,19 +35,18 @@ export default function LoginPage() {
       localStorage.setItem("refresh_token", refresh);
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
       window.location.href = "/dashboard";
-      setIsLoading(false);
+      
     } catch (error) {
       console.error("Login failed", error);
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      <Header isLoginPage>
-        <Link to="/">
-          <button className="nav-button">Back To Home</button>
-        </Link>
-      </Header>
+      <Header/>
       <div className="login-page">
         <div className="login-form">
           <h2>Login</h2>

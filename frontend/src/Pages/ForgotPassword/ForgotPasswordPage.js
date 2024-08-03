@@ -7,6 +7,7 @@ export default function ForgotPasswordPage() {
   function handleSubmit(event) {
     event.preventDefault();
     // Add functionality to handle password reset
+    
   }
 
   return (

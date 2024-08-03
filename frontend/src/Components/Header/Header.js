@@ -4,32 +4,30 @@ export default function Header({ isLoginPage, children }) {
   let PageName = "Placement";
 
   return (
-    <header className="min-h-[80px] bg-[#f3f6fd] flex items-center">
+    <header className="min-h-[80px] mx-auto flex items-center w-9/12">
       <nav className="container flex items-center justify-between">
         <span className="text-[#5d5d5d] italic text-2xl">
-          <Link to="/">
+          <Link to="/" className="hover:no-underline">
             <b>{PageName}</b>
           </Link>
         </span>
 
-        {!isLoginPage && (
-          <ul className="flex items-center text-lg">
-            <NavLink to="/" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors">
-              <li>Home</li>
-            </NavLink>
-            <li className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors">Features</li>
-            <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors">
-              <li>Team</li>
-            </NavLink>
-            <NavLink to="/pricing" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors">
-              <li>Pricing</li>
-            </NavLink>
-            <li className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors">
-              <button className="nav-button">Contact Us</button>
-            </li>
-          </ul>
-        )}
-        <span>{children}</span>
+        <div className="flex gap-6">
+            <ul className="flex items-center text-lg">
+              <li className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:cursor-pointer">Features</li>
+              <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
+                <li>Team</li>
+              </NavLink>
+              <NavLink to="/pricing" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+                <li>Pricing</li>
+              </NavLink>
+            </ul>
+          <Link to="/login">
+            <button className="nav-button bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors align-middle">
+              Login
+            </button>
+          </Link>
+        </div>
       </nav>
     </header>
   );

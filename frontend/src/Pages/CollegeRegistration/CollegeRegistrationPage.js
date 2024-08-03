@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./CollegeRegistrationPage.css";
 
 const host = "http://127.0.0.1:8000";
 
 export default function CollegeRegistrationPage() {
+  const { setIsLoading } = useLoading(); 
   const [branches, setBranches] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -14,8 +16,8 @@ export default function CollegeRegistrationPage() {
   const [filteredBranches, setFilteredBranches] = useState(branches);
   const [formData, setFormData] = useState({
     username: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     college: "",
     confirmCollege: "",
@@ -67,6 +69,7 @@ export default function CollegeRegistrationPage() {
   );
 
   const handleProceed = (e) => {
+    
     e.preventDefault();
     const allFieldsFilled = Object.values(formData).every(
       (field) => field.trim() !== ""
@@ -94,7 +97,7 @@ export default function CollegeRegistrationPage() {
 
     if (!passwordRegex.test(formData.password)) {
       alert(
-        "Password must be at least 6 characters long, contain at least one uppercase letter, one special character, and one number."
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number."
       );
       return;
     }
@@ -104,12 +107,12 @@ export default function CollegeRegistrationPage() {
       return;
     }
 
-    if (!nameRegex.test(formData.firstName)) {
+    if (!nameRegex.test(formData.first_name)) {
       alert("First Name can only contain alphabetic characters.");
       return;
     }
 
-    if (!nameRegex.test(formData.lastName)) {
+    if (!nameRegex.test(formData.last_name)) {
       alert("Last Name can only contain alphabetic characters.");
       return;
     }
@@ -125,29 +128,47 @@ export default function CollegeRegistrationPage() {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     const { confirmCollege, confirmPassword, ...dataToStore } = formData;
     const data = {
       ...dataToStore,
-      selectedBranches,
+      college1: formData.college,
+      college2: formData.confirmCollege,
+      password1 : formData.password,
+      password2 : formData.confirmPassword,
+      branches: selectedBranches,
     };
-    setRegistrationData(data);
-    console.log(registrationData);
-    setShowModal(false);
-    console.log("Registration Data:", data);
-    setFormData({
-      username: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      college: "",
-      confirmCollege: "",
-      subdomain: "",
-      password: "",
-      confirmPassword: "",
-    });
-    setSelectedBranches([]);
+  
+    try {
+      const response = await axios.post(`${host}/user/api/CollegeRegister/`, data);
+      console.log("Registration successful:", response.data);
+      setShowModal(false);
+      setFormData({
+        username: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+        college: "",
+        confirmCollege: "",
+        subdomain: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setSelectedBranches([]);
+      if (response.status === 200) {
+        console.log(response)
+        window.location.href = "/login";
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("There was an error with the registration. Please try again.");
+    }
+    finally{
+      setIsLoading(false);
+    }
   };
 
   const handleCloseModal = () => {
@@ -188,10 +209,10 @@ export default function CollegeRegistrationPage() {
               <i className="fas fa-user"></i>
               <input
                 type="text"
-                name="firstName"
+                name="first_name"
                 placeholder="First Name"
                 required
-                value={formData.firstName}
+                value={formData.first_name}
                 onChange={handleInputChange}
               />
             </div>
@@ -199,10 +220,10 @@ export default function CollegeRegistrationPage() {
               <i className="fas fa-user"></i>
               <input
                 type="text"
-                name="lastName"
+                name="last_name"
                 placeholder="Last Name"
                 required
-                value={formData.lastName}
+                value={formData.last_name}
                 onChange={handleInputChange}
               />
             </div>
@@ -306,7 +327,7 @@ export default function CollegeRegistrationPage() {
                       selectedBranches.includes(branch.id) ? "selected" : ""
                     }`}
                     onClick={() => handleBranchClick(branch.id)}
-                  >
+                    >
                     {branch.degree}
                     {`(${branch.specialization})`}
                   </div>
@@ -318,5 +339,5 @@ export default function CollegeRegistrationPage() {
         </div>
       )}
     </>
-  );
-}
+    );
+  }

@@ -161,6 +161,12 @@ export default function Team() {
         <header className="text-center mb-8">
           <h1 className="text-4xl mb-2">Meet Our Team</h1>
           <h5 className="text-lg text-gray-600">
+      <Header />
+      
+      <div className="team-content">
+        <header className="info">
+          <h1>Meet Our Team</h1>
+          <h5>
             Get to know the talented individuals behind our exceptional work.
           </h5>
         </header>
