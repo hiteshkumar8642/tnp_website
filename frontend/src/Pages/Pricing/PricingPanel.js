@@ -6,11 +6,7 @@ import { Link } from "react-router-dom";
 export default function PricingPanel() {
   return (
     <>
-      <Header>
-        <Link to="/login">
-          <button className="nav-button">Student LogIn</button>
-        </Link>
-      </Header>
+      <Header/>
       <div className="pricing-content">
         <header className="info">
           <h1>Pricing plans</h1>

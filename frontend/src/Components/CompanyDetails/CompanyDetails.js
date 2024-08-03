@@ -1,6 +1,9 @@
-function CompanyDetails() {
-  const currentDate = new Date();
+import React, { useState } from "react";
 
+function CompanyDetails() {
+  const [viewMode, setViewMode] = useState("grid");
+
+  const currentDate = new Date();
   const day = currentDate.getDate();
   const year = currentDate.getFullYear();
   const monthNames = [
@@ -57,7 +60,13 @@ function CompanyDetails() {
           </div>
         </div>
         <div className="view-actions">
-          <button className="view-btn list-view" title="List View">
+          <button
+            className={`view-btn list-view ${
+              viewMode === "list" ? "active" : ""
+            }`}
+            title="List View"
+            onClick={() => setViewMode("list")}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -78,7 +87,13 @@ function CompanyDetails() {
               <line x1="3" y1="18" x2="3.01" y2="18" />
             </svg>
           </button>
-          <button className="view-btn grid-view active" title="Grid View">
+          <button
+            className={`view-btn grid-view ${
+              viewMode === "grid" ? "active" : ""
+            }`}
+            title="Grid View"
+            onClick={() => setViewMode("grid")}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -99,7 +114,11 @@ function CompanyDetails() {
           </button>
         </div>
       </div>
-      <div className="project-boxes jsGridView">
+      <div
+        className={`project-boxes ${
+          viewMode === "grid" ? "jsGridView" : "jsListView"
+        }`}
+      >
         <div className="project-box-wrapper">
           <a href="{% url 'job_description' jd_id=x.id  %}">
             <div className="project-box" style={{ backgroundColor: "#fee4cb" }}>

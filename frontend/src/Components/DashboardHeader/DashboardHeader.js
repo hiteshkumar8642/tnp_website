@@ -1,6 +1,18 @@
-function DashboardHeader() {
+import React, { useState } from "react";
 
-  
+function DashboardHeader() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    const htmlElement = document.documentElement;
+    if (isDarkMode) {
+      htmlElement.classList.remove("dark");
+    } else {
+      htmlElement.classList.add("dark");
+    }
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <div className="app-header">
       <div className="app-header-left">
@@ -8,7 +20,11 @@ function DashboardHeader() {
         <p className="app-name">TNP Website</p>
       </div>
       <div className="app-header-right">
-        <button className="mode-switch" title="Switch Theme">
+        <button
+          className="mode-switch"
+          title="Switch Theme"
+          onClick={toggleTheme}
+        >
           <svg
             className="moon"
             fill="none"

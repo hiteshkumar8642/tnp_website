@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
 import { useLoading } from "../LoadingContext/LoadingContext"; // Import the useLoading hook
 
 function Sidebar() {
-  const { setIsLoading } = useLoading(); 
+  const { setIsLoading } = useLoading();
 
   const logout = async (refreshToken) => {
     try {
@@ -18,7 +18,7 @@ function Sidebar() {
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
     try {
-      setIsLoading(true); 
+      setIsLoading(true);
       await logout(refreshToken);
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -31,29 +31,59 @@ function Sidebar() {
       setIsLoading(false);
     } catch (error) {
       console.error("Logout failed:", error);
-    } 
+    }
   };
 
   return (
     <div className="app-sidebar">
-      <Link to="/dashboard/companies" className="app-sidebar-link active">
+      <NavLink
+        to="/dashboard/companies"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         Companies
-      </Link>
-      <Link to="/dashboard/applied-companies" className="app-sidebar-link">
+      </NavLink>
+      <NavLink
+        to="/dashboard/applied-companies"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         Applied Companies
-      </Link>
-      <Link to="/dashboard/share-hr-contact" className="app-sidebar-link">
+      </NavLink>
+      <NavLink
+        to="/dashboard/share-hr-contact"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         Share HR Contact
-      </Link>
-      <Link to="/dashboard/share-company-contact" className="app-sidebar-link">
+      </NavLink>
+      <NavLink
+        to="/dashboard/share-company-contact"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         Share Company Contact
-      </Link>
-      <Link to="/dashboard/hr-list" className="app-sidebar-link">
+      </NavLink>
+      <NavLink
+        to="/dashboard/hr-list"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         HR List
-      </Link>
-      <Link to="/dashboard/my-hr-list" className="app-sidebar-link">
+      </NavLink>
+      <NavLink
+        to="/dashboard/my-hr-list"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
         My HR List
-      </Link>
+      </NavLink>
       <span className="app-sidebar-link" onClick={handleLogout}>
         Logout
       </span>
