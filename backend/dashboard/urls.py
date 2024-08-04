@@ -4,7 +4,7 @@ from dashboard import views
 from django.urls import path, include
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
-    path('login', views.login, name='login'),
+    # path('login', views.login, name='login'),
     path('applied_company/', views.appliedCompany, name='applied_company'),
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
@@ -23,6 +23,15 @@ urlpatterns = [
     path('full_detail_visibility/<int:cnt>',views.full_detail_visibility,name="full_detail_visibility"),
     path('student_list/',views.student_list,name="student_list"),
     path('logout/',views.logout,name='logout'),
+    # path('announcement/',views.announcement,name='announcement'),
+    # path('application/',views.application,name='application'),
+    
+    #----------------------------------------------------------
+
+    path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
+    path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
+    path('api/hr_list/',views.print_HRlist_api,name="hr_list"),
+    path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
     path('api/announcement/',views.get_announcements,name='announcement'),
     path('api/application/',views.application,name='application')
 

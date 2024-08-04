@@ -10,6 +10,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "react": "^18.3.1",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-router": "^6.24.1",
     "react-router-dom": "^6.23.1",
@@ -22,8 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "npx tailwindcss init -p" 
-    },
+    "postinstall": "npx tailwindcss init -p"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
