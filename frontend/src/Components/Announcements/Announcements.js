@@ -1,4 +1,25 @@
+// src/components/Announcements.js
+
+import React, { useEffect, useState } from 'react';
+import { fetchAnnouncements } from '../../api/announcement';
+
+
 function Announcements() {
+  const [announcements, setAnnouncements] = useState([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function getAnnouncements() {
+      try {
+        const data = await fetchAnnouncements();
+        setAnnouncements(data);
+      } catch (err) {
+        setError('Failed to load announcements');
+      }
+    }
+    getAnnouncements();
+  }, []);
+
   return (
     <div className="messages-section">
       <button className="messages-close">
@@ -23,19 +44,22 @@ function Announcements() {
         <p>Announcements</p>
       </div>
       <div className="messages">
-        <div className="message-box">
-          <img
-            src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-            alt="s"
-          />
-          <div className="message-content">
-            <div className="message-header">
-              <div className="name">Hitesh Kumar</div>
+        {error && <p>{error}</p>}
+        {announcements.map((announcement) => (
+          <div key={announcement.id} className="message-box">
+            <img
+              src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
+              alt="s"
+            />
+            <div className="message-content">
+              <div className="message-header">
+                <div className="name">User</div>
+              </div>
+              <p className="message-line">{announcement.announcement}</p>
+              <p className="message-line time">{new Date(announcement.created).toLocaleString()}</p>
             </div>
-            <p className="message-line">There is a message</p>
-            <p className="message-line time">At T time</p>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

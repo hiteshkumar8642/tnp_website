@@ -182,13 +182,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK:
-            refresh = response.data['refresh']
-            access = response.data['access']
-            response.set_cookie('refresh_token', refresh, httponly=True)
-            response.set_cookie('access_token', access, httponly=True)
-            token = AccessToken(access)
-            user_id = token['user_id']
-            print(f'User ID: {user_id}')
+            refresh = response.data.get('refresh')
+            access = response.data.get('access')
+            if refresh and access:
+                response.set_cookie('refresh_token', refresh, httponly=True, secure=True)
+                response.set_cookie('access_token', access, httponly=True, secure=True)
+            else:
+                return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
         return response
 
 from rest_framework.views import APIView
@@ -197,26 +197,30 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
         try:
-            refresh_token = request.data.get("refresh_token")
+            refresh_token = request.data.get('refresh_token')
             if not refresh_token:
                 return Response({'detail': 'Refresh token is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Blacklist the refresh token
+            
             token = RefreshToken(refresh_token)
             token.blacklist()
-
-            # Clear the tokens from cookies
+            
             response = Response({'detail': 'Logout successful.'}, status=status.HTTP_205_RESET_CONTENT)
             response.delete_cookie('refresh_token')
             response.delete_cookie('access_token')
-
+            
             return response
         except TokenError as e:
+            logger.error(f"Token error: {str(e)}")
             return Response({'detail': 'Invalid refresh token.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            logger.error(f"Exception: {str(e)}")
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 

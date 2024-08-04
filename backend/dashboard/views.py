@@ -11,6 +11,8 @@ from django.contrib.auth.views import LoginView
 from .models import College
 from django.http import HttpResponse
 from dashboard.models import Course,Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,Company,AppliedCompany,CallHistory,CollegeCourse,Application,UserProfile
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 from rest_framework import viewsets
 from .models import College
@@ -103,16 +105,25 @@ def login(request):
 
 
 @api_view(['GET'])
-def announcement(request):
-    announcement = Announcement.objects.all().order_by('created')[:10]
-    announcement_serializer = AnnouncementSerializer(announcement, many=True)
-    return Response({'announcements': announcement_serializer.data})
-
+@permission_classes([IsAuthenticated])
+def get_announcements(request):
+    try:
+        print(" hello")
+        user = request.user
+        announcements = Announcement.objects.filter(user=user)
+        serializer = AnnouncementSerializer(announcements, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
 def application(request):
-    application = Application.objects.all().order_by('last_date')
-    application_serializer = ApplicationSerializer(application, many=True)
-    return Response({'applications': application_serializer.data})
+    try:
+        application = Application.objects.all().order_by('last_date')
+        application_serializer = ApplicationSerializer(application, many=True)
+        return Response({'applications': application_serializer.data})
+    except Exception as e:
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def signup(request):
