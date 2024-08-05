@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
+import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./CollegeRegistrationPage.css";
 
 const host = "http://127.0.0.1:8000";
 
 export default function CollegeRegistrationPage() {
-  const { setIsLoading } = useLoading(); 
+  const { setIsLoading } = useLoading();
   const [branches, setBranches] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -25,7 +25,6 @@ export default function CollegeRegistrationPage() {
     password: "",
     confirmPassword: "",
   });
-  const [registrationData, setRegistrationData] = useState({});
 
   useEffect(function () {
     async function fetchBranches() {
@@ -69,7 +68,6 @@ export default function CollegeRegistrationPage() {
   );
 
   const handleProceed = (e) => {
-    
     e.preventDefault();
     const allFieldsFilled = Object.values(formData).every(
       (field) => field.trim() !== ""
@@ -136,13 +134,16 @@ export default function CollegeRegistrationPage() {
       ...dataToStore,
       college1: formData.college,
       college2: formData.confirmCollege,
-      password1 : formData.password,
-      password2 : formData.confirmPassword,
+      password1: formData.password,
+      password2: formData.confirmPassword,
       branches: selectedBranches,
     };
-  
+
     try {
-      const response = await axios.post(`${host}/user/api/CollegeRegister/`, data);
+      const response = await axios.post(
+        `${host}/user/api/CollegeRegister/`,
+        data
+      );
       console.log("Registration successful:", response.data);
       setShowModal(false);
       setFormData({
@@ -158,15 +159,14 @@ export default function CollegeRegistrationPage() {
       });
       setSelectedBranches([]);
       if (response.status === 200) {
-        console.log(response)
+        console.log(response);
         window.location.href = "/login";
         setIsLoading(false);
       }
     } catch (error) {
       console.error("Error during registration:", error);
       alert("There was an error with the registration. Please try again.");
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -327,7 +327,7 @@ export default function CollegeRegistrationPage() {
                       selectedBranches.includes(branch.id) ? "selected" : ""
                     }`}
                     onClick={() => handleBranchClick(branch.id)}
-                    >
+                  >
                     {branch.degree}
                     {`(${branch.specialization})`}
                   </div>
@@ -339,5 +339,5 @@ export default function CollegeRegistrationPage() {
         </div>
       )}
     </>
-    );
-  }
+  );
+}

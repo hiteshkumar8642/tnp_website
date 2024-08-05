@@ -28,9 +28,13 @@ function Sidebar() {
 
       // Redirect to login page
       window.location.href = "/";
-      setIsLoading(false);
+      
     } catch (error) {
       console.error("Logout failed:", error);
+    }
+    finally
+    {
+      setIsLoading(false);
     }
   };
 

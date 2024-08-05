@@ -1,13 +1,23 @@
-import React from "react";
+import { fetchForgetPassword } from '../../api/forgetPassword';
+import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./ForgotPasswordPage.css";
 import { Link } from "react-router-dom";
 
+
 export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
   function handleSubmit(event) {
     event.preventDefault();
-    // Add functionality to handle password reset
-    
+    fetchForgetPassword(email)
+      .then(response => {
+        setMessage(response.success);
+      })
+      .catch(error => {
+        setMessage("An error occurred. Please try again.");
+      });
   }
 
   return (
@@ -23,10 +33,17 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleSubmit}>
             <div className="input-group">
               <i className="fas fa-envelope"></i>
-              <input type="email" placeholder="Enter email" required />
+              <input
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
             </div>
             <button type="submit">Submit</button>
           </form>
+          {message && <p className="message">{message}</p>}
           <p className="register-link">
             Don't have an account?{" "}
             <Link to="/signup">

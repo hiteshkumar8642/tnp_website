@@ -182,13 +182,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK:
-            refresh = response.data['refresh']
-            access = response.data['access']
-            response.set_cookie('refresh_token', refresh, httponly=True)
-            response.set_cookie('access_token', access, httponly=True)
-            token = AccessToken(access)
-            user_id = token['user_id']
-            print(f'User ID: {user_id}')
+            refresh = response.data.get('refresh')
+            access = response.data.get('access')
+            if refresh and access:
+                response.set_cookie('refresh_token', refresh, httponly=True, secure=True)
+                response.set_cookie('access_token', access, httponly=True, secure=True)
+            else:
+                return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
         return response
 
 from rest_framework.views import APIView
@@ -197,26 +197,30 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
         try:
-            refresh_token = request.data.get("refresh_token")
+            refresh_token = request.data.get('refresh_token')
             if not refresh_token:
                 return Response({'detail': 'Refresh token is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Blacklist the refresh token
+            
             token = RefreshToken(refresh_token)
             token.blacklist()
-
-            # Clear the tokens from cookies
+            
             response = Response({'detail': 'Logout successful.'}, status=status.HTTP_205_RESET_CONTENT)
             response.delete_cookie('refresh_token')
             response.delete_cookie('access_token')
-
+            
             return response
         except TokenError as e:
+            logger.error(f"Token error: {str(e)}")
             return Response({'detail': 'Invalid refresh token.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            logger.error(f"Exception: {str(e)}")
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -285,3 +289,29 @@ def CollegeRegister(request):
         print("form not valid")
         print("Form errors: ", form.errors)
         return Response({"errors": form.errors}, status=400)
+    
+
+from django.contrib.auth.forms import PasswordResetForm
+from django.utils.translation import gettext_lazy as _
+
+class ResetPasswordAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        print("inAPI")
+        form = PasswordResetForm(request.data)
+       
+        if form.is_valid():
+            print("valid form")
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='userDetails/password_reset_email.html',
+                subject_template_name='userDetails/password_reset_subject.txt',
+            )
+            return Response(
+                {"success": _("We've emailed you instructions for setting your password, "
+                              "if an account exists with the email you entered. You should receive them shortly. "
+                              "If you don't receive an email, "
+                              "please make sure you've entered the address you registered with, and check your spam folder.")},
+                status=status.HTTP_200_OK
+            )
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)

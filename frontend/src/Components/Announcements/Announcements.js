@@ -1,4 +1,24 @@
+import React, { useEffect, useState } from "react";
+import { fetchAnnouncements } from "../../api/announcement";
+import AnnouncementItem from "./AnnouncementItem";
+
 function Announcements() {
+  const [announcements, setAnnouncements] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function getAnnouncements() {
+      try {
+        const data = await fetchAnnouncements();
+        console.log(data);
+        setAnnouncements(data);
+      } catch (err) {
+        setError("Failed to load announcements");
+      }
+    }
+    getAnnouncements();
+  }, []);
+
   return (
     <div className="messages-section">
       <button className="messages-close">
@@ -23,19 +43,13 @@ function Announcements() {
         <p>Announcements</p>
       </div>
       <div className="messages">
-        <div className="message-box">
-          <img
-            src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-            alt="s"
+        {error && <p>{error}</p>}
+        {announcements.map((announcement) => (
+          <AnnouncementItem
+            key={announcement.announcement}
+            announcement={announcement}
           />
-          <div className="message-content">
-            <div className="message-header">
-              <div className="name">Hitesh Kumar</div>
-            </div>
-            <p className="message-line">There is a message</p>
-            <p className="message-line time">At T time</p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

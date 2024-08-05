@@ -6,7 +6,18 @@ from .models import College,Course,CollegeCourse,Company,Shared_Company,Shared_H
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User 
-        fields = '__all__'
+        fields = [
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'is_active',
+            'is_staff',
+            'is_superuser',
+            'last_login',
+            'date_joined',
+        ]
 
 class CollegeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,7 +80,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AnnouncementSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Announcement
-        fields = '__all__'
+        fields = ['created', 'updated', 'announcement', 'user']
 

@@ -6,7 +6,8 @@
 * {
   @apply box-border;
 }
-html, body {
+html,
+body {
   @apply h-full;
   background-color: #f3f6fd;
   font-family: "Open Sans", sans-serif;
@@ -19,4 +20,16 @@ a {
 }
 ul {
   @apply list-none p-0 m-0 font-sans text-black;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
 }

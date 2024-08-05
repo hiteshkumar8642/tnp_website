@@ -5,12 +5,15 @@ import Footer from "../../Components/Footer/Footer";
 export default function LandingPage() {
   
   return (
-    <div className="flex flex-col bg-[#f3f6fd] min-h-screen mx-auto ">
+    <div className="flex flex-col bg-[#f3f6fd] min-h-screen">
       <Header />
-      <div className="flex-grow w-9/12 mx-auto">
+      <div className="flex-grow w-9/12 mx-auto mb-10">
         <LandingPageContent />
       </div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
+      
     </div>
   );
 }

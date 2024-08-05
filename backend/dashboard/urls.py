@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from dashboard import views
 from django.urls import path, include
-
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     # path('login', views.login, name='login'),
@@ -10,8 +9,8 @@ urlpatterns = [
     path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
     path('job_description/<int:jd_id>',views.job_description,name='job_description'),
-    path('hr_list/',views.print_list,name="hr_list"),
-    path('my_hr_list/',views.my_print_list,name="my_hr_list"),
+    # path('hr_list/',views.print_list,name="hr_list"),
+    # path('my_hr_list/',views.my_print_list,name="my_hr_list"),
     path('tnp_view/',views.tnp_view,name="tnp_view"),
     path('dlt_all/',views.delete_all_contact,name="dlt_all"),
     path('transfer_contact/<int:hr_id>',views.transfer_contact,name="transfer_contact"),
@@ -29,11 +28,13 @@ urlpatterns = [
     
     #----------------------------------------------------------
 
-    path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
-    path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
+    # path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
+    # path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
     path('api/hr_list/',views.print_HRlist_api,name="hr_list"),
     path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
-    path('api/announcement/',views.announcement_api,name='announcement'),
-    path('api/application/',views.application_api,name='application'),
+    path('api/announcement/',views.get_announcements,name='announcement'),
+    path('api/application/',views.application,name='application')
+    # path('api/dummy/',views.dummy,name='dummy')
+
 
 ]
