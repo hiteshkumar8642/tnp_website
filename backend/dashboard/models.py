@@ -227,4 +227,6 @@ class Announcement(models.Model):
     updated = models.DateTimeField(auto_now=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     announcement = models.TextField(null=True, blank=True)    
+    college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
+
     

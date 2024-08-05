@@ -12,6 +12,7 @@ function Announcements() {
     async function getAnnouncements() {
       try {
         const data = await fetchAnnouncements();
+        console.log(data)
         setAnnouncements(data);
       } catch (err) {
         setError('Failed to load announcements');
