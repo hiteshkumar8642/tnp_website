@@ -1,0 +1,126 @@
+/* HrModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: var(--projects-section);
+  width: 100%;
+  height: 90%;
+  border-radius: 8px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  color: var(--main-color);
+  padding: 20px;
+  overflow: hidden; /* Ensure the modal does not overflow */
+}
+
+.modal-header {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--message-box-border);
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto; /* Make the modal content scrollable */
+}
+
+.grid-item {
+  background: var(--app-container);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Allow grid items to scroll if content overflows */
+}
+
+.grid-item-0-0 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.grid-item-0-1 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.grid-item-1-1 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  color: var(--secondary-color);
+}
+
+input,
+textarea,
+select,
+.react-datepicker-wrapper {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid var(--message-box-border);
+  border-radius: 4px;
+  background: var(--message-box-hover);
+  color: var(--main-color);
+}
+
+button {
+  background-color: var(--button-bg);
+  color: var(--link-color-active);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: var(--link-color-hover);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  border: 1px solid var(--message-box-border);
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--link-color-active-bg);
+  color: var(--link-color-active);
+}
+
+td {
+  background-color: var(--message-box-hover);
+}
