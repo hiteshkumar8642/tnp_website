@@ -58,7 +58,7 @@ export default function Team() {
     {
       name: "Hitesh Kumar",
       imageUrl: Hitesh,
-      position: "Creative Director",
+      position: "Chief executive officer",
       description:
         "I excel in solving technical problems and software development, thrive in teams, and adapt quickly under pressure. My kindness and skills make me a valuable IT asset.",
       socialLinks: [
@@ -99,7 +99,7 @@ export default function Team() {
       imageUrl: Devvrat,
       position: "Backend Developer",
       description:
-        "I’m a machine learning and data science enthusiast, focused on uncovering insights and creating intelligent solutions. Explore my projects, experiments, and contributions in these fields.",
+        "I’m a machine learning and data science enthusiast, focused on uncovering insights and creating intelligent solutions. Explore my projects in these fields.",
       socialLinks: [
         { url: "linkedin.com/in/devvrat-kannojia-5a27811ba", iconClass: "fab fa-linkedin" },
         { url: "https://www.instagram.com/strange_dev?igsh=MWE4YXY1YjRydnhubA==", iconClass: "fab fa-instagram" },
