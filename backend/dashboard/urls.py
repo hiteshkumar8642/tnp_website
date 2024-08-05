@@ -28,9 +28,9 @@ urlpatterns = [
     
     #----------------------------------------------------------
 
-    path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
-    path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
-    path('api/hr_list/',views.dummy,name="hr_list"),
+    # path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
+    # path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
+    path('api/hr_list/',views.print_HRlist_api,name="hr_list"),
     path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
     path('api/announcement/',views.get_announcements,name='announcement'),
     path('api/application/',views.application,name='application')

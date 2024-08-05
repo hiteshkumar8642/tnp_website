@@ -269,7 +269,7 @@ def handle_hr_contact(request):
 #             return render(request,'dashboard/my_hr_list.html',{'hr_list':res})
 #         else:
 #             raise PermissionDenied
-    return render(request,'landing_page/home.html')
+    # return render(request,'landing_page/home.html')
     
 def tnp_view(request):
     res = Shared_HR_contact.objects.all()
@@ -467,12 +467,8 @@ def Announcement_form(request):
 
 @api_view(['POST'])
 def handle_comapany_contact_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
+    user = request.user
+    branch = user.userdetails.college_branch
     data = {
             'company' : request.data.get('company-name'),
             'comp_email' : request.data.get('company-email'),
@@ -485,7 +481,6 @@ def handle_comapany_contact_api(request):
             'users' : user,
             'branch': branch
         }
-    
     company_serializer = Shared_CompanySerializer(data=data)
     if company_serializer.is_valid():
         company_serializer.save()
@@ -536,7 +531,7 @@ def my_print_HRlist_api(request):
     user = request.user
     role = UserProfile.objects.get(user=user).role
     if role==3 or role==4:
-        hrContact = HRContact.objects.get(college_branch=user.userdetails.college_branch,assigned=user)
+        hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
         return Response({'HRList' : hrcontactserializer.data},status=status.HTTP_200_OK)
     else:
@@ -544,16 +539,10 @@ def my_print_HRlist_api(request):
     
 @api_view(['GET'])
 def tnp_view_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    role = UserProfile.objects.get(user=user)
-
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
     if role==3 or role==4:
-        sharedlist = Shared_HR_contact.objects.all(college_branch=branch)
+        sharedlist = Shared_HR_contact.objects.all(college_branch=user.user_profile.college_branch)
         sharedlistserializer = Shared_HR_contactSerializer(sharedlist,many=True)
         return Response({sharedlistserializer.data},status=status.HTTP_200_OK)
     else:
@@ -561,15 +550,10 @@ def tnp_view_api(request):
     
 @api_view(['GET'])
 def tnp_company_view_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    role = UserProfile.objects.get(user=user)
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
     if role==3 or role==4:
-        sharedcompany = Shared_Company.objects.all(college_branch=branch)
+        sharedcompany = Shared_Company.objects.all(college_branch=user.user_profile.college_branch)
         sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
         return Response({"Shared_Company": sharedcompany_serializer.data},status=status.HTTP_200_OK)
     else:
@@ -577,13 +561,8 @@ def tnp_company_view_api(request):
     
 @api_view(['GET'])
 def appliedCompany_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    application = Application.objects.get(user_id=user_id)
+    user=request.user
+    application = Application.objects.get(user_id=user.id)
     appliedcompanyserializer = AppliedCompanySerializer(application,many=True)
     return Response({"AppliedCompanies": appliedcompanyserializer.data},status=status.HTTP_200_OK)
 
@@ -603,30 +582,6 @@ def annuncement_form_api(request):
     else:
         return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET'])
-def announcement_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    announcement = Announcement.objects.get(college_branch=branch).order_by('created')[:10]
-    announcement_serializer = AnnouncementSerializer(announcement, many=True)
-    return Response({'announcements': announcement_serializer.data},status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def application_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    application = Application.objects.get(college_branch=branch).order_by('last_date')
-    application_serializer = ApplicationSerializer(application, many=True)
-    return Response({'applications': application_serializer.data},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def dummy(request):
