@@ -9,8 +9,7 @@
   width: 80%;
   color: var(--main-color);
   overflow: hidden;
-  height: 100vh;
-  padding-bottom: 75px;
+  margin-bottom: 24px;
 }
 
 .hr-list-container h2 {
@@ -34,8 +33,6 @@
 .hr-table th,
 .hr-table td {
   padding: 12px 10px;
-  text-align: left;
-  color: var(--main-color);
 }
 
 .hr-table th {
@@ -62,6 +59,25 @@
 .hr-table td:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.hr-table th.col-1,
+.hr-table td.col-1 {
+  width: 14.28%; /* 1/7th of the table width */
+}
+
+.hr-table th.col-2,
+.hr-table td.col-2 {
+  width: 28.57%; /* 2/7th of the table width */
+}
+
+/* Text alignment */
+.left-align {
+  text-align: left;
+}
+
+.center-align {
+  text-align: center;
 }
 
 /* Dark mode styles */
@@ -141,12 +157,15 @@
 }
 
 .react-datepicker__header {
-  background-color: var(--link-color-active-bg);
+  background-color: var(--link-color-active);
   border-bottom: 1px solid var(--message-box-border);
 }
 
-.react-datepicker__current-month,
-.react-datepicker__day-name,
+.react-datepicker__current-month h2,
+.react-datepicker__day-name {
+  color: var(--link-color-active-bg);
+}
+
 .react-datepicker__day {
   color: var(--link-color-active-bg);
 }
@@ -198,4 +217,21 @@
 .dark .react-datepicker__day--keyboard-selected {
   background-color: var(--button-bg);
   color: var(--link-color-active);
+}
+
+/* Status dropdown */
+.status-dropdown {
+  background-color: var(--projects-section);
+  border: 1px solid var(--message-box-border);
+  border-radius: 4px;
+  padding: 6px;
+  color: var(--main-color);
+  font-size: 14px;
+  width: 100%;
+}
+
+.dark .status-dropdown {
+  background-color: var(--app-container);
+  border-color: var(--message-box-border);
+  color: var(--main-color);
 }

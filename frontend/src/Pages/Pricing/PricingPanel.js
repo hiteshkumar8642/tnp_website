@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
-import { Link } from "react-router-dom";
 
 export default function PricingPanel() {
   return (
@@ -11,8 +10,9 @@ export default function PricingPanel() {
         <header className="text-center mb-8">
           <h1 className="text-4xl mb-2">Pricing Plans</h1>
           <h5 className="text-lg text-gray-600">
-            First 30 days absolutely <span className="text-[#6c63ff]">free</span> for
-            any plan, no credit card required to get started.
+            First 30 days absolutely{" "}
+            <span className="text-[#6c63ff]">free</span> for any plan, no credit
+            card required to get started.
           </h5>
         </header>
         <div className="plans-list flex flex-wrap justify-center gap-5 mt-5">
