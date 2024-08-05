@@ -16,6 +16,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 from rest_framework import viewsets
 from .models import College
+from rest_framework.views import APIView
 from .serializers import UserSerializer, CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
 # from rest_framework_simplejwt.views import TokenObtainPairView
@@ -465,11 +466,13 @@ def Announcement_form(request):
 
 # APIs 
 
+
 @api_view(['POST'])
-def handle_comapany_contact_api(request):
-    user = request.user
-    branch = user.userdetails.college_branch
-    data = {
+class handle_comapany_contact_api(APIView):
+    def post(self, request):
+        user = request.user
+        branch = user.userdetails.college_branch
+        data = {
             'company' : request.data.get('company-name'),
             'comp_email' : request.data.get('company-email'),
             'comp_contact' : request.data.get('company-number'),
@@ -481,12 +484,17 @@ def handle_comapany_contact_api(request):
             'users' : user,
             'branch': branch
         }
-    company_serializer = Shared_CompanySerializer(data=data)
-    if company_serializer.is_valid():
-        company_serializer.save()
-        return Response({'message':True},status=status.HTTP_200_ok)
-    else:
-        return Response({'message':False}, status=status.HTTP_400_BAD_REQUEST)
+        company_serializer = Shared_CompanySerializer(data=data)
+        if company_serializer.is_valid():
+            company_serializer.save()
+            return Response({'message':True},status=status.HTTP_200_ok)
+        else:
+            return Response({'message':False}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):  
+        user=request.user
+        branch = user.userdetails.branch
+        com  
     
 
 @api_view(['POST'])
@@ -522,7 +530,7 @@ def print_HRlist_api(request):
     if role==3 or role==4:
         hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response({'HRList' : hrcontactserializer.data},status=status.HTTP_200_OK)
+        return Response({hrcontactserializer.data},status=status.HTTP_200_OK)
     else:
         return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     
@@ -533,7 +541,7 @@ def my_print_HRlist_api(request):
     if role==3 or role==4:
         hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response({'HRList' : hrcontactserializer.data},status=status.HTTP_200_OK)
+        return Response({hrcontactserializer.data},status=status.HTTP_200_OK)
     else:
         return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     
