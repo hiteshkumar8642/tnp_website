@@ -1,21 +1,19 @@
-// src/components/Announcements.js
-
-import React, { useEffect, useState } from 'react';
-import { fetchAnnouncements } from '../../api/announcement';
-
+import React, { useEffect, useState } from "react";
+import { fetchAnnouncements } from "../../api/announcement";
+import AnnouncementItem from "./AnnouncementItem";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function getAnnouncements() {
       try {
         const data = await fetchAnnouncements();
-        console.log(data)
+        console.log(data);
         setAnnouncements(data);
       } catch (err) {
-        setError('Failed to load announcements');
+        setError("Failed to load announcements");
       }
     }
     getAnnouncements();
@@ -47,19 +45,10 @@ function Announcements() {
       <div className="messages">
         {error && <p>{error}</p>}
         {announcements.map((announcement) => (
-          <div key={announcement.id} className="message-box">
-            <img
-              src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-              alt="s"
-            />
-            <div className="message-content">
-              <div className="message-header">
-                <div className="name">User</div>
-              </div>
-              <p className="message-line">{announcement.announcement}</p>
-              <p className="message-line time">{new Date(announcement.created).toLocaleString()}</p>
-            </div>
-          </div>
+          <AnnouncementItem
+            key={announcement.announcement}
+            announcement={announcement}
+          />
         ))}
       </div>
     </div>
