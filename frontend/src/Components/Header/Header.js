@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 
 export default function Header({ isLoginPage, children }) {
-  let PageName = "Placement";
+  let PageName = "CampusHirease";
 
   return (
     <header className="min-h-[80px] mx-auto flex items-center w-9/12">
@@ -14,7 +14,9 @@ export default function Header({ isLoginPage, children }) {
 
         <div className="flex gap-6">
             <ul className="flex items-center text-lg">
-              <li className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:cursor-pointer">Features</li>
+              <NavLink to="/Features" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
+                <li>Features</li>
+              </NavLink>
               <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
                 <li>Team</li>
               </NavLink>

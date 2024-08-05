@@ -5,6 +5,7 @@ import LandingPage from "./Pages/LandingPage/LandingPage";
 import LoginPage from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/SignUp/SignUpPage";
 import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistrationPage";
+import Features from "./Pages/Features/Features";
 import PricingPanel from "./Pages/Pricing/PricingPanel";
 import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
@@ -34,6 +35,7 @@ function App() {
           element={<CollegeRegistrationPage />}
         />
         <Route path="/Team" element={<Team />} />
+        <Route path="/Features" element={<Features />} />
         <Route path="/pricing" element={<PricingPanel />} />
         <Route
           path="/dashboard"

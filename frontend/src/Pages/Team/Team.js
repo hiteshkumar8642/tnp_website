@@ -175,7 +175,7 @@ export default function Team() {
           <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#6c63ff] text-white rounded-full p-2 z-10" onClick={scrollLeft}>
             &lt;
           </button>
-          <div ref={scrollContainerRef} className="flex overflow-x-auto gap-5 p-5 scroll-smooth">
+          <div ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="flex overflow-x-auto gap-5 p-5 scroll-smooth">
             {duplicatedTeamMembers.map((member, index) => (
               <TeamMember
                 key={index}
@@ -187,6 +187,7 @@ export default function Team() {
               />
             ))}
           </div>
+
           <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#6c63ff] text-white rounded-full p-2 z-10" onClick={scrollRight}>
             &gt;
           </button>
