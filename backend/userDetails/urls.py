@@ -5,6 +5,7 @@ from userDetails.views import ResetPasswordView
 from django.contrib.auth import views as auth_views
 from .views import MyTokenObtainPairView, LogoutView
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views import ResetPasswordAPIView
 urlpatterns = [
     path("register" , views.register , name = "register"),
     path("login" , views.login , name = "login"),
@@ -27,5 +28,7 @@ urlpatterns = [
     path('api/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
+    path('api/password_reset/', ResetPasswordAPIView.as_view(), name='api_password_reset'),
+
     
 ]
