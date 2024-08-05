@@ -123,6 +123,7 @@ def get_announcements(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 def application(request):
     try:
@@ -248,26 +249,26 @@ def handle_hr_contact(request):
     return render(request,'landing_page/home.html')
 
 
-def print_list(request):
-    if request.user.is_authenticated:
-        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            users = request.user
-            branch = users.userdetails.college_branch
-            res = HRContact.objects.filter(assigned=None,college_branch=branch)
-            return render(request,'dashboard/hr_list.html',{'hr_list':res})
-        else:
-            raise PermissionDenied
-    return render(request,'landing_page/home.html')
+# def print_list(request):
+#     if request.user.is_authenticated:
+#         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+#             users = request.user
+#             branch = users.userdetails.college_branch
+#             res = HRContact.objects.filter(assigned=None,college_branch=branch)
+#             return render(request,'dashboard/hr_list.html',{'hr_list':res})
+#         else:
+#             raise PermissionDenied
+#     return render(request,'landing_page/home.html')
 
-def my_print_list(request):
-    if request.user.is_authenticated:
-        if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
-            users = request.user
-            branch = users.userdetails.college_branch
-            res = HRContact.objects.filter(assigned=request.user,college_branch=branch)
-            return render(request,'dashboard/my_hr_list.html',{'hr_list':res})
-        else:
-            raise PermissionDenied
+# def my_print_list(request):
+#     if request.user.is_authenticated:
+#         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
+#             users = request.user
+#             branch = users.userdetails.college_branch
+#             res = HRContact.objects.filter(assigned=request.user,college_branch=branch)
+#             return render(request,'dashboard/my_hr_list.html',{'hr_list':res})
+#         else:
+#             raise PermissionDenied
     return render(request,'landing_page/home.html')
     
 def tnp_view(request):
@@ -521,17 +522,10 @@ def handle_hr_contact_api(request):
     
 @api_view(['GET'])
 def print_HRlist_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    print(user_id)
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-
-    role = UserProfile.objects.get(user=user)
+    user=request.user
+    role = UserProfile.objects.get(user=user).role
     if role==3 or role==4:
-        hrContact = HRContact.objects.get(college_branch=branch,assigned=None)
+        hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
         return Response({'HRList' : hrcontactserializer.data},status=status.HTTP_200_OK)
     else:
@@ -539,16 +533,10 @@ def print_HRlist_api(request):
     
 @api_view(['GET'])
 def my_print_HRlist_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    print(user_id)
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-    role = UserProfile.objects.get(user=user)
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
     if role==3 or role==4:
-        hrContact = HRContact.objects.get(college_branch=branch,assigned=user)
+        hrContact = HRContact.objects.get(college_branch=user.userdetails.college_branch,assigned=user)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
         return Response({'HRList' : hrcontactserializer.data},status=status.HTTP_200_OK)
     else:
@@ -640,4 +628,29 @@ def application_api(request):
     application_serializer = ApplicationSerializer(application, many=True)
     return Response({'applications': application_serializer.data},status=status.HTTP_200_OK)
 
-
+@api_view(['GET'])
+def dummy(request):
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
+    if role==3 or role==4:
+        dummy_hr_contact_data = [
+            {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john.doe@example.com",
+                "phone": "+123456789",
+                "college_branch": "Computer Science",
+                "assigned": user.id,
+            },
+            {
+                "id": 2,
+                "name": "Jane Smith",
+                "email": "jane.smith@example.com",
+                "phone": "+987654321",
+                "college_branch": "Mechanical Engineering",
+                "assigned": user.id,
+            }
+        ]
+        return Response({'HRList': dummy_hr_contact_data}, status=status.HTTP_200_OK)
+    else:
+        return Response({'message': False}, status=status.HTTP_400_BAD_REQUEST)
