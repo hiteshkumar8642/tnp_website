@@ -75,7 +75,7 @@
 
 /* .form-container button:hover {
   background-color: var(--link-color-hover);
-}
+} */
 
 
 .dark .form-container {
@@ -89,10 +89,16 @@
   color: var(--main-color);
 }
 
+.dark .form-container input:hover {
+  outline: auto;
+}
+
+
+
 .dark .form-container button {
   background-color: var(--button-bg);
 }
 
 .dark .form-container button:hover {
   background-color: var(--link-color-hover);
-} */
+}
