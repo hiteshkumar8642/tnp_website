@@ -113,7 +113,12 @@ def get_announcements(request):
     try:
         print(" hello")
         user = request.user
-        announcements = Announcement.objects.filter(user=user)
+        print(user.userdetails.college_branch)
+        announcements = Announcement.objects.filter(college_branch=user.userdetails.college_branch)
+        print(announcements)
+        if announcements is None:
+            print("hii")
+            return Response({'error': 'No Announcement'},status=status.HTTP_200_BAD_REQUEST)
         serializer = AnnouncementSerializer(announcements, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
