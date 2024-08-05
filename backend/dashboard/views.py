@@ -492,9 +492,7 @@ class handle_comapany_contact_api(APIView):
             return Response({'message':False}, status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request):  
-        user=request.user
-        branch = user.userdetails.branch
-        com  
+        pass
     
 
 @api_view(['POST'])
@@ -530,7 +528,7 @@ def print_HRlist_api(request):
     if role==3 or role==4:
         hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response({hrcontactserializer.data},status=status.HTTP_200_OK)
+        return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
     else:
         return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     
@@ -541,7 +539,7 @@ def my_print_HRlist_api(request):
     if role==3 or role==4:
         hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
         hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response({hrcontactserializer.data},status=status.HTTP_200_OK)
+        return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
     else:
         return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     
@@ -552,7 +550,7 @@ def tnp_view_api(request):
     if role==3 or role==4:
         sharedlist = Shared_HR_contact.objects.all(college_branch=user.user_profile.college_branch)
         sharedlistserializer = Shared_HR_contactSerializer(sharedlist,many=True)
-        return Response({sharedlistserializer.data},status=status.HTTP_200_OK)
+        return Response(sharedlistserializer.data,status=status.HTTP_200_OK)
     else:
         return Response({'message':False},status=status.HTTP_400_BAD_REQUEST)
     
