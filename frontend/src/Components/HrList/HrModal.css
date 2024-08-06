@@ -37,7 +37,7 @@
 .hrlist-modal-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 350px 350px;
+  grid-template-rows: auto auto;
   gap: 25px;
   padding: 10px;
   overflow-y: auto;
@@ -75,23 +75,29 @@
 }
 
 .hrlist-modal-overlay .grid-item-0-0 {
-  grid-area: 1 / 1 / 3 / 2;
-  height: 100%;
+  grid-area: 1 / 1 / 2 / 2;
+  height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow-y: auto;
 }
 
 .hrlist-modal-overlay .grid-item-0-1 {
   grid-area: 1 / 2 / 2 / 3;
-  height: 350px;
+  height: auto;
+  overflow-y: auto;
+}
+
+.hrlist-modal-overlay .grid-item-1-0 {
+  grid-area: 2 / 1 / 3 / 2;
+  height: 400px;
   overflow-y: auto;
 }
 
 .hrlist-modal-overlay .grid-item-1-1 {
   grid-area: 2 / 2 / 3 / 3;
-  height: 350px;
+  height: auto;
   overflow: hidden;
 }
 
@@ -189,4 +195,24 @@
 
 .hrlist-modal-overlay .grid-item-0-0 > *:last-child {
   margin-bottom: 0;
+}
+
+.hrlist-modal-overlay .grid-item-0-0 .info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.hrlist-modal-overlay .grid-item-0-0 .info-row label {
+  margin-top: 0;
+  margin-right: 10px;
+  min-width: 150px;
+}
+
+.hrlist-modal-overlay .grid-item-0-0 .info-row .data {
+  flex-grow: 1;
+}
+
+.hrlist-modal-overlay .grid-item-0-0 .react-datepicker-wrapper {
+  width: auto;
 }
