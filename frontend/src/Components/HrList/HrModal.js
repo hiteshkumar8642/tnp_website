@@ -25,9 +25,12 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
+    <div className="hrlist-modal-overlay" onClick={onClose}>
+      <div
+        className="hrlist-modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="hrlist-modal-header">
           <h2>
             {hr.name}
             <a href={hr.linkedin} target="_blank" rel="noopener noreferrer">
@@ -35,9 +38,9 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
             </a>
           </h2>
         </div>
-        <div className="modal-body">
+        <div className="hrlist-modal-body">
           <div className="grid-item grid-item-0-0">
-            <p>Company: {hr.company_id}</p>
+            <p>Company: {hr.company_id.name}</p>
             <p>Gender: {hr.gender}</p>
             <div>
               <label>Last Date of Contact:</label>
