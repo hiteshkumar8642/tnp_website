@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import Dropdown from "./Dropdown";
 
 export default function Header({ isLoginPage, children }) {
   let PageName = "CampusHirease";
@@ -23,6 +24,7 @@ export default function Header({ isLoginPage, children }) {
               <NavLink to="/pricing" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
                 <li>Pricing</li>
               </NavLink>
+              <Dropdown/>
             </ul>
           <Link to="/login">
             <button className="nav-button bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors align-middle">
