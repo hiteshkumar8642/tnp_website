@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     # path('login', views.login, name='login'),
     path('applied_company/', views.appliedCompany, name='applied_company'),
-    path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
+    # path('company_contacts/',views.handle_comapany_contact,name='company_contacts'),
     path('hr_contacts/',views.handle_hr_contact,name='hr_contacts'),
     path('job_description/<int:jd_id>',views.job_description,name='job_description'),
     # path('hr_list/',views.print_list,name="hr_list"),
@@ -28,9 +28,10 @@ urlpatterns = [
     
     #----------------------------------------------------------
 
-    # path('api/company_contacts/',views.handle_comapany_contact_api,name='company_contacts'),
-    # path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
+    path('api/company_contacts/',views.handle_comapany_contact_api.as_view(),name='company_contacts'),
+    path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
     path('api/hr_list/',views.print_HRlist_api,name="hr_list"),
+    path('api/common_company_form/',views.common_company_form_api.as_view(),name="common_company_form"),
     path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
     path('api/announcement/',views.get_announcements,name='announcement'),
     path('api/application/',views.application,name='application')
