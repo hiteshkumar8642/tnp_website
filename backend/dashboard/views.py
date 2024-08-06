@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
 from .models import College
 from rest_framework.views import APIView
-from .serializers import UserSerializer, CollegeSerializer,CourseSerializer,College_CourseSerializer,CompanySerializer,Shared_CompanySerializer,Shared_HR_contactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
+from .serializers import UserSerializer, CollegeSerializer,CourseSerializer,CollegeCourseSerializer,CompanySerializer,SharedCompanySerializer,SharedHRContactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
 # from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import AccessToken
@@ -32,7 +32,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class CollegeCourseViewSet(viewsets.ModelViewSet):
     queryset = CollegeCourse.objects.all()
-    serializer_class = College_CourseSerializer
+    serializer_class = CollegeCourseSerializer
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
@@ -40,11 +40,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 class Shared_CompanyViewSet(viewsets.ModelViewSet):
     queryset = Shared_Company.objects.all()
-    serializer_class = Shared_CompanySerializer
+    serializer_class = SharedCompanySerializer
 
 class Shared_HRViewSet(viewsets.ModelViewSet):
     queryset = Shared_HR_contact.objects.all()
-    serializer_class = Shared_HR_contactSerializer
+    serializer_class = SharedHRContactSerializer
 
 class HRContactViewSet(viewsets.ModelViewSet):
     queryset = HRContact.objects.all()

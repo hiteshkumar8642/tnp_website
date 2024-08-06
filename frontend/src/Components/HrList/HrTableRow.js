@@ -22,7 +22,7 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     <>
       <tr onClick={handleRowClick}>
         <td className="col-2 left-align">{hr.name}</td>
-        <td className="col-2 left-align">{hr.company_id}</td>
+        <td className="col-2 left-align">{hr.company_id.name}</td>
         <td className="col-1 center-align">
           {formatDate(hr.last_date_of_contact)}
         </td>
