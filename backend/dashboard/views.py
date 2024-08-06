@@ -74,95 +74,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
 
-@api_view(['POST'])
-def login(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    if not username or not password:
-        return Response({"error": "Please provide both username and password"}, status=status.HTTP_400_BAD_REQUEST)
-
-    users = authenticate(request, username=username, password=password)
-    
-    if users is not None:
-        details = UserDetails.objects.filter(user=users)
-        profile = UserProfile.objects.filter(user=users)
-        app_com = AppliedCompany.objects.filter(user_id=users.id)
-        app_obj = app_com[0].application_id
-        comp_obj = app_obj.company_id
-        company = Company.objects.filter(id=comp_obj.id)
-        hr_cnt = HRContact.objects.filter(company_id=comp_obj.id)
-        announcement = Announcement.objects.all().order_by('created')[:10]
-        print(announcement)
-        s1 = UserSerializer(users)
-        s2 = UserDetailsSerializer(details,many=True)
-        s3 = UserProfileSerializer(profile,many=True)
-        s4 = CompanySerializer(company,many=True)
-        s5 = HRContactSerializer(hr_cnt,many=True)
-        announcement_serializer = AnnouncementSerializer(announcement, many=True)
-        print(announcement_serializer)
-        if profile[0].role==3 or profile[0].role==4 :
-            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"HRContact":s5.data,"Announcement":announcement_serializer.data}, status=status.HTTP_200_OK)
-        if profile[0].role==1:
-            return Response({"message": "Login successful", "user": s1.data, "detail":s2.data ,"role":s3.data,"Company":s4.data,"Announcement":announcement_serializer.data}, status=status.HTTP_200_OK)
-    else:
-        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_announcements(request):
-    try:
-        print(" hello")
-        user = request.user
-        print(user.userdetails.college_branch)
-        announcements = Announcement.objects.filter(college_branch=user.userdetails.college_branch)
-        print(announcements)
-        if announcements is None:
-            print("hii")
-            return Response({'error': 'No Announcement'},status=status.HTTP_200_BAD_REQUEST)
-        serializer = AnnouncementSerializer(announcements, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET'])
-def application(request):
-    try:
-        application = Application.objects.all().order_by('last_date')
-        application_serializer = ApplicationSerializer(application, many=True)
-        return Response({'applications': application_serializer.data})
-    except Exception as e:
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-def signup(request):
-    serial = UserSerializer(data=request.data)
-    if user.is_valid():
-        user = serial.save()
-        username = request.data.get('username')
-        password = request.data.get('password')
-        details = UserDetails.objects.filter(user=user)
-        profile = UserProfile.objects.filter(user=user)
-        user_serializer = UserSerializer(user)
-        details_serializer = UserDetailsSerializer(details, many=True)
-        profile_serializer = UserProfileSerializer(profile, many=True)
-
-        return Response({"message": "Signup successful","user": user_serializer.data,"detail": details_serializer.data,"role": profile_serializer.data
-        }, status=status.HTTP_201_CREATED)
-    else:
-        return Response({"error": "Somethind went Wrong!"}, status=status.HTTP_400_BAD_REQUEST)
-
-# @api_view(['GET'])
-# def dashboard(request):
-#     announcement = Announcement.objects.all().order_by('created')[:10]
-#     application = Application.objects.all().order_by('last_date')
-#     announcement_serializer = AnnouncementSerializer(announcement, many=True)
-#     application_serializer = ApplicationSerializer(application, many=True)
-#     return Response({
-#         'announcements': announcement_serializer.data,
-#         'applications': application_serializer.data
-#     })
 
 def dashboard(request):
     if request.user.is_authenticated:
@@ -466,83 +377,60 @@ def Announcement_form(request):
 
 # APIs 
 
+@api_view(['GET'])
+def application(request):
+    try:
+        application = Application.objects.all().order_by('last_date')
+        application_serializer = ApplicationSerializer(application, many=True)
+        return Response({'applications': application_serializer.data})
+    except Exception as e:
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-class handle_comapany_contact_api(APIView):
-    def post(self, request):
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_announcements(request):
+    try:
+        print(" hello")
         user = request.user
-        branch = user.userdetails.college_branch
-        data = {
-            'company' : request.data.get('company-name'),
-            'comp_email' : request.data.get('company-email'),
-            'comp_contact' : request.data.get('company-number'),
-            'ctc' : request.data.get('ctc'),
-            'clg_visited' : request.data.get('clg-vis'),
-            'selected_options' : request.data.getlist('intern1'),
-            'is_company' : request.data.get('is_company'),
-            'locations' : request.data.get('location-id'),
-            'users' : user,
-            'branch': branch
-        }
-        company_serializer = Shared_CompanySerializer(data=data)
-        if company_serializer.is_valid():
-            company_serializer.save()
-            return Response({'message':True},status=status.HTTP_200_ok)
-        else:
-            return Response({'message':False}, status=status.HTTP_400_BAD_REQUEST)
-    
-    def get(self, request):  
-        pass
-    
+        print(user.userdetails.college_branch)
+        announcements = Announcement.objects.filter(college_branch=user.userdetails.college_branch)
+        print(announcements)
+        if announcements is None:
+            print("hii")
+            return Response({'error': 'No Announcement'},status=status.HTTP_200_BAD_REQUEST)
+        serializer = AnnouncementSerializer(announcements, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def appliedCompany_api(request):
+    user=request.user
+    application = Application.objects.get(user_id=user.id)
+    appliedcompanyserializer = AppliedCompanySerializer(application,many=True)
+    return Response(appliedcompanyserializer.data,status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def handle_hr_contact_api(request):
-    access = request.data.get('access')
-    token = AccessToken(access)
-    user_id = token.get('user_id')
-    user = User.objects.get(id=user_id)
-    branch = UserDetails.objects.get(user=user).college_branch
-    print(branch)
-
-    data = {
-            'name': request.data.get('name'),
-            'company_name': request.data.get('company-name'),
-            'email': request.data.get('company-email'),
-            'contact_number': request.data.get('number'),
-            'linkedin_id': request.data.get('linkedin'),
-            'college_branch': branch,
-            'user': user
-        }
-    
-    he_contact_serial = Shared_HR_contactSerializer(data=data)
-    if he_contact_serial.is_valid(): 
+    try:
+        name = request.POST.get('name')
+        company_name= request.POST.get('company-name')
+        email = request.POST.get('company-email')
+        contact_number = request.POST.get('number')
+        linkedin_id = request.POST.get('linkedin')
+        user = request.user
+        college_branch = user.userdetails.college_branch
+        print(email)
+        he_contact_serial = Shared_HR_contact(name=name,company_name=company_name,email=email,contact_number=contact_number,linkedin_id=linkedin_id,college_branch=college_branch,user=user)
+        print("daat")
         he_contact_serial.save()
         return Response({"message": True},status=status.HTTP_200_OK)
-    else:
-        return Response({'message': False}, status=status.HTTP_400_BAD_REQUEST)
-    
-@api_view(['GET'])
-def print_HRlist_api(request):
-    user=request.user
-    role = UserProfile.objects.get(user=user).role
-    if role==3 or role==4:
-        hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
-        hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
-    else:
-        return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
-    
-@api_view(['GET'])
-def my_print_HRlist_api(request):
-    user = request.user
-    role = UserProfile.objects.get(user=user).role
-    if role==3 or role==4:
-        hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
-        hrcontactserializer = HRContactSerializer(hrContact,many=True)
-        return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
-    else:
-        return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
-    
+    except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 def tnp_view_api(request):
     user = request.user
@@ -553,6 +441,82 @@ def tnp_view_api(request):
         return Response(sharedlistserializer.data,status=status.HTTP_200_OK)
     else:
         return Response({'message':False},status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class common_company_form_api(APIView):
+    def post(self, request):
+        try:
+            company_name = request.POST.get('company-name')
+            company_email = request.POST.get('company-email')
+            company_contact = request.POST.get('company-contact')
+            ctc = request.POST.get('ctc')
+            college_visited = request.POST.get('clg-vis')
+            type = request.POST.get('intern1')
+            is_company =  request.POST.get('is_company')
+            location =  request.POST.get('location-id')
+            user = request.user
+            branch = user.userdetails.college_branch
+            print(college_visited)
+            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,is_company=is_company,location=location,college_branch=branch,user=user)
+            print("data")
+            company_serializer.save()
+            return Response({"message": True},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# @api_view(['POST'])
+class handle_comapany_contact_api(APIView):
+    def get(self, request):  
+        user = request.user
+        branch = user.userdetails.college_branch
+        if user.userprofile.role==3 or user.userprofile.role==4:
+            company_contacts = Shared_Company.objects.filter(college_branch=branch)
+            if company_contacts is None:
+                return Response({'error': 'Company List Empty'},status=status.HTTP_200_BAD_REQUEST)
+            company_serializer = Shared_CompanySerializer(company_contacts, many=True)
+            return Response(company_serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': "Unauthorized Access"},status=status.HTTP_200_BAD_REQUEST)
+
+
+## Transfer Contact API need to be done shared hr/company db
+## dlt ALL
+
+## ALL STUDENT LIST
+## ADD NEW APPLICATION
+
+    
+@api_view(['GET'])
+def print_HRlist_api(request):
+    try:
+        user=request.user
+        print(user,"sdfyvyu")
+        role = UserProfile.objects.get(user=user).role
+        if role==3 or role==4:
+            hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
+            hrcontactserializer = HRContactSerializer(hrContact,many=True)
+            return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
+        else:
+            return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def my_print_HRlist_api(request):
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
+    if role==3 or role==4:
+        hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
+        if hrContact is None:
+            return Response({'error': 'No HR_Contacts'},status=status.HTTP_200_BAD_REQUEST)
+        hrcontactserializer = HRContactSerializer(hrContact,many=True)
+        return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
+    else:
+        return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
+    
+
     
 @api_view(['GET'])
 def tnp_company_view_api(request):
@@ -561,17 +525,10 @@ def tnp_company_view_api(request):
     if role==3 or role==4:
         sharedcompany = Shared_Company.objects.all(college_branch=user.user_profile.college_branch)
         sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
-        return Response({"Shared_Company": sharedcompany_serializer.data},status=status.HTTP_200_OK)
+        return Response(sharedcompany_serializer.data,status=status.HTTP_200_OK)
     else:
         return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['GET'])
-def appliedCompany_api(request):
-    user=request.user
-    application = Application.objects.get(user_id=user.id)
-    appliedcompanyserializer = AppliedCompanySerializer(application,many=True)
-    return Response({"AppliedCompanies": appliedcompanyserializer.data},status=status.HTTP_200_OK)
-
 
 @api_view(['POST'])
 def annuncement_form_api(request):
@@ -582,36 +539,11 @@ def annuncement_form_api(request):
         'user': user,
         'announcement': request.data.get('announcement'),
         }
-        announcement_serial = AnnouncementSerializer(data=data)
+        announcement_serial = Announcement(data=data)
         announcement_serial.save()
         return Response({"message":True},status=status.HTTP_200_OK)
     else:
         return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
-def dummy(request):
-    user = request.user
-    role = UserProfile.objects.get(user=user).role
-    if role==3 or role==4:
-        dummy_hr_contact_data = [
-            {
-                "id": 1,
-                "name": "John Doe",
-                "email": "john.doe@example.com",
-                "phone": "+123456789",
-                "college_branch": "Computer Science",
-                "assigned": user.id,
-            },
-            {
-                "id": 2,
-                "name": "Jane Smith",
-                "email": "jane.smith@example.com",
-                "phone": "+987654321",
-                "college_branch": "Mechanical Engineering",
-                "assigned": user.id,
-            }
-        ]
-        return Response({'HRList': dummy_hr_contact_data}, status=status.HTTP_200_OK)
-    else:
-        return Response({'message': False}, status=status.HTTP_400_BAD_REQUEST)
+
