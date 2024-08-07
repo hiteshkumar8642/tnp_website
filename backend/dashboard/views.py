@@ -395,7 +395,7 @@ def application(request):
         application_serializer = ApplicationSerializer(applications, many=True)
         
         # Return a successful response with serialized data
-        return Response({'applications': application_serializer.data})
+        return Response({application_serializer.data})
     
     except ObjectDoesNotExist:
         # Handle case where the Application object doesn't exist
