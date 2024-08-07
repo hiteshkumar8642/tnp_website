@@ -388,14 +388,15 @@ def Announcement_form(request):
 @api_view(['GET'])
 def application(request):
     try:
+        user = request.user
         # Attempt to retrieve all Application objects, ordered by 'last_date'
-        applications = Application.objects.all().order_by('last_date')
+        applications = Application.objects.all(college_branch=user.userdetails.college_branch).order_by('last_date')
         
         # Serialize the retrieved applications
         application_serializer = ApplicationSerializer(applications, many=True)
         
         # Return a successful response with serialized data
-        return Response({application_serializer.data})
+        return Response(application_serializer.data,status=status.HTTP_200_OK)
     
     except ObjectDoesNotExist:
         # Handle case where the Application object doesn't exist
