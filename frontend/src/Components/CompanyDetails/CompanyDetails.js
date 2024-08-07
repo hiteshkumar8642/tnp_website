@@ -1,42 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { timeanddate } from "../../utils/timeanddate";
+import { fetchComingCompanyDetails } from "../../api/ComingCompany";
+import CompanyItem from "./CompanyItem";
 
 function CompanyDetails() {
   const [viewMode, setViewMode] = useState("grid");
 
-  const currentDate = new Date();
-  const day = currentDate.getDate();
-  const year = currentDate.getFullYear();
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const monthName = monthNames[currentDate.getMonth()];
+  const [comingCompanies, setComingCompanies] = useState([]);
+  const [error, setError] = useState("");
 
-  const getOrdinalSuffix = (day) => {
-    if (day > 3 && day < 21) return "th";
-    switch (day % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
+  useEffect(() => {
+    async function getComingCompanies() {
+      try {
+        const data = await fetchComingCompanyDetails();
+        console.log(data);
+        setComingCompanies(data);
+      } catch (err) {
+        setError("Failed to load Upcoming Companies");
+        console.log(err);
+      }
     }
-  };
+    getComingCompanies();
+  }, []);
 
-  const formattedDate = `${day}${getOrdinalSuffix(day)} ${monthName} ${year}`;
+  const currentDate = new Date();
+  const formattedDate = timeanddate(currentDate);
 
   return (
     <div className="projects-section">
@@ -45,6 +33,7 @@ function CompanyDetails() {
         <p className="time">{formattedDate}</p>
       </div>
       <div className="projects-section-line">
+        {error && <p className="error-message">{error}</p>}
         <div className="projects-status">
           <div className="item-status">
             <span className="status-number">5</span>
@@ -120,26 +109,9 @@ function CompanyDetails() {
         }`}
       >
         <div className="project-box-wrapper">
-          <a href="{% url 'job_description' jd_id=x.id  %}">
-            <div className="project-box" style={{ backgroundColor: "#fee4cb" }}>
-              <div className="project-box-header">
-                <span>27th July </span>
-                <div className="more-wrapper">SPP</div>
-              </div>
-              <div className="project-box-content-header">
-                <p className="box-content-header">Amazon</p>
-                <p className="box-content-subheader">SDE</p>
-                <p className="box-content-subheader">Full Time PPO Intern</p>
-              </div>
-
-              <div className="project-box-footer">
-                <div className="participants">10 LPA</div>
-                <div className="days-left" style={{ color: "#ff942e" }}>
-                  10 Days
-                </div>
-              </div>
-            </div>
-          </a>
+          {comingCompanies.map((company) => (
+            <CompanyItem company={company} key={company.id} />
+          ))}
         </div>
       </div>
     </div>
