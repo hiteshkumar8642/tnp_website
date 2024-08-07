@@ -34,9 +34,7 @@ urlpatterns = [
     path('api/common_company_form/',views.common_company_form_api.as_view(),name="common_company_form"),
     path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
     path('api/announcement/',views.get_announcements,name='announcement'),
-    path('api/application/',views.application,name='application'),
-    path('api/appliedCompanies/',views.appliedCompany_api,name='appliedCompanies'),
-    # path('api/dummy/',views.dummy,name='dummy')
+    path('api/application/',views.application,name='application')
     # path('api/dummy/',views.dummy,name='dummy')
 
 
