@@ -390,7 +390,7 @@ def application(request):
     try:
         user = request.user
         # Attempt to retrieve all Application objects, ordered by 'last_date'
-        applications = Application.objects.all(college_branch=user.userdetails.college_branch).order_by('last_date')
+        applications = Application.objects.filter(college_branch=user.userdetails.college_branch).order_by('last_date')
         
         # Serialize the retrieved applications
         application_serializer = ApplicationSerializer(applications, many=True)
