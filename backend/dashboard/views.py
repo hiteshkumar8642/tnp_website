@@ -19,14 +19,6 @@ from .models import College
 from rest_framework.views import APIView
 from .serializers import UserSerializer, CollegeSerializer,CourseSerializer,CollegeCourseSerializer,CompanySerializer,SharedCompanySerializer,SharedHRContactSerializer,HRContactSerializer,CallHistorySerializer,UserDetailsSerializer,ApplicationSerializer,AppliedCompanySerializer,UserProfileSerializer,AnnouncementSerializer
 
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import DatabaseError
-import logging
-
-# Configure logging
-logger = logging.getLogger(__name__)
-
 # from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import AccessToken
 
@@ -388,439 +380,189 @@ def Announcement_form(request):
 @api_view(['GET'])
 def application(request):
     try:
-        user = request.user
-        # Attempt to retrieve all Application objects, ordered by 'last_date'
-        applications = Application.objects.filter(college_branch=user.userdetails.college_branch).order_by('last_date')
-        
-        # Serialize the retrieved applications
-        application_serializer = ApplicationSerializer(applications, many=True)
-        
-        # Return a successful response with serialized data
-        return Response(application_serializer.data,status=status.HTTP_200_OK)
-    
-    except ObjectDoesNotExist:
-        # Handle case where the Application object doesn't exist
-        logger.error("Application objects not found.")
-        return Response({'detail': 'Applications not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Handle database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+        application = Application.objects.all().order_by('last_date')
+        application_serializer = ApplicationSerializer(application, many=True)
+        return Response({'applications': application_serializer.data})
     except Exception as e:
-        # Handle any other unspecified exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_announcements(request):
     try:
+        print(" hello")
         user = request.user
-
-        # Filter announcements based on the user's college branch
+        print(user.userdetails.college_branch)
         announcements = Announcement.objects.filter(college_branch=user.userdetails.college_branch)
-
-        # If no announcements are found, return an appropriate message
-        if not announcements.exists():
-            return Response({'error': 'No Announcement'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Serialize and return the announcements
+        print(announcements)
+        if announcements is None:
+            print("hii")
+            return Response({'error': 'No Announcement'},status=status.HTTP_200_BAD_REQUEST)
         serializer = AnnouncementSerializer(announcements, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    except ObjectDoesNotExist as e:
-        # Log the error and return a 404 response
-        logger.error(f"Object not found error: {str(e)}")
-        return Response({'detail': 'Requested object not found.', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log the database error and return a 500 response
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'Database error occurred.', 'error': str(db_err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     except Exception as e:
-        # Log any other unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
 def appliedCompany_api(request):
     try:
-        # Get the current authenticated user
-        user = request.user
-
-        # Retrieve the Application object associated with the user
-        application = Application.objects.get(user_id=user.id)
-
-        # Serialize the Application object using AppliedCompanySerializer
-        appliedcompanyserializer = AppliedCompanySerializer(application)
-
-        # Return the serialized data with an HTTP 200 OK status
-        return Response(appliedcompanyserializer.data, status=status.HTTP_200_OK)
-
-    except ObjectDoesNotExist:
-        # Log the error and return a 404 response if the Application object is not found
-        logger.error("Application not found for the user with ID: {}".format(user.id))
-        return Response({'detail': 'Application not found for the user.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log the database error and return a 500 response
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        user=request.user
+        application = AppliedCompany.objects.filter(user_id=user.id)
+        appliedcompanyserializer = AppliedCompanySerializer(application,many=True)
+        return Response(appliedcompanyserializer.data,status=status.HTTP_200_OK)
     except Exception as e:
-        # Log any other unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def handle_hr_contact_api(request):
     try:
-        # Extract data from the POST request
         name = request.POST.get('name')
-        company_name = request.POST.get('company-name')
+        company_name= request.POST.get('company-name')
         email = request.POST.get('company-email')
         contact_number = request.POST.get('number')
         linkedin_id = request.POST.get('linkedin')
-        
-        # Get the current authenticated user
         user = request.user
-        
-        # Retrieve the user's college branch
         college_branch = user.userdetails.college_branch
-
-        # Validate input data using Django serializer
-        data = {
-            'name': name,
-            'company_name': company_name,
-            'email': email,
-            'contact_number': contact_number,
-            'linkedin_id': linkedin_id,
-            'college_branch': college_branch,
-            'user': user.id  # pass user ID to the serializer
-        }
-
-        # Use a serializer to validate and save the data
-        serializer = SharedHRContactSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
+        print(email)
+        he_contact_serial = Shared_HR_contact(name=name,company_name=company_name,email=email,contact_number=contact_number,linkedin_id=linkedin_id,college_branch=college_branch,user=user)
+        print("daat")
+        he_contact_serial.save()
+        return Response({"message": True},status=status.HTTP_200_OK)
     except Exception as e:
-        # Log the exception for debugging purposes
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
 def tnp_view_api(request):
     try:
-        # Get the current authenticated user
         user = request.user
-
-        # Retrieve the user's role from UserProfile
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
-
-        # Check if the user has the required role
-        if role in [3, 4]:
-            # Filter shared HR contacts by the user's college branch
-            shared_list = Shared_HR_contact.objects.filter(college_branch=user_profile.college_branch)
-
-            # Serialize the list of shared HR contacts
-            shared_list_serializer = Shared_HR_contactSerializer(shared_list, many=True)
-
-            # Return the serialized data with an HTTP 200 OK status
-            return Response(shared_list_serializer.data, status=status.HTTP_200_OK)
+        role = UserProfile.objects.get(user=user).role
+        if role==3 or role==4:
+            sharedlist = Shared_HR_contact.objects.all(college_branch=user.user_profile.college_branch)
+            sharedlistserializer = SharedHRContactSerializer(sharedlist,many=True)
+            return Response(sharedlistserializer.data,status=status.HTTP_200_OK)
         else:
-            # Return a 403 Forbidden status if the user is not authorized
-            return Response({'message': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
-
-    except ObjectDoesNotExist:
-        # Log the error if the UserProfile does not exist
-        logger.error("UserProfile not found for user ID: {}".format(user.id))
-        return Response({'detail': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log any database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'message':False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class common_company_form_api(APIView):
     def post(self, request):
         try:
-            # Collect data from the POST request
             company_name = request.POST.get('company-name')
             company_email = request.POST.get('company-email')
             company_contact = request.POST.get('company-contact')
             ctc = request.POST.get('ctc')
             college_visited = request.POST.get('clg-vis')
             type = request.POST.get('intern1')
-            is_company = request.POST.get('is_company')
-            location = request.POST.get('location-id')
-
-            # Get the current authenticated user
+            is_company =  request.POST.get('is_company')
+            location =  request.POST.get('location-id')
             user = request.user
-
-            # Retrieve the user's college branch
             branch = user.userdetails.college_branch
-
-            # Log the college_visited value for debugging purposes
-            logger.debug(f"College Visited: {college_visited}")
-
-            # Prepare data for the serializer
-            data = {
-                'company_name': company_name,
-                'company_email': company_email,
-                'company_contact': company_contact,
-                'ctc': ctc,
-                'college_visited': college_visited,
-                'type': type,
-                'is_company': is_company,
-                'location': location,
-                'college_branch': branch,
-                'user': user.id  # pass user ID to the serializer
-            }
-
-            # Use a serializer to validate and save the data
-            company_serializer = SharedCompanySerializer(data=data)
-            if company_serializer.is_valid():
-                company_serializer.save()
-                return Response({"message": True}, status=status.HTTP_201_CREATED)
-            else:
-                # Return validation errors
-                return Response({'errors': company_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-        except ObjectDoesNotExist:
-            # Handle the case where user details or college branch don't exist
-            logger.error(f"UserDetails or CollegeBranch not found for user ID: {user.id}")
-            return Response({'detail': 'User details not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-        except DatabaseError as db_err:
-            # Handle any database-related errors
-            logger.error(f"Database error: {str(db_err)}")
-            return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            print(college_visited)
+            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,is_company=is_company,location=location,college_branch=branch,user=user)
+            print("data")
+            company_serializer.save()
+            return Response({"message": True},status=status.HTTP_200_OK)
         except Exception as e:
-            # Log any unexpected exceptions
-            logger.error(f"Unexpected error: {str(e)}")
-            return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# @api_view(['POST'])
 class handle_comapany_contact_api(APIView):
-    def get(self, request):
-        try:
-            # Retrieve the current user and their college branch
+    def get(self, request): 
+        try: 
             user = request.user
             branch = user.userdetails.college_branch
-
-            # Check if the user has the appropriate role to access this data
-            if user.userprofile.role == 3 or user.userprofile.role == 4:
-                # Retrieve company contacts for the user's college branch
+            if user.userprofile.role==3 or user.userprofile.role==4:
                 company_contacts = Shared_Company.objects.filter(college_branch=branch)
-
-                # Check if there are any company contacts
-                if not company_contacts.exists():
-                    return Response({'error': 'Company List Empty'}, status=status.HTTP_404_NOT_FOUND)
-
-                # Serialize the company contacts
-                company_serializer = Shared_CompanySerializer(company_contacts, many=True)
+                if company_contacts is None:
+                    return Response({'error': 'Company List Empty'},status=status.HTTP_200_BAD_REQUEST)
+                company_serializer = SharedCompanySerializer(company_contacts, many=True)
                 return Response(company_serializer.data, status=status.HTTP_200_OK)
             else:
-                # Return 403 Forbidden for unauthorized access
-                return Response({'message': "Unauthorized Access"}, status=status.HTTP_403_FORBIDDEN)
-
-        except ObjectDoesNotExist:
-            # Log and return a 404 error if user details or profiles are missing
-            logger.error(f"UserDetails or UserProfile not found for user ID: {user.id}")
-            return Response({'detail': 'User details not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-        except DatabaseError as db_err:
-            # Log and return a 500 error for any database issues
-            logger.error(f"Database error: {str(db_err)}")
-            return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+                return Response({'message': "Unauthorized Access"},status=status.HTTP_200_BAD_REQUEST)
         except Exception as e:
-            # Log and return a 500 error for any unexpected exceptions
-            logger.error(f"Unexpected error: {str(e)}")
-            return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-## Transfer Contact API need to be done shared hr/company db
-## dlt ALL
-
-## ALL STUDENT LIST
-## ADD NEW APPLICATION
-
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 def print_HRlist_api(request):
     try:
-        # Get the current authenticated user
-        user = request.user
-
-        # Retrieve the user's role from UserProfile
+        user=request.user
+        print(user,"sdfyvyu")
         role = UserProfile.objects.get(user=user).role
-
-        # Check if the user has the required role
-        if role == 3 or role == 4:
-            # Fetch HR contacts for the user's college branch with no assignment
-            hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch, assigned=None)
-
-            # Check if hrContact is empty
-            if not hrContact.exists():
-                return Response({'error': 'HR Contact List is empty.'}, status=status.HTTP_404_NOT_FOUND)
-
-            # Serialize and return the HR contacts
-            hrcontactserializer = HRContactSerializer(hrContact, many=True)
-            return Response(hrcontactserializer.data, status=status.HTTP_200_OK)
-
+        if role==3 or role==4:
+            hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=None)
+            hrcontactserializer = HRContactSerializer(hrContact,many=True)
+            return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
         else:
-            # Return 403 Forbidden for unauthorized access
-            return Response({'message': 'Unauthorized access.'}, status=status.HTTP_403_FORBIDDEN)
-
-    except ObjectDoesNotExist:
-        # Log the error if the UserProfile does not exist
-        logger.error(f"UserProfile not found for user ID: {user.id}")
-        return Response({'detail': 'UserProfile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log any database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def my_print_HRlist_api(request):
     try:
-        # Get the current authenticated user
         user = request.user
-
-        # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
-
-        # Check if the user has the required role
-        if role == 3 or role == 4:
-            # Fetch HR contacts for the user's college branch assigned to the user
-            hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch, assigned=user)
-
-            # Check if hrContact is empty
-            if not hrContact.exists():
-                return Response({'error': 'No HR Contacts'}, status=status.HTTP_404_NOT_FOUND)
-
-            # Serialize and return the HR contacts
-            hrcontactserializer = HRContactSerializer(hrContact, many=True)
-            return Response(hrcontactserializer.data, status=status.HTTP_200_OK)
-
+        if role==3 or role==4:
+            hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch,assigned=user)
+            if hrContact is None:
+                return Response({'error': 'No HR_Contacts'},status=status.HTTP_200_BAD_REQUEST)
+            hrcontactserializer = HRContactSerializer(hrContact,many=True)
+            return Response(hrcontactserializer.data,status=status.HTTP_200_OK)
         else:
-            # Return 403 Forbidden for unauthorized access
-            return Response({'message': 'Unauthorized access.'}, status=status.HTTP_403_FORBIDDEN)
-
-    except ObjectDoesNotExist:
-        # Log the error if the UserProfile does not exist
-        logger.error(f"UserProfile not found for user ID: {user.id}")
-        return Response({'detail': 'UserProfile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log any database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'message': False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     
 @api_view(['GET'])
-def tnp_company_view_api(request):
+def SharedCompanyListAPI(request):
     try:
-        # Get the current authenticated user
         user = request.user
-
-        # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
-
-        # Check if the user has the required role
-        if role == 3 or role == 4:
-            # Fetch shared companies for the user's college branch
+        if role==3 or role==4:
             sharedcompany = Shared_Company.objects.filter(college_branch=user.userdetails.college_branch)
-
-            # Check if sharedcompany is empty
-            if not sharedcompany.exists():
-                return Response({'error': 'No Shared Companies found.'}, status=status.HTTP_404_NOT_FOUND)
-
-            # Serialize and return the shared companies
-            sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
-            return Response(sharedcompany_serializer.data, status=status.HTTP_200_OK)
-
+            sharedcompany_serializer = SharedCompanySerializer(sharedcompany, many=True)
+            return Response(sharedcompany_serializer.data,status=status.HTTP_200_OK)
         else:
-            # Return 403 Forbidden for unauthorized access
-            return Response({'message': 'Unauthorized access.'}, status=status.HTTP_403_FORBIDDEN)
-
-    except ObjectDoesNotExist:
-        # Log the error if the UserProfile does not exist
-        logger.error(f"UserProfile not found for user ID: {user.id}")
-        return Response({'detail': 'UserProfile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log any database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     
+@api_view(['GET'])
+def student_list_api(request):
+    try:
+        user = request.user
+        role = UserProfile.objects.get(user=user).role
+        if role==3 or role==4:
+            print("dev")
+            userdetails = UserDetails.objects.filter(college_branch=user.userdetails.college_branch)
+            print("vrat")
+            user_details_serializer = UserDetailsSerializer(userdetails,many=True)
+            return Response(user_details_serializer.data,status=status.HTTP_200_OK)
+        else:
+            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
+
 
 @api_view(['POST'])
 def annuncement_form_api(request):
     try:
-        # Get the current authenticated user and their role
         user = request.user
         role = user.userprofile.role
-
-        # Check if the user has the required role
-        if role == 3 or role == 4:
-            # Prepare data for serialization
-            data = {
-                'user': user.id,  # Pass the user ID for the serializer
-                'announcement': request.data.get('announcement'),
-            }
-
-            # Validate and save the announcement using a serializer
-            announcement_serial = AnnouncementSerializer(data=data)
-            if announcement_serial.is_valid():
-                announcement_serial.save()
-                return Response({"message": True}, status=status.HTTP_201_CREATED)
-            else:
-                # Return validation errors
-                return Response({'errors': announcement_serial.errors}, status=status.HTTP_400_BAD_REQUEST)
-
+        if role==3 or role==4:
+            user = user
+            announcement = request.POST.get('annuncement')
+            announcement_serial = Announcement(user=user,announcement=announcement)
+            announcement_serial.save()
+            return Response({"message":True},status=status.HTTP_200_OK)
         else:
-            # Return 403 Forbidden for unauthorized access
-            return Response({"message": False}, status=status.HTTP_403_FORBIDDEN)
-
+            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
