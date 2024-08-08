@@ -50,7 +50,7 @@ const CompanyContactForm = () => {
   };
 
   return (
-    <div className="company-form-container">
+    <div className="company-form-container h-fit">
       <h2 className="text-3xl text-center pb-6">Company Contacts</h2>
       <form onSubmit={handleSubmit} className="company-contact-form flex flex-col w-10/12 mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 gap-x-36 ">
@@ -118,7 +118,7 @@ const CompanyContactForm = () => {
               />
             </label>
         </div>
-        <div className="grid-item grid-submit">
+        <div className="pb-24">
           <button type="submit" className="mt-6 text-xl text-white bg-black py-3 px-8 rounded-full w-fit object-center justify-items-center md:relative md:left-[45%] hover:scale-105 transition-all">Submit</button>
         </div>
       </form>

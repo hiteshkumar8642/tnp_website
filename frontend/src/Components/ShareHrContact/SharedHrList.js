@@ -31,7 +31,7 @@ const HRContactForm = () => {
   };
 
   return (
-    <div className="form-container w-11/12 mx-auto ">
+    <div className="form-container w-11/12 mx-auto h-fit">
       <h2 className="text-3xl text-center pb-6">HR Contact</h2>
       <form onSubmit={handleSubmit} className="hr-contactinfo-form w-10/12 mx-auto flex flex-col">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 gap-x-36">
@@ -96,7 +96,10 @@ const HRContactForm = () => {
               />
             </label>
         </div>
-        <button type="submit" className="mt-6 text-xl text-white bg-black py-3 px-8 rounded-full w-fit object-center justify-items-center md:relative md:left-[45%] hover:scale-105 transition-all">Submit</button>
+        <div className="pb-24 pt-2">
+          <button type="submit" className="mt-6 text-xl text-white bg-black py-3 px-8 rounded-full w-fit object-center justify-items-center md:relative md:left-[45%] hover:scale-105 transition-all">Submit</button>
+        </div>
+        
       </form>
     </div>
   );
