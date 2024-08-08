@@ -1,10 +1,13 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
 import { useLoading } from "../LoadingContext/LoadingContext"; // Import the useLoading hook
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 function Sidebar() {
+  const Navigate=useNavigate();
   const { setIsLoading } = useLoading();
 
   const logout = async (refreshToken) => {
@@ -20,17 +23,20 @@ function Sidebar() {
     try {
       setIsLoading(true);
       await logout(refreshToken);
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-
+      localStorage.clear();
       // Remove the Authorization header
       axios.defaults.headers.common["Authorization"] = null;
-
       // Redirect to login page
-      window.location.href = "/";
+      Navigate("/")
+      setIsLoading(false);
+      console.log("hekko");
+      toast.success("Logout successfully");
       
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.success("Logout successfully");
+      localStorage.clear();
+      Navigate("/")
     }
     finally
     {

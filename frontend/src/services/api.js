@@ -1,4 +1,6 @@
-import axios from "axios";
+// apiClient.js
+import axios from 'axios';
+import { useNavigation } from '../utils/NavigationContext';
 
 // Create axios instance
 const apiClient = axios.create({
@@ -25,6 +27,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      const { navigate } = useNavigation();
       try {
         const response = await axios.post(
           "http://127.0.0.1:8000/user/api/token/refresh/",
@@ -37,8 +40,7 @@ apiClient.interceptors.response.use(
       } catch (err) {
         console.error("Token refresh failed", err);
         // Redirect to login page
-        // Assuming you have a way to get navigate function or handle redirects
-        window.location.href = "/login";
+        navigate("/login");
       }
     }
     return Promise.reject(error);

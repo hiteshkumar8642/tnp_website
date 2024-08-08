@@ -21,7 +21,7 @@ import Loader from "./Components/Loader/Loader";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
     <Loader /> {/* Include the Loader component */}
   
    <div className="flex flex-col min-h-screen overflow-auto">
@@ -62,7 +62,7 @@ function App() {
       </Routes>
  </div>
 
-    </BrowserRouter>
+ </>
   );
 }
 
