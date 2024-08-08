@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Create axios instance
 const apiClient = axios.create({
@@ -36,7 +37,9 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (err) {
         console.error('Token refresh failed', err);
-        // Handle refresh error (e.g., redirect to login)
+        // Redirect to login page
+        // Assuming you have a way to get navigate function or handle redirects
+        window.location.href = '/login';
       }
     }
     return Promise.reject(error);
