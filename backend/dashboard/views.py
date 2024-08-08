@@ -460,7 +460,7 @@ def appliedCompany_api(request):
         application = AppliedCompany.objects.filter(user_id=user.id)
 
         # Serialize the Application object using AppliedCompanySerializer
-        appliedcompanyserializer = AppliedCompanySerializer(application)
+        appliedcompanyserializer = AppliedCompanySerializer(application,many=True)
 
         # Return the serialized data with an HTTP 200 OK status
         return Response(appliedcompanyserializer.data, status=status.HTTP_200_OK)
