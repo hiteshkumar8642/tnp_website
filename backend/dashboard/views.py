@@ -457,7 +457,7 @@ def appliedCompany_api(request):
         user = request.user
 
         # Retrieve the Application object associated with the user
-        application = Application.objects.get(user_id=user.id)
+        application = AppliedCompany.objects.filter(user_id=user.id)
 
         # Serialize the Application object using AppliedCompanySerializer
         appliedcompanyserializer = AppliedCompanySerializer(application)
@@ -540,7 +540,7 @@ def tnp_view_api(request):
             shared_list = Shared_HR_contact.objects.filter(college_branch=user_profile.college_branch)
 
             # Serialize the list of shared HR contacts
-            shared_list_serializer = SharedHRcontactSerializer(shared_list, many=True)
+            shared_list_serializer = SharedHRContactSerializer(shared_list, many=True)
 
             # Return the serialized data with an HTTP 200 OK status
             return Response(shared_list_serializer.data, status=status.HTTP_200_OK)
@@ -602,7 +602,7 @@ class common_company_form_api(APIView):
             }
 
             # Use a serializer to validate and save the data
-            company_serializer = SharedCompany(data=data)
+            company_serializer = SharedCompanySerializer(data=data)
             if company_serializer.is_valid():
                 company_serializer.save()
                 return Response({"message": True}, status=status.HTTP_201_CREATED)
@@ -778,7 +778,7 @@ def SharedCompanyListAPI(request):
                 return Response({'error': 'No Shared Companies found.'}, status=status.HTTP_404_NOT_FOUND)
 
             # Serialize and return the shared companies
-            sharedcompany_serializer = Shared_CompanySerializer(sharedcompany, many=True)
+            sharedcompany_serializer = SharedCompanySerializer(sharedcompany, many=True)
             return Response(sharedcompany_serializer.data, status=status.HTTP_200_OK)
 
         else:
@@ -805,11 +805,17 @@ def SharedCompanyListAPI(request):
 def student_list_api(request):
     try:
         user = request.user
+        
+        # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
+
+        # Check if the user has the required role
         if role==3 or role==4:
             print("dev")
             userdetails = UserDetails.objects.filter(college_branch=user.userdetails.college_branch)
             print("vrat")
+
+            # Return 403 Forbidden for unauthorized access
             user_details_serializer = UserDetailsSerializer(userdetails,many=True)
             return Response(user_details_serializer.data,status=status.HTTP_200_OK)
         else:
