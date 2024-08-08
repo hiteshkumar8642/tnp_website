@@ -540,7 +540,7 @@ def tnp_view_api(request):
             shared_list = Shared_HR_contact.objects.filter(college_branch=user_profile.college_branch)
 
             # Serialize the list of shared HR contacts
-            shared_list_serializer = Shared_HR_contactSerializer(shared_list, many=True)
+            shared_list_serializer = SharedHRcontactSerializer(shared_list, many=True)
 
             # Return the serialized data with an HTTP 200 OK status
             return Response(shared_list_serializer.data, status=status.HTTP_200_OK)
@@ -602,7 +602,7 @@ class common_company_form_api(APIView):
             }
 
             # Use a serializer to validate and save the data
-            company_serializer = SharedCompanySerializer(data=data)
+            company_serializer = SharedCompany(data=data)
             if company_serializer.is_valid():
                 company_serializer.save()
                 return Response({"message": True}, status=status.HTTP_201_CREATED)
@@ -625,11 +625,8 @@ class common_company_form_api(APIView):
             logger.error(f"Unexpected error: {str(e)}")
             return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-<<<<<<< Updated upstream
-=======
 # @api_view(['POST'])
 @permission_classes([IsAuthenticated])
->>>>>>> Stashed changes
 class handle_comapany_contact_api(APIView):
     def get(self, request):
         try:
@@ -647,7 +644,7 @@ class handle_comapany_contact_api(APIView):
                     return Response({'error': 'Company List Empty'}, status=status.HTTP_404_NOT_FOUND)
 
                 # Serialize the company contacts
-                company_serializer = Shared_CompanySerializer(company_contacts, many=True)
+                company_serializer = SharedCompanySerializer(company_contacts, many=True)
                 return Response(company_serializer.data, status=status.HTTP_200_OK)
             else:
                 # Return 403 Forbidden for unauthorized access
@@ -762,12 +759,8 @@ def my_print_HRlist_api(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
-<<<<<<< Updated upstream
-def tnp_company_view_api(request):
-=======
 @permission_classes([IsAuthenticated])
 def SharedCompanyListAPI(request):
->>>>>>> Stashed changes
     try:
         # Get the current authenticated user
         user = request.user
@@ -807,8 +800,6 @@ def SharedCompanyListAPI(request):
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-<<<<<<< Updated upstream
-=======
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def student_list_api(request):
@@ -826,7 +817,6 @@ def student_list_api(request):
     except Exception as e:
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
 
->>>>>>> Stashed changes
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -858,13 +848,9 @@ def annuncement_form_api(request):
             return Response({"message": False}, status=status.HTTP_403_FORBIDDEN)
 
     except Exception as e:
-<<<<<<< Updated upstream
         # Log any unexpected exceptions
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-=======
-            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 
 @api_view(['POST'])
@@ -882,5 +868,4 @@ def deleteALL_SharedHRContacts_API(request):
     except Exception as e:
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
->>>>>>> Stashed changes
 
