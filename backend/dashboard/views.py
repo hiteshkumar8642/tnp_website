@@ -386,6 +386,7 @@ def Announcement_form(request):
 # APIs 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def application(request):
     try:
         user = request.user
@@ -447,7 +448,9 @@ def get_announcements(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def appliedCompany_api(request):
     try:
         # Get the current authenticated user
@@ -477,7 +480,9 @@ def appliedCompany_api(request):
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def handle_hr_contact_api(request):
     try:
         # Extract data from the POST request
@@ -519,6 +524,7 @@ def handle_hr_contact_api(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def tnp_view_api(request):
     try:
         # Get the current authenticated user
@@ -558,7 +564,7 @@ def tnp_view_api(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
+@permission_classes([IsAuthenticated])
 class common_company_form_api(APIView):
     def post(self, request):
         try:
@@ -619,6 +625,11 @@ class common_company_form_api(APIView):
             logger.error(f"Unexpected error: {str(e)}")
             return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+<<<<<<< Updated upstream
+=======
+# @api_view(['POST'])
+@permission_classes([IsAuthenticated])
+>>>>>>> Stashed changes
 class handle_comapany_contact_api(APIView):
     def get(self, request):
         try:
@@ -666,6 +677,7 @@ class handle_comapany_contact_api(APIView):
 
     
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def print_HRlist_api(request):
     try:
         # Get the current authenticated user
@@ -708,6 +720,7 @@ def print_HRlist_api(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def my_print_HRlist_api(request):
     try:
         # Get the current authenticated user
@@ -749,7 +762,12 @@ def my_print_HRlist_api(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
+<<<<<<< Updated upstream
 def tnp_company_view_api(request):
+=======
+@permission_classes([IsAuthenticated])
+def SharedCompanyListAPI(request):
+>>>>>>> Stashed changes
     try:
         # Get the current authenticated user
         user = request.user
@@ -789,8 +807,29 @@ def tnp_company_view_api(request):
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+<<<<<<< Updated upstream
+=======
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def student_list_api(request):
+    try:
+        user = request.user
+        role = UserProfile.objects.get(user=user).role
+        if role==3 or role==4:
+            print("dev")
+            userdetails = UserDetails.objects.filter(college_branch=user.userdetails.college_branch)
+            print("vrat")
+            user_details_serializer = UserDetailsSerializer(userdetails,many=True)
+            return Response(user_details_serializer.data,status=status.HTTP_200_OK)
+        else:
+            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
+
+>>>>>>> Stashed changes
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def annuncement_form_api(request):
     try:
         # Get the current authenticated user and their role
@@ -819,8 +858,29 @@ def annuncement_form_api(request):
             return Response({"message": False}, status=status.HTTP_403_FORBIDDEN)
 
     except Exception as e:
+<<<<<<< Updated upstream
         # Log any unexpected exceptions
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+=======
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def deleteALL_SharedHRContacts_API(request):
+    try:
+        user = request.user
+        role = user.userprofile.role
+        if role==3 or role==4:
+            branch = request.userdetails.college_branch
+            Shared_HR_contact.objects.all().delete(college_branch=branch)
+            return Response({'message':True},status=status.HTTP_)
+        else:
+            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+>>>>>>> Stashed changes
 
