@@ -69,7 +69,7 @@ a {
 .app-content {
   display: flex;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   padding: 16px 24px 24px 0;
 }
 .app-header {

@@ -16,7 +16,6 @@
   margin: 40px auto;
   color: var(--main-color);
   overflow: hidden;
-  height: 100vh; 
 }
 
 /* .form-container {
@@ -122,9 +121,3 @@
   background-color: var(--link-color-hover);
 }
 
-.dark button{
-  /*background-color: var(--search-area-bg); */
-  border-color: var(--message-box-border);
-  background-color: var(--search-area-bg);
-  color: var(--main-color);
-}
