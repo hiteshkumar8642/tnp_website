@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 // Create axios instance
 const apiClient = axios.create({
@@ -10,9 +9,9 @@ const apiClient = axios.create({
 // Request interceptor to add token to headers
 apiClient.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('access_token');
+    const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -28,18 +27,18 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const response = await axios.post(
-          'http://127.0.0.1:8000/user/api/token/refresh/',
-          { refresh: localStorage.getItem('refresh_token') }
+          "http://127.0.0.1:8000/user/api/token/refresh/",
+          { refresh: localStorage.getItem("refresh_token") }
         );
         const { access } = response.data;
-        localStorage.setItem('access_token', access);
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+        localStorage.setItem("access_token", access);
+        apiClient.defaults.headers.common["Authorization"] = `Bearer ${access}`;
         return apiClient(originalRequest);
       } catch (err) {
-        console.error('Token refresh failed', err);
+        console.error("Token refresh failed", err);
         // Redirect to login page
         // Assuming you have a way to get navigate function or handle redirects
-        window.location.href = '/login';
+        window.location.href = "/login";
       }
     }
     return Promise.reject(error);
