@@ -5,9 +5,6 @@ import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const passwordRegex =
-  /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
-
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,14 +13,6 @@ export default function LoginPage() {
   const submit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character (!@#$%^&*)."
-      );
-      setIsLoading(false);
-      return;
-    }
 
     const user = {
       username: username,
