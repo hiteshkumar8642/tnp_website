@@ -1,5 +1,4 @@
-
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage/LandingPage";
 
 import LoginPage from "./Pages/Login/LoginPage";
@@ -18,51 +17,54 @@ import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyCo
 import HrList from "./Components/HrList/HrList";
 import MyHrList from "./Components/MyHrList/MyHrList";
 import Loader from "./Components/Loader/Loader";
+import SetNewPasswordPage from "./Pages/SetNewPassword/SetNewPassword";
 
 function App() {
   return (
     <>
-    <Loader /> {/* Include the Loader component */}
-  
-   <div className="flex flex-col min-h-screen overflow-auto">
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-        <Route
-          path="/collegeRegistration"
-          element={<CollegeRegistrationPage />}
-        />
-        <Route path="/Team" element={<Team />} />
-        <Route path="/Features" element={<Features />} />
-        <Route path="/pricing" element={<PricingPanel />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate replace to="companies" />} />
-          <Route path="companies" element={<Companies />}></Route>
+      <Loader /> {/* Include the Loader component */}
+      <div className="flex flex-col min-h-screen overflow-auto">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          <Route path="/setNewPassword" element={<SetNewPasswordPage />} />
           <Route
-            path="applied-companies"
-            element={<AppliedCompanies />}
-          ></Route>
-          <Route path="share-hr-contact" element={<SharedHrContact />}></Route>
+            path="/collegeRegistration"
+            element={<CollegeRegistrationPage />}
+          />
+          <Route path="/Team" element={<Team />} />
+          <Route path="/Features" element={<Features />} />
+          <Route path="/pricing" element={<PricingPanel />} />
           <Route
-            path="share-company-contact"
-            element={<ShareCompanyContact />}
-          ></Route>
-          <Route path="hr-list" element={<HrList />}></Route>
-          <Route path="my-hr-list" element={<MyHrList />}></Route>
-        </Route>
-      </Routes>
- </div>
-
- </>
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate replace to="companies" />} />
+            <Route path="companies" element={<Companies />}></Route>
+            <Route
+              path="applied-companies"
+              element={<AppliedCompanies />}
+            ></Route>
+            <Route
+              path="share-hr-contact"
+              element={<SharedHrContact />}
+            ></Route>
+            <Route
+              path="share-company-contact"
+              element={<ShareCompanyContact />}
+            ></Route>
+            <Route path="hr-list" element={<HrList />}></Route>
+            <Route path="my-hr-list" element={<MyHrList />}></Route>
+          </Route>
+        </Routes>
+      </div>
+    </>
   );
 }
 

@@ -1,9 +1,8 @@
-import { fetchForgetPassword } from '../../api/forgetPassword';
+import { fetchForgetPassword } from "../../api/forgetPassword";
 import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./ForgotPasswordPage.css";
 import { Link } from "react-router-dom";
-
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -12,21 +11,17 @@ export default function ForgotPasswordPage() {
   function handleSubmit(event) {
     event.preventDefault();
     fetchForgetPassword(email)
-      .then(response => {
+      .then((response) => {
         setMessage(response.success);
       })
-      .catch(error => {
+      .catch((error) => {
         setMessage("An error occurred. Please try again.");
       });
   }
 
   return (
     <>
-      <Header isLoginPage>
-        <Link to="/">
-          <button className="nav-button">Back To Home</button>
-        </Link>
-      </Header>
+      <Header />
       <div className="forgot-password-page">
         <div className="forgot-password-form">
           <h2>Forgot Password?</h2>
@@ -37,7 +32,7 @@ export default function ForgotPasswordPage() {
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

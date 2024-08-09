@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
-import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
+import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const passwordRegex =
+  /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoading } = useLoading(); 
-
+  const { setIsLoading } = useLoading();
 
   const submit = async (e) => {
-    setIsLoading(true); 
     e.preventDefault();
+    setIsLoading(true);
+
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character (!@#$%^&*)."
+      );
+      setIsLoading(false);
+      return;
+    }
+
     const user = {
       username: username,
       password: password,
@@ -35,18 +46,16 @@ export default function LoginPage() {
       localStorage.setItem("refresh_token", refresh);
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
       window.location.href = "/dashboard";
-      
     } catch (error) {
       console.error("Login failed", error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <>
-      <Header/>
+      <Header />
       <div className="login-page">
         <div className="login-form">
           <h2>Login</h2>

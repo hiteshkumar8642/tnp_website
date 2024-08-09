@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { timeanddate } from "../../utils/timeanddate";
-import { fetchComingCompanyDetails } from "../../api/ComingCompany";
+import { fetchComingCompanyDetails } from "../../api/comingCompany";
 import CompanyItem from "../CompanyItem/CompanyItem";
 
 function CompanyDetails() {
