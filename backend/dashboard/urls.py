@@ -18,25 +18,42 @@ urlpatterns = [
     path('common_form/',views.common_form,name="common_form"),
     path('common_company_form/',views.common_company_form,name="common_company_form"),
     path('delete_all_company_contact/',views.delete_all_company_contact,name="delete_all_company_contact"),
-    path('assign_me/<str:cnt>',views.assign_me,name="assign_me"),
+    path('assign_me/<int:cnt>',views.assign_me,name="assign_me"),
     path('apply/<int:j_id>',views.apply,name="apply"),
     path('full_detail_visibility/<int:cnt>',views.full_detail_visibility,name="full_detail_visibility"),
     path('student_list/',views.student_list,name="student_list"),
     path('logout/',views.logout,name='logout'),
     # path('announcement/',views.announcement,name='announcement'),
     # path('application/',views.application,name='application'),
+    # path('assign_me/<int:cnt>',views.assign_me,name="assign_me"),
     
     #----------------------------------------------------------
 
+ 
+ 
+    # Company contact data submission for TNPs/TPOs/Helpers   
     path('api/company_contacts/',views.handle_comapany_contact_api.as_view(),name='company_contacts'),
-    path('api/hr_contacts/',views.handle_hr_contact_api,name='hr_contacts'),
-    path('api/hr_list/',views.print_HRlist_api,name="hr_list"),
+    # Printing list Shared Company List only for TNPs
+    path('api/shared_Company_list/',views.SharedCompanyListAPI,name='shared_company_list'),
+    # HR_Contact from submission 
+    path('api/hr_contacts/',views.HandleHRContactAPI,name='hr_contacts'),
+    # Printing list Shared HR List 
+    path('api/shared_HR_list/',views.SharedHRListAPI,name='shared_hr_list'),
+    # Delete All SharedHRs 
+    path('api/DltALL/',views.deleteALL_SharedHRContacts_API,name='delete_all_SharedHrList'),
+    # Printing of HR List (ONLY FOR TNPs/TPOs)
+    path('api/hr_list/',views.PrintHRListAPI,name="hr_list"),
+    # Assign me api
+    path('api/assign_me/',views.AssignMeAPI,name="assign_me"),
+    # Company Data submission for the TNPs/TPOs and Helpers
     path('api/common_company_form/',views.common_company_form_api.as_view(),name="common_company_form"),
-    path('api/my_hr_list/',views.my_print_HRlist_api,name="my_hr_list"),
+    # Printing My HR List for TNPs 
+    path('api/my_hr_list/',views.MyHRListAPI,name="my_hr_list"),
+    # Printing Announcement
     path('api/announcement/',views.get_announcements,name='announcement'),
+    # Printing Application
     path('api/application/',views.application,name='application'),
+    # Showing Applied Companies for the Students
     path('api/appliedCompany/',views.appliedCompany_api,name='applied_companies'),
-    # path('api/dummy/',views.dummy,name='dummy')
-
 
 ]
