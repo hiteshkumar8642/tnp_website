@@ -8,18 +8,6 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
   );
-  const [messages, setMessages] = useState(hr.messages || []);
-  const [newMessageDate, setNewMessageDate] = useState(new Date());
-  const [newMessage, setNewMessage] = useState("");
-
-  const handleAddMessage = () => {
-    const updatedMessages = [
-      ...messages,
-      { date: newMessageDate, message: newMessage },
-    ];
-    setMessages(updatedMessages);
-    setNewMessage("");
-  };
 
   return (
     <div className="hrlist-modal-overlay" onClick={onClose}>
@@ -37,6 +25,7 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
         </div>
         <div className="hrlist-modal-body">
           <div className="grid-item grid-item-0-0">
+            <h3>HR Details</h3>
             <div className="info-row">
               <label>Gender:</label>
               <span className="data">{hr.gender}</span>
@@ -64,24 +53,6 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
             </button>
           </div>
           <div className="grid-item grid-item-0-1">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {messages.map((msg, index) => (
-                  <tr key={index}>
-                    <td>{new Date(msg.date).toLocaleDateString()}</td>
-                    <td>{msg.message}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="grid-item grid-item-1-0">
             <h3>Company Information</h3>
             <p>Company: {hr.company_id.name}</p>
             <p>General CTC: {hr.company_id.general_ctc}</p>
@@ -105,23 +76,6 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               Course: {hr.company_id.poc.course.degree} in{" "}
               {hr.company_id.poc.course.specialization}
             </p>
-          </div>
-          <div className="grid-item grid-item-1-1">
-            <div>
-              <label>Select Date:</label>
-              <DatePicker
-                selected={newMessageDate}
-                onChange={(date) => setNewMessageDate(date)}
-              />
-            </div>
-            <div>
-              <label>Message:</label>
-              <textarea
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-              />
-            </div>
-            <button onClick={handleAddMessage}>Add</button>
           </div>
         </div>
       </div>
