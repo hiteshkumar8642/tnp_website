@@ -2,23 +2,48 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrModal.css";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaEdit } from "react-icons/fa";
 
 const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
   );
-  const [messages, setMessages] = useState(hr.messages || []);
+  const [messages, setMessages] = useState(
+    hr.messages?.map((msg) => ({ ...msg, color: msg.color || "#ffffff" })) || []
+  );
   const [newMessageDate, setNewMessageDate] = useState(new Date());
   const [newMessage, setNewMessage] = useState("");
+  const [newMessageColor, setNewMessageColor] = useState("#ffffff");
+  const [editingMessageIndex, setEditingMessageIndex] = useState(null);
 
   const handleAddMessage = () => {
     const updatedMessages = [
       ...messages,
-      { date: newMessageDate, message: newMessage },
+      { date: newMessageDate, message: newMessage, color: newMessageColor },
     ];
     setMessages(updatedMessages);
     setNewMessage("");
+    setNewMessageColor("#ffffff");
+  };
+
+  const handleEditMessage = (index) => {
+    setEditingMessageIndex(index);
+    setNewMessage(messages[index].message);
+    setNewMessageDate(new Date(messages[index].date));
+    setNewMessageColor(messages[index].color);
+  };
+
+  const handleUpdateMessage = () => {
+    const updatedMessages = [...messages];
+    updatedMessages[editingMessageIndex] = {
+      date: newMessageDate,
+      message: newMessage,
+      color: newMessageColor,
+    };
+    setMessages(updatedMessages);
+    setEditingMessageIndex(null);
+    setNewMessage("");
+    setNewMessageColor("#ffffff");
   };
 
   return (
@@ -60,7 +85,7 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               <span className="data">{hr.status}</span>
             </div>
             <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
-              Assign me
+              Reassign
             </button>
           </div>
           <div className="grid-item grid-item-0-1">
@@ -69,13 +94,19 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
                 <tr>
                   <th>Date</th>
                   <th>Message</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {messages.map((msg, index) => (
-                  <tr key={index}>
+                  <tr key={index} style={{ backgroundColor: msg.color }}>
                     <td>{new Date(msg.date).toLocaleDateString()}</td>
                     <td>{msg.message}</td>
+                    <td>
+                      <button onClick={() => handleEditMessage(index)}>
+                        <FaEdit />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -121,7 +152,19 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
                 onChange={(e) => setNewMessage(e.target.value)}
               />
             </div>
-            <button onClick={handleAddMessage}>Add</button>
+            <div>
+              <label>Background Color:</label>
+              <input
+                type="color"
+                value={newMessageColor}
+                onChange={(e) => setNewMessageColor(e.target.value)}
+              />
+            </div>
+            {editingMessageIndex !== null ? (
+              <button onClick={handleUpdateMessage}>Update</button>
+            ) : (
+              <button onClick={handleAddMessage}>Add</button>
+            )}
           </div>
         </div>
       </div>

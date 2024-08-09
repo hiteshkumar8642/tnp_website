@@ -76,7 +76,7 @@
 
 .myhrlist-modal-overlay .grid-item-0-0 {
   grid-area: 1 / 1 / 2 / 2;
-  height: 400px;
+  height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -91,7 +91,7 @@
 
 .myhrlist-modal-overlay .grid-item-1-0 {
   grid-area: 2 / 1 / 3 / 2;
-  height: 400px;
+  height: 450px;
   overflow-y: auto;
 }
 
@@ -145,6 +145,7 @@
   border-color: var(--link-color-active);
 }
 
+/* Button styles */
 .myhrlist-modal-overlay button {
   background-color: var(--button-bg);
   color: var(--link-color-active);
@@ -161,6 +162,7 @@
   background-color: var(--link-color-hover);
 }
 
+/* Table styles */
 .myhrlist-modal-overlay table {
   width: 100%;
   border-collapse: separate;
@@ -185,8 +187,50 @@
   background-color: var(--message-box-hover);
 }
 
+/* Alternating row colors */
 .myhrlist-modal-overlay tr:nth-child(even) td {
-  background-color: rgba(var(--message-box-hover-rgb), 0.7);
+  background-color: var(--row-even-color);
+}
+
+.myhrlist-modal-overlay tr:nth-child(odd) td {
+  background-color: var(--row-odd-color);
+}
+
+/* Hover effect for rows */
+.myhrlist-modal-overlay tr:hover td {
+  background-color: var(--row-hover-color) !important;
+}
+
+/* Button visibility in the table */
+.myhrlist-modal-overlay .grid-item-0-1 table button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--link-color);
+  padding: 5px;
+  margin: 0;
+}
+
+.myhrlist-modal-overlay .grid-item-0-1 table button:hover {
+  color: var(--link-color-hover);
+}
+
+/* Color input styles */
+.myhrlist-modal-overlay input[type="color"] {
+  border: 1px solid var(--message-box-border);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.myhrlist-modal-overlay input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.myhrlist-modal-overlay input[type="color"]::-webkit-color-swatch {
+  border: 1px solid var(--message-box-border);
+  border-radius: 4px;
 }
 
 .myhrlist-modal-overlay .grid-item-0-0 > * {
