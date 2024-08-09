@@ -244,7 +244,7 @@ def assign_me(request,cnt):
         if request.user.userprofile.role==3 or request.user.userprofile.role==4 :
             users = request.user
             branch = users.userdetails.college_branch
-            res = HRContact.objects.get(name=cnt,college_branch=branch)
+            res = HRContact.objects.get(id=cnt,college_branch=branch)
             res.assigned = request.user
             res.save()
             return redirect('hr_list')  
@@ -483,7 +483,7 @@ def appliedCompany_api(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def handle_hr_contact_api(request):
+def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
         name = request.POST.get('name')
@@ -522,46 +522,6 @@ def handle_hr_contact_api(request):
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def tnp_view_api(request):
-    try:
-        # Get the current authenticated user
-        user = request.user
-
-        # Retrieve the user's role from UserProfile
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
-
-        # Check if the user has the required role
-        if role in [3, 4]:
-            # Filter shared HR contacts by the user's college branch
-            shared_list = Shared_HR_contact.objects.filter(college_branch=user_profile.college_branch)
-
-            # Serialize the list of shared HR contacts
-            shared_list_serializer = SharedHRContactSerializer(shared_list, many=True)
-
-            # Return the serialized data with an HTTP 200 OK status
-            return Response(shared_list_serializer.data, status=status.HTTP_200_OK)
-        else:
-            # Return a 403 Forbidden status if the user is not authorized
-            return Response({'message': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
-
-    except ObjectDoesNotExist:
-        # Log the error if the UserProfile does not exist
-        logger.error("UserProfile not found for user ID: {}".format(user.id))
-        return Response({'detail': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except DatabaseError as db_err:
-        # Log any database-related errors
-        logger.error(f"Database error: {str(db_err)}")
-        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    except Exception as e:
-        # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([IsAuthenticated])
@@ -675,7 +635,7 @@ class handle_comapany_contact_api(APIView):
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def print_HRlist_api(request):
+def PrintHRListAPI(request):
     try:
         # Get the current authenticated user
         user = request.user
@@ -718,7 +678,7 @@ def print_HRlist_api(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def my_print_HRlist_api(request):
+def MyHRListAPI(request):
     try:
         # Get the current authenticated user
         user = request.user
@@ -757,7 +717,10 @@ def my_print_HRlist_api(request):
         # Log any unexpected exceptions
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+
+
+# Shared Company list by the helper only for TNPs/TPOs
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def SharedCompanyListAPI(request):
@@ -799,7 +762,53 @@ def SharedCompanyListAPI(request):
         # Log any unexpected exceptions
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+# Shared HR List only for TNPs/TPOs
+@api_view(['GET']) 
+@permission_classes([IsAuthenticated])
+def SharedHRListAPI(request):
+    try:
+        # Get the current authenticated user
+        user = request.user
+
+        # Retrieve the user's role from UserProfile
+        role = UserProfile.objects.get(user=user).role
+
+        # Check if the user has the required role
+        if role == 3 or role == 4:
+            # Fetch shared HR Contacts for the user's college branch
+            sharedhr = Shared_HR_contact.objects.filter(college_branch=user.userdetails.college_branch)
+
+            # Check if sharedcompany is empty
+            if not sharedhr.exists():
+                return Response({'error': 'No Shared Companies found.'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Serialize and return the shared companies
+            sharedhr_serializer = SharedHRContactSerializer(sharedhr, many=True)
+            return Response(sharedhr_serializer.data, status=status.HTTP_200_OK)
+
+        else:
+            # Return 403 Forbidden for unauthorized access
+            return Response({'message': 'Unauthorized access.'}, status=status.HTTP_403_FORBIDDEN)
+
+    except ObjectDoesNotExist:
+        # Log the error if the UserProfile does not exist
+        logger.error(f"UserProfile not found for user ID: {user.id}")
+        return Response({'detail': 'UserProfile not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except DatabaseError as db_err:
+        # Log any database-related errors
+        logger.error(f"Database error: {str(db_err)}")
+        return Response({'detail': 'A database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except Exception as e:
+        # Log any unexpected exceptions
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def student_list_api(request):
@@ -822,6 +831,7 @@ def student_list_api(request):
             return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
             return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
+
 
 
 @api_view(['POST'])
@@ -859,19 +869,114 @@ def annuncement_form_api(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def deleteALL_SharedHRContacts_API(request):
     try:
+        # Get the current authenticated user
         user = request.user
+
+        # Retrieve the role of the user
         role = user.userprofile.role
-        if role==3 or role==4:
+
+        # Check if the user has the appropriate role (3 or 4)
+        if role == 3 or role == 4:
+            # Get the college branch of the user
             branch = request.userdetails.college_branch
-            Shared_HR_contact.objects.all().delete(college_branch=branch)
-            return Response({'message':True},status=status.HTTP_)
+
+            # Delete all Shared_HR_contact objects associated with the user's branch
+            Shared_HR_contact.objects.filter(college_branch=branch).delete()
+
+            # Return a success message with an HTTP 200 OK status
+            return Response({'message': True}, status=status.HTTP_200_OK)
         else:
-            return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
+            # Return a failure message with an HTTP 400 Bad Request status if the user role is not authorized
+            return Response({"message": False}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-            return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 
+
+######################################### CURRENTLY NOT WORKING ####################################################
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def transfer_contact_api(request, hr_id):
+    try:
+        # Retrieve the Shared_HR_contact object based on the provided hr_id
+        sh_hr_obj = get_object_or_404(Shared_HR_contact, id=hr_id)
+
+        # Extract the necessary fields from the Shared_HR_contact object
+        name = sh_hr_obj.name
+        company = sh_hr_obj.company_name
+        email = sh_hr_obj.email
+        contact = sh_hr_obj.contact_number
+        linkedin = sh_hr_obj.linkedin_id
+        clg_branch = sh_hr_obj.college_branch
+
+        # Create a new HRContact object with the extracted data
+        hr_cont_obj = HRContact.objects.create(
+            name=name,
+            mail_id=email,
+            mobile_numbers=[contact],
+            linkedin=linkedin,
+            college_branch=clg_branch
+        )
+        hr_cont_obj.save()
+
+        # Return a success response with an HTTP 201 Created status
+        return Response({'message': 'Contact transferred successfully.'}, status=status.HTTP_201_CREATED)
+
+    except Shared_HR_contact.DoesNotExist:
+        # Log the error and return a 404 response if the Shared_HR_contact object is not found
+        logger.error(f"Shared_HR_contact with id {hr_id} not found.")
+        return Response({'detail': 'Shared_HR_contact not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def AssignMeAPI(request):
+    try:
+        # Check if the user is authenticated and has the appropriate role (3 or 4)
+        if request.user.userprofile.role in [3, 4]:
+            user = request.user
+            identity = request.POST.get('HR-identity')
+
+            # Retrieve the college branch of the user
+            branch = user.userdetails.college_branch
+
+            # Get the HRContact object with the specified name and college branch
+            hr_contact = get_object_or_404(HRContact, id=identity, college_branch=branch)
+        
+            # Assign the HRContact object to the current user
+            hr_contact.assigned = user
+            hr_contact.save()
+
+            # Return a success response with an HTTP 200 OK status
+            return Response({'message': 'HR contact assigned successfully.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'NOT Elligble to Access it'},status=status.HTTP_401_UNAUTHORIZED)
+
+    except HRContact.DoesNotExist:
+        # Log the error and return a 404 response if the HRContact object is not found
+        logger.error(f"HRContact with name {identity} and branch {branch} not found.")
+        return Response({'detail': 'HRContact not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except PermissionDenied:
+        # Log the permission denied error and return a 403 response
+        logger.error("Permission denied for user with ID: {}".format(request.user.id))
+        return Response({'detail': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
+
+    except Exception as e:
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
