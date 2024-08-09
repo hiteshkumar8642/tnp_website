@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import NewCompanyDetails from '../NewCompanyDescription/NewCompanyDetails';
+import { Link } from 'react-router-dom';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,13 +61,13 @@ const Dropdown = () => {
           aria-labelledby="menu-button"
         >
           <div className="py-1" role="none">
-            <a
+            <Link to="/newCompanyDetails"
               href="#"
               className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:no-underline"
               role="menuitem"
             >
               Account settings
-            </a>
+            </Link>
             <a
               href="#"
               className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:no-underline"

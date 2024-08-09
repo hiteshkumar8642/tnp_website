@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage/LandingPage";
-
 import LoginPage from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/SignUp/SignUpPage";
 import CollegeRegistrationPage from "./Pages/CollegeRegistration/CollegeRegistrationPage";
@@ -18,6 +17,7 @@ import HrList from "./Components/HrList/HrList";
 import MyHrList from "./Components/MyHrList/MyHrList";
 import Loader from "./Components/Loader/Loader";
 import SetNewPasswordPage from "./Pages/SetNewPassword/SetNewPassword";
+import NewCompanyDetails from './Components/NewCompanyDescription/NewCompanyDetails';
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
           <Route path="/Team" element={<Team />} />
           <Route path="/Features" element={<Features />} />
           <Route path="/pricing" element={<PricingPanel />} />
+          <Route path="/newCompanyDetails" element ={<NewCompanyDetails/>}/>
           <Route
             path="/dashboard"
             element={
