@@ -60,7 +60,7 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               <span className="data">{hr.status}</span>
             </div>
             <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
-              Assign me
+              Reassign
             </button>
           </div>
           <div className="grid-item grid-item-0-1">
