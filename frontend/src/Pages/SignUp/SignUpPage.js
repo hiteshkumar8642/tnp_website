@@ -4,10 +4,13 @@ import axios from "axios";
 import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./SignUpPage.css";
+import {toast} from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const host = "http://127.0.0.1:8000";
 
 export default function SignUpPage() {
+  const Navigate=useNavigate();
   const { setIsLoading } = useLoading();
   const [college, setCollege] = useState([]);
   const [formData, setFormData] = useState({
@@ -52,15 +55,17 @@ export default function SignUpPage() {
       console.log(response)
       if (response.status === 200) {
         console.log(response)
-        window.location.href = "/login";
-        alert("Registered successfully ! Confirm email to login .");
+        Navigate("/login");
+        toast.success("Registered successfully ! Confirm email to login .");
         //return;
       }
     } catch (error) {
       if (error.response) {
         console.error("Error registering user:", error.response.data);
+        toast.error("Error signing up !");
       } else {
         console.error("Error registering user:", error.message);
+        toast.error("Error signing up !");
       }
     }
     finally{
