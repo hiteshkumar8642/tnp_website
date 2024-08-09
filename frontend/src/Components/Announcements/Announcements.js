@@ -6,11 +6,11 @@ import { ShimmerCategoryItem } from "react-shimmer-effects";
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState("");
-  const [AnnouncementLoading, SetAnnouncementLoading] = useState(false);
+  const [AnnouncementLoading, SetAnnouncementLoading] = useState(true);
   useEffect(() => {
     async function getAnnouncements() {
       try {
-        SetAnnouncementLoading(false);
+        SetAnnouncementLoading(true);
         let localdata = localStorage.getItem("announcements")
           ? JSON.parse(localStorage.getItem("announcements"))
           : null;
@@ -23,7 +23,7 @@ function Announcements() {
         } else {
           setAnnouncements(localdata);
         }
-        SetAnnouncementLoading(true);
+        SetAnnouncementLoading(false);
       } catch (err) {
         setError("Failed to load announcements");
       }
@@ -33,7 +33,7 @@ function Announcements() {
 
   return (
     <>
-      {AnnouncementLoading ? (
+      {!AnnouncementLoading ? (
         <div className="messages-section">
           <button className="messages-close">
             <svg

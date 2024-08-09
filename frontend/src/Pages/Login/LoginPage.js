@@ -4,8 +4,12 @@ import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import {toast} from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 export default function LoginPage() {
+  const Navigate=useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setIsLoading } = useLoading();
@@ -34,9 +38,11 @@ export default function LoginPage() {
       localStorage.setItem("access_token", access);
       localStorage.setItem("refresh_token", refresh);
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
-      window.location.href = "/dashboard";
+      Navigate("/dashboard")
+      toast.success("Login successfully");
     } catch (error) {
       console.error("Login failed", error);
+      toast.error("Login failed");
     } finally {
       setIsLoading(false);
     }
