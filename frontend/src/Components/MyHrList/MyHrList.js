@@ -11,9 +11,18 @@ const MyHrList = () => {
   useEffect(() => {
     async function getmyHRList() {
       try {
-        const data = await fetchmyHRList();
-        console.log(data);
-        setMyHrData(data);
+        // Check if data is already in local storage
+        const storedMyHrData = localStorage.getItem("myHrData");
+        if (storedMyHrData) {
+          setMyHrData(JSON.parse(storedMyHrData));
+        } else {
+          // Fetch data if not found in local storage
+          const data = await fetchmyHRList();
+          console.log(data);
+          setMyHrData(data);
+          // Save the fetched data to local storage
+          localStorage.setItem("myHrData", JSON.stringify(data));
+        }
       } catch (err) {
         setError("Failed to load My HR list");
         console.log(err);

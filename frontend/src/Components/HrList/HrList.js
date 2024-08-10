@@ -14,10 +14,21 @@ const HrList = () => {
     async function getHRList() {
       try {
         SetHrListLoading(true);
-        const data = await fetchHRList();
-        console.log(data);
-        setHrData(data);
-        SetHrListLoading(false);
+
+        // Check if data is already in local storage
+        const storedHRData = localStorage.getItem("hrData");
+        if (storedHRData) {
+          setHrData(JSON.parse(storedHRData));
+          SetHrListLoading(false);
+        } else {
+          // Fetch data if not found in local storage
+          const data = await fetchHRList();
+          console.log(data);
+          setHrData(data);
+          // Save the fetched data to local storage
+          localStorage.setItem("hrData", JSON.stringify(data));
+          SetHrListLoading(false);
+        }
       } catch (err) {
         setError("Failed to load HR list");
         console.log(err);
