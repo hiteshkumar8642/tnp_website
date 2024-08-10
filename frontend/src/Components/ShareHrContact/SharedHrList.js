@@ -33,7 +33,7 @@ const handleSubmit = async (e) => {
   console.log(formData);
 
   try {
-    const response = await apiClient.post('http://localhost:8000/dashboard/api/hr_contacts/', formData);
+    const response = await apiClient.post('http://localhost:8000/dashboard/api/hr_contacts', formData);
 
     if (response.status === 200) {
       // Handle success response
