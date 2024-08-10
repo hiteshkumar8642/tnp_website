@@ -10,9 +10,18 @@ function CompanyDetails() {
   useEffect(() => {
     async function getComingCompanies() {
       try {
-        const data = await fetchComingCompanyDetails();
-        console.log(data);
-        setComingCompanies(data);
+        // Check if data is already in local storage
+        const storedCompanies = localStorage.getItem("comingCompanies");
+        if (storedCompanies) {
+          setComingCompanies(JSON.parse(storedCompanies));
+        } else {
+          // Fetch data if not found in local storage
+          const data = await fetchComingCompanyDetails();
+          console.log(data);
+          setComingCompanies(data);
+          // Save the fetched data to local storage
+          localStorage.setItem("comingCompanies", JSON.stringify(data));
+        }
       } catch (err) {
         setError("Failed to load Upcoming Companies");
         console.log(err);

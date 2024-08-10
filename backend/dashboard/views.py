@@ -486,6 +486,7 @@ def appliedCompany_api(request):
 def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
+        print("HII")
         name = request.POST.get('name')
         company_name = request.POST.get('company-name')
         email = request.POST.get('company-email')
@@ -897,51 +898,8 @@ def deleteALL_SharedHRContacts_API(request):
         # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+  
     
-
-
-######################################### CURRENTLY NOT WORKING ####################################################
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def transfer_contact_api(request, hr_id):
-    try:
-        # Retrieve the Shared_HR_contact object based on the provided hr_id
-        sh_hr_obj = get_object_or_404(Shared_HR_contact, id=hr_id)
-
-        # Extract the necessary fields from the Shared_HR_contact object
-        name = sh_hr_obj.name
-        company = sh_hr_obj.company_name
-        email = sh_hr_obj.email
-        contact = sh_hr_obj.contact_number
-        linkedin = sh_hr_obj.linkedin_id
-        clg_branch = sh_hr_obj.college_branch
-
-        # Create a new HRContact object with the extracted data
-        hr_cont_obj = HRContact.objects.create(
-            name=name,
-            mail_id=email,
-            mobile_numbers=[contact],
-            linkedin=linkedin,
-            college_branch=clg_branch
-        )
-        hr_cont_obj.save()
-
-        # Return a success response with an HTTP 201 Created status
-        return Response({'message': 'Contact transferred successfully.'}, status=status.HTTP_201_CREATED)
-
-    except Shared_HR_contact.DoesNotExist:
-        # Log the error and return a 404 response if the Shared_HR_contact object is not found
-        logger.error(f"Shared_HR_contact with id {hr_id} not found.")
-        return Response({'detail': 'Shared_HR_contact not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-    except Exception as e:
-        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
-        logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AssignMeAPI(request):
@@ -980,3 +938,98 @@ def AssignMeAPI(request):
         # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def CallHistoryAPI(request):
+    try:
+        # Retrieve the authenticated user
+        user = request.user
+        
+        # Retrieve the user's branch from UserDetails model
+        branch = user.userdetails.college_branch
+
+        # Retrieve the user's role from UserProfile model
+        role = UserProfile.objects.get(user=user).role
+        
+        # Check if the user's role is either 3 or 4
+        if role == 3 or role == 4:
+            # Retrieve call history for the user's branch
+            callhistory = CallHistory.objects.filter(college_branch=branch)
+            print("Retrieving call history")
+            
+            # Serialize the call history data
+            callhistory_serializer = CallHistorySerializer(callhistory, many=True)
+            print("Serialization complete")
+            
+            # Return the serialized data with a 200 OK status
+            return Response(callhistory_serializer.data, status=status.HTTP_200_OK)
+
+        # If the role is not 3 or 4, return a 403 Forbidden response
+        return Response({'detail': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+
+    except UserProfile.DoesNotExist:
+        # Handle the case where the user's profile is not found
+        return Response({'detail': 'User profile not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    except Exception as e:
+        # Handle any other exceptions and return a 400 Bad Request response
+        print(f"Error occurred: {str(e)}")
+        return Response({'detail': 'An error occurred'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+######################################### CURRENTLY NOT WORKING ####################################################
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def TransferContactAPI(request):
+    try:
+        hr_id = request.POST.get('HR-id')
+        # Retrieve the Shared_HR_contact object based on the provided hr_id
+        sh_hr_obj = get_object_or_404(Shared_HR_contact, id=hr_id)
+
+        # Extract the necessary fields from the Shared_HR_contact object
+        name = sh_hr_obj.name
+        company = sh_hr_obj.company_name
+        email = sh_hr_obj.email
+        # contact=[]
+        contact = {sh_hr_obj.contact_number}
+        # contact.append(cnt)
+        linkedin = sh_hr_obj.linkedin_id
+        clg_branch = sh_hr_obj.college_branch
+        print("Company : ",company)
+        print(contact)
+        # Create a new HRContact object with the extracted data
+
+        hr_cont_obj = HRContact.objects.create(
+            name=name,
+            mail_id=email,
+            mobile_numbers=contact,
+            linkedin=linkedin,
+            college_branch=clg_branch
+        )
+
+        hr_cont_obj.save()
+        print("Devvrat")
+        # Return a success response with an HTTP 201 Created status
+        return Response({'message': 'Contact transferred successfully.'}, status=status.HTTP_201_CREATED)
+
+    except Shared_HR_contact.DoesNotExist:
+        # Log the error and return a 404 response if the Shared_HR_contact object is not found
+        logger.error(f"Shared_HR_contact with id {hr_id} not found.")
+        return Response({'detail': 'Shared_HR_contact not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+    
+
+

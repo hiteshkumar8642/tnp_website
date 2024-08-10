@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
+import ContactForm from "../../Components/ContactForm/ContactForm";
+import Faq from "../../Components/Faq/Faq";
 
 export default function LandingPage() {
   
@@ -9,6 +11,12 @@ export default function LandingPage() {
       <Header />
       <div className="flex-grow w-9/12 mx-auto mb-10">
         <LandingPageContent />
+      </div>
+      <div>
+          <ContactForm />
+      </div>
+      <div>
+          <Faq />
       </div>
       <div>
         <Footer />
