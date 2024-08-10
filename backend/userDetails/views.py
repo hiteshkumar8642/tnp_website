@@ -65,32 +65,13 @@ def activate(request, uidb64, token):
     
 
 
-def login(request):
-    if(request.method=='POST'):
-        password = request.POST['password']
-        username = request.POST['username']
-        user = auth.authenticate(username = username , password = password)
-        if user is not None :
-            auth.login(request,user)
-            user_profile_obj = UserProfile.objects.get(user = user)
-            college = user_profile_obj.college 
-            branches = CollegeCourse.objects.filter(college=college)
-            try:
-                userr = UserDetails.objects.get(user=user)
-            except:
-                userr= None
-            if userr is not None :
-                return redirect('dashboard')
-            return render(request,"userDetails/userProfileDetails.html",{'branches':branches})
-        else:
-            messages.info(request,"Invalid credentials.")
 
-    return render(request,'userDetails/login.html')
 
 def userProfile(request):
     user = UserDetails.objects.get(user = request.user)
     return render(request,'userDetails/userProfile.html',{'user':user})
 
+@api_view(['POST'])
 def SaveDetails(request):
     if(request.method=='POST'):
         #for field_name, uploaded_file in request.FILES.items():
@@ -137,6 +118,7 @@ def SaveDetails(request):
         print("error")
 
         return render(request , "userDetails/userProfileDetails.html")
+
 
 def UpdateDetails(request):
     if(request.method=="POST"):
@@ -247,7 +229,9 @@ class LogoutView(APIView):
 def register(request):
     try:
         data = json.loads(request.body)
+        print("hii data loaded")
     except json.JSONDecodeError:
+        print("errors")
         return Response({"errors": "Invalid JSON"}, status=400)
 
     #print("Received data: ", data)  # Debug: print the received data
@@ -255,6 +239,7 @@ def register(request):
     id=0
     try:
         if form.is_valid():
+            print("form valid")
             user = form.save(commit=False)
             user.is_active = False
             user.save()
