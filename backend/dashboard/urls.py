@@ -7,6 +7,8 @@ urlpatterns = [
 
     # College Lsit API
     path('api/collegelist/',views.CollegeListAPI,name='CollegeList'),
+    # Course API
+    path('api/course/',views.CoursesAPI,name='CourseList'),
     # Company contact data submission for TNPs/TPOs/Helpers   
     path('api/company_contacts/',views.handle_comapany_contact_api.as_view(),name='company_contacts'),
     # Printing list Shared Company List only for TNPs
