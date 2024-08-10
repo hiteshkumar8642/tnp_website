@@ -17,7 +17,10 @@ import HrList from "./Components/HrList/HrList";
 import MyHrList from "./Components/MyHrList/MyHrList";
 import Loader from "./Components/Loader/Loader";
 import SetNewPasswordPage from "./Pages/SetNewPassword/SetNewPassword";
-import NewCompanyDetails from './Components/NewCompanyDescription/NewCompanyDetails';
+import NewCompanyDetails from "./Components/NewCompanyDescription/NewCompanyDetails";
+import UnauthorizedPage from "./Pages/401/401";
+import Error404Page from "./Pages/404/404";
+import FirstLogIn from "./Components/UserDetail/FirstLogIn";
 
 function App() {
   return (
@@ -37,7 +40,15 @@ function App() {
           <Route path="/Team" element={<Team />} />
           <Route path="/Features" element={<Features />} />
           <Route path="/pricing" element={<PricingPanel />} />
-          <Route path="/newCompanyDetails" element ={<NewCompanyDetails/>}/>
+          <Route path="/newCompanyDetails" element={<NewCompanyDetails />} />
+          <Route
+            path="/firstlogin"
+            element={
+              <ProtectedRoute>
+                <FirstLogIn />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
@@ -47,6 +58,7 @@ function App() {
             }
           >
             <Route index element={<Navigate replace to="companies" />} />
+
             <Route path="companies" element={<Companies />}></Route>
             <Route
               path="applied-companies"
@@ -63,6 +75,8 @@ function App() {
             <Route path="hr-list" element={<HrList />}></Route>
             <Route path="my-hr-list" element={<MyHrList />}></Route>
           </Route>
+          <Route path="/401" element={<UnauthorizedPage />} />
+          <Route path="*" element={<Error404Page />} />
         </Routes>
       </div>
     </>

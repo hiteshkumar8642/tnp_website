@@ -18,11 +18,15 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     setIsModalOpen(false);
   };
 
+  const getSafeValue = (value) => (value ? value : "N/A");
+
   return (
     <>
       <tr onClick={handleRowClick}>
-        <td className="col-2 left-align">{hr.name}</td>
-        <td className="col-2 left-align">{hr.company_id.name}</td>
+        <td className="col-2 left-align">{getSafeValue(hr.name)}</td>
+        <td className="col-2 left-align">
+          {getSafeValue(hr.company_id?.name)}
+        </td>
         <td className="col-1 center-align">
           {formatDate(hr.last_date_of_contact)}
         </td>
@@ -31,7 +35,7 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
         </td>
         <td className="col-1 center-align">
           <select
-            value={hr.status || ""}
+            value={hr.status || "Contact"}
             onChange={(e) => handleStatusChange(hr.id, e.target.value)}
             className="status-dropdown"
           >

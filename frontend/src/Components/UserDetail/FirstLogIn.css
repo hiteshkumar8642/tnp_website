@@ -1,5 +1,6 @@
-/* Form Page */
-.form-page {
+/* FirstLogin Page */
+
+.first-login-page {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -7,22 +8,22 @@
   padding-bottom: 50px;
 }
 
-.form-container {
+.first-login-container {
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1000px; /* Increased the width */
+  max-width: 1000px;
 }
 
-.profile-section {
+.first-login-profile-section {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.photo-upload {
+.first-login-photo-upload {
   position: relative;
   width: 80px;
   height: 80px;
@@ -32,11 +33,11 @@
   margin-right: 20px;
 }
 
-.photo-upload input[type="file"] {
+.first-login-photo-upload input[type="file"] {
   display: none;
 }
 
-.photo-upload label {
+.first-login-photo-upload label {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,41 +48,41 @@
   font-size: 24px;
 }
 
-.photo-upload img {
+.first-login-photo-upload img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.user-name {
+.first-login-user-name {
   font-size: 24px;
   color: #5d5d5d;
   display: flex;
-  align-items: center; /* Aligns text vertically with the image */
+  align-items: center;
 }
 
-.form-container h2 {
+.first-login-container h2 {
   color: #5d5d5d;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.form-group {
+.first-login-form-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 10px 0;
-  gap: 20px; /* Added gap for better spacing */
+  gap: 20px;
 }
 
-.input-group {
+.first-login-input-group {
   display: flex;
   align-items: center;
   width: 48%;
   position: relative;
 }
 
-.input-group i {
+.first-login-input-group i {
   position: absolute;
   left: 10px;
   top: 50%;
@@ -89,8 +90,8 @@
   color: #aaa;
 }
 
-.input-group input,
-.input-group select {
+.first-login-input-group input,
+.first-login-input-group select {
   width: 100%;
   padding: 10px 10px 10px 30px;
   border: 1px solid #ccc;
@@ -98,16 +99,16 @@
   font-size: 16px;
 }
 
-.input-group input::placeholder {
-  color: #3b3a3a; /* Adjusted to be 25% darker */
+.first-login-input-group input::placeholder {
+  color: #3b3a3a;
 }
 
-.input-group input[type="file"] {
+.first-login-input-group input[type="file"] {
   padding: 0;
   display: none;
 }
 
-.input-group.file-input label {
+.first-login-input-group.file-input label {
   width: 100%;
   padding: 10px 10px 10px 30px;
   border: 1px solid #ccc;
@@ -121,16 +122,15 @@
   justify-content: center;
 }
 
-/* Custom select styling to remove dropdown arrow */
-.input-group select {
-  -webkit-appearance: none; /* Remove default arrow in Chrome and Safari */
-  -moz-appearance: none; /* Remove default arrow in Firefox */
-  appearance: none; /* Remove default arrow in other browsers */
-  background: transparent; /* Remove any background image */
-  position: relative; /* Needed for the custom arrow */
+.first-login-input-group select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  position: relative;
 }
 
-.input-group select::after {
+.first-login-input-group select::after {
   content: "";
   position: absolute;
   right: 10px;
@@ -144,7 +144,7 @@
   transform: translateY(-50%);
 }
 
-.input-group.required::after {
+.first-login-input-group.required::after {
   content: " *";
   color: red;
   position: absolute;
@@ -152,7 +152,7 @@
   font-size: 16px;
 }
 
-.form-container button {
+.first-login-container button {
   width: 100%;
   padding: 10px;
   margin: 20px 0;
@@ -164,6 +164,6 @@
   cursor: pointer;
 }
 
-.form-container button:hover {
+.first-login-container button:hover {
   background-color: #5752d8;
 }

@@ -486,37 +486,32 @@ def appliedCompany_api(request):
 def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
-        print("HII")
+        print(request.POST)
         name = request.POST.get('name')
-        company_name = request.POST.get('company-name')
-        email = request.POST.get('company-email')
-        contact_number = request.POST.get('number')
-        linkedin_id = request.POST.get('linkedin')
+        company_name = request.POST.get('companyName')
+        email = request.POST.get('email')
+        contact_number = request.POST.get('contactNumber')
+        linkedin_id = request.POST.get('linkedinId')
         
+        print(name,company_name,email,contact_number,linkedin_id)
+
         # Get the current authenticated user
-        user = request.user
-        
-        # Retrieve the user's college branch
-        college_branch = user.userdetails.college_branch
+        users = request.user
+        role = users.userprofile.role
 
-        # Validate input data using Django serializer
-        data = {
-            'name': name,
-            'company_name': company_name,
-            'email': email,
-            'contact_number': contact_number,
-            'linkedin_id': linkedin_id,
-            'college_branch': college_branch,
-            'user': user.id  # pass user ID to the serializer
-        }
-
-        # Use a serializer to validate and save the data
-        serializer = SharedHRContactSerializer(data=data)
-        if serializer.is_valid():
+        print(users)
+        if role==1 or role==2:
+            print("Student")
+            serializer = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
             serializer.save()
             return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        elif role==3 or role==4:
+            print("HRContact")
+            serializer = HRContact(name=name,  mail_id=email, mobile_numbers=contact_number,linkedin=linkedin_id,college_branch=users.userdetails.college_branch)
+            serializer.save()
+            return Response({"message": "HR contact created successfully ."}, status=status.HTTP_201_CREATED)
+
 
     except Exception as e:
         # Log the exception for debugging purposes
@@ -542,34 +537,18 @@ class common_company_form_api(APIView):
             # Get the current authenticated user
             user = request.user
 
+            role = user.userprofile.role
+            print(role)
             # Retrieve the user's college branch
             branch = user.userdetails.college_branch
 
             # Log the college_visited value for debugging purposes
             logger.debug(f"College Visited: {college_visited}")
 
-            # Prepare data for the serializer
-            data = {
-                'company_name': company_name,
-                'company_email': company_email,
-                'company_contact': company_contact,
-                'ctc': ctc,
-                'college_visited': college_visited,
-                'type': type,
-                'is_company': is_company,
-                'location': location,
-                'college_branch': branch,
-                'user': user.id  # pass user ID to the serializer
-            }
+            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,is_company=is_company,location=location,college_branch=branch,user=user)
+            company_serializer.save()
 
-            # Use a serializer to validate and save the data
-            company_serializer = SharedCompanySerializer(data=data)
-            if company_serializer.is_valid():
-                company_serializer.save()
-                return Response({"message": True}, status=status.HTTP_201_CREATED)
-            else:
-                # Return validation errors
-                return Response({'errors': company_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": 'Submitted Successfully'}, status=status.HTTP_201_CREATED)
 
         except ObjectDoesNotExist:
             # Handle the case where user details or college branch don't exist
@@ -586,7 +565,8 @@ class common_company_form_api(APIView):
             logger.error(f"Unexpected error: {str(e)}")
             return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# @api_view(['POST'])
+
+
 @permission_classes([IsAuthenticated])
 class handle_comapany_contact_api(APIView):
     def get(self, request):
@@ -837,28 +817,30 @@ def student_list_api(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def annuncement_form_api(request):
+def AddAnnouncementAPI(request):
     try:
         # Get the current authenticated user and their role
         user = request.user
+        
         role = user.userprofile.role
+
+        college_branch = user.userdetails.college_branch
+        print(college_branch)
+
+        announcement = request.POST.get('announcement')
 
         # Check if the user has the required role
         if role == 3 or role == 4:
             # Prepare data for serialization
-            data = {
-                'user': user.id,  # Pass the user ID for the serializer
-                'announcement': request.data.get('announcement'),
-            }
-
+            # data = {
+            #     'user': user,  # Pass the user ID for the serializer
+            #     'announcement': announcement,
+            # }
             # Validate and save the announcement using a serializer
-            announcement_serial = AnnouncementSerializer(data=data)
-            if announcement_serial.is_valid():
-                announcement_serial.save()
-                return Response({"message": True}, status=status.HTTP_201_CREATED)
-            else:
-                # Return validation errors
-                return Response({'errors': announcement_serial.errors}, status=status.HTTP_400_BAD_REQUEST)
+            announcement_serial = Announcement.objects.create(user=user,announcement=announcement,college_branch=college_branch)
+            announcement_serial.save()
+            print("vrat")
+            return Response({"message": True}, status=status.HTTP_201_CREATED)
 
         else:
             # Return 403 Forbidden for unauthorized access
@@ -871,7 +853,7 @@ def annuncement_form_api(request):
     
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def deleteALL_SharedHRContacts_API(request):
     try:
@@ -880,17 +862,17 @@ def deleteALL_SharedHRContacts_API(request):
 
         # Retrieve the role of the user
         role = user.userprofile.role
-
+        print(role)
         # Check if the user has the appropriate role (3 or 4)
         if role == 3 or role == 4:
             # Get the college branch of the user
-            branch = request.userdetails.college_branch
-
+            branch = user.userdetails.college_branch
+            print(branch)
             # Delete all Shared_HR_contact objects associated with the user's branch
             Shared_HR_contact.objects.filter(college_branch=branch).delete()
 
             # Return a success message with an HTTP 200 OK status
-            return Response({'message': True}, status=status.HTTP_200_OK)
+            return Response({'message': 'Deleted'}, status=status.HTTP_200_OK)
         else:
             # Return a failure message with an HTTP 400 Bad Request status if the user role is not authorized
             return Response({"message": False}, status=status.HTTP_400_BAD_REQUEST)
@@ -953,7 +935,7 @@ def CallHistoryAPI(request):
 
         # Retrieve the user's role from UserProfile model
         role = UserProfile.objects.get(user=user).role
-        
+
         # Check if the user's role is either 3 or 4
         if role == 3 or role == 4:
             # Retrieve call history for the user's branch
