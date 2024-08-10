@@ -14,10 +14,6 @@ urlpatterns = [
     path("userProfile" , views.userProfile , name="userProfile"),
     path("UpdateDetails" , views.UpdateDetails , name = "UpdateDetails"),
     path('CollegeRegister',views.CollegeRegister,name='CollegeRegister'),
-    path('password_reset', ResetPasswordView.as_view(), name='password_reset'),
-    path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='userDetails/password_reset_confirm.html'),name='password_reset_confirm'),
-    path('password-reset-complete/',auth_views.PasswordResetCompleteView.as_view(template_name='userDetails/password_reset_complete.html'),name='password_reset_complete'),
-
     # # JWT Authentication paths
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh1/', TokenRefreshView.as_view(), name='token_refresh'),
