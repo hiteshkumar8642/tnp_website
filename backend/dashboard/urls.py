@@ -39,5 +39,7 @@ urlpatterns = [
     path('api/appliedCompany/',views.appliedCompany_api,name='applied_companies'),
     # All CallLogs of the branch for TNPs/TPOs
     path('api/callLogs/',views.CallHistoryAPI,name='callLogs'),
+    # HR status/data updation
+    path('api/hrstatusupdate/',views.HRdataUpdate,name='hrstatusupdate'),
 
 ]

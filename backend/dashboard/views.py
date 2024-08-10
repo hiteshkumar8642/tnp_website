@@ -567,7 +567,7 @@ def CollegeListAPI(request):
     except ObjectDoesNotExist:
         # Handle case where the Application object doesn't exist
         logger.error("College objects not found.")
-        return Response({'detail': 'Applications not found.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Colleges not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         # Log any unexpected exceptions
@@ -582,6 +582,29 @@ def CoursesAPI(request):
         course = Course.objects.all()
         serializer = CourseSerializer(course,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    except ObjectDoesNotExist:
+        # Handle case where the Application object doesn't exist
+        logger.error("Course objects not found.")
+        return Response({'detail': 'Courses not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        # Log any unexpected exceptions
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def HRdataUpdate(request):
+
+    try:
+        hrid = request.POST.get('HR-id')
+        data = request.POST.get('status')
+        hrcontact_obj = HRContact.objects.get(id=hrid)
+        hrcontact_obj.status = data
+        hrcontact_obj.save()
+        return Response({'message':'Data Updated'},status=status.HTTP_200_OK)
     
     except ObjectDoesNotExist:
         # Handle case where the Application object doesn't exist
