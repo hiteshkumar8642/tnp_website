@@ -42,15 +42,17 @@ urlpatterns = [
     # SharedHRContact to HRContact
     path('api/transfer/',views.TransferContactAPI,name='transfer_hr_contact'),
     # Delete All SharedHRs
-    path('api/DltALL/',views.deleteALL_SharedHRContacts_API,name='delete_all_SharedHrList'),
+    path('api/DltALL/',views.deleteALL_SharedHRContacts_API,name='delete_all_SharedHrList'),#///
     # Printing of HR List (ONLY FOR TNPs/TPOs)
     path('api/hr_list/',views.PrintHRListAPI,name="hr_list"),
     # Assign me api
     path('api/assign_me/',views.AssignMeAPI,name="assign_me"),
     # Company Data submission for the TNPs/TPOs and Helpers
-    path('api/common_company_form/',views.common_company_form_api.as_view(),name="common_company_form"),
+    path('api/common_company_form/',views.common_company_form_api.as_view(),name="common_company_form"),#///
     # Printing My HR List for TNPs 
     path('api/my_hr_list/',views.MyHRListAPI,name="my_hr_list"),
+    # Add announcement
+    path('api/add_announcements/',views.AddAnnouncementAPI,name="add_announcement"),#///
     # Printing Announcement
     path('api/announcement/',views.get_announcements,name='announcement'),
     # Printing Application
