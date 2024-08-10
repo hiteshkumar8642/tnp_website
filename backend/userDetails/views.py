@@ -187,6 +187,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
             if refresh and access:
                 response.set_cookie('refresh_token', refresh, httponly=True, secure=True)
                 response.set_cookie('access_token', access, httponly=True, secure=True)
+                validated_token = jwt_auth.get_validated_token(access)
+                request.user = jwt_auth.get_user(validated_token)
+                user=request.user
+                userdetails = UserDetails.objects.filter(user=user)
+                user=UserSerializer(userdetails,many=True)
+                return Response(user.data,status=status.HTTP_200_OK)
+
             else:
                 return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
         return response
