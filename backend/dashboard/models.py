@@ -74,11 +74,11 @@ class Shared_Company(models.Model):
 class Shared_HR_contact(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    name = models.CharField(max_length=30)
-    company_name = models.CharField(max_length=50)
-    email =  models.CharField(max_length=50)
-    contact_number = models.CharField(max_length=20)
-    linkedin_id = models.CharField(max_length=70)
+    name = models.CharField(max_length=30, null=True, blank=True)
+    company_name = models.CharField(max_length=50, null=True, blank=True)
+    email =  models.CharField(max_length=50, null=True, blank=True)
+    contact_number = models.CharField(max_length=20, null=True, blank=True)
+    linkedin_id = models.CharField(max_length=70, null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -225,7 +225,7 @@ class UserProfile(models.Model):
 class Announcement(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     announcement = models.TextField(null=True, blank=True)    
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
 

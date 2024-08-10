@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from django.urls import path
+from django.urls import path,include
 from userDetails.views import ResetPasswordView
 from django.contrib.auth import views as auth_views
 from .views import MyTokenObtainPairView, LogoutView
@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
-    path('api/password_reset/', ResetPasswordAPIView.as_view(), name='api_password_reset'),
+    #path('api/password_reset/', ResetPasswordAPIView.as_view(), name='api_password_reset'),
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 
-    
 ]
