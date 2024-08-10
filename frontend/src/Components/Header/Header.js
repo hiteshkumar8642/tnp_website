@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
-
+import MYSVG from "../../assets/Logo/WhiteBG-CHE.svg";
 export default function Header({ isLoginPage, children }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const PageName = "CampusHirease";
@@ -8,8 +8,9 @@ export default function Header({ isLoginPage, children }) {
   return (
     <header className="min-h-[80px] mx-auto flex items-center w-9/12 relative z-50">
       <nav className="container flex items-center justify-between">
-        <span className="text-[#5d5d5d] italic text-2xl">
-          <Link to="/" className="hover:no-underline">
+        <span className="text-[#5d5d5d]  text-2xl flex justify-center items-center lg:-ml-44 ">
+          <img src={MYSVG} alt="My SVG" className="w-30"/>
+          <Link to="/" className="hover:no-underline lg:-ml-8 lg:mt-6 md:-ml-4 ">
             <b>{PageName}</b>
           </Link>
         </span>
@@ -43,7 +44,7 @@ export default function Header({ isLoginPage, children }) {
               <li>Faq</li>
             </Link>
             <Link to="ContactUs" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
-              <li>Contact Us</li>
+              <li>ContactUs</li>
             </Link>
           </ul>
           <Link to="/login">
