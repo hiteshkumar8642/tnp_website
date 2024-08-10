@@ -497,14 +497,21 @@ def HandleHRContactAPI(request):
 
         # Get the current authenticated user
         users = request.user
+        role = users.userprofile.role
 
         print(users)
+        if role==1 or role==2:
+            print("Student")
+            serializer = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
+            serializer.save()
+            return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
         
-        serializer = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
-        serializer.save()
-        return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
-        # else:
-        #     return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        elif role==3 or role==4:
+            print("HRContact")
+            serializer = HRContact(name=name,  mail_id=email, mobile_numbers=contact_number,linkedin=linkedin_id,college_branch=users.userdetails.college_branch)
+            serializer.save()
+            return Response({"message": "HR contact created successfully ."}, status=status.HTTP_201_CREATED)
+
 
     except Exception as e:
         # Log the exception for debugging purposes
