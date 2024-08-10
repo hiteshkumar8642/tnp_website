@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import "./LoginPage.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setIsLoading } = useLoading();
@@ -42,11 +41,25 @@ export default function LoginPage() {
       localStorage.setItem("user_detail", JSON.stringify(user_detail));
       localStorage.setItem("user_Profile", JSON.stringify(user_profile));
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
-      Navigate("/dashboard");
-      toast.success("Login successfully");
+
+      if (user_detail && Object.keys(user_detail).length > 0) {
+        navigate("/dashboard");
+      } else {
+        navigate("/firstlogin");
+      }
+
+      toast.success("Login successful");
     } catch (error) {
-      console.error("Login failed", error);
-      toast.error("Login failed");
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        navigate("/401");
+        toast.error("Unauthorized");
+      } else {
+        console.error("Login failed", error);
+        toast.error("Login failed");
+      }
     } finally {
       setIsLoading(false);
     }
