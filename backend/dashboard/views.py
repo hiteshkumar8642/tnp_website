@@ -539,7 +539,7 @@ class common_company_form_api(APIView):
 
             role = user.userprofile.role
             print(role)
-            # Retrieve the user's college branch
+            # Retrieve the user's college branch3ZZ6
             branch = user.userdetails.college_branch
 
             # Log the college_visited value for debugging purposes
@@ -977,9 +977,7 @@ def TransferContactAPI(request):
         name = sh_hr_obj.name
         company = sh_hr_obj.company_name
         email = sh_hr_obj.email
-        # contact=[]
-        contact = {sh_hr_obj.contact_number}
-        # contact.append(cnt)
+        contact = sh_hr_obj.contact_number
         linkedin = sh_hr_obj.linkedin_id
         clg_branch = sh_hr_obj.college_branch
         print("Company : ",company)
