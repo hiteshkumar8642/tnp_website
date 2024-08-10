@@ -15,7 +15,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .tokens import account_activation_token
 from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,UserProfile,UserDetails,CollegeCourse,College,Course
-
+from dashboard.serializers import UserDetailsSerializer, UserProfileSerializer
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -174,6 +174,7 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
@@ -187,6 +188,17 @@ class MyTokenObtainPairView(TokenObtainPairView):
             if refresh and access:
                 response.set_cookie('refresh_token', refresh, httponly=True, secure=True)
                 response.set_cookie('access_token', access, httponly=True, secure=True)
+                jwt_auth = JWTAuthentication()
+                validated_token = jwt_auth.get_validated_token(access)
+                request.user = jwt_auth.get_user(validated_token)
+                user=request.user
+                userdetails = UserDetails.objects.filter(user=user)
+                user_details=UserDetailsSerializer(userdetails,many=True)
+                user_role= UserProfile.objects.filter(user=user)
+                user_profile= UserProfileSerializer(user_role,many=True)
+
+                return Response({'user_detail':user_details.data,'user_profile':user_profile.data},status=status.HTTP_200_OK)
+
             else:
                 return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
         return response

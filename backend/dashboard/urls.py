@@ -27,7 +27,7 @@ urlpatterns = [
     # path('application/',views.application,name='application'),
     # path('assign_me/<int:cnt>',views.assign_me,name="assign_me"),
     
-    #----------------------------------------------------------
+    #-------------------------------------------------------------------------------------
 
  
  
@@ -39,7 +39,9 @@ urlpatterns = [
     path('api/hr_contacts/',views.HandleHRContactAPI,name='hr_contacts'),
     # Printing list Shared HR List 
     path('api/shared_HR_list/',views.SharedHRListAPI,name='shared_hr_list'),
-    # Delete All SharedHRs 
+    # SharedHRContact to HRContact
+    path('api/transfer/',views.TransferContactAPI,name='transfer_hr_contact'),
+    # Delete All SharedHRs
     path('api/DltALL/',views.deleteALL_SharedHRContacts_API,name='delete_all_SharedHrList'),
     # Printing of HR List (ONLY FOR TNPs/TPOs)
     path('api/hr_list/',views.PrintHRListAPI,name="hr_list"),
@@ -55,5 +57,7 @@ urlpatterns = [
     path('api/application/',views.application,name='application'),
     # Showing Applied Companies for the Students
     path('api/appliedCompany/',views.appliedCompany_api,name='applied_companies'),
+    # All CallLogs of the branch for TNPs/TPOs
+    path('api/callLogs/',views.CallHistoryAPI,name='callLogs'),
 
 ]
