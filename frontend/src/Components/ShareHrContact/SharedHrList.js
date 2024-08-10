@@ -1,6 +1,9 @@
 // HRContactForm.js
 import React, { useState } from "react";
 import "./HRContactForm.css";
+import apiClient from '../../services/api';
+
+
 
 function SharedHrContact() {
   return <HRContactForm />;
@@ -25,38 +28,34 @@ const HRContactForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(formData)
-    try {
-      const response = await fetch("http://localhost:8000/dashboard/api/hr_contacts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log(formData);
 
-      if (response.ok) {
-        // Handle success response
-        console.log("Form submitted successfully!");
-        // Optionally, reset the form or provide user feedback
-        setFormData({
-          companyName: "",
-          name: "",
-          gender: "",
-          email: "",
-          linkedinId: "",
-          contactNumber: "",
-        });
-      } else {
-        // Handle error response
-        console.log("Failed to submit the form.");
-      }
-    } catch (error) {
-      console.error("Error submitting the form:", error);
+  try {
+    const response = await apiClient.post('http://localhost:8000/dashboard/api/hr_contacts/', formData);
+
+    if (response.status === 200) {
+      // Handle success response
+      console.log('Form submitted successfully!');
+      // Optionally, reset the form or provide user feedback
+      setFormData({
+        companyName: '',
+        name: '',
+        gender: '',
+        email: '',
+        linkedinId: '',
+        contactNumber: '',
+      });
+    } else {
+      // Handle error response
+      console.log('Failed to submit the form.');
     }
-  };
+  } catch (error) {
+    console.error('Error submitting the form:', error);
+  }
+};
+
 
   return (
     <div className="form-container w-11/12 mx-auto h-fit">
