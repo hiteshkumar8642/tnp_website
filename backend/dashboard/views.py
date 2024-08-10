@@ -486,37 +486,25 @@ def appliedCompany_api(request):
 def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
-        print("HII")
+        print(request.POST)
         name = request.POST.get('name')
-        company_name = request.POST.get('company-name')
-        email = request.POST.get('company-email')
-        contact_number = request.POST.get('number')
-        linkedin_id = request.POST.get('linkedin')
+        company_name = request.POST.get('companyName')
+        email = request.POST.get('email')
+        contact_number = request.POST.get('contactNumber')
+        linkedin_id = request.POST.get('linkedinId')
         
+        print(name,company_name,email,contact_number,linkedin_id)
+
         # Get the current authenticated user
-        user = request.user
+        users = request.user
+        branch = users.userdetails.college_branch
+        print(users)
         
-        # Retrieve the user's college branch
-        college_branch = user.userdetails.college_branch
-
-        # Validate input data using Django serializer
-        data = {
-            'name': name,
-            'company_name': company_name,
-            'email': email,
-            'contact_number': contact_number,
-            'linkedin_id': linkedin_id,
-            'college_branch': college_branch,
-            'user': user.id  # pass user ID to the serializer
-        }
-
-        # Use a serializer to validate and save the data
-        serializer = SharedHRContactSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
+        serializer.save()
+        return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
+        # else:
+        #     return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
         # Log the exception for debugging purposes
