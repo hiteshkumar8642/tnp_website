@@ -4,12 +4,11 @@ import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import "./LoginPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-
 export default function LoginPage() {
-  const Navigate=useNavigate();
+  const Navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setIsLoading } = useLoading();
@@ -34,11 +33,16 @@ export default function LoginPage() {
         }
       );
 
-      const { access, refresh } = response.data;
-      localStorage.setItem("access_token", access);
-      localStorage.setItem("refresh_token", refresh);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
-      Navigate("/dashboard")
+      console.log(response.data);
+
+      const { access_token, refresh_token, user_detail, user_profile } =
+        response.data;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+      localStorage.setItem("user_detail", JSON.stringify(user_detail));
+      localStorage.setItem("user_Profile", JSON.stringify(user_profile));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+      Navigate("/dashboard");
       toast.success("Login successfully");
     } catch (error) {
       console.error("Login failed", error);
