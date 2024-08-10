@@ -1,11 +1,10 @@
 from django.urls import path
 from . import views
 from django.urls import path,include
-from userDetails.views import ResetPasswordView
 from django.contrib.auth import views as auth_views
 from .views import MyTokenObtainPairView, LogoutView
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import ResetPasswordAPIView
+
 urlpatterns = [
     path("register" , views.register , name = "register"),
     path("login" , views.login , name = "login"),
