@@ -310,4 +310,79 @@ def CollegeRegister(request):
         return Response({"errors": form.errors}, status=400)
     
 
+from django.contrib.auth.forms import PasswordResetForm
+from django.utils.translation import gettext_lazy as _
 
+class ResetPasswordAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        print("inAPI")
+        form = PasswordResetForm(request.data)
+       
+        if form.is_valid():
+            print("valid form")
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='userDetails/password_reset_email.html',
+                subject_template_name='userDetails/password_reset_subject.txt',
+            )
+            return Response(
+                {"success": _("We've emailed you instructions for setting your password, "
+                              "if an account exists with the email you entered. You should receive them shortly. "
+                              "If you don't receive an email, "
+                              "please make sure you've entered the address you registered with, and check your spam folder.")},
+                status=status.HTTP_200_OK
+            )
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+# ---------------------------------------------------------------------------------------------------
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def SaveDetailsAPI(request):
+    try:
+       if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation-marksheet' in request.FILES and '10th-marksheet' in request.FILES and '12th-marksheet' in request.FILES) :
+            user = request.user
+            resume = request.FILES['resume']
+            photo = request.FILES['photo']
+            backlogs = request.POST.get('backlogs')
+            graduation_marksheet = request.FILES['graduation-marksheet']
+            graduation_cgpa = request.POST.get('graduation-cgpa')
+            twelfth_marksheet = request.FILES['12th-marksheet']
+            twelfth_percentage = request.POST.get('12th-percentage')
+            tenth_marksheet = request.FILES['10th-marksheet']
+            tenth_percentage = request.POST.get('10th-percentage')
+            current_cgpa = request.POST.get('graduation-cgpa')
+            other_website_link = request.POST.get('website')
+            leetcode_profile = request.POST.get('leetcode')
+            codechef_profile = request.POST.get('codechef')
+            codeforces_profile = request.POST.get('codeforces')
+            github_profile = request.POST.get('github')
+            portfolio_link = request.POST.get('portfolio')
+            linkedin_profile = request.POST.get('linkedin')
+            department = request.POST.get('department')
+            gap_after_twelfth = request.POST.get('gap_after_twelfth')
+            gap_after_graduation = request.POST.get('gap_after_graduation')
+            mobile = request.POST.get('mobile')
+            branch = request.POST.get('branch')
+            
+            print(branch)
+
+            brnc= Course.objects.get(degree=branch)
+            clgbrnc=CollegeCourse.objects.get(college=request.user.userprofile.college, course=brnc)
+            user_db_obj = UserDetails(user = user,college_branch = clgbrnc,resume = resume, photo = photo , backlogs = backlogs , graduation_marksheet = graduation_marksheet , graduation_cgpa = graduation_cgpa , twelfth_marksheet = twelfth_marksheet , tenth_marksheet = tenth_marksheet ,twelfth_percentage = twelfth_percentage , tenth_percentage = tenth_percentage , current_cgpa = current_cgpa , other_website_link = other_website_link , leetcode_profile= leetcode_profile , codechef_profile = codechef_profile , codeforces_profile = codeforces_profile , github_profile = github_profile , portfolio_link  = portfolio_link , linkedin_profile = linkedin_profile , department = department , gap_after_graduation = gap_after_graduation , mobile = mobile , gap_after_twelfth = gap_after_twelfth)
+            user_db_obj.save() 
+            
+            return Response({'message':'Userdetails Saved Successfully.'},status=status.status.HTTP_201_CREATED)
+    
+    except Exception as e:
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
