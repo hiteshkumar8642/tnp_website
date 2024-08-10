@@ -157,20 +157,6 @@ def UpdateDetails(request):
 
 
 
-
-
-class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'userDetails/password_reset.html'
-    email_template_name = 'userDetails/password_reset_email.html'
-    subject_template_name = 'userDetails/password_reset_subject.txt'
-    success_message = "We've emailed you instructions for setting your password, " \
-                      "if an account exists with the email you entered. You should receive them shortly." \
-                      " If you don't receive an email, " \
-                      "please make sure you've entered the address you registered with, and check your spam folder."
-    success_url = reverse_lazy('login')
-
-
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.response import Response
@@ -324,27 +310,4 @@ def CollegeRegister(request):
         return Response({"errors": form.errors}, status=400)
     
 
-from django.contrib.auth.forms import PasswordResetForm
-from django.utils.translation import gettext_lazy as _
 
-class ResetPasswordAPIView(APIView):
-    def post(self, request, *args, **kwargs):
-        print("inAPI")
-        form = PasswordResetForm(request.data)
-       
-        if form.is_valid():
-            print("valid form")
-            form.save(
-                request=request,
-                use_https=request.is_secure(),
-                email_template_name='userDetails/password_reset_email.html',
-                subject_template_name='userDetails/password_reset_subject.txt',
-            )
-            return Response(
-                {"success": _("We've emailed you instructions for setting your password, "
-                              "if an account exists with the email you entered. You should receive them shortly. "
-                              "If you don't receive an email, "
-                              "please make sure you've entered the address you registered with, and check your spam folder.")},
-                status=status.HTTP_200_OK
-            )
-        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)

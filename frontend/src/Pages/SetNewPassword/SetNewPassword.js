@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./SetNewPassword.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+//import AxiosInstance from "./AxiosInstance"
 
 const passwordRegex =
   /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
@@ -10,8 +12,15 @@ export default function SetNewPasswordPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const token = useParams();
+  console.log(token);
+  const [message, setMessage] = useState("");
 
   function handleSubmit(event) {
+    const detail = {
+      password: newPassword,
+      token: token.token,
+    };
     event.preventDefault();
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match.");
@@ -20,8 +29,24 @@ export default function SetNewPasswordPage() {
         "Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character (!@#$%^&*)."
       );
     } else {
-      alert("Password changed successfully!");
-      navigate("/login");
+      axios.post(`http://127.0.0.1:8000/user/api/password_reset/confirm/`,{
+        password: newPassword,
+        token: token.token,
+      },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      .then((response) => {
+        setMessage(response.success);
+        alert("Password changed successfully!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        setMessage("An error occurred. Please try again.");
+      });
+      
     }
   }
 
