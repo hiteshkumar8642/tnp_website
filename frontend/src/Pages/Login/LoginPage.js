@@ -48,7 +48,7 @@ export default function LoginPage() {
         navigate("/firstlogin");
       }
 
-      toast.success("Login successful");
+      toast.success("Login successful",{autoClose : 5000});
     } catch (error) {
       if (
         error.response &&

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./ForgotPasswordPage.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
     fetchForgetPassword(email)
       .then((response) => {
-        setMessage(response.success);
+        toast.success("We have sent a reset password link to your mail !",{autoClose : 10000});
       })
       .catch((error) => {
         setMessage("An error occurred. Please try again.");

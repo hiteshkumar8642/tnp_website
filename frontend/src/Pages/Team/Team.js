@@ -186,7 +186,7 @@ function TeamMember({ name, imageUrl, position, socialLinks }) {
   
 
   return (
-    <article className="bg-white rounded-lg shadow-md flex flex-col items-center p-6 min-w-[375px] text-center transition-transform duration-300 ease-in-out hover:translate-y-[-10px] hover:shadow-lg h-[525px]">
+    <article className="bg-white rounded-lg shadow-md flex flex-col items-center p-6 min-w-[275px] text-center transition-transform duration-300 ease-in-out hover:translate-y-[-10px] hover:shadow-lg h-[350px]">
       <div className="mb-4">
         <img src={imageUrl} alt={name} className="rounded-full w-[150px] h-[150px] object-cover" />
       </div>
