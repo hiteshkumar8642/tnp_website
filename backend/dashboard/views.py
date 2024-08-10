@@ -229,11 +229,11 @@ class common_company_form_api(APIView):
     def post(self, request):
         try:
             # Collect data from the POST request
-            company_name = request.POST.get('company-name')
-            company_email = request.POST.get('company-email')
-            company_contact = request.POST.get('company-contact')
+            company_name = request.POST.get('companyName')
+            company_email = request.POST.get('companyEmail')
+            company_contact = request.POST.get('contactNumber')
             ctc = request.POST.get('ctc')
-            college_visited = request.POST.get('clg-vis')
+            college_visited = request.POST.get('collegeVisited')
             type = request.POST.get('intern1')
             is_company = request.POST.get('is_company')
             location = request.POST.get('location-id')
