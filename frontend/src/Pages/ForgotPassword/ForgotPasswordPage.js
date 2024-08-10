@@ -13,6 +13,7 @@ export default function ForgotPasswordPage() {
     fetchForgetPassword(email)
       .then((response) => {
         setMessage(response.success);
+        alert("Check your mail.");
       })
       .catch((error) => {
         setMessage("An error occurred. Please try again.");
