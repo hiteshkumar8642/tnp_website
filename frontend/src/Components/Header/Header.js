@@ -39,10 +39,10 @@ export default function Header({ isLoginPage, children }) {
             <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>Team</li>
             </NavLink>
-            <Link to="" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+            <Link to="Faq" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>Faq</li>
             </Link>
-            <Link to="" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+            <Link to="ContactUs" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>Contact Us</li>
             </Link>
           </ul>

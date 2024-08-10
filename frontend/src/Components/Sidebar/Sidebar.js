@@ -95,6 +95,14 @@ function Sidebar() {
       >
         My HR List
       </NavLink>
+      <NavLink
+        to="/dashboard/all-student-list"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+        }
+      >
+        AllStudentList
+      </NavLink>
       <span className="app-sidebar-link" onClick={handleLogout}>
         Logout
       </span>
