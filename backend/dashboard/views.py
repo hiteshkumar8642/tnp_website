@@ -556,6 +556,24 @@ def AddAnnouncementAPI(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def CollegeListAPI(request):
+    try:
+        college = College.objects.filter(is_verified=True)
+        collegeserializer = CollegeSerializer(college,many=True)
+
+        return Response(collegeserializer.data,status=status.HTTP_200_OK)
+
+    except ObjectDoesNotExist:
+        # Handle case where the Application object doesn't exist
+        logger.error("College objects not found.")
+        return Response({'detail': 'Applications not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        # Log any unexpected exceptions
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

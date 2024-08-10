@@ -5,8 +5,8 @@ from django.urls import path, include
 urlpatterns = [
     #-------------------------------------------------------------------------------------
 
- 
- 
+    # College Lsit API
+    path('api/collegelist/',views.CollegeListAPI,name='CollegeList'),
     # Company contact data submission for TNPs/TPOs/Helpers   
     path('api/company_contacts/',views.handle_comapany_contact_api.as_view(),name='company_contacts'),
     # Printing list Shared Company List only for TNPs
