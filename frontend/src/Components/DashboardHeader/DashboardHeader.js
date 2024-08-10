@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function DashboardHeader() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [userName, setUserName] = useState("Name");
+
+  useEffect(() => {
+    const storedUserDetail = localStorage.getItem("user_detail");
+    try {
+      const userDetails = JSON.parse(storedUserDetail);
+      if (userDetails && userDetails.length > 0) {
+        const { first_name, last_name } = userDetails[0].user;
+        setUserName(`${first_name} ${last_name}`);
+      }
+    } catch (error) {
+      console.error("Error parsing user_detail from localStorage:", error);
+    }
+  }, []);
 
   const toggleTheme = () => {
     const htmlElement = document.documentElement;
@@ -17,7 +31,7 @@ function DashboardHeader() {
     <div className="app-header">
       <div className="app-header-left">
         <span className="app-icon"></span>
-        <p className="app-name">TNP Website</p>
+        <p className="app-name">CampusHirease</p>
       </div>
       <div className="app-header-right">
         <button
@@ -44,9 +58,9 @@ function DashboardHeader() {
           <button className="profile-btn">
             <img
               src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-              alt="s"
+              alt="Profile"
             />
-            <span>Name</span>
+            <span>{userName}</span>
           </button>
         </a>
       </div>
