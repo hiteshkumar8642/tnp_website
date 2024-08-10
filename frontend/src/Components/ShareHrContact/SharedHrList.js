@@ -25,9 +25,37 @@ const HRContactForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(formData)
+    try {
+      const response = await fetch("http://localhost:8000/dashboard/api/hr_contacts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Handle success response
+        console.log("Form submitted successfully!");
+        // Optionally, reset the form or provide user feedback
+        setFormData({
+          companyName: "",
+          name: "",
+          gender: "",
+          email: "",
+          linkedinId: "",
+          contactNumber: "",
+        });
+      } else {
+        // Handle error response
+        console.log("Failed to submit the form.");
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+    }
   };
 
   return (

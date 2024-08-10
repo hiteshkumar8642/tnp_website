@@ -486,6 +486,7 @@ def appliedCompany_api(request):
 def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
+        print("HII")
         name = request.POST.get('name')
         company_name = request.POST.get('company-name')
         email = request.POST.get('company-email')
