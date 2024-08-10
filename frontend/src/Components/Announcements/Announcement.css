@@ -1,0 +1,48 @@
+.add-announcement-btn {
+  background-color: var(--button-bg);
+  color: #ffffff; /* Darker color for better visibility */
+  border: 1px solid #333; /* Border added for visibility */
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 50%; /* Circular button */
+  font-size: 18px; /* Increase font size for "+" symbol */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Adjust width and height to make a circle */
+  height: 40px;
+}
+
+.add-announcement-btn:hover {
+  background-color: var(--link-color-hover);
+  color: #fff; /* White color on hover */
+  border-color: var(
+    --link-color-hover
+  ); /* Match border color with hover background */
+}
+
+.announcement-form {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.announcement-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--message-box-border);
+  border-radius: 4px;
+}
+
+.announcement-form button {
+  padding: 8px 16px;
+  background-color: var(--button-bg);
+  color: var(--message-btn);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.announcement-form button:hover {
+  background-color: var(--link-color-hover);
+}
