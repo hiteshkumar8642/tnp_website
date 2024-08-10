@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./401.css";
 
 function UnauthorizedPage() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <div className="unauthorized-container">
       <div className="lock"></div>

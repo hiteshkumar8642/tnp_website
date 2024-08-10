@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Header from "./Header";
-import "../Styles/FirstLogIn.css";
+import { useNavigate } from "react-router-dom";
+import "./FirstLogIn.css";
 
-export default function FirstLogIn({ onLandingPageOpening }) {
+export default function FirstLogIn() {
   const [branches, setBranches] = useState([]);
   const [photo, setPhoto] = useState(null);
   const [files, setFiles] = useState({
@@ -32,8 +32,8 @@ export default function FirstLogIn({ onLandingPageOpening }) {
     leetcode: "",
     website: "",
   });
-
-  const Name = "Jhon";
+  const [name, setName] = useState("Jhon");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchBranches() {
@@ -47,6 +47,13 @@ export default function FirstLogIn({ onLandingPageOpening }) {
       }
     }
     fetchBranches();
+
+    // Extract user name from localStorage
+    const userProfile = JSON.parse(localStorage.getItem("user_Profile"));
+    if (userProfile && userProfile.length > 0) {
+      const userName = userProfile[0].user.first_name;
+      setName(userName);
+    }
   }, []);
 
   const getUniqueValues = (data, key) => {
@@ -123,17 +130,15 @@ export default function FirstLogIn({ onLandingPageOpening }) {
       resume: null,
     });
     setPhoto(null);
+    navigate("/401");
   };
 
   return (
     <>
-      <Header onLogInPageOpening={onLandingPageOpening} isLoginPage>
-        Back to Home
-      </Header>
-      <div className="form-page">
-        <div className="form-container">
-          <div className="profile-section">
-            <div className="photo-upload">
+      <div className="first-login-page">
+        <div className="first-login-container">
+          <div className="first-login-profile-section">
+            <div className="first-login-photo-upload">
               <input
                 type="file"
                 id="photo-upload"
@@ -148,19 +153,18 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 )}
               </label>
             </div>
-            <div className="user-name">
-              <h2>{Name}</h2>
+            <div className="first-login-user-name">
+              <h2>{name}</h2>
             </div>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-university"></i>
                 <select
                   name="branch"
                   value={formData.branch}
                   onChange={handleInputChange}
-                  required
                 >
                   <option value="">---Select Degree---</option>
                   {uniqueDegrees.map((branch, index) => (
@@ -170,13 +174,12 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   ))}
                 </select>
               </div>
-              <div className="input-group required">
+              <div className="first-login-input-group required">
                 <i className="fas fa-building"></i>
                 <select
                   name="department"
                   value={formData.department}
                   onChange={handleInputChange}
-                  required
                 >
                   <option value="">---Select Department---</option>
                   {uniqueDepartments.map((department, index) => (
@@ -187,8 +190,8 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 </select>
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-id-badge"></i>
                 <input
                   type="text"
@@ -199,7 +202,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group required">
+              <div className="first-login-input-group required">
                 <i className="fas fa-phone"></i>
                 <input
                   type="text"
@@ -211,8 +214,8 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-percentage"></i>
                 <input
                   type="text"
@@ -223,7 +226,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input required">
+              <div className="first-login-input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
@@ -239,8 +242,8 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 </label>
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-percentage"></i>
                 <input
                   type="text"
@@ -251,7 +254,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input required">
+              <div className="first-login-input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
@@ -267,19 +270,19 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 </label>
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-graduation-cap"></i>
                 <input
                   type="text"
                   name="graduationCGPA"
-                  placeholder=" Graduation CGPA"
+                  placeholder="Graduation CGPA"
                   value={formData.graduationCGPA}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              <div className="input-group file-input required">
+              <div className="first-login-input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
@@ -295,8 +298,8 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 </label>
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-chart-line"></i>
                 <input
                   type="text"
@@ -307,7 +310,7 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                   required
                 />
               </div>
-              <div className="input-group file-input required">
+              <div className="first-login-input-group file-input required">
                 <i className="fas fa-file-alt"></i>
                 <input
                   type="file"
@@ -321,118 +324,123 @@ export default function FirstLogIn({ onLandingPageOpening }) {
                 </label>
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
-                <i className="fas fa-tasks"></i>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
+                <i className="fas fa-exclamation-triangle"></i>
                 <input
                   type="text"
                   name="backlogs"
-                  placeholder="No of Backlogs"
+                  placeholder="Backlogs"
                   value={formData.backlogs}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              <div className="input-group required">
-                <i className="fas fa-clock"></i>
+              <div className="first-login-input-group required">
+                <i className="fas fa-calendar-day"></i>
                 <input
                   type="text"
                   name="gapAfter12th"
-                  placeholder="Gap after 12th"
+                  placeholder="Gap After 12th"
                   value={formData.gapAfter12th}
                   onChange={handleInputChange}
                   required
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
-                <i className="fas fa-clock"></i>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
+                <i className="fas fa-calendar-day"></i>
                 <input
                   type="text"
                   name="gapAfterGraduation"
-                  placeholder="Gap after graduation"
+                  placeholder="Gap After Graduation"
                   value={formData.gapAfterGraduation}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              <div className="input-group">
-                <i className="fas fa-briefcase"></i>
+              <div className="first-login-input-group required">
+                <i className="fas fa-link"></i>
                 <input
                   type="text"
                   name="portfolio"
-                  placeholder="Portfolio"
+                  placeholder="Portfolio URL"
                   value={formData.portfolio}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group required">
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
                 <i className="fab fa-linkedin"></i>
                 <input
                   type="text"
                   name="linkedIn"
-                  placeholder="LinkedIn"
+                  placeholder="LinkedIn URL"
                   value={formData.linkedIn}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              <div className="input-group required">
+              <div className="first-login-input-group required">
                 <i className="fab fa-github"></i>
                 <input
                   type="text"
                   name="github"
-                  placeholder="Github"
+                  placeholder="GitHub URL"
                   value={formData.github}
                   onChange={handleInputChange}
                   required
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group">
-                <i className="fas fa-code"></i>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
+                <i className="fab fa-codechef"></i>
                 <input
                   type="text"
                   name="codeChef"
-                  placeholder=" CodeChef"
+                  placeholder="CodeChef URL"
                   value={formData.codeChef}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
-              <div className="input-group">
-                <i className="fas fa-code"></i>
+              <div className="first-login-input-group required">
+                <i className="fab fa-codeforces"></i>
                 <input
                   type="text"
                   name="codeforces"
-                  placeholder=" Codeforces"
+                  placeholder="Codeforces URL"
                   value={formData.codeforces}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group">
-                <i className="fas fa-code"></i>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
+                <i className="fab fa-leetcode"></i>
                 <input
                   type="text"
                   name="leetcode"
-                  placeholder=" Leetcode"
+                  placeholder="LeetCode URL"
                   value={formData.leetcode}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
-              <div className="input-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-globe"></i>
                 <input
                   type="text"
                   name="website"
-                  placeholder="Website"
+                  placeholder="Website URL"
                   value={formData.website}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>

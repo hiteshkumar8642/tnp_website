@@ -20,6 +20,7 @@ import SetNewPasswordPage from "./Pages/SetNewPassword/SetNewPassword";
 import NewCompanyDetails from "./Components/NewCompanyDescription/NewCompanyDetails";
 import UnauthorizedPage from "./Pages/401/401";
 import Error404Page from "./Pages/404/404";
+import FirstLogIn from "./Components/UserDetail/FirstLogIn";
 
 function App() {
   return (
@@ -41,6 +42,14 @@ function App() {
           <Route path="/pricing" element={<PricingPanel />} />
           <Route path="/newCompanyDetails" element={<NewCompanyDetails />} />
           <Route
+            path="/firstlogin"
+            element={
+              <ProtectedRoute>
+                <FirstLogIn />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -49,6 +58,7 @@ function App() {
             }
           >
             <Route index element={<Navigate replace to="companies" />} />
+
             <Route path="companies" element={<Companies />}></Route>
             <Route
               path="applied-companies"

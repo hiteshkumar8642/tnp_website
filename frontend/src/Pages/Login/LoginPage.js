@@ -41,7 +41,13 @@ export default function LoginPage() {
       localStorage.setItem("user_detail", JSON.stringify(user_detail));
       localStorage.setItem("user_Profile", JSON.stringify(user_profile));
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
-      navigate("/dashboard");
+
+      if (user_detail && Object.keys(user_detail).length > 0) {
+        navigate("/dashboard");
+      } else {
+        navigate("/firstlogin");
+      }
+
       toast.success("Login successful");
     } catch (error) {
       if (
