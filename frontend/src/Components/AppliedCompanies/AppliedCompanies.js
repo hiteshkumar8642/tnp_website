@@ -10,9 +10,18 @@ function AppliedCompanies() {
   useEffect(() => {
     async function getAppliedCompanies() {
       try {
-        const data = await fetchAppliedCompanies();
-        console.log(data);
-        setApplied(data);
+        // Check if data is already in local storage
+        const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
+        if (storedAppliedCompanies) {
+          setApplied(JSON.parse(storedAppliedCompanies));
+        } else {
+          // Fetch data if not found in local storage
+          const data = await fetchAppliedCompanies();
+          console.log(data);
+          setApplied(data);
+          // Save the fetched data to local storage
+          localStorage.setItem("appliedCompanies", JSON.stringify(data));
+        }
       } catch (err) {
         setError("Failed to load Applied Companies");
         console.log(err);
