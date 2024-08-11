@@ -177,7 +177,7 @@ class Application(models.Model):
     tenth_marks_eligibility = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     allowed_branch = models.ManyToManyField(Course, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
-    job_description = ArrayField(models.TextField(), null=True, blank=True)
+    job_description = models.FileField(upload_to='job_description/')
     is_intern = models.BooleanField(null=True, blank=True)
     is_ppo = models.BooleanField(null=True, blank=True)
     is_fte = models.BooleanField(null=True, blank=True)
