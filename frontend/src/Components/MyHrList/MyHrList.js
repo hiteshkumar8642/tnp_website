@@ -3,10 +3,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrList.css";
 import { fetchmyHRList } from "../../api/fetchMyHRlist";
 import MyHrTableRow from "./MyHrTableRow";
+import apiClient from '../../services/api';
 
 const MyHrList = () => {
   const [myHrData, setMyHrData] = useState([]);
   const [error, setError] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     async function getmyHRList() {
@@ -30,16 +32,49 @@ const MyHrList = () => {
     }
     getmyHRList();
   }, []);
+ 
+  const handleStatusChange = async (id, status) => {
+    console.log("hello ji");
+    try {
+      // Perform the API request to update the status
+      const response = await apiClient.post('dashboard/api/hr_contacts/', {
+        id,
+        status,
+      });
 
-  const handleStatusChange = (id, status) => {
-    setMyHrData((prevHrData) =>
-      prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
-    );
-    console.log(myHrData);
+      console.log('Status updated successfully:', response.data);
+
+      // Update state after the API request succeeds
+      setMyHrData((prevHrData) =>
+        prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
+      );
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
   };
+  const handleFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+
+  const filteredData = statusFilter === "All"
+    ? myHrData
+    : myHrData.filter(hr => hr.status === statusFilter);
+    
 
   return (
     <div className="myhr-list-container">
+       <label htmlFor="status">Status:</label><br />
+          <select
+           id="status"
+           value={statusFilter}
+           onChange={handleFilterChange}
+           className="status-filter-dropdown">
+          
+            <option value="All">All</option>
+            <option value="Contact">Contact</option>
+            <option value="Do_not_Contact">Do not Contact</option>
+            <option value="Already_Contacted">Already Contacted</option>
+          </select>
       <h2>My HR List</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="myhr-list-table-container">
@@ -54,7 +89,7 @@ const MyHrList = () => {
             </tr>
           </thead>
           <tbody>
-            {myHrData.map((hr) => (
+            {filteredData.map((hr) => (
               <MyHrTableRow
                 key={hr.id}
                 hr={hr}
