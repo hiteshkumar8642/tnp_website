@@ -34,7 +34,7 @@ const handleSubmit = async (e) => {
 
   try {
     const response = await apiClient.post('dashboard/api/hr_contacts/', formData);
-
+    console.log('Response:', response.data);
     if (response.status === 201) {
       // Handle success response
       console.log('Form submitted successfully!');

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./ShareCompanyContact.css";
 import MultiSelectComponent from "./MultiSelectComponent";
+import apiClient from '../../services/api';
+
 
 function SharedCompanyContact() {
   return <CompanyContactForm />;
@@ -44,9 +46,40 @@ const CompanyContactForm = () => {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+  
+    try {
+
+      const response = await apiClient.post('dashboard/api/common_company_form/', formData);
+      
+      if (response.status === 201) {
+        // Handle success response
+        console.log('Form submitted successfully!');
+        // Optionally, reset the form or provide user feedback
+        setFormData({
+          companyName: "",
+          companyEmail: "",
+          contactNumber: "",
+          ctc: "",
+          type: {
+            intern: false,
+            summerIntern: false,
+            fte: false,
+            ppo: false,
+          },
+          collegeVisited: "",
+          companyType: "FTE",
+          location: "",
+        });
+      } else {
+        // Handle error response
+        console.log('Failed to submit the form.');
+      }
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+    }
   };
 
   return (

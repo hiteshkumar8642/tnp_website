@@ -65,32 +65,19 @@ def activate(request, uidb64, token):
     
 
 
-def login(request):
-    if(request.method=='POST'):
-        password = request.POST['password']
-        username = request.POST['username']
-        user = auth.authenticate(username = username , password = password)
-        if user is not None :
-            auth.login(request,user)
-            user_profile_obj = UserProfile.objects.get(user = user)
-            college = user_profile_obj.college 
-            branches = CollegeCourse.objects.filter(college=college)
-            try:
-                userr = UserDetails.objects.get(user=user)
-            except:
-                userr= None
-            if userr is not None :
-                return redirect('dashboard')
-            return render(request,"userDetails/userProfileDetails.html",{'branches':branches})
-        else:
-            messages.info(request,"Invalid credentials.")
 
-    return render(request,'userDetails/login.html')
+
+
+
+
+
+
 
 def userProfile(request):
     user = UserDetails.objects.get(user = request.user)
     return render(request,'userDetails/userProfile.html',{'user':user})
 
+@api_view(['POST'])
 def SaveDetails(request):
     if(request.method=='POST'):
         #for field_name, uploaded_file in request.FILES.items():
@@ -138,6 +125,7 @@ def SaveDetails(request):
 
         return render(request , "userDetails/userProfileDetails.html")
 
+
 def UpdateDetails(request):
     if(request.method=="POST"):
         user = request.user
@@ -154,20 +142,6 @@ def UpdateDetails(request):
         return redirect('userProfile')
     else:
         return redirect('userProfile')
-
-
-
-
-
-class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'userDetails/password_reset.html'
-    email_template_name = 'userDetails/password_reset_email.html'
-    subject_template_name = 'userDetails/password_reset_subject.txt'
-    success_message = "We've emailed you instructions for setting your password, " \
-                      "if an account exists with the email you entered. You should receive them shortly." \
-                      " If you don't receive an email, " \
-                      "please make sure you've entered the address you registered with, and check your spam folder."
-    success_url = reverse_lazy('login')
 
 
 
@@ -261,7 +235,9 @@ class LogoutView(APIView):
 def register(request):
     try:
         data = json.loads(request.body)
+        print("hii data loaded")
     except json.JSONDecodeError:
+        print("errors")
         return Response({"errors": "Invalid JSON"}, status=400)
 
     #print("Received data: ", data)  # Debug: print the received data
@@ -269,6 +245,7 @@ def register(request):
     id=0
     try:
         if form.is_valid():
+            print("form valid")
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -348,3 +325,55 @@ class ResetPasswordAPIView(APIView):
                 status=status.HTTP_200_OK
             )
         return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+# ---------------------------------------------------------------------------------------------------
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def SaveDetailsAPI(request):
+    try:
+       if ('resume'  in request.FILES and 'photo' in request.FILES and 'graduation-marksheet' in request.FILES and '10th-marksheet' in request.FILES and '12th-marksheet' in request.FILES) :
+            user = request.user
+            resume = request.FILES['resume']
+            photo = request.FILES['photo']
+            backlogs = request.POST.get('backlogs')
+            graduation_marksheet = request.FILES['graduation-marksheet']
+            graduation_cgpa = request.POST.get('graduation-cgpa')
+            twelfth_marksheet = request.FILES['12th-marksheet']
+            twelfth_percentage = request.POST.get('12th-percentage')
+            tenth_marksheet = request.FILES['10th-marksheet']
+            tenth_percentage = request.POST.get('10th-percentage')
+            current_cgpa = request.POST.get('graduation-cgpa')
+            other_website_link = request.POST.get('website')
+            leetcode_profile = request.POST.get('leetcode')
+            codechef_profile = request.POST.get('codechef')
+            codeforces_profile = request.POST.get('codeforces')
+            github_profile = request.POST.get('github')
+            portfolio_link = request.POST.get('portfolio')
+            linkedin_profile = request.POST.get('linkedin')
+            department = request.POST.get('department')
+            gap_after_twelfth = request.POST.get('gap_after_twelfth')
+            gap_after_graduation = request.POST.get('gap_after_graduation')
+            mobile = request.POST.get('mobile')
+            branch = request.POST.get('branch')
+            
+            print(branch)
+
+            brnc= Course.objects.get(degree=branch)
+            clgbrnc=CollegeCourse.objects.get(college=request.user.userprofile.college, course=brnc)
+            user_db_obj = UserDetails(user = user,college_branch = clgbrnc,resume = resume, photo = photo , backlogs = backlogs , graduation_marksheet = graduation_marksheet , graduation_cgpa = graduation_cgpa , twelfth_marksheet = twelfth_marksheet , tenth_marksheet = tenth_marksheet ,twelfth_percentage = twelfth_percentage , tenth_percentage = tenth_percentage , current_cgpa = current_cgpa , other_website_link = other_website_link , leetcode_profile= leetcode_profile , codechef_profile = codechef_profile , codeforces_profile = codeforces_profile , github_profile = github_profile , portfolio_link  = portfolio_link , linkedin_profile = linkedin_profile , department = department , gap_after_graduation = gap_after_graduation , mobile = mobile , gap_after_twelfth = gap_after_twelfth)
+            user_db_obj.save() 
+            
+            return Response({'message':'Userdetails Saved Successfully.'},status=status.status.HTTP_201_CREATED)
+    
+    except Exception as e:
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    

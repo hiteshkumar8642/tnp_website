@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./CollegeRegistrationPage.css";
+import toast from "react-hot-toast";
 
 const host = "http://127.0.0.1:8000";
 
 export default function CollegeRegistrationPage() {
   const { setIsLoading } = useLoading();
+  const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -160,12 +162,13 @@ export default function CollegeRegistrationPage() {
       setSelectedBranches([]);
       if (response.status === 200) {
         console.log(response);
-        window.location.href = "/login";
+        navigate("/login");
         setIsLoading(false);
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      alert("There was an error with the registration. Please try again.");
+      toast.error("There was an error with the registration. Please try again.");
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }

@@ -25,7 +25,7 @@ export default function SignUpPage() {
   useEffect(function () {
     async function fetchColleges() {
       try {
-        const response = await axios.get(`${host}/dashboard/api/College/`);
+        const response = await axios.get(`${host}/dashboard/api/collegelist/`);
         setCollege(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -2,19 +2,28 @@ import { fetchForgetPassword } from "../../api/forgetPassword";
 import React, { useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./ForgotPasswordPage.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 
 export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const { setIsLoading } = useLoading();
 
   function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     fetchForgetPassword(email)
       .then((response) => {
-        setMessage(response.success);
+        setIsLoading(false);
+        toast.success("We have sent a reset password link to your mail !",{autoClose : 10000});
+        navigate("/login");
       })
       .catch((error) => {
+        setIsLoading(false);
+        toast.error("Something went wrong",);
         setMessage("An error occurred. Please try again.");
       });
   }
