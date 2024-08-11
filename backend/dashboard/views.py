@@ -197,7 +197,7 @@ def HandleHRContactAPI(request):
         contact_number = request.POST.get('contactNumber')
         linkedin_id = request.POST.get('linkedinId')
         
-        print(name,company_name,email,contact_number,linkedin_id)
+        print("DATA",name,company_name,email,contact_number,linkedin_id)
 
         # Get the current authenticated user
         users = request.user
@@ -234,7 +234,7 @@ class common_company_form_api(APIView):
             company_contact = request.POST.get('contactNumber')
             ctc = request.POST.get('ctc')
             college_visited = request.POST.get('collegeVisited')
-            type = request.POST.get('intern1')
+            type = request.POST.get('type')
             is_company = request.POST.get('is_company')
             location = request.POST.get('location-id')
 
@@ -410,9 +410,10 @@ def MyHRListAPI(request):
 @permission_classes([IsAuthenticated])
 def SharedCompanyListAPI(request):
     try:
+        print("in sharing")
         # Get the current authenticated user
         user = request.user
-
+        
         # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
 
@@ -455,6 +456,7 @@ def SharedCompanyListAPI(request):
 @permission_classes([IsAuthenticated])
 def SharedHRListAPI(request):
     try:
+        print("in sharing")
         # Get the current authenticated user
         user = request.user
 
@@ -507,10 +509,11 @@ def student_list_api(request):
         if role==3 or role==4:
             print("dev")
             userdetails = UserDetails.objects.filter(college_branch=user.userdetails.college_branch)
-            print("vrat")
+            # user_profile = UserProfile.objects.all()
 
-            # Return 403 Forbidden for unauthorized access
             user_details_serializer = UserDetailsSerializer(userdetails,many=True)
+            # user_profile_serializer = UserProfileSerializer(user_profile, many=True)
+
             return Response(user_details_serializer.data,status=status.HTTP_200_OK)
         else:
             return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
@@ -597,7 +600,6 @@ def CoursesAPI(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def HRdataUpdate(request):
-
     try:
         hrid = request.POST.get('HR-id')
         data = request.POST.get('status')
