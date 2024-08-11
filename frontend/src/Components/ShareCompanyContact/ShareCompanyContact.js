@@ -51,8 +51,9 @@ const CompanyContactForm = () => {
     console.log(formData);
   
     try {
-      const response = await apiClient.post('dashboard/api/shared_Company_list/', formData);
-  
+
+      const response = await apiClient.post('dashboard/api/common_company_form/', formData);
+      
       if (response.status === 201) {
         // Handle success response
         console.log('Form submitted successfully!');

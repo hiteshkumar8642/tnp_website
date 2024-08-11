@@ -197,7 +197,7 @@ def HandleHRContactAPI(request):
         contact_number = request.POST.get('contactNumber')
         linkedin_id = request.POST.get('linkedinId')
         
-        print(name,company_name,email,contact_number,linkedin_id)
+        print("DATA",name,company_name,email,contact_number,linkedin_id)
 
         # Get the current authenticated user
         users = request.user
@@ -234,7 +234,7 @@ class common_company_form_api(APIView):
             company_contact = request.POST.get('contactNumber')
             ctc = request.POST.get('ctc')
             college_visited = request.POST.get('collegeVisited')
-            type = request.POST.get('intern1')
+            type = request.POST.get('type')
             is_company = request.POST.get('is_company')
             location = request.POST.get('location-id')
 
@@ -410,9 +410,10 @@ def MyHRListAPI(request):
 @permission_classes([IsAuthenticated])
 def SharedCompanyListAPI(request):
     try:
+        print("in sharing")
         # Get the current authenticated user
         user = request.user
-
+        
         # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
 
@@ -455,6 +456,7 @@ def SharedCompanyListAPI(request):
 @permission_classes([IsAuthenticated])
 def SharedHRListAPI(request):
     try:
+        print("in sharing")
         # Get the current authenticated user
         user = request.user
 

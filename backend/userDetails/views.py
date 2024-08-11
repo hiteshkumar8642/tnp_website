@@ -25,8 +25,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.html import strip_tags
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 import json
+
+from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
 # Create your views here.
 
 def activate_email(request, user, to_email):
@@ -38,9 +42,14 @@ def activate_email(request, user, to_email):
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
     })
-    print(message)
-    email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
+    plain_message = strip_tags(message)
+    msg = EmailMultiAlternatives(
+        subject = mail_subject,
+        body = plain_message,
+        to = [to_email]
+    )
+    msg.attach_alternative(message,"text/html")
+    if msg.send():
         messages.success(request , "Registered succesfully ! Please confirm your email to login. If you didn't recieve any email, check if you typed your email correctly. ")
     else:
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
@@ -63,6 +72,12 @@ def activate(request, uidb64, token):
     
     return redirect('http://localhost:3000/login')
     
+
+
+
+
+
+
 
 
 
@@ -167,10 +182,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
                     user = jwt_auth.get_user(validated_token)
                     
                     # Fetch user details and profile
-                    userdetails = UserDetails.objects.filter(user=user)
+                    userdetails = UserDetails.objects.get(user=user)
                     user_details = UserDetailsSerializer(userdetails, many=True).data
                     
-                    user_profile = UserProfile.objects.filter(user=user)
+                    user_profile = UserProfile.objects.get(user=user)
                     user_profile_data = UserProfileSerializer(user_profile, many=True).data
                     
                     # Return user details, profile, and tokens in the response

@@ -3,8 +3,42 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrModal.css";
 import { FaLinkedin, FaEdit } from "react-icons/fa";
+import apiClient from '../../services/api';
 
 const HrModal = ({ hr, onClose, handleStatusChange }) => {
+
+// colours array
+const COLOR_CHOICES = [
+  ['red', 'Red'],
+  ['blue', 'Blue'],
+  ['yellow', 'Yellow'],
+  ['green', 'Green'],
+  ['orange', 'Orange'],
+  ['purple', 'Purple'],
+  ['pink', 'Pink'],
+  ['brown', 'Brown'],
+  ['black', 'Black'],
+  ['white', 'White'],
+  ['gray', 'Gray'],
+  ['cyan', 'Cyan'],
+  ['magenta', 'Magenta'],
+  ['lime', 'Lime'],
+  ['indigo', 'Indigo'],
+  ['violet', 'Violet'],
+  ['teal', 'Teal'],
+  ['maroon', 'Maroon'],
+  ['navy', 'Navy']
+];
+const [selectedColor, setSelectedColor] = useState('');
+
+  // Handle change in dropdown selection
+  const handleChange = (event) => {
+    setSelectedColor(event.target.value);
+  };
+
+
+
+
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
   );
@@ -16,14 +50,26 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const [newMessageColor, setNewMessageColor] = useState("#ffffff");
   const [editingMessageIndex, setEditingMessageIndex] = useState(null);
 
-  const handleAddMessage = () => {
+  const handleAddMessage = async() => {
+    try{
+
     const updatedMessages = [
       ...messages,
-      { date: newMessageDate, message: newMessage, color: newMessageColor },
+      { date: newMessageDate, message: newMessage, color: selectedColor },
     ];
+
+    const response = await apiClient.post('dashboard/api/hr_contacts/', {
+      message: newMessage,
+      color: selectedColor
+    });
+
+    setSelectedColor('');
     setMessages(updatedMessages);
     setNewMessage("");
     setNewMessageColor("#ffffff");
+  }catch(e){
+    console.log(e)
+  }
   };
 
   const handleEditMessage = (index) => {
@@ -38,13 +84,18 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
     updatedMessages[editingMessageIndex] = {
       date: newMessageDate,
       message: newMessage,
-      color: newMessageColor,
+      color: selectedColor,
     };
+    setSelectedColor('');
     setMessages(updatedMessages);
     setEditingMessageIndex(null);
     setNewMessage("");
     setNewMessageColor("#ffffff");
   };
+
+
+
+
 
   return (
     <div className="myhrlist-modal-overlay" onClick={onClose}>
@@ -84,6 +135,14 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               <label>Status:</label>
               <span className="data">{hr.status}</span>
             </div>
+            <label htmlFor="status">Status:</label><br />
+          <select className="info-row">
+          
+            <option value="All">All</option>
+            <option value="Contact">Contact</option>
+            <option value="Do_not_Contact">Do not Contact</option>
+            <option value="Already_Contacted">Already Contacted</option>
+          </select>
             <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
               Reassign
             </button>
@@ -153,12 +212,16 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               />
             </div>
             <div>
-              <label>Background Color:</label>
-              <input
-                type="color"
-                value={newMessageColor}
-                onChange={(e) => setNewMessageColor(e.target.value)}
-              />
+            <label htmlFor="color">Select a color:</label>
+              <select id="color" value={selectedColor} onChange={handleChange}>
+               <option value="">--Select a color--</option>
+                 {COLOR_CHOICES.map(([value, label]) => (
+                   <option key={value} value={value}>
+                     {label}
+                </option>
+               ))}
+              </select>
+           
             </div>
             {editingMessageIndex !== null ? (
               <button onClick={handleUpdateMessage}>Update</button>
