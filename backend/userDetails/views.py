@@ -67,6 +67,12 @@ def activate(request, uidb64, token):
 
 
 
+
+
+
+
+
+
 def userProfile(request):
     user = UserDetails.objects.get(user = request.user)
     return render(request,'userDetails/userProfile.html',{'user':user})

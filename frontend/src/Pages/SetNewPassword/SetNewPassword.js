@@ -19,10 +19,7 @@ export default function SetNewPasswordPage() {
   const [message, setMessage] = useState("");
 
   function handleSubmit(event) {
-    const detail = {
-      password: newPassword,
-      token: token.token,
-    };
+
     event.preventDefault();
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match.");
