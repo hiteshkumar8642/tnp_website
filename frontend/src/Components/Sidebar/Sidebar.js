@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
@@ -9,6 +9,8 @@ import {toast} from "react-hot-toast";
 function Sidebar() {
   const Navigate=useNavigate();
   const { setIsLoading } = useLoading();
+  const Role = null;
+
 
   const logout = async (refreshToken) => {
     try {
@@ -17,6 +19,37 @@ function Sidebar() {
       throw error.response.data;
     }
   };
+
+  
+
+  useEffect(() => {
+    async function roleWiseAccess() {
+      const storedUserProfile = localStorage.getItem("user_Profile");
+      try{
+        const userProfile = JSON.parse(storedUserProfile);
+        console.log(userProfile[0].role);
+        Role = userProfile[0].role;
+      }
+      catch(err){
+        console.error(err);
+      }
+    }
+    roleWiseAccess();
+  }, []);
+
+  // useEffect(() => {
+  //   const storedUserDetail = localStorage.getItem("user_detail");
+  //   try {
+  //     const userDetails = JSON.parse(storedUserDetail);
+  //     if (userDetails && userDetails.length > 0) {
+  //       const { first_name, last_name } = userDetails[0].user;
+  //       setUserName(`${first_name} ${last_name}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error parsing user_detail from localStorage:", error);
+  //   }
+  // }, []);
+
 
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
@@ -94,6 +127,33 @@ function Sidebar() {
         }
       >
         My HR List
+      </NavLink>
+      <NavLink
+        to="/dashboard/shared-hr-contact"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          
+        }
+      >
+        Shared HR Contact
+      </NavLink>
+      <NavLink
+        to="/dashboard/shared-company-contact"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          
+        }
+      >
+        Shared Company Contact
+      </NavLink>
+      <NavLink
+        to="/dashboard/call-log"
+        className={({ isActive }) =>
+          isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          
+        }
+      >
+        Call Log
       </NavLink>
       <NavLink
         to="/dashboard/all-student-list"
