@@ -1,9 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
-import { timeanddate } from "../../utils/timeanddate";
 
-const JobCard = ({ company, onClick, isActive }) => {
-  const { company_id, position } = company || {};
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
+
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthName = monthNames[date.getMonth()];
+
+  // Determine the appropriate suffix for the day
+  const suffix = (day) => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  return `${day}${suffix(day)} ${monthName}, ${year}`;
+}
+
+function daysLeft(lastDate) {
+  const today = new Date();
+  const endDate = new Date(lastDate);
+
+  if (isNaN(endDate.getTime())) {
+    return "Invalid Date";
+  }
+
+  const diffTime = endDate - today; // Difference in milliseconds
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+  if (diffDays < 0) {
+    return "Closed";
+  } else {
+    return `${diffDays} days`;
+  }
+}
+
+const AppliedCompanyCard = ({ company, onClick, isActive }) => {
+  const { company_id, position, is_fte, is_ppo, is_intern } = company || {};
   const companyName = company_id?.name || "Unknown Company";
 
   return (
@@ -16,22 +76,29 @@ const JobCard = ({ company, onClick, isActive }) => {
       <h2 className="text-lg font-semibold mt-2">{companyName}</h2>
       <p className="text-gray-600">{position}</p>
       <div className="flex justify-between items-center mt-2">
-        <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-          {position}
-        </span>
-        <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-          {position}
-        </span>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          New
-        </span>
+        {is_fte && (
+          <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+            FTE
+          </span>
+        )}
+        {is_ppo && (
+          <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+            PPO
+          </span>
+        )}
+        {is_intern && (
+          <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+            Intern
+          </span>
+        )}
       </div>
     </div>
   );
 };
 
-const JobDetails = ({ company, onBack }) => {
-  const { company_id, position } = company || {};
+const AppliedCompanyDetails = ({ company, onBack }) => {
+  console.log(company);
+  const { company_id, position, is_spp, is_sip, last_date } = company || {};
   const companyName = company_id?.name || "Unknown Company";
   const generalCTC = company_id?.general_ctc || "N/A";
 
@@ -47,30 +114,34 @@ const JobDetails = ({ company, onBack }) => {
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>
           <p className="text-blue-500">{position}</p>
-          <p className="text-gray-500">{generalCTC}</p>
+          <p className="text-gray-500">
+            {is_spp ? `SPP` : ``}
+            {is_spp && is_sip ? ` | ` : ``}
+            {is_sip ? `SIP` : ``}
+          </p>
         </div>
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Experience: {position}
+          Last Date: {formatDate(last_date)}
         </span>
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Work Level: {position}
+          Time Left: {daysLeft(last_date)}
         </span>
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Employee Type: {position}
+          CTC: {generalCTC} LPA
         </span>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+        {/* <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
           Offer Salary: {position}
-        </span>
+        </span> */}
       </div>
-      <p className="mt-4 text-gray-600">{position}</p>
-      <p className="mt-2 text-gray-600">Posted {position} ago</p>
+      {/* <p className="mt-4 text-gray-600">{generalCTC}</p> */}
+      {/* <p className="mt-2 text-gray-600">Posted {position} ago</p> */}
     </div>
   );
 };
 
-const JobList = () => {
+const AppliedCompanyList = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [applied, setApplied] = useState([]);
   const [error, setError] = useState("");
@@ -115,7 +186,7 @@ const JobList = () => {
             } gap-x-4`}
           >
             {applied.map((company, index) => (
-              <JobCard
+              <AppliedCompanyCard
                 key={index}
                 company={company.application_id}
                 onClick={setSelectedCompany}
@@ -129,7 +200,10 @@ const JobList = () => {
         </div>
         {selectedCompany && (
           <div className="sm:w-2/3 bg-gray-50 p-6 transition-all duration-300 w-full">
-            <JobDetails company={selectedCompany} onBack={handleBack} />
+            <AppliedCompanyDetails
+              company={selectedCompany}
+              onBack={handleBack}
+            />
           </div>
         )}
       </div>
@@ -137,7 +211,7 @@ const JobList = () => {
   );
 };
 
-export default JobList;
+export default AppliedCompanyList;
 
 // import React, { useEffect, useState } from "react";
 // import { timeanddate } from "../../utils/timeanddate";
