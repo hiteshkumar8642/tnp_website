@@ -198,11 +198,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
                 except Exception as e:
                     # Handle token validation errors
-                    print(e)
+                    logger.error(f"Error: {str(e)}")
                     return JsonResponse({'detail': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
             
             else:
                 # Tokens are missing from the response data
+                logger.error(f"Token error: {str(e)}")
                 return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Handle unexpected response status codes
