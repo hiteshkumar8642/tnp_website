@@ -8,9 +8,9 @@ export default function Header({ isLoginPage, children }) {
   return (
     <header className="min-h-[80px] mx-auto flex items-center w-9/12 relative z-50">
       <nav className="container flex items-center justify-between">
-        <span className="text-[#5d5d5d]  text-2xl flex justify-center items-center lg:-ml-44 ">
-          <img src={MYSVG} alt="My SVG" className="w-30"/>
-          <Link to="/" className="hover:no-underline lg:-ml-8 lg:mt-6 md:-ml-4 ">
+        <span className="text-[#5d5d5d]  text-2xl flex justify-center items-center ">
+          {/* <img src={MYSVG} alt="My SVG" className="w-30"/> */}
+          <Link to="/" className="hover:no-underline">
             <b>{PageName}</b>
           </Link>
         </span>
@@ -40,12 +40,12 @@ export default function Header({ isLoginPage, children }) {
             <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>Team</li>
             </NavLink>
-            <Link to="Faq" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+            {/* <Link to="Faq" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>Faq</li>
             </Link>
             <Link to="ContactUs" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
               <li>ContactUs</li>
-            </Link>
+            </Link> */}
           </ul>
           <Link to="/login">
             <button className="nav-button bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors align-middle">
@@ -64,12 +64,12 @@ export default function Header({ isLoginPage, children }) {
               <NavLink to="/team" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
                 <li>Team</li>
               </NavLink>
-              <Link to="" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
+              {/* <Link to="" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
                 <li>Faq</li>
               </Link>
               <Link to="" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
                 <li>Contact Us</li>
-              </Link>
+              </Link> */}
             </ul>
             <Link to="/login">
               <button className="mt-4 bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors">

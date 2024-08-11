@@ -509,10 +509,11 @@ def student_list_api(request):
         if role==3 or role==4:
             print("dev")
             userdetails = UserDetails.objects.filter(college_branch=user.userdetails.college_branch)
-            print("vrat")
+            # user_profile = UserProfile.objects.all()
 
-            # Return 403 Forbidden for unauthorized access
             user_details_serializer = UserDetailsSerializer(userdetails,many=True)
+            # user_profile_serializer = UserProfileSerializer(user_profile, many=True)
+
             return Response(user_details_serializer.data,status=status.HTTP_200_OK)
         else:
             return Response({"message":False},status=status.HTTP_400_BAD_REQUEST)
@@ -599,7 +600,6 @@ def CoursesAPI(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def HRdataUpdate(request):
-
     try:
         hrid = request.POST.get('HR-id')
         data = request.POST.get('status')

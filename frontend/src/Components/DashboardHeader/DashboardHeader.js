@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 function DashboardHeader() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [userName, setUserName] = useState("Name");
+  const [userPhoto, setUserPhoto] = useState("");
 
   useEffect(() => {
     const storedUserDetail = localStorage.getItem("user_detail");
     try {
       const userDetails = JSON.parse(storedUserDetail);
       if (userDetails && userDetails.length > 0) {
-        const { first_name, last_name } = userDetails[0].user;
+        const { first_name, last_name, photo } = userDetails[0].user;
         setUserName(`${first_name} ${last_name}`);
+        setUserPhoto(`http://localhost:8000${photo}`);
       }
     } catch (error) {
       console.error("Error parsing user_detail from localStorage:", error);
@@ -54,10 +56,13 @@ function DashboardHeader() {
             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
           </svg>
         </button>
-        <a href="{% url 'userProfile' %}">
+        <a href="#">
           <button className="profile-btn">
             <img
-              src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
+              src={
+                userPhoto ||
+                "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
+              }
               alt="Profile"
             />
             <span>{userName}</span>

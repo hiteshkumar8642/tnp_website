@@ -41,5 +41,7 @@ urlpatterns = [
     path('api/callLogs/',views.CallHistoryAPI,name='callLogs'),
     # HR status/data updation
     path('api/hrstatusupdate/',views.HRdataUpdate,name='hrstatusupdate'),
+    # Student list
+    path('api/studentlist/',views.student_list_api,name='studentlist')
 
 ]
