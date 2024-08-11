@@ -1,0 +1,237 @@
+@import "react-datepicker/dist/react-datepicker.css";
+
+.hr-list-container {
+  background-color: var(--app-container);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 80%;
+  color: var(--main-color);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.hr-list-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: var(--main-color);
+}
+
+.hr-list-table-container {
+  overflow-y: auto;
+  max-height: calc(100% - 60px); /* Adjust based on your header height */
+}
+
+.hr-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.hr-table th,
+.hr-table td {
+  padding: 12px 10px;
+}
+
+.hr-table th {
+  background-color: var(--link-color-active-bg);
+  color: var(--link-color-active);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.hr-table tbody tr {
+  background-color: var(--message-box-hover);
+  transition: background-color 0.3s ease;
+}
+
+.hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+.hr-table td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.hr-table td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.hr-table th.col-1,
+.hr-table td.col-1 {
+  width: 14.28%; /* 1/7th of the table width */
+}
+
+.hr-table th.col-2,
+.hr-table td.col-2 {
+  width: 28.57%; /* 2/7th of the table width */
+}
+
+/* Text alignment */
+.left-align {
+  text-align: left;
+}
+
+.center-align {
+  text-align: center;
+}
+
+/* Dark mode styles */
+.dark .hr-list-container {
+  background-color: var(--app-container);
+  color: var(--main-color);
+}
+
+.dark .hr-table th {
+  background-color: var(--projects-section);
+  color: var(--main-color);
+}
+
+.dark .hr-table tbody tr {
+  background-color: var(--message-box-hover);
+}
+
+.dark .hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .hr-list-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .hr-table th,
+  .hr-table td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .hr-list-container {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .hr-table th,
+  .hr-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+}
+
+.date-picker {
+  background-color: transparent;
+  border: none;
+  color: var(--main-color);
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  width: 100%;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker-popper {
+  z-index: 9999;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  background-color: var(--projects-section);
+  border: 1px solid var(--message-box-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: var(--link-color-active);
+  border-bottom: 1px solid var(--message-box-border);
+}
+
+.react-datepicker__current-month h2,
+.react-datepicker__day-name {
+  color: var(--link-color-active-bg);
+}
+
+.react-datepicker__day {
+  color: var(--link-color-active-bg);
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--link-color-hover);
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: var(--button-bg);
+  color: var(--link-color-active);
+}
+
+.react-datepicker__current-month,
+.react-datepicker__year-dropdown-container,
+.react-datepicker__month-dropdown-container {
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+/* Dark mode adjustments */
+.dark .react-datepicker {
+  background-color: var(--app-container);
+  border-color: var(--message-box-border);
+}
+
+.dark .react-datepicker__header {
+  background-color: var(--projects-section);
+  border-color: var(--message-box-border);
+}
+
+.dark .react-datepicker__current-month,
+.dark .react-datepicker__year-dropdown-container,
+.dark .react-datepicker__month-dropdown-container {
+  color: var(--main-color);
+}
+
+.dark .react-datepicker__day-name,
+.dark .react-datepicker__day {
+  color: var(--main-color);
+}
+
+.dark .react-datepicker__day:hover {
+  background-color: var(--link-color-hover);
+}
+
+.dark .react-datepicker__day--selected,
+.dark .react-datepicker__day--keyboard-selected {
+  background-color: var(--button-bg);
+  color: var(--link-color-active);
+}
+
+/* Status dropdown */
+.status-dropdown {
+  background-color: var(--projects-section);
+  border: 1px solid var(--message-box-border);
+  border-radius: 4px;
+  padding: 6px;
+  color: var(--main-color);
+  font-size: 14px;
+  width: 100%;
+}
+
+.dark .status-dropdown {
+  background-color: var(--app-container);
+  border-color: var(--message-box-border);
+  color: var(--main-color);
+}

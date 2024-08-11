@@ -3,13 +3,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HrModal.css";
 import { FaLinkedin } from "react-icons/fa";
-import apiClient from '../../services/api';
 
 const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
   );
-
 
   return (
     <div className="hrlist-modal-overlay" onClick={onClose}>

@@ -22,6 +22,9 @@ import UnauthorizedPage from "./Pages/401/401";
 import Error404Page from "./Pages/404/404";
 import FirstLogIn from "./Components/UserDetail/FirstLogIn";
 import AllStudentList from "./Components/AllStudentList/AllStudentList";
+import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
+import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
+import CallLog from "./Components/CallLog/CallLog";
 
 function App() {
   return (
@@ -76,6 +79,18 @@ function App() {
             <Route
               path="share-company-contact"
               element={<ShareCompanyContact />}
+            ></Route>
+            <Route
+              path="shared-hr-contact"
+              element={<SharedHrContactList />}
+            ></Route>
+            <Route
+              path="shared-company-contact"
+              element={<SharedCompanyContactList />}
+            ></Route>
+            <Route
+              path="call-log"
+              element={<CallLog />}
             ></Route>
             <Route path="hr-list" element={<HrList />}></Route>
             <Route path="my-hr-list" element={<MyHrList />}></Route>
