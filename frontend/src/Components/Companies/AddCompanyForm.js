@@ -33,7 +33,7 @@ function AddCompanyForm({ onClose, onSave }) {
       setBranches(data);
     }
     fetchBranchData();
-  }, []);
+  }, [branches]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
