@@ -1,37 +1,107 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
-import { timeanddate } from "../../utils/timeanddate";
-import CompanyItem from "../CompanyItem/CompanyItem";
 
-const JobCard = ({ job, onClick, isActive }) => {
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
+
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthName = monthNames[date.getMonth()];
+
+  // Determine the appropriate suffix for the day
+  const suffix = (day) => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  return `${day}${suffix(day)} ${monthName}, ${year}`;
+}
+
+function daysLeft(lastDate) {
+  const today = new Date();
+  const endDate = new Date(lastDate);
+
+  if (isNaN(endDate.getTime())) {
+    return "Invalid Date";
+  }
+
+  const diffTime = endDate - today; // Difference in milliseconds
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+  if (diffDays < 0) {
+    return "Closed";
+  } else {
+    return `${diffDays} days`;
+  }
+}
+
+const AppliedCompanyCard = ({ company, onClick, isActive }) => {
+  const { company_id, position, is_fte, is_ppo, is_intern } = company || {};
+  const companyName = company_id?.name || "Unknown Company";
+
   return (
     <div
-      onClick={() => onClick(job)}
+      onClick={() => onClick(company)}
       className={`p-4 bg-white shadow-lg rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
         isActive ? "border-2 border-blue-500" : ""
       }`}
     >
-      <div className="flex items-center justify-between">
-        <img src={job.icon} alt="icon" className="w-10 h-10" />
-      </div>
-      <h2 className="text-lg font-semibold mt-2">{job.title}</h2>
-      <p className="text-gray-600">{job.location}</p>
+      <h2 className="text-lg font-semibold mt-2">{companyName}</h2>
+      <p className="text-gray-600">{position}</p>
       <div className="flex justify-between items-center mt-2">
-        <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-          {job.type}
-        </span>
-        <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-          {job.level}
-        </span>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          New
-        </span>
+        {is_fte && (
+          <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+            FTE
+          </span>
+        )}
+        {is_ppo && (
+          <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
+            PPO
+          </span>
+        )}
+        {is_intern && (
+          <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+            Intern
+          </span>
+        )}
       </div>
     </div>
   );
 };
 
-const JobDetails = ({ job,onBack}) => {
+const AppliedCompanyDetails = ({ company, onBack }) => {
+  console.log(company);
+  const { company_id, position, is_spp, is_sip, last_date } = company || {};
+  const companyName = company_id?.name || "Unknown Company";
+  const generalCTC = company_id?.general_ctc || "N/A";
+
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg">
       <button
@@ -41,223 +111,107 @@ const JobDetails = ({ job,onBack}) => {
         Back
       </button>
       <div className="flex items-center">
-        <img src={job.icon} alt="icon" className="w-16 h-16 mr-4" />
         <div>
-          <h2 className="text-2xl font-bold">{job.title}</h2>
-          <p className="text-blue-500">{job.company}</p>
-          <p className="text-gray-500">{job.location}</p>
+          <h2 className="text-2xl font-bold">{companyName}</h2>
+          <p className="text-blue-500">{position}</p>
+          <p className="text-gray-500">
+            {is_spp ? `SPP` : ``}
+            {is_spp && is_sip ? ` | ` : ``}
+            {is_sip ? `SIP` : ``}
+          </p>
         </div>
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Experience: {job.experience}
+          Last Date: {formatDate(last_date)}
         </span>
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Work Level: {job.level}
+          Time Left: {daysLeft(last_date)}
         </span>
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Employee Type: {job.type}
+          CTC: {generalCTC} LPA
         </span>
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          Offer Salary: {job.salary}
-        </span>
+        {/* <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+          Offer Salary: {position}
+        </span> */}
       </div>
-      <p className="mt-4 text-gray-600">{job.description}</p>
-      <p className="mt-2 text-gray-600">Posted {job.posted} ago</p>
+      {/* <p className="mt-4 text-gray-600">{generalCTC}</p> */}
+      {/* <p className="mt-2 text-gray-600">Posted {position} ago</p> */}
     </div>
   );
 };
 
-const JobList = () => {
-  const [selectedJob, setSelectedJob] = useState(null);
-
+const AppliedCompanyList = () => {
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [applied, setApplied] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     async function getAppliedCompanies() {
       try {
-        // Check if data is already in local storage
         const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
         if (storedAppliedCompanies) {
           setApplied(JSON.parse(storedAppliedCompanies));
         } else {
-          // Fetch data if not found in local storage
           const data = await fetchAppliedCompanies();
-          console.log(data);
           setApplied(data);
-          // Save the fetched data to local storage
           localStorage.setItem("appliedCompanies", JSON.stringify(data));
         }
       } catch (err) {
         setError("Failed to load Applied Companies");
-        console.log(err);
+        console.error(err);
       }
     }
     getAppliedCompanies();
   }, []);
 
-  const currentDate = new Date();
-  const formattedDate = timeanddate(currentDate);
-
-  const jobs = [
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/product.png",
-      title: "Sr. Product Designer",
-      location: "1901 Thornridge Cir. Shiloh, Hawaii.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/ux.png",
-      title: "User Experience Designer",
-      location: "414 Parker Rd. Allentown, New york",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/product.png",
-      title: "Product Designer",
-      location: "4517 Washington Ave. Syracuse.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-    {
-      icon: "https://example.com/uiux.png",
-      title: "UI / UX Designer",
-      location: "2972 Westheimer Rd. Santa Ana.",
-      type: "Full Time",
-      experience: "Minimum 1 Year",
-      level: "Senior Level",
-      company: "Patreon",
-      salary: "$2150.0 / Month",
-      description:
-        "The User Experience Designer position exists to create compelling and digital user experience through excellent design...",
-      posted: "8 days",
-    },
-  ];
-
   const handleBack = () => {
-    setSelectedJob(null);
+    setSelectedCompany(null);
   };
 
   return (
-    <div className="flex">
-      <div
-        className={`${
-          selectedJob ? "w-1/3 hidden sm:block" : "w-fit"
-        } transition-all duration-300 bg-gray-100 p-4 h-screen overflow-y-auto`}
-      >
+    <>
+      {error && <p>{error}</p>}
+      <div className="flex">
         <div
-          className={`grid ${
-            selectedJob ? "grid-cols-1" : "lg:grid-cols-5 h-fit md:grid-cols-3 sm:grid-cols-2 grid-cols-1"
-          } gap-x-4`}
+          className={`${
+            selectedCompany ? "w-1/3 hidden sm:block" : "w-fit"
+          } transition-all duration-300 bg-gray-100 p-4 h-screen overflow-y-auto`}
         >
-          {jobs.map((job, index) => (
-            <JobCard
-              key={index}
-              job={job}
-              onClick={setSelectedJob}
-              isActive={selectedJob && selectedJob.title === job.title}
+          <div
+            className={`grid ${
+              selectedCompany
+                ? "grid-cols-1"
+                : "lg:grid-cols-5 h-fit md:grid-cols-3 sm:grid-cols-2 grid-cols-1"
+            } gap-x-4`}
+          >
+            {applied.map((company, index) => (
+              <AppliedCompanyCard
+                key={index}
+                company={company.application_id}
+                onClick={setSelectedCompany}
+                isActive={
+                  selectedCompany &&
+                  selectedCompany.id === company.application_id?.id
+                }
+              />
+            ))}
+          </div>
+        </div>
+        {selectedCompany && (
+          <div className="sm:w-2/3 bg-gray-50 p-6 transition-all duration-300 w-full">
+            <AppliedCompanyDetails
+              company={selectedCompany}
+              onBack={handleBack}
             />
-          ))}
-        </div>
+          </div>
+        )}
       </div>
-      {selectedJob && (
-        <div className="sm:w-2/3 bg-gray-50 p-6 transition-all duration-300 w-full">
-          <JobDetails job={selectedJob} onBack={handleBack} />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
-export default JobList;
-
-
+export default AppliedCompanyList;
 
 // import React, { useEffect, useState } from "react";
 // import { timeanddate } from "../../utils/timeanddate";
