@@ -183,10 +183,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
                     
                     # Fetch user details and profile
                     userdetails = UserDetails.objects.get(user=user)
-                    user_details = UserDetailsSerializer(userdetails, many=True).data
+                    user_details = UserDetailsSerializer(userdetails).data
                     
                     user_profile = UserProfile.objects.get(user=user)
-                    user_profile_data = UserProfileSerializer(user_profile, many=True).data
+                    user_profile_data = UserProfileSerializer(user_profile).data
                     
                     # Return user details, profile, and tokens in the response
                     return Response({
@@ -198,6 +198,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
                 except Exception as e:
                     # Handle token validation errors
+                    print(e)
                     return JsonResponse({'detail': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
             
             else:
