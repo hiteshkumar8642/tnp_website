@@ -173,10 +173,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
                     user = jwt_auth.get_user(validated_token)
                     
                     # Fetch user details and profile
-                    userdetails = UserDetails.objects.filter(user=user)
+                    userdetails = UserDetails.objects.get(user=user)
                     user_details = UserDetailsSerializer(userdetails, many=True).data
                     
-                    user_profile = UserProfile.objects.filter(user=user)
+                    user_profile = UserProfile.objects.get(user=user)
                     user_profile_data = UserProfileSerializer(user_profile, many=True).data
                     
                     # Return user details, profile, and tokens in the response
