@@ -21,7 +21,7 @@ import NewCompanyDetails from "./Components/NewCompanyDescription/NewCompanyDeta
 import UnauthorizedPage from "./Pages/401/401";
 import Error404Page from "./Pages/404/404";
 import FirstLogIn from "./Components/UserDetail/FirstLogIn";
-import AllStudentList from "./Components/AllStudentList/AllStudentList";
+import StudentList from "./Components/StudentList/StudentList";
 
 function App() {
   return (
@@ -33,7 +33,10 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-          <Route path="/password-reset/:token" element={<SetNewPasswordPage />} />
+          <Route
+            path="/password-reset/:token"
+            element={<SetNewPasswordPage />}
+          />
           <Route
             path="/collegeRegistration"
             element={<CollegeRegistrationPage />}
@@ -69,10 +72,7 @@ function App() {
               path="share-hr-contact"
               element={<SharedHrContact />}
             ></Route>
-            <Route
-              path="all-student-list"
-              element={<AllStudentList />}
-            ></Route>
+            <Route path="all-student-list" element={<StudentList />}></Route>
             <Route
               path="share-company-contact"
               element={<ShareCompanyContact />}
