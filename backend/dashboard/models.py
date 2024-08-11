@@ -62,7 +62,7 @@ class Shared_Company(models.Model):
     company_contact = models.CharField(max_length=20,default="")
     ctc = models.CharField(max_length=15)
     college_visited = models.CharField(max_length=50)
-    type = models.CharField(max_length=100)
+    type = models.JSONField(default=dict)
     is_company = models.CharField(max_length=10)
     location = models.CharField(max_length=30)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
@@ -80,6 +80,7 @@ class Shared_HR_contact(models.Model):
     contact_number = models.CharField(max_length=20, null=True, blank=True)
     linkedin_id = models.CharField(max_length=70, null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], default='Other')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     
@@ -92,7 +93,7 @@ class HRContact(models.Model):
     mobile_numbers = models.CharField(max_length=15)
     mail_id = models.EmailField(null=True, blank=True)
     company_id = models.ForeignKey(Company, null=True, blank=True,on_delete=models.CASCADE)
-    gender = models.CharField(max_length=10, null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], default='Other')
     last_date_of_contact = models.DateField(null=True, blank=True)
     next_date_of_contact = models.DateField(null=True, blank=True)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
