@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
     #path('api/password_reset/', ResetPasswordAPIView.as_view(), name='api_password_reset'),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('api/update-details/',views.update_details, name='update-details'),
 
 ]

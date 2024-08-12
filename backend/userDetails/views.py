@@ -31,6 +31,9 @@ import json
 
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
+
+
+from .serializers import UserDetailsSerializer
 # Create your views here.
 
 def activate_email(request, user, to_email):
@@ -153,6 +156,18 @@ def UpdateDetails(request):
         return redirect('userProfile')
 
 
+@api_view(['POST'])
+def update_details(request):
+    print("HLOO")
+    if request.method == 'POST':
+        user = request.user
+        user_obj = UserDetails.objects.get(user=user)
+        serializer = UserDetailsSerializer(user_obj, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Details updated successfully!'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken

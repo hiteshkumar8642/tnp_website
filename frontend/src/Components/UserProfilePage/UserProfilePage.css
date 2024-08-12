@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar-top {
+    background-color: #343a40;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+.sidenav {
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.sidenav .profile img {
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.sidenav .name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sidenav .job {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.sidenav-url {
+    margin-top: 20px;
+}
+
+.sidenav-url .url {
+    margin-bottom: 10px;
+}
+
+.sidenav-url .url a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.sidenav-url .url a.active,
+.sidenav-url .url a:hover {
+    text-decoration: underline;
+}
+
+.main {
+    margin-left: 270px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-body table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card-body table tr td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.card-body table tr td:nth-child(2) {
+    width: 10px;
+    text-align: center;
+}
+
+.card-body input[type="number"],
+.card-body input[type="url"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.save-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
