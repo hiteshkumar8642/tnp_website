@@ -18,6 +18,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import DatabaseError
 import logging
 
+
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -31,9 +33,9 @@ class SharedCompanyModifyView(APIView):
             company_contact = request.POST.get('contactNumber')
             ctc = request.POST.get('ctc')
             college_visited = request.POST.get('collegeVisited')
-            type = request.POST.get('intern1')
-            is_company = request.POST.get('is_company')
-            location = request.POST.get('location-id')
+            type = request.POST.get('type')
+            
+            location = request.POST.get('location')
 
             # Get the current authenticated user
             user = request.user
@@ -46,7 +48,7 @@ class SharedCompanyModifyView(APIView):
             # Log the college_visited value for debugging purposes
             logger.debug(f"College Visited: {college_visited}")
 
-            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,is_company=is_company,location=location,college_branch=branch,user=user)
+            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,location=location,college_branch=branch,user=user)
             company_serializer.save()
 
             return Response({"message": 'Submitted Successfully'}, status=status.HTTP_201_CREATED)

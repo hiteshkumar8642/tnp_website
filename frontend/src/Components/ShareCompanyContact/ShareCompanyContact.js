@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./ShareCompanyContact.css";
 import MultiSelectComponent from "./MultiSelectComponent";
 import apiClient from '../../services/api';
+import { toast } from "react-hot-toast";
+import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 
 
 function SharedCompanyContact() {
@@ -23,9 +25,9 @@ const CompanyContactForm = () => {
       ppo: false,
     },
     collegeVisited: "",
-    companyType: "FTE",
     location: "",
   });
+  const { setIsLoading } = useLoading();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,15 +51,21 @@ const CompanyContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-  
+    setIsLoading(true);
     try {
-
-      const response = await apiClient.post('dashboard/api/common_company_form/', formData);
+      const params = new URLSearchParams(formData);
+      const response = await apiClient.post('apis/shared-companymodify/', params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        });
       
       if (response.status === 201) {
         // Handle success response
         console.log('Form submitted successfully!');
+        setIsLoading(false);
         // Optionally, reset the form or provide user feedback
+        toast.success("Company added !");
         setFormData({
           companyName: "",
           companyEmail: "",
@@ -70,15 +78,21 @@ const CompanyContactForm = () => {
             ppo: false,
           },
           collegeVisited: "",
-          companyType: "FTE",
           location: "",
         });
       } else {
         // Handle error response
+        setIsLoading(false);
         console.log('Failed to submit the form.');
+        toast.error("Something went wrong.");
+        
       }
     } catch (error) {
+      setIsLoading(false);
+      toast.error("Something went wrong.");
       console.error('Error submitting the form:', error);
+      
+
     }
   };
 

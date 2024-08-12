@@ -191,19 +191,21 @@ def appliedCompany_api(request):
 def HandleHRContactAPI(request):
     try:
         # Extract data from the POST request
-        print(request.POST)
+        print(request.body)
+        print("IN CONTACT API")
         name = request.POST.get('name')
         company_name = request.POST.get('companyName')
         email = request.POST.get('email')
         contact_number = request.POST.get('contactNumber')
         linkedin_id = request.POST.get('linkedinId')
         
-        print("DATA",name,company_name,email,contact_number,linkedin_id)
+        # Print the data to check
+        print("DATA", name, company_name, email, contact_number, linkedin_id)
 
         # Get the current authenticated user
         users = request.user
         role = users.userprofile.role
-
+        # print("Name : ss",name)
         print(users)
         if role==1 or role==2:
             print("Student")
