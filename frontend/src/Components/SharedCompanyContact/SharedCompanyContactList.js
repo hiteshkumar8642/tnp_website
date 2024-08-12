@@ -1,116 +1,51 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./SharedCompanyContactList.css";
-import { fetchHRList } from "../../api/listofHR";
-import HrTableRow from "./HrTableRow";
+import { fetchSharedCompanies } from "../../api/sharedCompanies";
 import { ShimmerTable } from "react-shimmer-effects";
 
 const SharedCompanyContactList = () => {
-  const [hrData, setHrData] = useState([]);
+  const [CompanyData, setCompanyData] = useState([]);
   const [error, setError] = useState("");
-  const [HrListLoading, SetHrListLoading] = useState(true);
+  const [CompanyListLoading, SetCompanyListLoading] = useState(true);
 
   useEffect(() => {
-    async function getHRList() {
+    async function getCompanyList() {
       try {
-        SetHrListLoading(true);
+        SetCompanyListLoading(true);
 
         // Check if data is already in local storage
-        const storedHRData = localStorage.getItem("hrData");
-        if (storedHRData) {
-          setHrData(JSON.parse(storedHRData));
-          SetHrListLoading(false);
+        const storedCompanyData = localStorage.getItem("CompanyData");
+        if (storedCompanyData) {
+          setCompanyData(JSON.parse(storedCompanyData));
+          SetCompanyListLoading(false);
         } else {
           // Fetch data if not found in local storage
-          const data = await fetchHRList();
+          const data = await fetchSharedCompanies();
           console.log(data);
-          setHrData(data);
+          setCompanyData(data);
           // Save the fetched data to local storage
-          localStorage.setItem("hrData", JSON.stringify(data));
-          SetHrListLoading(false);
+          localStorage.setItem("CompanyData", JSON.stringify(data));
+          SetCompanyListLoading(false);
         }
       } catch (err) {
-        setError("Failed to load HR list");
+        setError("Failed to load Company list");
         console.log(err);
       }
     }
-    getHRList();
+    getCompanyList();
   }, []);
 
   const handleStatusChange = (id, status) => {
-    setHrData((prevHrData) =>
-      prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
+    setCompanyData((prevCompanyData) =>
+      prevCompanyData.map((Company) => (Company.id === id ? { ...Company, status } : Company))
     );
-    console.log(hrData);
+    console.log(CompanyData);
   };
 
   return (
     <>
-      {!HrListLoading ? (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hrData.map((hr) => (
-                  <HrTableRow
-                    key={hr.id}
-                    hr={hr}
-                    handleStatusChange={handleStatusChange}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ) : (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      
     </>
   );
 };
