@@ -25,8 +25,27 @@ import StudentList from "./Components/StudentList/StudentList";
 import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
+import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [role,setRole] = useState(null);
+
+  useEffect(() => {
+    async function roleWiseAccess() {
+      const storedUserProfile = localStorage.getItem("user_Profile");
+      try{
+        const userProfile = JSON.parse(storedUserProfile);
+        console.log("User Profile ", userProfile);
+        setRole(userProfile.role);
+      }
+      catch(error){
+        console.error("Error parsing user_Profile from localStorage:", error);
+      }
+    }
+    roleWiseAccess();
+  }, []);
+
   return (
     <>
       <Loader /> {/* Include the Loader component */}
@@ -86,7 +105,11 @@ function App() {
             ></Route>
             <Route
               path="shared-company-contact"
-              element={<SharedCompanyContactList />}
+              element={
+                <RoleProtectedRoute role={role}>
+                  <SharedCompanyContactList />
+                </RoleProtectedRoute>
+              }
             ></Route>
             <Route path="call-log" element={<CallLog />}></Route>
             <Route path="hr-list" element={<HrList />}></Route>
