@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./CompanyDetailsModal.css";
+import { IoArrowBack } from "react-icons/io5";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -89,9 +90,10 @@ const CompanyDetails = ({ company, onBack }) => {
     <div className="p-6 bg-white shadow-lg rounded-lg">
       <button
         onClick={onBack}
-        className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+        className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+        aria-label="Go back"
       >
-        Back
+        <IoArrowBack size={24} />
       </button>
       <div className="flex items-center">
         <div>
