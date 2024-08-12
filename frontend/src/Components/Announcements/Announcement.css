@@ -21,6 +21,13 @@
   ); /* Match border color with hover background */
 }
 
+.projects-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
 .announcement-form {
   margin-top: 16px;
   display: flex;
@@ -45,4 +52,53 @@
 
 .announcement-form button:hover {
   background-color: var(--link-color-hover);
+}
+
+.announcement-popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  max-height: 80vh; /* Limit the height to 80% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden;
+}
+
+.app-header-right {
+  position: relative;
+}
+
+/* If needed, add some padding to the content inside the popup */
+.announcements-popup-content {
+  padding: 16px;
+}
+
+/* Optionally, you can style the scrollbar */
+.announcement-popup::-webkit-scrollbar {
+  width: 8px;
+}
+
+.announcement-popup::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.announcement-popup::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.announcement-popup::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-height: 600px) {
+  .announcement-popup {
+    top: auto;
+    bottom: 100%;
+    max-height: 50vh;
+  }
 }
