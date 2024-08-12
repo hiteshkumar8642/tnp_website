@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CallLog.css";
-import { fetchHRList } from "../../api/listofHR";
+import { fetchHRList } from "../../api/ListofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 
