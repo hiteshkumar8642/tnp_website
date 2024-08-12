@@ -13,6 +13,42 @@ function ProfilePage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        // Create FormData object from the form
+        const formData = new FormData(e.target);
+        
+        // Convert FormData to a plain object
+        const data = Object.fromEntries(formData.entries());
+        
+        try {
+            // Perform the POST request
+            const response = await fetch('apis/update-user-details/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            
+            // Check if the response is OK
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to update user details');
+            }
+            
+            // Parse the response JSON
+            const responseData = await response.json();
+            
+            // Handle the success scenario
+            console.log('Success:', responseData.message);
+            // Optionally, show a success message or redirect
+            alert('User details updated successfully!');
+        } catch (error) {
+            // Handle errors
+            console.error('Error:', error.message);
+            // Optionally, show an error message
+            alert(`Error: ${error.message}`);
+        }
+        
     };
 
     

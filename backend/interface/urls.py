@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
-from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView
+from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView
 from django.urls import path, include
 
 
@@ -30,4 +30,5 @@ urlpatterns = [
     path('college-register/',CollegeRegisterView.CollegeRegisterView,name='collegeregister'),
     path('reset-password/',ResetPasswordView.ResetPasswordView.as_view(),name='resetpassword'),
     path('savedetails/',SaveDetailsView.SaveDetailsView,name='savedetails'),
+    path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails')
 ]
