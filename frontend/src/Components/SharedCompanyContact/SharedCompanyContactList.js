@@ -1,52 +1,65 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import "./SharedCompanyContactList.css";
 import { fetchSharedCompanies } from "../../api/sharedCompanies";
+import SharedCompanyTableRow from "./SharedCompanyTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 
 const SharedCompanyContactList = () => {
-  const [CompanyData, setCompanyData] = useState([]);
+  const [sharedCompanyData, setSharedCompanyData] = useState([]);
   const [error, setError] = useState("");
-  const [CompanyListLoading, SetCompanyListLoading] = useState(true);
+  const [companyListLoading, setCompanyListLoading] = useState(true);
 
   useEffect(() => {
-    async function getCompanyList() {
+    async function getSharedCompanyList() {
       try {
-        SetCompanyListLoading(true);
+        setCompanyListLoading(true);
 
         // Check if data is already in local storage
-        const storedCompanyData = localStorage.getItem("CompanyData");
+        const storedCompanyData = localStorage.getItem("SharedCompanyData");
         if (storedCompanyData) {
-          setCompanyData(JSON.parse(storedCompanyData));
-          SetCompanyListLoading(false);
+          setSharedCompanyData(JSON.parse(storedCompanyData));
+          setCompanyListLoading(false);
         } else {
           // Fetch data if not found in local storage
           const data = await fetchSharedCompanies();
-          console.log(data);
-          setCompanyData(data);
+          setSharedCompanyData(data);
           // Save the fetched data to local storage
-          localStorage.setItem("CompanyData", JSON.stringify(data));
-          SetCompanyListLoading(false);
+          localStorage.setItem("SharedCompanyData", JSON.stringify(data));
+          setCompanyListLoading(false);
         }
       } catch (err) {
-        setError("Failed to load Company list");
+        setError("Failed to load company list");
         console.log(err);
       }
     }
-    getCompanyList();
+    getSharedCompanyList();
   }, []);
 
-  const handleStatusChange = (id, status) => {
-    setCompanyData((prevCompanyData) =>
-      prevCompanyData.map((Company) => (Company.id === id ? { ...Company, status } : Company))
-    );
-    console.log(CompanyData);
-  };
+  if (companyListLoading) {
+    return <ShimmerTable row={5} col={7} />;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <>
-      
-    </>
+    <table className="company-contact-table">
+      <thead>
+        <tr>
+          <th>Company Name</th>
+          <th>Contact Number</th>
+          <th>Email</th>
+          <th>CTC Offered</th>
+          <th>College Visited</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sharedCompanyData.map((company, index) => (
+          <SharedCompanyTableRow key={index} company={company} />
+        ))}
+      </tbody>
+    </table>
   );
 };
 

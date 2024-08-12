@@ -35,11 +35,6 @@ const SharedHrContactList = () => {
     getSharedHRList();
   }, []);
 
-  const handleStatusChange = (hr) => {
-    console.log("Added to list:", hr);
-    // Handle adding the HR contact to a list or other logic here
-  };
-
   if (HrListLoading) {
     return <ShimmerTable row={5} col={7} />;
   }
@@ -63,11 +58,7 @@ const SharedHrContactList = () => {
       </thead>
       <tbody>
         {sharedHrData.map((hr, index) => (
-          <SharedHrTableRow
-            key={index}
-            hr={hr}
-            handleStatusChange={handleStatusChange}
-          />
+          <SharedHrTableRow key={index} hr={hr} />
         ))}
       </tbody>
     </table>

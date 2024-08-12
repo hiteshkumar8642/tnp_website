@@ -1,6 +1,6 @@
 import React from "react";
 
-const SharedHrTableRow = ({ hr, handleStatusChange }) => {
+const SharedHrTableRow = ({ hr }) => {
   const { company_name, contact_number, email, gender, name, linkedin_id } = hr;
 
   return (
@@ -16,12 +16,7 @@ const SharedHrTableRow = ({ hr, handleStatusChange }) => {
         </a>
       </td>
       <td>
-        <button
-          className="add-to-list-button"
-          onClick={() => handleStatusChange(hr)}
-        >
-          Add
-        </button>
+        <button className="add-to-list-button">Add</button>
       </td>
     </tr>
   );
