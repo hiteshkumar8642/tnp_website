@@ -9,7 +9,7 @@ import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import Companies from "./Components/Companies/Companies";
+import CompaniesDashboard from "./Components/Companies/Companies";
 import AppliedCompanies from "./Components/AppliedCompanies/AppliedCompanies";
 import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
 import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
@@ -21,7 +21,10 @@ import NewCompanyDetails from "./Components/NewCompanyDescription/NewCompanyDeta
 import UnauthorizedPage from "./Pages/401/401";
 import Error404Page from "./Pages/404/404";
 import FirstLogIn from "./Components/UserDetail/FirstLogIn";
-import AllStudentList from "./Components/AllStudentList/AllStudentList";
+import StudentList from "./Components/StudentList/StudentList";
+import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
+import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
+import CallLog from "./Components/CallLog/CallLog";
 
 function App() {
   return (
@@ -33,7 +36,10 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-          <Route path="/password-reset/:token" element={<SetNewPasswordPage />} />
+          <Route
+            path="/password-reset/:token"
+            element={<SetNewPasswordPage />}
+          />
           <Route
             path="/collegeRegistration"
             element={<CollegeRegistrationPage />}
@@ -60,7 +66,7 @@ function App() {
           >
             <Route index element={<Navigate replace to="companies" />} />
 
-            <Route path="companies" element={<Companies />}></Route>
+            <Route path="companies" element={<CompaniesDashboard />}></Route>
             <Route
               path="applied-companies"
               element={<AppliedCompanies />}
@@ -69,14 +75,20 @@ function App() {
               path="share-hr-contact"
               element={<SharedHrContact />}
             ></Route>
-            <Route
-              path="all-student-list"
-              element={<AllStudentList />}
-            ></Route>
+            <Route path="all-student-list" element={<StudentList />}></Route>
             <Route
               path="share-company-contact"
               element={<ShareCompanyContact />}
             ></Route>
+            <Route
+              path="shared-hr-contact"
+              element={<SharedHrContactList />}
+            ></Route>
+            <Route
+              path="shared-company-contact"
+              element={<SharedCompanyContactList />}
+            ></Route>
+            <Route path="call-log" element={<CallLog />}></Route>
             <Route path="hr-list" element={<HrList />}></Route>
             <Route path="my-hr-list" element={<MyHrList />}></Route>
           </Route>

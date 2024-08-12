@@ -1,4 +1,4 @@
-import { Link,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLoading } from "../../Components/LoadingContext/LoadingContext";
@@ -167,7 +167,9 @@ export default function CollegeRegistrationPage() {
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      toast.error("There was an error with the registration. Please try again.");
+      toast.error(
+        "There was an error with the registration. Please try again."
+      );
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -188,11 +190,8 @@ export default function CollegeRegistrationPage() {
 
   return (
     <>
-      <Header isLoginPage>
-        <Link to="/">
-          <button className="nav-button">Back To Home</button>
-        </Link>
-      </Header>
+      <Header />
+
       <div className="college-registration-page">
         <div className="college-registration-form">
           <h2>College Registration Form</h2>

@@ -151,7 +151,7 @@ def get_announcements(request):
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
+#///////////////////////
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -185,6 +185,7 @@ def appliedCompany_api(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# ----------------------------------------------
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def HandleHRContactAPI(request):
@@ -223,7 +224,7 @@ def HandleHRContactAPI(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
+#  ---------------------------------
 @permission_classes([IsAuthenticated])
 class common_company_form_api(APIView):
     def post(self, request):
@@ -404,7 +405,7 @@ def MyHRListAPI(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
+#######################################################
 # Shared Company list by the helper only for TNPs/TPOs
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -448,7 +449,7 @@ def SharedCompanyListAPI(request):
         # Log any unexpected exceptions
         logger.error(f"Unexpected error: {str(e)}")
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+#############################################################
 
 
 # Shared HR List only for TNPs/TPOs
@@ -578,7 +579,7 @@ def CollegeListAPI(request):
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
+# ----------------------------------------------------------------
 @api_view(['GET'])
 def CoursesAPI(request):
     try:
