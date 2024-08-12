@@ -20,7 +20,7 @@ import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
-@api_view(['POSST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def HRCallHistoryView(request):
     try:
