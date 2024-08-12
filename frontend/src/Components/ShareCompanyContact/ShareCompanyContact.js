@@ -51,8 +51,12 @@ const CompanyContactForm = () => {
     console.log(formData);
   
     try {
-
-      const response = await apiClient.post('dashboard/api/common_company_form/', formData);
+      const params = new URLSearchParams(formData);
+      const response = await apiClient.post('apis/shared-companymodify/', params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        });
       
       if (response.status === 201) {
         // Handle success response

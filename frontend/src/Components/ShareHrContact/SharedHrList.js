@@ -30,22 +30,30 @@ const HRContactForm = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log(formData);
 
   try {
-    const response = await apiClient.post('dashboard/api/hr_contacts/', formData);
+    console.log("working properly");
+    console.log(formData);
+    const params = new URLSearchParams(formData);
+    const response = await apiClient.post('apis/hrcontactmodify/', params.toString(), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      }
+    );
+    console.log("working properly");
     console.log('Response:', response.data);
     if (response.status === 201) {
       // Handle success response
       console.log('Form submitted successfully!');
       // Optionally, reset the form or provide user feedback
       setFormData({
-        companyName: '',
         name: '',
-        gender: '',
+        companyName: '',
         email: '',
-        linkedinId: '',
+        gender: '',
         contactNumber: '',
+        linkedinId: '',
       });
     } else {
       // Handle error response
