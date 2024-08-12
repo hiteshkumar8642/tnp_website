@@ -27,6 +27,7 @@ import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCo
 import CallLog from "./Components/CallLog/CallLog";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import { useEffect, useState } from "react";
+import Test from "./Components/Test/Test";
 
 function App() {
   const [role,setRole] = useState(null);
@@ -51,6 +52,7 @@ function App() {
       <Loader /> {/* Include the Loader component */}
       <div className="flex flex-col min-h-screen overflow-auto">
         <Routes>
+          <Route path="/test" element={<Test />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
