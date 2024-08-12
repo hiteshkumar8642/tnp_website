@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./SharedHrContactList.css";
-import { fetchHRList } from "../../api/listofHR";
+import { fetchSharedHRList } from "../../api/listOfSharedHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 
@@ -11,18 +11,18 @@ const SharedHrContactList = () => {
   const [HrListLoading, SetHrListLoading] = useState(true);
 
   useEffect(() => {
-    async function getHRList() {
+    async function getSharedHRList() {
       try {
         SetHrListLoading(true);
 
         // Check if data is already in local storage
-        const storedHRData = localStorage.getItem("hrData");
+        const storedHRData = localStorage.getItem("SharedhrData");
         if (storedHRData) {
           setHrData(JSON.parse(storedHRData));
           SetHrListLoading(false);
         } else {
           // Fetch data if not found in local storage
-          const data = await fetchHRList();
+          const data = await fetchSharedHRList();
           console.log(data);
           setHrData(data);
           // Save the fetched data to local storage
@@ -34,7 +34,7 @@ const SharedHrContactList = () => {
         console.log(err);
       }
     }
-    getHRList();
+    getSharedHRList();
   }, []);
 
   const handleStatusChange = (id, status) => {

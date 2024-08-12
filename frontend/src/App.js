@@ -9,7 +9,7 @@ import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import Companies from "./Components/Companies/Companies";
+import CompaniesDashboard from "./Components/Companies/Companies";
 import AppliedCompanies from "./Components/AppliedCompanies/AppliedCompanies";
 import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
 import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
@@ -66,7 +66,7 @@ function App() {
           >
             <Route index element={<Navigate replace to="companies" />} />
 
-            <Route path="companies" element={<Companies />}></Route>
+            <Route path="companies" element={<CompaniesDashboard />}></Route>
             <Route
               path="applied-companies"
               element={<AppliedCompanies />}

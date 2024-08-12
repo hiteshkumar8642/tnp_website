@@ -63,7 +63,6 @@ class Shared_Company(models.Model):
     ctc = models.CharField(max_length=15)
     college_visited = models.CharField(max_length=50)
     type = models.JSONField(default=dict)
-    is_company = models.CharField(max_length=10)
     location = models.CharField(max_length=30)
     college_branch = models.ForeignKey(CollegeCourse, null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

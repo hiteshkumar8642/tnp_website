@@ -1,0 +1,133 @@
+.add-company-modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-company-modal .modal-content {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-company-modal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-company-modal .close:hover,
+.add-company-modal .close:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+.add-company-modal form {
+  display: grid;
+  gap: 10px;
+}
+
+.add-company-modal .form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.add-company-modal .form-field {
+  width: 31%;
+}
+
+.add-company-modal .form-field.full-width {
+  width: 100%;
+}
+
+.add-company-modal .form-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.add-company-modal .form-field input[type="text"],
+.add-company-modal .form-field input[type="number"],
+.add-company-modal .form-field input[type="date"],
+.add-company-modal .form-field select,
+.add-company-modal .form-field input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-company-modal .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.add-company-modal .checkbox-group label {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.add-company-modal .checkbox-group input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.add-company-modal .branch-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.add-company-modal .branch-checkboxes label {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  white-space: nowrap;
+}
+
+.add-company-modal .branch-checkboxes input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.add-company-modal .button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.add-company-modal .button-group button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 48%;
+}
+
+.add-company-modal .button-group button[type="button"] {
+  background-color: #f44336;
+}
+
+.add-company-modal .button-group button:hover {
+  opacity: 0.9;
+}

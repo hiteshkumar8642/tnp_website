@@ -8,10 +8,10 @@ urlpatterns = [
     # Printing Application
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
-    path('announcement/',AnnouncementsListView.AnnouncementsListView,name='collegelist'),
+    path('announcement/',AnnouncementsListView.AnnouncementsListView,name='announcement'),
     path('applied-company-list/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
     path('courselist/',CourseListView.CourseListView,name='courselist'),
-    path('hrcontactmodify/',HRContactModifyView.HRContactModifyView,name='courselist'),
+    path('hrcontactmodify/',HRContactModifyView.HRContactModifyView,name='hrcontactmodify'),
     path('shared-companymodify/',SharedCompanyModifyView.SharedCompanyModifyView.as_view(),name='sharedcompanymodify'),
     path('sharedcompanylist/',SharedCompanyListView.SharedCompanyListView.as_view(),name='sharedcompanymodify'),
     path('hrlist/',HRListView.HRListView,name='hrlist'),
