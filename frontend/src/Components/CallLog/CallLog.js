@@ -1,117 +1,62 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import "./CallLog.css";
-import { fetchHRList } from "../../api/ListofHR";
-import HrTableRow from "./HrTableRow";
+import { fetchCallHistoryList } from "../../api/fetchCallHistory";
+import CallLogTableRow from "./CallLogTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 
 const CallLog = () => {
-  const [hrData, setHrData] = useState([]);
+  const [callLogs, setCallLogs] = useState([]);
   const [error, setError] = useState("");
-  const [HrListLoading, SetHrListLoading] = useState(true);
+  const [callLogLoading, setCallLogLoading] = useState(true);
 
   useEffect(() => {
-    async function getHRList() {
+    async function getCallLogs() {
       try {
-        SetHrListLoading(true);
-
+        setCallLogLoading(true);
         // Check if data is already in local storage
-        const storedHRData = localStorage.getItem("hrData");
-        if (storedHRData) {
-          setHrData(JSON.parse(storedHRData));
-          SetHrListLoading(false);
+        const storedCallLogs = localStorage.getItem("callLogs");
+        if (storedCallLogs) {
+          setCallLogs(JSON.parse(storedCallLogs));
+          setCallLogLoading(false);
         } else {
           // Fetch data if not found in local storage
-          const data = await fetchHRList();
-          console.log(data);
-          setHrData(data);
+          const data = await fetchCallHistoryList();
+          setCallLogs(data);
           // Save the fetched data to local storage
-          localStorage.setItem("hrData", JSON.stringify(data));
-          SetHrListLoading(false);
+          localStorage.setItem("callLogs", JSON.stringify(data));
+          setCallLogLoading(false);
         }
       } catch (err) {
-        setError("Failed to load HR list");
+        setError("Failed to load call logs");
         console.log(err);
       }
     }
-    getHRList();
+    getCallLogs();
   }, []);
 
-  const handleStatusChange = (id, status) => {
-    setHrData((prevHrData) =>
-      prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
-    );
-    console.log(hrData);
-  };
+  if (callLogLoading) {
+    return <ShimmerTable row={5} col={4} />;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <>
-      {!HrListLoading ? (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hrData.map((hr) => (
-                  <HrTableRow
-                    key={hr.id}
-                    hr={hr}
-                    handleStatusChange={handleStatusChange}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ) : (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-    </>
+    <table className="call-log-table">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>HR Name</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {callLogs.map((callLog, index) => (
+          <CallLogTableRow key={index} callLog={callLog} />
+        ))}
+      </tbody>
+    </table>
   );
 };
 
