@@ -39,7 +39,7 @@ def HRContactModifyView(request):
         email = request.POST.get('email')
         contact_number = request.POST.get('contactNumber')
         linkedin_id = request.POST.get('linkedinId')
-        
+        gender = request.POST.get('gender')
         print(name,company_name,email,contact_number,linkedin_id)
 
         # Get the current authenticated user
@@ -47,15 +47,15 @@ def HRContactModifyView(request):
         role = users.userprofile.role
 
         print(users)
-        if role==1 or role==2:
+        if role==2:
             print("Student")
-            serializer = Shared_HR_contact(name=name, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
+            serializer = Shared_HR_contact(name=name,gender=gender, company_name=company_name, email=email, contact_number=contact_number,linkedin_id=linkedin_id,college_branch=users.userdetails.college_branch,user=users)
             serializer.save()
             return Response({"message": "HR contact created successfully."}, status=status.HTTP_201_CREATED)
         
         elif role==3 or role==4:
             print("HRContact")
-            serializer = HRContact(name=name,  mail_id=email, mobile_numbers=contact_number,linkedin=linkedin_id,college_branch=users.userdetails.college_branch)
+            serializer = HRContact(name=name,  mail_id=email,gender = gender, mobile_numbers=contact_number,linkedin=linkedin_id,college_branch=users.userdetails.college_branch)
             serializer.save()
             return Response({"message": "HR contact created successfully ."}, status=status.HTTP_201_CREATED)
 
