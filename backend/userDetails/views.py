@@ -182,12 +182,18 @@ class MyTokenObtainPairView(TokenObtainPairView):
                     user = jwt_auth.get_user(validated_token)
                     
                     # Fetch user details and profile
-                    userdetails = UserDetails.objects.get(user=user)
-                    user_details = UserDetailsSerializer(userdetails).data
-                    
-                    user_profile = UserProfile.objects.get(user=user)
-                    user_profile_data = UserProfileSerializer(user_profile).data
-                    
+                    # Fetch user details and profile
+                    try:
+                        userdetails = UserDetails.objects.get(user=user)
+                        user_details = UserDetailsSerializer(userdetails).data
+                    except UserDetails.DoesNotExist:
+                        user_details = None  
+                    try:
+                        user_profile = UserProfile.objects.get(user=user)
+                        user_profile_data = UserProfileSerializer(user_profile).data
+                    except UserProfile.DoesNotExist:
+                        user_profile_data = None  
+                        
                     # Return user details, profile, and tokens in the response
                     return Response({
                         'user_detail': user_details,
