@@ -1,0 +1,44 @@
+.full-screen-modal {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.pdf-viewer-container {
+  width: 100%;
+  height: calc(100% - 60px); /* Adjust for the close button */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rpv-core__viewer {
+  width: 100%;
+  height: 100%;
+}
+
+.close-modal-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1001;
+}
+
+.close-modal-button:hover {
+  background-color: #d32f2f;
+}

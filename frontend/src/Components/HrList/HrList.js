@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HrList.css";
-import { fetchHRList } from "../../api/ListofHR";
+import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
-import apiClient from '../../services/api';
+import apiClient from "../../services/api";
 
 const HrList = () => {
   const [hrData, setHrData] = useState([]);
@@ -39,37 +39,39 @@ const HrList = () => {
     getHRList();
   }, []);
 
-  const handleStatusChange = async(id, status) => {
+  const handleStatusChange = async (id, status) => {
     try {
       // Perform the API request to update the status
-      const response = await apiClient.post('dashboard/api/hr_contacts/', {
+      const response = await apiClient.post("dashboard/api/hr_contacts/", {
         id,
         status,
       });
 
-      console.log('Status updated successfully:', response.data);
-    setHrData((prevHrData) =>
-      prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
-    );
-    console.log(hrData);
-  } catch (err) {
-    console.error('Failed to update status:', error);
-  }
+      console.log("Status updated successfully:", response.data);
+      setHrData((prevHrData) =>
+        prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
+      );
+      console.log(hrData);
+    } catch (err) {
+      console.error("Failed to update status:", error);
+    }
   };
 
   const handleFilterChange = (e) => {
     setStatusFilter(e.target.value);
   };
 
-  const filteredData = statusFilter === "All"
-    ? hrData
-    : hrData.filter(hr => hr.status === statusFilter);
+  const filteredData =
+    statusFilter === "All"
+      ? hrData
+      : hrData.filter((hr) => hr.status === statusFilter);
 
   return (
     <>
       {!HrListLoading ? (
         <div className="hr-list-container">
-          <label htmlFor="status">Status:</label><br />
+          <label htmlFor="status">Status:</label>
+          <br />
           <select
             id="status"
             value={statusFilter}
@@ -96,7 +98,7 @@ const HrList = () => {
                 </tr>
               </thead>
               <tbody>
-              {filteredData.map((hr) => (
+                {filteredData.map((hr) => (
                   <HrTableRow
                     key={hr.id}
                     hr={hr}

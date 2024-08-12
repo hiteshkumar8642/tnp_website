@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'dashboard', 
+    'interface',
     'userDetails',
     'corsheaders',
     'django.contrib.admin',
