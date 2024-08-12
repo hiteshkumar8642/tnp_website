@@ -12,42 +12,10 @@ function ProfilePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/dashboard/api/update-details/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Django CSRF token for security
-                },
-                body: JSON.stringify(userData),
-            });
-            if (response.ok) {
-                alert('Details updated successfully!');
-                // Optionally update local storage
-                localStorage.setItem('user_detail', JSON.stringify(userData));
-            } else {
-                alert('Failed to update details.');
-            }
-        } catch (error) {
-            console.error('Error updating details:', error);
-            alert('An error occurred while updating details.');
-        }
+        
     };
 
-    const getCookie = (name) => {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === `${name}=`) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    };
+    
 
 
     const openPDF = (pdfPath) => {
