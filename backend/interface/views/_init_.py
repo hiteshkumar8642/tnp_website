@@ -22,3 +22,4 @@ from .RegisterView import RegisterView
 from .CollegeRegisterView import CollegeRegisterView
 from .ResetPasswordView import ResetPasswordView
 from .SaveDetailsView import SaveDetailsView
+from .HRCallResponse import HRCallResponseView

@@ -26,13 +26,34 @@ import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactLis
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
 import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage"
+import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
+import { useEffect, useState } from "react";
+import Test from "./Components/Test/Test";
 
 function App() {
+  const [role,setRole] = useState(null);
+
+  useEffect(() => {
+    async function roleWiseAccess() {
+      const storedUserProfile = localStorage.getItem("user_Profile");
+      try{
+        const userProfile = JSON.parse(storedUserProfile);
+        console.log("User Profile ", userProfile);
+        setRole(userProfile.role);
+      }
+      catch(error){
+        console.error("Error parsing user_Profile from localStorage:", error);
+      }
+    }
+    roleWiseAccess();
+  }, []);
+
   return (
     <>
       <Loader /> {/* Include the Loader component */}
       <div className="flex flex-col min-h-screen overflow-auto">
         <Routes>
+          <Route path="/test" element={<Test />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -67,31 +88,86 @@ function App() {
           >
             <Route index element={<Navigate replace to="companies" />} />
 
-            <Route path="companies" element={<CompaniesDashboard />}></Route>
+            <Route 
+              path="companies" 
+              element={
+                  <CompaniesDashboard />
+              }>
+            </Route>
             <Route
               path="applied-companies"
-              element={<AppliedCompanies />}
-            ></Route>
+              element={
+                <RoleProtectedRoute role={role}>
+                  <AppliedCompanies />
+                </RoleProtectedRoute>
+              }
+            >
+            </Route>
             <Route
               path="share-hr-contact"
-              element={<SharedHrContact />}
-            ></Route>
-            <Route path="all-student-list" element={<StudentList />}></Route>
+              element={
+                <RoleProtectedRoute role={role}>
+                  <SharedHrContact />
+                </RoleProtectedRoute>
+              }
+            >
+            </Route>
+            <Route 
+              path="all-student-list" 
+              element={
+                <RoleProtectedRoute role={role}>
+                  <StudentList />
+                </RoleProtectedRoute>
+              }>
+            </Route>
             <Route
               path="share-company-contact"
-              element={<ShareCompanyContact />}
+              element={
+                <RoleProtectedRoute role={role}>
+                    <ShareCompanyContact />
+                </RoleProtectedRoute>
+              }
             ></Route>
             <Route
               path="shared-hr-contact"
-              element={<SharedHrContactList />}
+              element={
+                <RoleProtectedRoute role={role}>
+                    <SharedHrContactList />
+                </RoleProtectedRoute>
+              }
             ></Route>
             <Route
               path="shared-company-contact"
-              element={<SharedCompanyContactList />}
+              element={
+                <RoleProtectedRoute role={role}>
+                  <SharedCompanyContactList />
+                </RoleProtectedRoute>
+              }
             ></Route>
-            <Route path="call-log" element={<CallLog />}></Route>
-            <Route path="hr-list" element={<HrList />}></Route>
-            <Route path="my-hr-list" element={<MyHrList />}></Route>
+            <Route 
+              path="call-log" 
+              element={
+                <RoleProtectedRoute role={role}>
+                    <CallLog />
+                </RoleProtectedRoute>
+              }>
+            </Route>
+            <Route 
+              path="hr-list" 
+              element={
+                <RoleProtectedRoute role={role}>
+                  <HrList />
+                </RoleProtectedRoute>
+              }>
+            </Route>
+            <Route 
+              path="my-hr-list" 
+              element={
+                <RoleProtectedRoute role={role}>
+                  <MyHrList />
+                </RoleProtectedRoute>
+              }>
+            </Route>
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
           <Route path="*" element={<Error404Page />} />
