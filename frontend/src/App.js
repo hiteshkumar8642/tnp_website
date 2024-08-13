@@ -25,6 +25,7 @@ import StudentList from "./Components/StudentList/StudentList";
 import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
+import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage"
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import { useEffect, useState } from "react";
 import Test from "./Components/Test/Test";
@@ -170,6 +171,7 @@ function App() {
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
           <Route path="*" element={<Error404Page />} />
+          <Route path="/user-profile" element={<UserProfileDetails/>} />
         </Routes>
       </div>
     </>

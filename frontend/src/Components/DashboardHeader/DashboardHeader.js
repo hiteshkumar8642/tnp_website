@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
-
 function DashboardHeader() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [userName, setUserName] = useState("Name");
   const [userPhoto, setUserPhoto] = useState("");
+  const navigate = useNavigate(); 
   const [showAnnouncements, setShowAnnouncements] = useState(false);
 
   useEffect(() => {
@@ -20,6 +21,9 @@ function DashboardHeader() {
       console.error("Error parsing user_detail from localStorage:", error);
     }
   }, []);
+  const handleProfileClick = () => {
+    navigate('/user-profile'); // Adjust the route path as needed
+  };
 
   const toggleTheme = () => {
     const htmlElement = document.documentElement;
@@ -82,16 +86,16 @@ function DashboardHeader() {
           </svg>
         </button>
         <a href="#">
-          <button className="profile-btn">
-            <img
-              src={
-                userPhoto ||
-                "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-              }
-              alt="Profile"
-            />
-            <span>{userName}</span>
-          </button>
+        <button className="profile-btn" onClick={handleProfileClick}>
+          <img
+            src={
+              userPhoto ||
+              "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
+            }
+            alt="Profile"
+          />
+          <span>{userName}</span>
+        </button>
         </a>
         {showAnnouncements && (
           <div className="announcement-popup">
