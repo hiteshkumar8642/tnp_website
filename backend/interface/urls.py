@@ -30,6 +30,6 @@ urlpatterns = [
     path('college-register/',CollegeRegisterView.CollegeRegisterView,name='collegeregister'),
     path('reset-password/',ResetPasswordView.ResetPasswordView.as_view(),name='resetpassword'),
     path('savedetails/',SaveDetailsView.SaveDetailsView,name='savedetails'),
-    path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails')
+    path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails'),
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),
 ]
