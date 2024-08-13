@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
-from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView
+from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,HRCallResponse
 from django.urls import path, include
 
 
@@ -8,10 +8,10 @@ urlpatterns = [
     # Printing Application
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
-    path('announcement/',AnnouncementsListView.AnnouncementsListView,name='collegelist'),
+    path('announcement/',AnnouncementsListView.AnnouncementsListView,name='announcement'),
     path('applied-company-list/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
     path('courselist/',CourseListView.CourseListView,name='courselist'),
-    path('hrcontactmodify/',HRContactModifyView.HRContactModifyView,name='courselist'),
+    path('hrcontactmodify/',HRContactModifyView.HRContactModifyView,name='hrcontactmodify'),
     path('shared-companymodify/',SharedCompanyModifyView.SharedCompanyModifyView.as_view(),name='sharedcompanymodify'),
     path('sharedcompanylist/',SharedCompanyListView.SharedCompanyListView.as_view(),name='sharedcompanymodify'),
     path('hrlist/',HRListView.HRListView,name='hrlist'),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('delete-sharedhr-contact/',DeleteAllSharedHRContactView.DeleteAllSharedHRContactView,name='deletesharedhrcontact'),
     path('assignme/',HRAssignMeView.HRAssignMeView,name='deletesharedhrcontact'),
     path('hrcalllogs/',HRCallHistoryView.HRCallHistoryView,name='hrcalllogs'),
+    path('hrcallresponse/',HRCallResponse.HRCallHistoryView,name='hrcallresponse'),
     path('transfer-contact/',TransferContactView.TransferContactView,name='transfercontact'),
     path('login/',UserLoginView.MyTokenObtainPairView.as_view(),name='login'),
     path('logout/',LogoutView.LogoutView.as_view(),name='logout'),

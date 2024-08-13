@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Announcements from "../Announcements/Announcements";
-import { fetchComingCompanyDetails } from "../../api/comingCompany";
+import { fetchComingCompanyDetails } from "../../api/ComingCompany";
 import CompanyDetails from "./CompanyDetails";
 import CompanyCard from "./CompanyCard";
 import AddCompanyForm from "./AddCompanyForm";
@@ -9,7 +8,6 @@ function CompaniesDashboard() {
   return (
     <>
       <Company />
-      <Announcements />
     </>
   );
 }

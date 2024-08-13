@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import "./SharedHrContactList.css";
-import { fetchHRList } from "../../api/listofHR";
-import HrTableRow from "./HrTableRow";
+import { fetchSharedHRList } from "../../api/listOfSharedHR";
+import SharedHrTableRow from "./SharedHrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 
 const SharedHrContactList = () => {
-  const [hrData, setHrData] = useState([]);
+  const [sharedHrData, setSharedHrData] = useState([]);
   const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
 
   useEffect(() => {
-    async function getHRList() {
+    async function getSharedHRList() {
       try {
         SetHrListLoading(true);
 
         // Check if data is already in local storage
-        const storedHRData = localStorage.getItem("hrData");
+        const storedHRData = localStorage.getItem("SharedhrData");
         if (storedHRData) {
-          setHrData(JSON.parse(storedHRData));
+          setSharedHrData(JSON.parse(storedHRData));
           SetHrListLoading(false);
         } else {
           // Fetch data if not found in local storage
-          const data = await fetchHRList();
-          console.log(data);
-          setHrData(data);
+          const data = await fetchSharedHRList();
+          setSharedHrData(data);
           // Save the fetched data to local storage
-          localStorage.setItem("hrData", JSON.stringify(data));
+          localStorage.setItem("SharedhrData", JSON.stringify(data));
           SetHrListLoading(false);
         }
       } catch (err) {
@@ -34,84 +32,36 @@ const SharedHrContactList = () => {
         console.log(err);
       }
     }
-    getHRList();
+    getSharedHRList();
   }, []);
 
-  const handleStatusChange = (id, status) => {
-    setHrData((prevHrData) =>
-      prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
-    );
-    console.log(hrData);
-  };
+  if (HrListLoading) {
+    return <ShimmerTable row={5} col={7} />;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <>
-      {!HrListLoading ? (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hrData.map((hr) => (
-                  <HrTableRow
-                    key={hr.id}
-                    hr={hr}
-                    handleStatusChange={handleStatusChange}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ) : (
-        <div className="hr-list-container">
-          <h2>HR Contacts List</h2>
-          {error && <p className="error-message">{error}</p>}
-          <div className="hr-list-table-container">
-            <table className="hr-table">
-              <thead>
-                <tr>
-                  <th className="col-2 left-align">HR Name</th>
-                  <th className="col-2 left-align">Company Name</th>
-                  <th className="col-1 center-align">Last Contacted</th>
-                  <th className="col-1 center-align">Next Contact Date</th>
-                  <th className="col-1 center-align">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                  <td className="col-2 left-align">
-                    <ShimmerTable row={3} col={1} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-    </>
+    <table className="hr-contact-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Company Name</th>
+          <th>Contact Number</th>
+          <th>Email</th>
+          <th>LinkedIn</th>
+          <th>Add to List</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sharedHrData.map((hr, index) => (
+          <SharedHrTableRow key={index} hr={hr} />
+        ))}
+      </tbody>
+    </table>
   );
 };
 

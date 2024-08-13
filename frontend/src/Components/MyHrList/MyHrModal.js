@@ -57,23 +57,26 @@ const [selectedColor, setSelectedColor] = useState('');
       ...messages,
       { date: newMessageDate, message: newMessage, color: selectedColor },
     ];
+    console.log(hr.id);
     const params = new URLSearchParams({
-      id:hr.id,
-      message: newMessage,
-      color: selectedColor
+      hr_id:hr.id,
+      comment: newMessage,
+      colour: selectedColor
     });
 
-    const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+    setSelectedColor('');
+    setMessages(updatedMessages);
+    setNewMessage("");
+    setNewMessageColor("#ffffff");
+
+    const response = await apiClient.post('apis/hrcallresponse/', params.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
         });
     console.log("response: " + response.status);
 
-    setSelectedColor('');
-    setMessages(updatedMessages);
-    setNewMessage("");
-    setNewMessageColor("#ffffff");
+  
   }catch(e){
     console.log(e)
   }

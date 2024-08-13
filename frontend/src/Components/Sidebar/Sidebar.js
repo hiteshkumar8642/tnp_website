@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
@@ -9,7 +9,7 @@ import {toast} from "react-hot-toast";
 function Sidebar() {
   const Navigate=useNavigate();
   const { setIsLoading } = useLoading();
-  const Role = null;
+  const [role,setRole] = useState(null);
 
 
   const logout = async (refreshToken) => {
@@ -27,28 +27,16 @@ function Sidebar() {
       const storedUserProfile = localStorage.getItem("user_Profile");
       try{
         const userProfile = JSON.parse(storedUserProfile);
-        console.log(userProfile[0].role);
-        Role = userProfile[0].role;
+        console.log("User Profile ", userProfile);
+        setRole(userProfile.role);
       }
-      catch(err){
-        console.error(err);
+      catch(error){
+        console.error("Error parsing user_Profile from localStorage:", error);
       }
     }
     roleWiseAccess();
   }, []);
 
-  // useEffect(() => {
-  //   const storedUserDetail = localStorage.getItem("user_detail");
-  //   try {
-  //     const userDetails = JSON.parse(storedUserDetail);
-  //     if (userDetails && userDetails.length > 0) {
-  //       const { first_name, last_name } = userDetails[0].user;
-  //       setUserName(`${first_name} ${last_name}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error parsing user_detail from localStorage:", error);
-  //   }
-  // }, []);
 
 
   const handleLogout = async () => {
@@ -79,93 +67,130 @@ function Sidebar() {
 
   return (
     <div className="app-sidebar">
-      <NavLink
-        to="/dashboard/companies"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        Companies
-      </NavLink>
-      <NavLink
-        to="/dashboard/applied-companies"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        Applied Companies
-      </NavLink>
-      <NavLink
-        to="/dashboard/share-hr-contact"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        Share HR Contact
-      </NavLink>
-      <NavLink
-        to="/dashboard/share-company-contact"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        Share Company Contact
-      </NavLink>
-      <NavLink
-        to="/dashboard/hr-list"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        HR List
-      </NavLink>
-      <NavLink
-        to="/dashboard/my-hr-list"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-          
-        }
-      >
-        My HR List
-      </NavLink>
-      <NavLink
-        to="/dashboard/shared-hr-contact"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-          
-        }
-      >
-        Shared HR Contact
-      </NavLink>
-      <NavLink
-        to="/dashboard/shared-company-contact"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-          
-        }
-      >
-        Shared Company Contact
-      </NavLink>
-      <NavLink
-        to="/dashboard/call-log"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-          
-        }
-      >
-        Call Log
-      </NavLink>
-      <NavLink
-        to="/dashboard/all-student-list"
-        className={({ isActive }) =>
-          isActive ? "app-sidebar-link active" : "app-sidebar-link"
-        }
-      >
-        AllStudentList
-      </NavLink>
-      <span className="app-sidebar-link" onClick={handleLogout}>
-        Logout
-      </span>
+      {
+        (role === 1 || role === 2 || role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/companies"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          Companies
+        </NavLink>
+      }
+      
+      {
+        (role === 1 || role === 2 || role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/applied-companies"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          Applied Companies
+        </NavLink>
+      }
+      
+      {
+        (role === 2) &&
+        <NavLink
+          to="/dashboard/share-hr-contact"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          Share HR Contact
+        </NavLink>
+      }
+      
+      {
+        (role === 2) && 
+        <NavLink
+          to="/dashboard/share-company-contact"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          Share Company Contact
+        </NavLink>
+      }
+      
+      { 
+        (role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/hr-list"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          HR List
+        </NavLink>
+      }
+      {
+        (role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/my-hr-list"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+            
+          }
+        >
+          My HR List
+        </NavLink>
+      }
+      {
+        (role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/shared-hr-contact"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+            
+          }
+        >
+          Shared HR Contact
+        </NavLink>
+      }
+      {
+        (role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/shared-company-contact"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+            
+          }
+        >
+          Shared Company Contact
+        </NavLink>
+      }
+      {
+        (role === 3 || role === 4) && 
+        <NavLink
+          to="/dashboard/call-log"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+            
+          }
+        >
+          Call Log
+        </NavLink>
+      }
+      {
+        (role === 3 || role === 4) &&
+        <NavLink
+          to="/dashboard/all-student-list"
+          className={({ isActive }) =>
+            isActive ? "app-sidebar-link active" : "app-sidebar-link"
+          }
+        >
+          AllStudentList
+        </NavLink>
+      }
+      {
+        (role === 1 || role === 2 || role === 3 || role === 4) &&
+        <span className="app-sidebar-link" onClick={handleLogout}>
+          Logout
+        </span>
+      }
     </div>
   );
 }

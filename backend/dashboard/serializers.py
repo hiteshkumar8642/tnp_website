@@ -37,12 +37,12 @@ class CompanySerializer(serializers.ModelSerializer):
 class SharedCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Shared_Company
-        fields = ['id', 'company_name', 'company_email', 'college_branch', 'user']
+        fields = ['id','company_name','company_email','company_contact','ctc','college_visited','type','location','college_branch','user']
 
 class SharedHRContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shared_HR_contact
-        fields = ['id', 'name', 'company_name', 'email', 'contact_number', 'college_branch', 'user']
+        fields = ['id', 'name', 'company_name', 'email', 'contact_number', 'college_branch','linkedin_id','gender', 'user']
 
 class HRContactSerializer(serializers.ModelSerializer):
     company_id = CompanySerializer(read_only=True)
