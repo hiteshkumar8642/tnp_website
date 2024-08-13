@@ -41,30 +41,38 @@ const HrList = () => {
 
   const handleStatusChange = async (id, status) => {
     try {
-      // Perform the API request to update the status
-      const response = await apiClient.post("dashboard/api/hr_contacts/", {
-        id,
-        status,
-      });
-
-      console.log("Status updated successfully:", response.data);
+      // // Perform the API request to update the status
+      // console.log(id);
       setHrData((prevHrData) =>
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       console.log(hrData);
+      const params = new URLSearchParams({id,status});
+      const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        });
+      console.log("Status updated successfully:", response.data);
+    
+      
     } catch (err) {
-      console.error("Failed to update status:", error);
+      console.error("Failed to update status:", err);
     }
   };
 
-  const handleFilterChange = (e) => {
-    setStatusFilter(e.target.value);
-  };
 
-  const filteredData =
+
+  let filteredData =
     statusFilter === "All"
       ? hrData
       : hrData.filter((hr) => hr.status === statusFilter);
+
+
+const handleFilterChange = (e) => {
+        setStatusFilter(e.target.value);
+        console.log("chexking data",filteredData);
+};
 
   return (
     <>

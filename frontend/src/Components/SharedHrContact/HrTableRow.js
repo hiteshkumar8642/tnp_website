@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState ,useRef} from "react";
 import HrModal from "./HrModal";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const selectRef = useRef(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -10,7 +11,10 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     return date.toISOString().split("T")[0];
   };
 
-  const handleRowClick = () => {
+  const handleRowClick = (e) => {
+    if (selectRef.current.contains(e.target)) {
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -28,13 +32,14 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
           {getSafeValue(hr.company_id?.name)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.last_date_of_contact)}
+          {formatDate(hr?.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.next_date_of_contact)}
+          {formatDate(hr?.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select
+           ref={selectRef}
             value={hr.status || "Contact"}
             onChange={(e) => handleStatusChange(hr.id, e.target.value)}
             className="status-dropdown"

@@ -27,17 +27,16 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
     
-    // Call the provided handleStatusChange function to update the status locally
     handleStatusChange(hr.id, newStatus);
     try {
  
-      const response = await apiClient.post('dashboard/api/hr_contacts/', {
-        id: hr.id,
-        status: newStatus
-      });
-  
-      
-      console.log('Status updated successfully:', response.data);
+      const params = new URLSearchParams({id:hr.id});
+      const response = await apiClient.post('apis/hassignme/', params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        });
+      console.log("Status updated successfully:", response.data);
     } catch (error) {
       // Handle errors if the API request fails
       console.error('Failed to update status:', error);
@@ -52,10 +51,10 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
           {getSafeValue(hr.company_id?.name)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.last_date_of_contact)}
+          {formatDate(hr?.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.next_date_of_contact)}
+          {formatDate(hr?.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select

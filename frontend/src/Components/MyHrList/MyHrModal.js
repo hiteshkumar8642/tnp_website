@@ -57,11 +57,18 @@ const [selectedColor, setSelectedColor] = useState('');
       ...messages,
       { date: newMessageDate, message: newMessage, color: selectedColor },
     ];
-
-    const response = await apiClient.post('dashboard/api/hr_contacts/', {
+    const params = new URLSearchParams({
+      id:hr.id,
       message: newMessage,
       color: selectedColor
     });
+
+    const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+        });
+    console.log("response: " + response.status);
 
     setSelectedColor('');
     setMessages(updatedMessages);

@@ -35,19 +35,25 @@ const MyHrList = () => {
  
   const handleStatusChange = async (id, status) => {
     console.log("hello ji");
+    
     try {
       // Perform the API request to update the status
-      const response = await apiClient.post('dashboard/api/hr_contacts/', {
-        id,
-        status,
-      });
+     
 
-      console.log('Status updated successfully:', response.data);
 
-      // Update state after the API request succeeds
       setMyHrData((prevHrData) =>
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
+      const params = new URLSearchParams({id,status});
+      const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        });
+        console.log("response ",response.status);
+
+      // Update state after the API request succeeds
+     
     } catch (error) {
       console.error('Failed to update status:', error);
     }

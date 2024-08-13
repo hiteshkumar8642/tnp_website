@@ -24,16 +24,19 @@ logger = logging.getLogger(__name__)
 @permission_classes([IsAuthenticated])
 def HRDataUpdateView(request):
     try:
-        hrid = request.POST.get('HR-id')
+        print("---Devvrat")
+        hrid = request.POST.get('id')
         data = request.POST.get('status')
+        print("id",hrid)
         hrcontact_obj = HRContact.objects.get(id=hrid)
         hrcontact_obj.status = data
         hrcontact_obj.save()
+        print("Saved")
         return Response({'message':'Data Updated'},status=status.HTTP_200_OK)
     
     except ObjectDoesNotExist:
         # Handle case where the Application object doesn't exist
-        logger.error("College objects not found.")
+        logger.error(" objects not found.")
         return Response({'detail': 'Applications not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
