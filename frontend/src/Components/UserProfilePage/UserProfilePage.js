@@ -5,7 +5,14 @@ import apiClient from "../../services/api";
 function ProfilePage() {
     const initialData = JSON.parse(localStorage.getItem('user_detail'));
     const [userData, setUserData] = useState(initialData);
-
+    const photo =userData.photo;
+    const photoURL = photo
+    ? `http://localhost:8000${userData.photo}`
+    : "";
+    const resume =userData.resume;
+    const resumeURL = resume
+    ? `http://localhost:8000${userData.resume}`
+    : "";
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
@@ -70,7 +77,7 @@ function ProfilePage() {
             {/* Sidenav */}
             <div className="sidenav">
                 <div className="profile">
-                    <img src={userData.photo} alt="Profile" width="100" height="100" />
+                    <img src= {photoURL} alt="Profile" width="100" height="100" />
                     <div className="name">
                         <p>{userData.user.first_name} {userData.user.last_name}</p>
                     </div>
@@ -83,16 +90,7 @@ function ProfilePage() {
                         <hr align="center" />
                     </div>
                     <div className="url">
-                        <a href="#" onClick={() => openPDF(userData.resume)}>Resume</a>
-                    </div>
-                    <div className="url">
-                        <a href="#" onClick={() => openPDF(userData.graduation_marksheet)}>Graduation Marksheet</a>
-                    </div>
-                    <div className="url">
-                        <a href="#" onClick={() => openPDF(userData.twelfth_marksheet)}>XII Marksheet</a>
-                    </div>
-                    <div className="url">
-                        <a href="#" onClick={() => openPDF(userData.tenth_marksheet)}>X Marksheet</a>
+                        <a href="#" onClick={() => openPDF(resumeURL)}>Resume</a>
                     </div>
                 </div>
             </div>
