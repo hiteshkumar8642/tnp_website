@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UserProfilePage.css';
+import apiClient from "../../services/api";
 
 function ProfilePage() {
     const initialData = JSON.parse(localStorage.getItem('user_detail'));
@@ -17,38 +18,41 @@ function ProfilePage() {
         const formData = new FormData(e.target);
         
         // Convert FormData to a plain object
-        const data = Object.fromEntries(formData.entries());
+        const updatedData = Object.fromEntries(formData.entries());
+        console.log('Form Data:', updatedData);  // Log updated form data for debugging
         
         try {
-            // Perform the POST request
-            const response = await fetch('apis/update-user-details/', {
-                method: 'POST',
+            // Perform the POST request using apiClient.post
+            const response = await apiClient.post('/apis/update-user-details/', updatedData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
             });
             
-            // Check if the response is OK
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to update user details');
+            // Check if the response contains data
+            if (response.data) {
+                // Retrieve existing user details from local storage
+                const existingUserDetails = JSON.parse(localStorage.getItem('user_detail')) || {};
+                
+                // Merge existing user details with the updated data
+                const mergedUserDetails = { ...existingUserDetails, ...updatedData };
+                
+                // Save the merged result back into local storage
+                localStorage.setItem('user_detail', JSON.stringify(mergedUserDetails));
+                
+                // Handle the success scenario
+                console.log('Success:', response.data.message);
+                alert('User details updated successfully!');
+            } else {
+                console.error('No data received from the server.');
+                alert('No data received from the server.');
             }
-            
-            // Parse the response JSON
-            const responseData = await response.json();
-            
-            // Handle the success scenario
-            console.log('Success:', responseData.message);
-            // Optionally, show a success message or redirect
-            alert('User details updated successfully!');
+    
         } catch (error) {
             // Handle errors
-            console.error('Error:', error.message);
-            // Optionally, show an error message
-            alert(`Error: ${error.message}`);
+            console.error('Error:', error.response?.data?.error || error.message);
+            alert(`Error: ${error.response?.data?.error || error.message}`);
         }
-        
     };
 
     

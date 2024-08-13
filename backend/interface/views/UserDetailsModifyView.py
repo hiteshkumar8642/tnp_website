@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
-from dashboard.models import Announcement
+from dashboard.models import UserDetails
 from rest_framework.views import APIView
 from dashboard.serializers import UserDetailsSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -30,7 +30,7 @@ def UserDetailsModifyView(request):
     try:
         user = request.user
         user_details = UserDetails.objects.get(user=user)
-        
+        print(request.data)
         # Update only the user details fields
         serializer = UserDetailsSerializer(user_details, data=request.data, partial=True)
 
