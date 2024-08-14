@@ -3,14 +3,7 @@ import { fetchComingCompanyDetails } from "../../api/ComingCompany";
 import CompanyDetails from "./CompanyDetails";
 import CompanyCard from "./CompanyCard";
 import AddCompanyForm from "./AddCompanyForm";
-
-function CompaniesDashboard() {
-  return (
-    <>
-      <Company />
-    </>
-  );
-}
+import SearchBar from "../SearchBar/SearchBar";
 
 function Company() {
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -62,14 +55,21 @@ function Company() {
     <>
       {error && <p>{error}</p>}
       <div className="flex">
-        <button className="add" onClick={handleAddClick}>
-          Add
-        </button>
+      
         <div
           className={`${
             selectedCompany ? "w-1/3 hidden sm:block" : "w-fit"
           } transition-all duration-300 bg-gray-100 p-4 h-screen overflow-y-auto`}
         >
+          <div className="flex md:flex-row flex-col justify-center items-center mb-2">
+            <SearchBar />
+            <button 
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 ml-4"
+              onClick={handleAddClick}
+            >
+              Add
+            </button>
+          </div>
           <div
             className={`grid ${
               selectedCompany
@@ -100,4 +100,4 @@ function Company() {
   );
 }
 
-export default CompaniesDashboard;
+export default Company;

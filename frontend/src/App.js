@@ -9,7 +9,6 @@ import Team from "./Pages/Team/Team";
 import ForgotPasswordPage from "./Pages/ForgotPassword/ForgotPasswordPage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import CompaniesDashboard from "./Components/Companies/Companies";
 import AppliedCompanies from "./Components/AppliedCompanies/AppliedCompanies";
 import SharedHrContact from "./Components/ShareHrContact/SharedHrList";
 import ShareCompanyContact from "./Components/ShareCompanyContact/ShareCompanyContact";
@@ -29,6 +28,7 @@ import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage"
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import { useEffect, useState } from "react";
 import Test from "./Components/Test/Test";
+import Company from "./Components/Companies/Companies";
 
 function App() {
   const [role,setRole] = useState(null);
@@ -86,14 +86,11 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate replace to="companies" />} />
 
             <Route 
               path="companies" 
               element={
-                <RoleProtectedRoute path={"companies"}>
-                  <CompaniesDashboard />
-                </RoleProtectedRoute>
+                    <Company/>
               }>
             </Route>
             <Route

@@ -3,6 +3,7 @@ import "./CallLog.css";
 import { fetchCallHistoryList } from "../../api/fetchCallHistory";
 import CallLogTableRow from "./CallLogTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
+import SearchBar from "../SearchBar/SearchBar";
 
 const CallLog = () => {
   const [callLogs, setCallLogs] = useState([]);
@@ -43,20 +44,25 @@ const CallLog = () => {
   }
 
   return (
-    <table className="call-log-table">
-      <thead>
-        <tr>
-          <th>Student Name</th>
-          <th>HR Name</th>
-          <th>Comment</th>
-        </tr>
-      </thead>
-      <tbody>
-        {callLogs.map((callLog, index) => (
-          <CallLogTableRow key={index} callLog={callLog} />
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <div>
+        <SearchBar/>
+      </div>
+      <table className="call-log-table">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>HR Name</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {callLogs.map((callLog, index) => (
+            <CallLogTableRow key={index} callLog={callLog} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

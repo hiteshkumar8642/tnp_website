@@ -74,7 +74,7 @@
 
 /* If needed, add some padding to the content inside the popup */
 .announcements-popup-content {
-  padding: 16px;
+  padding-right: 38px;
 }
 
 /* Optionally, you can style the scrollbar */
@@ -95,10 +95,5 @@
   background: #555;
 }
 
-@media (max-height: 600px) {
-  .announcement-popup {
-    top: auto;
-    bottom: 100%;
-    max-height: 50vh;
-  }
-}
+
+

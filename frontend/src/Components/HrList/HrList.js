@@ -5,6 +5,7 @@ import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 import apiClient from "../../services/api";
+import SearchBar from "../SearchBar/SearchBar";
 
 const HrList = () => {
   const [hrData, setHrData] = useState([]);
@@ -83,7 +84,9 @@ const HrList = () => {
             <option value="Do_not_Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>
-
+          <div>
+              <SearchBar />
+          </div>
           <h2>HR Contacts List</h2>
           {error && <p className="error-message">{error}</p>}
           <div className="hr-list-table-container">
@@ -111,6 +114,9 @@ const HrList = () => {
         </div>
       ) : (
         <div className="hr-list-container">
+          <div>
+              <SearchBar />
+            </div>
           <h2>HR Contacts List</h2>
           {error && <p className="error-message">{error}</p>}
           <div className="hr-list-table-container">

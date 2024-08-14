@@ -3,6 +3,7 @@ import "./SharedHrContactList.css";
 import { fetchSharedHRList } from "../../api/listOfSharedHR";
 import SharedHrTableRow from "./SharedHrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
+import SearchBar from "../SearchBar/SearchBar";
 
 const SharedHrContactList = () => {
   const [sharedHrData, setSharedHrData] = useState([]);
@@ -44,24 +45,29 @@ const SharedHrContactList = () => {
   }
 
   return (
-    <table className="hr-contact-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Gender</th>
-          <th>Company Name</th>
-          <th>Contact Number</th>
-          <th>Email</th>
-          <th>LinkedIn</th>
-          <th>Add to List</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sharedHrData.map((hr, index) => (
-          <SharedHrTableRow key={index} hr={hr} />
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <div>
+        <SearchBar/>
+      </div>
+      <table className="hr-contact-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Company Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>LinkedIn</th>
+            <th>Add to List</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sharedHrData.map((hr, index) => (
+            <SharedHrTableRow key={index} hr={hr} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

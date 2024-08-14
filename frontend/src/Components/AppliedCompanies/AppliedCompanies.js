@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
 import AppliedCompanyDetails from "./AppliedCompanyDetails";
 import AppliedCompanyCard from "./AppliedCompanyCard";
+import SearchBar from "../SearchBar/SearchBar";
 
 const AppliedCompanyList = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -40,6 +41,9 @@ const AppliedCompanyList = () => {
             selectedCompany ? "w-1/3 hidden sm:block" : "w-fit"
           } transition-all duration-300 bg-gray-100 p-4 h-screen overflow-y-auto`}
         >
+          <div>
+            <SearchBar />
+          </div>
           <div
             className={`grid ${
               selectedCompany

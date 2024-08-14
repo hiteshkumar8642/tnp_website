@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchAllStudents } from "../../api/studentList";
 import StudentCard from "./StudentCard";
 import StudentDetails from "./StudentDetails";
+import SearchBar from "../SearchBar/SearchBar";
 
 const StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -40,6 +41,9 @@ const StudentList = () => {
             selectedStudent ? "w-1/3 hidden sm:block" : "w-fit"
           } transition-all duration-300 bg-gray-100 p-4 h-screen overflow-y-auto`}
         >
+          <div>
+            <SearchBar/>
+          </div>
           <div
             className={`grid ${
               selectedStudent

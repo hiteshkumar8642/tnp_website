@@ -4,7 +4,7 @@ import "./MyHrList.css";
 import { fetchmyHRList } from "../../api/fetchMyHRlist";
 import MyHrTableRow from "./MyHrTableRow";
 import apiClient from '../../services/api';
-
+import SearchBar from "../SearchBar/SearchBar";
 const MyHrList = () => {
   const [myHrData, setMyHrData] = useState([]);
   const [error, setError] = useState("");
@@ -63,6 +63,9 @@ const MyHrList = () => {
 
   return (
     <div className="myhr-list-container">
+          <div>
+              <SearchBar />
+          </div>
        <label htmlFor="status">Status:</label><br />
           <select
            id="status"

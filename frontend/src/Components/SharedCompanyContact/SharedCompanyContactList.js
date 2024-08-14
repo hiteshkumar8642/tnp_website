@@ -3,6 +3,7 @@ import "./SharedCompanyContactList.css";
 import { fetchSharedCompanies } from "../../api/sharedCompanies";
 import SharedCompanyTableRow from "./SharedCompanyTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
+import SearchBar from "../SearchBar/SearchBar";
 
 const SharedCompanyContactList = () => {
   const [sharedCompanyData, setSharedCompanyData] = useState([]);
@@ -44,22 +45,27 @@ const SharedCompanyContactList = () => {
   }
 
   return (
-    <table className="company-contact-table">
-      <thead>
-        <tr>
-          <th>Company Name</th>
-          <th>Contact Number</th>
-          <th>Email</th>
-          <th>CTC Offered</th>
-          <th>College Visited</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sharedCompanyData.map((company, index) => (
-          <SharedCompanyTableRow key={index} company={company} />
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <div>
+        <SearchBar/>
+      </div>
+      <table className="company-contact-table">
+        <thead>
+          <tr>
+            <th>Company Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>CTC Offered</th>
+            <th>College Visited</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sharedCompanyData.map((company, index) => (
+            <SharedCompanyTableRow key={index} company={company} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

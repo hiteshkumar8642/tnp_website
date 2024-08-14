@@ -4,6 +4,7 @@ import MultiSelectComponent from "./MultiSelectComponent";
 import apiClient from '../../services/api';
 import { toast } from "react-hot-toast";
 import { useLoading } from "../../Components/LoadingContext/LoadingContext";
+import SearchBar from "../SearchBar/SearchBar";
 
 
 function SharedCompanyContact() {
@@ -98,6 +99,9 @@ const CompanyContactForm = () => {
 
   return (
     <div className="company-form-container h-fit">
+      <div>
+        <SearchBar/>
+      </div>
       <h2 className="text-3xl text-center pb-6">Company Contacts</h2>
       <form onSubmit={handleSubmit} className="company-contact-form flex flex-col w-10/12 mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 gap-x-36 ">

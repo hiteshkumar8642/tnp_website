@@ -72,7 +72,7 @@ function Announcements() {
   return (
     <div className="announcements-popup-content">
       <div className="messages-section">
-        <div className="projects-section-header">
+        <div className="projects-section-header ">
           <p>Announcements</p>
           <button
             onClick={() => setShowForm(!showForm)}
