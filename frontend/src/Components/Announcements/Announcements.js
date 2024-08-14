@@ -70,60 +70,58 @@ function Announcements() {
   };
 
   return (
-    <div className="announcements-popup-content">
-      <div className="messages-section">
-        <div className="projects-section-header">
-          <p>Announcements</p>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="add-announcement-btn"
-          >
-            +
-          </button>
-        </div>
-
-        {showForm && (
-          <form
-            onSubmit={handleAddAnnouncement}
-            className="announcement-form"
-          >
-            <input
-              type="text"
-              value={formData.announcement}
-              onChange={handleInputChange}
-              placeholder="Write your announcement"
-              required
-            />
-            <button type="submit">Submit</button>
-          </form>
-        )}
-
-        {AnnouncementLoading ? (
-          <div>
-            {[1, 2, 3, 4].map((x) => (
-              <div className="messages" style={{ margin: "10px" }} key={x}>
-                <ShimmerCategoryItem
-                  hasImage
-                  imageType="circular"
-                  imageWidth={50}
-                  imageHeight={50}
-                  text
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="messages">
-            {error && <p>{error}</p>}
-            {announcements.map((announcement, index) => (
-              <AnnouncementItem
-                key={index}
-                announcement={announcement}
-              />
-            ))}
-          </div>
-        )}
+    <div className="messages-section">
+      <div className="projects-section-header">
+        <p>Announcements</p>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="add-announcement-btn"
+        >
+          +
+        </button>
       </div>
+
+      {showForm && (
+        <form
+          onSubmit={handleAddAnnouncement}
+          className="announcement-form"
+        >
+          <input
+            type="text"
+            value={formData.announcement}
+            onChange={handleInputChange}
+            placeholder="Write your announcement"
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+      )}
+
+      {AnnouncementLoading ? (
+        <div>
+          {[1, 2, 3, 4].map((x) => (
+            <div className="messages" style={{ margin: "10px" }} key={x}>
+              <ShimmerCategoryItem
+                hasImage
+                imageType="circular"
+                imageWidth={50}
+                imageHeight={50}
+                text
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="messages">
+          {error && <p>{error}</p>}
+          {announcements.map((announcement, index) => (
+            <AnnouncementItem
+              key={index}
+              announcement={announcement}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
