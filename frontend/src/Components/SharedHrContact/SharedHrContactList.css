@@ -1,39 +1,152 @@
-.hr-contact-table {
+.shared-hr-list-container {
+  background-color: var(--app-container);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 80%;
+  color: var(--main-color);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.shared-hr-list-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: var(--main-color);
+}
+
+.shared-hr-list-table-container {
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+}
+
+.shared-hr-table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1em;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.shared-hr-table th,
+.shared-hr-table td {
+  padding: 12px 10px;
+}
+
+.shared-hr-table th {
+  background-color: var(--link-color-active-bg);
+  color: var(--link-color-active);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.shared-hr-table tbody tr {
+  background-color: var(--message-box-hover);
+  transition: background-color 0.3s ease;
+}
+
+.shared-hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+.shared-hr-table td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.shared-hr-table td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.shared-hr-table th.col-1,
+.shared-hr-table td.col-1 {
+  width: 14.28%;
+}
+
+.shared-hr-table th.col-2,
+.shared-hr-table td.col-2 {
+  width: 28.57%;
+}
+
+.left-align {
   text-align: left;
 }
 
-.hr-contact-table th,
-.hr-contact-table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-}
-
-.hr-contact-table th {
-  background-color: var(--main-color);
-  color: var(--link-color-active);
-}
-
-.hr-table-row:nth-child(even) {
-  background-color: var(--message-box-hover);
-}
-
-.hr-table-row:nth-child(odd) {
-  background-color: var(--projects-section);
+.center-align {
+  text-align: center;
 }
 
 .add-to-list-button {
   background-color: var(--button-bg);
   color: var(--message-btn);
   border: none;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .add-to-list-button:hover {
   background-color: var(--link-color-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-list-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .shared-hr-list-container {
+  background-color: var(--app-container);
+  color: var(--main-color);
+}
+
+.dark .shared-hr-table th {
+  background-color: var(--projects-section);
+  color: var(--main-color);
+}
+
+.dark .shared-hr-table tbody tr {
+  background-color: var(--message-box-hover);
+}
+
+.dark .shared-hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+@media screen and (max-width: 768px) {
+  .shared-hr-list-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .shared-hr-table th,
+  .shared-hr-table td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+
+  .add-to-list-button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shared-hr-list-container {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .shared-hr-table th,
+  .shared-hr-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
 }

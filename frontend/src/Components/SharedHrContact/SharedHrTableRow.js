@@ -4,7 +4,7 @@ const SharedHrTableRow = ({ hr }) => {
   const { company_name, contact_number, email, gender, name, linkedin_id } = hr;
 
   return (
-    <tr className="hr-table-row">
+    <tr className="shared-hr-table-row">
       <td>{name}</td>
       <td>{gender}</td>
       <td>{company_name}</td>

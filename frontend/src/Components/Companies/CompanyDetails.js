@@ -7,6 +7,7 @@ import { fetchDownloadAppliedStudents} from "../../api/downloadAppliedStudents";
 import { applyToCompany } from "../../api/applyToCompany";
 import { IoArrowBack } from "react-icons/io5";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
+import { AiOutlineDownload } from 'react-icons/ai';
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -232,8 +233,17 @@ const CompanyDetails = ({ company, onBack }) => {
           onClick={handleDownload}
           className="download-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Download List
+          <IoArrowBack size={24} />
         </button>
+        {/* Download Button at Top Right Corner */}
+        <button
+          onClick={handleDownload}
+          className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+        >
+          <AiOutlineDownload size={24} />
+        </button>                 
+        
+      </div>
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>

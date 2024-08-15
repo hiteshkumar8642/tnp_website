@@ -34,29 +34,52 @@ const CallLog = () => {
     getCallLogs();
   }, []);
 
-  if (callLogLoading) {
-    return <ShimmerTable row={5} col={4} />;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <table className="call-log-table">
-      <thead>
-        <tr>
-          <th>Student Name</th>
-          <th>HR Name</th>
-          <th>Comment</th>
-        </tr>
-      </thead>
-      <tbody>
-        {callLogs.map((callLog, index) => (
-          <CallLogTableRow key={index} callLog={callLog} />
-        ))}
-      </tbody>
-    </table>
+    <div className="call-log-container">
+      <h2>Call Logs</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="call-log-table-container">
+        {!callLogLoading ? (
+          <table className="call-log-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Student Name</th>
+                <th className="col-2 left-align">HR Name</th>
+                <th className="col-3 left-align">Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {callLogs.map((callLog, index) => (
+                <CallLogTableRow key={index} callLog={callLog} />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="call-log-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Student Name</th>
+                <th className="col-2 left-align">HR Name</th>
+                <th className="col-3 left-align">Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="col-2 left-align">
+                  <ShimmerTable row={3} col={1} />
+                </td>
+                <td className="col-2 left-align">
+                  <ShimmerTable row={3} col={1} />
+                </td>
+                <td className="col-3 left-align">
+                  <ShimmerTable row={3} col={1} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
   );
 };
 

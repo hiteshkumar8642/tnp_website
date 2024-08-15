@@ -1,27 +1,120 @@
+@import "react-datepicker/dist/react-datepicker.css";
+
+.call-log-container {
+  background-color: var(--app-container);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 80%;
+  color: var(--main-color);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.call-log-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: var(--main-color);
+}
+
+.call-log-table-container {
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+}
+
 .call-log-table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1em;
-  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0 10px;
 }
 
 .call-log-table th,
 .call-log-table td {
-  padding: 8px 10px; /* Reduced padding to make rows smaller */
-  border: 1px solid #ddd;
-  line-height: 1.2; /* Adjusted line-height for tighter spacing */
+  padding: 12px 10px;
 }
 
 .call-log-table th {
-  background-color: var(--main-color);
+  background-color: var(--link-color-active-bg);
   color: var(--link-color-active);
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.call-log-row:nth-child(even) {
+.call-log-table tbody tr {
+  background-color: var(--message-box-hover);
+  transition: background-color 0.3s ease;
+}
+
+.call-log-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+.call-log-table td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.call-log-table td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.call-log-table th.col-2,
+.call-log-table td.col-2 {
+  width: 28.57%;
+}
+
+.call-log-table th.col-3,
+.call-log-table td.col-3 {
+  width: 42.86%;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.dark .call-log-container {
+  background-color: var(--app-container);
+  color: var(--main-color);
+}
+
+.dark .call-log-table th {
+  background-color: var(--projects-section);
+  color: var(--main-color);
+}
+
+.dark .call-log-table tbody tr {
   background-color: var(--message-box-hover);
 }
 
-.call-log-row:nth-child(odd) {
-  background-color: var(--projects-section);
+.dark .call-log-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+@media screen and (max-width: 768px) {
+  .call-log-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .call-log-table th,
+  .call-log-table td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .call-log-container {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .call-log-table th,
+  .call-log-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
 }
