@@ -90,7 +90,7 @@ const MyHrList = () => {
               <th className="col-2 left-align">HR Name</th>
               <th className="col-2 left-align">Company Name</th>
               <th className="col-1 center-align">Last Contacted</th>
-              <th className="col-1 center-align">Next Contact Date</th>
+              <th className="col-2 center-align">Next Contact Date</th>
               <th className="col-1 center-align">Status</th>
             </tr>
           </thead>

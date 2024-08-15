@@ -35,33 +35,54 @@ const SharedHrContactList = () => {
     getSharedHRList();
   }, []);
 
-  if (HrListLoading) {
-    return <ShimmerTable row={5} col={15} />;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <table className="shared-hr-contact-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Gender</th>
-          <th>Company Name</th>
-          <th>Contact Number</th>
-          <th>Email</th>
-          <th>LinkedIn</th>
-          <th>Add to List</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sharedHrData.map((hr, index) => (
-          <SharedHrTableRow key={index} hr={hr} />
-        ))}
-      </tbody>
-    </table>
+    <div className="shared-hr-list-container">
+      <h2>Shared HR Contacts List</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="shared-hr-list-table-container">
+        {!HrListLoading ? (
+          <table className="shared-hr-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Name</th>
+                <th className="col-2 left-align">Gender</th>
+                <th className="col-2 left-align">Company Name</th>
+                <th className="col-2 left-align">Contact Number</th>
+                <th className="col-2 left-align">Email</th>
+                <th className="col-2 left-align">LinkedIn</th>
+                <th className="col-2 left-align">Add to List</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sharedHrData.map((hr, index) => (
+                <SharedHrTableRow key={index} hr={hr} />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="shared-hr-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Name</th>
+                <th className="col-1 center-align">Gender</th>
+                <th className="col-2 left-align">Company Name</th>
+                <th className="col-1 center-align">Contact Number</th>
+                <th className="col-2 left-align">Email</th>
+                <th className="col-1 center-align">LinkedIn</th>
+                <th className="col-1 center-align">Add to List</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan="7">
+                  <ShimmerTable row={5} col={7} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
   );
 };
 

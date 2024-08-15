@@ -35,31 +35,50 @@ const SharedCompanyContactList = () => {
     getSharedCompanyList();
   }, []);
 
-  if (companyListLoading) {
-    return <ShimmerTable row={5} col={15} />;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <table className="company-contact-table">
-      <thead>
-        <tr>
-          <th>Company Name</th>
-          <th>Contact Number</th>
-          <th>Email</th>
-          <th>CTC Offered</th>
-          <th>College Visited</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sharedCompanyData.map((company, index) => (
-          <SharedCompanyTableRow key={index} company={company} />
-        ))}
-      </tbody>
-    </table>
+    <div className="shared-company-list-container">
+      <h2>Shared Company Contacts List</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="shared-company-list-table-container">
+        {!companyListLoading ? (
+          <table className="shared-company-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Company Name</th>
+                <th className="col-2 left-align">Contact Number</th>
+                <th className="col-2 left-align">Email</th>
+                <th className="col-2 left-align">CTC Offered</th>
+                <th className="col-2 left-align">College Visited</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sharedCompanyData.map((company, index) => (
+                <SharedCompanyTableRow key={index} company={company} />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="shared-company-table">
+            <thead>
+              <tr>
+                <th className="col-2 left-align">Company Name</th>
+                <th className="col-1 center-align">Contact Number</th>
+                <th className="col-2 left-align">Email</th>
+                <th className="col-1 center-align">CTC Offered</th>
+                <th className="col-2 left-align">College Visited</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan="5">
+                  <ShimmerTable row={5} col={5} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
   );
 };
 
