@@ -1,50 +1,80 @@
-.shared-hr-contact-table {
+.shared-hr-list-container {
+  background-color: var(--app-container);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 80%;
+  color: var(--main-color);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.shared-hr-list-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: var(--main-color);
+}
+
+.shared-hr-list-table-container {
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+}
+
+.shared-hr-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0;
-  margin: 25px 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
+  border-spacing: 0 10px;
 }
 
-.shared-hr-contact-table thead tr {
-  background-color: var(--main-color);
+.shared-hr-table th,
+.shared-hr-table td {
+  padding: 12px 10px;
+}
+
+.shared-hr-table th {
+  background-color: var(--link-color-active-bg);
   color: var(--link-color-active);
-  text-align: left;
+  font-size: 16px;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.shared-hr-contact-table th,
-.shared-hr-contact-table td {
-  padding: 8px 15px;
-  font-size: 1em;
-  line-height: 1.2;
-  height: 25px; /* Updated row height */
-}
-
-.shared-hr-contact-table tbody tr {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.shared-hr-table-row:nth-child(even) {
+.shared-hr-table tbody tr {
   background-color: var(--message-box-hover);
-}
-
-.shared-hr-table-row:nth-child(odd) {
-  background-color: var(--projects-section);
-}
-
-.shared-hr-table-row:last-of-type {
-  border-bottom: 2px solid var(--main-color);
-}
-
-.shared-hr-table-row:hover {
-  background-color: rgba(var(--main-color-rgb), 0.05);
   transition: background-color 0.3s ease;
+}
+
+.shared-hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+.shared-hr-table td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.shared-hr-table td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.shared-hr-table th.col-1,
+.shared-hr-table td.col-1 {
+  width: 14.28%;
+}
+
+.shared-hr-table th.col-2,
+.shared-hr-table td.col-2 {
+  width: 28.57%;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.center-align {
+  text-align: center;
 }
 
 .add-to-list-button {
@@ -72,16 +102,51 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 600px) {
-  .shared-hr-contact-table th,
-  .shared-hr-contact-table td {
-    padding: 6px 10px;
-    font-size: 0.9em;
-    height: 25px; /* Updated row height for smaller screens */
+.dark .shared-hr-list-container {
+  background-color: var(--app-container);
+  color: var(--main-color);
+}
+
+.dark .shared-hr-table th {
+  background-color: var(--projects-section);
+  color: var(--main-color);
+}
+
+.dark .shared-hr-table tbody tr {
+  background-color: var(--message-box-hover);
+}
+
+.dark .shared-hr-table tbody tr:hover {
+  background-color: var(--link-color-hover);
+}
+
+@media screen and (max-width: 768px) {
+  .shared-hr-list-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .shared-hr-table th,
+  .shared-hr-table td {
+    padding: 10px 8px;
+    font-size: 14px;
   }
 
   .add-to-list-button {
     padding: 5px 8px;
     font-size: 0.8em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shared-hr-list-container {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .shared-hr-table th,
+  .shared-hr-table td {
+    padding: 8px 6px;
+    font-size: 12px;
   }
 }
