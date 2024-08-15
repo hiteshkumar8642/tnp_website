@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
-from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView
+from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView,ReassignView
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -22,7 +22,8 @@ urlpatterns = [
     path('addannouncement/',AddAnnouncementView.AddAnnouncementView,name='studentlist'),
     path('hrdata-modified/',HRDataUpdateView.HRDataUpdateView,name='hrdatamodified'),
     path('delete-sharedhr-contact/',DeleteAllSharedHRContactView.DeleteAllSharedHRContactView,name='deletesharedhrcontact'),
-    path('assignme/',HRAssignMeView.HRAssignMeView,name='deletesharedhrcontact'),
+    path('assignme/',HRAssignMeView.HRAssignMeView,name='assignme'),
+    path('reassign/',ReassignView.ReassignView,name='reassign'),
     path('hrcalllogs/',HRCallHistoryView.HRCallHistoryView,name='hrcalllogs'),
     path('transfer-contact/',TransferContactView.TransferContactView,name='transfercontact'),
     path('login/',UserLoginView.MyTokenObtainPairView.as_view(),name='login'),
