@@ -130,29 +130,25 @@ function Company() {
           <p className="time">{formattedDate}</p>
         </div>
         <div className="projects-section-line">
-          <div className="projects-status">
-            <div className="item-status">
-              <span className="status-number">{filteredCompanies.length}</span>
-              <span className="status-type">Total Companies</span>
-            </div>
-          </div>
           <div className="view-actions flex justify-between items-center w-full">
-            <div className="flex items-center ml-auto">
-              <input
-                type="text"
-                placeholder="Search companies..."
-                value={searchTerm}
-                onChange={handleSearch}
-                className="border rounded-l px-2 py-1 w-64"
-              />
+            <div className="flex flex-col sm:flex-row  items-center ml-auto ">
+              <div className="flex items-center justify-center m-4">
+                <input
+                  type="text"
+                  placeholder="Search companies..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="border rounded-l px-2 py-1 w-64"
+                />
+                <button 
+                  className="bg-black text-white px-3.5 py-2.5 rounded-r"
+                  onClick={() => handleSearch({ target: { value: searchTerm } })}
+                >
+                  <FaSearch />
+                </button>
+              </div>
               <button 
-                className="bg-black text-white px-3.5 py-2.5 rounded-r"
-                onClick={() => handleSearch({ target: { value: searchTerm } })}
-              >
-                <FaSearch />
-              </button>
-              <button 
-                className="bg-black text-white px-3 py-1 rounded flex items-center ml-4"
+                className="bg-black text-white px-3 py-1 rounded flex items-center sm:ml-4 "
                 onClick={handleAddClick}
               >
                 <FaPlus className="mr-1" /> Add
@@ -160,6 +156,10 @@ function Company() {
             </div>
           </div>
         </div>
+          {/* <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4 ">
+            <div className="status-number  font-extrabold sm:font-bold">{filteredCompanies.length}</div>
+            <div className="status-type font-extrabold sm:font-bold">Total Companies</div>
+          </div> */}
         <div className="project-boxes jsGridView">
           {selectedCompany ? (
             <div className="w-full">

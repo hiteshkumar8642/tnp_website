@@ -9,13 +9,6 @@ const RoleProtectedRoute = ({ children,path}) => {
   if((role === 1 || role === 2 || role === 3 || role === 4) && path == "companies"){
     return children;
   }
-<<<<<<< HEAD
-  //  else {
-  //   return <Navigate to="/401" />; // Redirect to unauthorized page if the role doesn't match
-  // }
-  else{
-    return children; 
-=======
   else if ((role === 1 || role === 2 || role === 3 || role === 4) && path === "applied-companies"){
     return children;
   }
@@ -45,7 +38,6 @@ const RoleProtectedRoute = ({ children,path}) => {
   }
   else{
     return <Navigate to="/401" />; 
->>>>>>> 3744b002e9ad247abf6795b99a12e74981ffc4a1
   }
 };
 
