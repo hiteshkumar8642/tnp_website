@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./CompanyDetailsModal.css";
-import { fetchDownloadAppliedStudents, ffetchDownloadAppliedStudents } from "../../api/downloadAppliedStudents";
+import { fetchDownloadAppliedStudents} from "../../api/downloadAppliedStudents";
 import { IoArrowBack } from "react-icons/io5";
 
 function formatDate(inputDate) {
@@ -90,9 +90,9 @@ const CompanyDetails = ({ company, onBack }) => {
   // Function to handle download
   const handleDownload = async () => {
     try {
-      const response = await fetchDownloadAppliedStudents();
-      if (response.ok) {
-        const blob = await response.blob();
+      const response = await fetchDownloadAppliedStudents(company_id.id);  // Pass company ID
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
