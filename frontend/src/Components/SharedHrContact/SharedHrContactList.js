@@ -36,7 +36,7 @@ const SharedHrContactList = () => {
   }, []);
 
   if (HrListLoading) {
-    return <ShimmerTable row={5} col={7} />;
+    return <ShimmerTable row={5} col={15} />;
   }
 
   if (error) {
@@ -44,7 +44,7 @@ const SharedHrContactList = () => {
   }
 
   return (
-    <table className="hr-contact-table">
+    <table className="shared-hr-contact-table">
       <thead>
         <tr>
           <th>Name</th>

@@ -35,7 +35,7 @@ const CallLog = () => {
   }, []);
 
   if (callLogLoading) {
-    return <ShimmerTable row={5} col={4} />;
+    return <ShimmerTable row={5} col={15} />;
   }
 
   if (error) {

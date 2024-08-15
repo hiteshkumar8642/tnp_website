@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
 function DashboardHeader() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  //const [isDarkMode, setIsDarkMode] = useState(false);
   const [userName, setUserName] = useState("Name");
   const [userPhoto, setUserPhoto] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [showAnnouncements, setShowAnnouncements] = useState(false);
 
   useEffect(() => {
@@ -22,18 +22,18 @@ function DashboardHeader() {
     }
   }, []);
   const handleProfileClick = () => {
-    navigate('/user-profile'); // Adjust the route path as needed
+    navigate("/user-profile"); // Adjust the route path as needed
   };
 
-  const toggleTheme = () => {
-    const htmlElement = document.documentElement;
-    if (isDarkMode) {
-      htmlElement.classList.remove("dark");
-    } else {
-      htmlElement.classList.add("dark");
-    }
-    setIsDarkMode(!isDarkMode);
-  };
+  // const toggleTheme = () => {
+  //   const htmlElement = document.documentElement;
+  //   if (isDarkMode) {
+  //     htmlElement.classList.remove("dark");
+  //   } else {
+  //     htmlElement.classList.add("dark");
+  //   }
+  //   setIsDarkMode(!isDarkMode);
+  // };
 
   const toggleAnnouncements = () => {
     setShowAnnouncements(!showAnnouncements);
@@ -46,8 +46,8 @@ function DashboardHeader() {
         <p className="app-name">CampusHirease</p>
       </div>
       <div className="app-header-right">
-        <button 
-          onClick={toggleAnnouncements} 
+        <button
+          onClick={toggleAnnouncements}
           className="bg-[#000000] text-white rounded-full p-2 hover:bg-[#5752d8] focus:outline-none focus:ring-2 focus:ring-[#6c63ff] shadow-lg"
         >
           <svg
@@ -65,7 +65,7 @@ function DashboardHeader() {
             />
           </svg>
         </button>
-        <button
+        {/* <button
           className="mode-switch"
           title="Switch Theme"
           onClick={toggleTheme}
@@ -84,19 +84,19 @@ function DashboardHeader() {
             <defs></defs>
             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
           </svg>
-        </button>
-        <a href="#">
-        <button className="profile-btn" onClick={handleProfileClick}>
-          <img
-            src={
-              userPhoto ||
-              "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
-            }
-            alt="Profile"
-          />
-          <span>{userName}</span>
-        </button>
-        </a>
+        </button> */}
+        <Link>
+          <button className="profile-btn" onClick={handleProfileClick}>
+            <img
+              src={
+                userPhoto ||
+                "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
+              }
+              alt="Profile"
+            />
+            <span>{userName}</span>
+          </button>
+        </Link>
         {showAnnouncements && (
           <div className="announcement-popup">
             <Announcements />
