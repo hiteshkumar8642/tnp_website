@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchAnnouncements } from "../../api/announcement";
 import AnnouncementItem from "./AnnouncementItem";
 import { ShimmerCategoryItem } from "react-shimmer-effects";
@@ -13,6 +13,8 @@ function Announcements() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ announcement: "" });
 
+  const formRef = useRef(null); // Ref to track the form element
+
   useEffect(() => {
     async function getAnnouncements() {
       try {
@@ -20,7 +22,7 @@ function Announcements() {
         let localdata = localStorage.getItem("announcements")
           ? JSON.parse(localStorage.getItem("announcements"))
           : null;
-        
+
         if (localdata === null) {
           localdata = await fetchAnnouncements();
           setAnnouncements(localdata);
@@ -36,6 +38,26 @@ function Announcements() {
     }
     getAnnouncements();
   }, []);
+
+  // Close form if clicking outside of it
+  useEffect(() => {
+    function handleClickOutside(event) {
+      // Check if the click is outside the form and the add-announcement-btn
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setShowForm(false);
+      }
+    }
+
+    if (showForm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showForm]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, announcement: e.target.value });
@@ -85,6 +107,7 @@ function Announcements() {
         <form
           onSubmit={handleAddAnnouncement}
           className="announcement-form"
+          ref={formRef} // Attach ref to the form
         >
           <input
             type="text"
