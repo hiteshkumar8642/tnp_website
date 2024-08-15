@@ -29,9 +29,7 @@ logger = logging.getLogger(__name__)
 @permission_classes([IsAuthenticated])
 class StudentsApplicationView(APIView):
     def post(self, request, company_id):
-        print("IN VIEW")
         # user = request.user
-        print(request.user.id)
         user = get_object_or_404(User, id=request.user.id)
         company = get_object_or_404(Company, id=company_id)
         print(user,company)
@@ -41,6 +39,7 @@ class StudentsApplicationView(APIView):
         ).first()
         
         if existing_application:
+            print("already applied")
             return Response({"detail": "Already applied."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a new application
