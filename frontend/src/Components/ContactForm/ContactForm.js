@@ -43,7 +43,7 @@ const ContactForm = () => {
 
   return (
     <Element name="ContactUs">
-        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between p-8 bg-blue-50 min-h-screen">
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between p-8 bg-[#f3f6fd] min-h-screen">
         <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
             <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
             Let's talk about everything!
@@ -52,8 +52,9 @@ const ContactForm = () => {
             Hate forms? Send us an <a href="mailto:email@example.com" className="text-blue-500">email</a> instead.
             </p>
             <div className="flex justify-center items-center ml-24">
-                <img src={Logo} alt="" className="object-contain w-full" />
+                <img src={Logo} alt="" className="w-full h-auto" />
             </div>
+
         </div>
         <div className="md:w-1/2 bg-white p-8 shadow-lg rounded-lg">
             <form onSubmit={handleSubmit}>

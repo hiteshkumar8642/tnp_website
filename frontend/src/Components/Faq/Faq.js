@@ -23,8 +23,8 @@ const Faq = () => {
   };
 
   return (
-    <div className="min-h-full w-10/12 mx-auto bg-[#f3f6fd] py-10">
-      <div className="  bg-blue-50 shadow-md rounded-md">
+    <div className=" bg-[#f3f6fd]">
+      <div className="  bg-[#f3f6fd] min-h-full w-10/12 mx-auto shadow-md rounded-md">
         <div className="text-center">
           <h1 className='font-bold text-3xl'>FAQ</h1>
         </div>
