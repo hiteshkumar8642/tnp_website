@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { fetchAnnouncements } from "../../api/announcement";
 import AnnouncementItem from "./AnnouncementItem";
 import { ShimmerCategoryItem } from "react-shimmer-effects";
-import apiClient from "../../services/api";
 import "./Announcement.css";
+import { sendAnnouncements } from "../../api/sendAnnouncement";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState("");
-  const [announcementInput, setAnnouncementInput] = useState("");
+  //const [announcementInput, setAnnouncementInput] = useState("");
   const [AnnouncementLoading, SetAnnouncementLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ announcement: "" });
@@ -20,7 +20,7 @@ function Announcements() {
         let localdata = localStorage.getItem("announcements")
           ? JSON.parse(localStorage.getItem("announcements"))
           : null;
-        
+
         if (localdata === null) {
           localdata = await fetchAnnouncements();
           setAnnouncements(localdata);
@@ -44,11 +44,9 @@ function Announcements() {
   const handleAddAnnouncement = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post(
-        "/api/addannouncement/",
-        formData
-      );
+      const response = await sendAnnouncements(formData);
 
+      console.log(response);
       if (response.status === 201) {
         console.log("Announcement added successfully!");
         setAnnouncements((prevAnnouncements) => [
@@ -59,7 +57,7 @@ function Announcements() {
           "announcements",
           JSON.stringify([formData, ...announcements])
         );
-        setAnnouncementInput("");
+        //setAnnouncementInput("");
         setShowForm(false);
       } else {
         console.log("Failed to add the announcement.");
@@ -82,10 +80,7 @@ function Announcements() {
       </div>
 
       {showForm && (
-        <form
-          onSubmit={handleAddAnnouncement}
-          className="announcement-form"
-        >
+        <form onSubmit={handleAddAnnouncement} className="announcement-form">
           <input
             type="text"
             value={formData.announcement}
@@ -115,10 +110,7 @@ function Announcements() {
         <div className="messages">
           {error && <p>{error}</p>}
           {announcements.map((announcement, index) => (
-            <AnnouncementItem
-              key={index}
-              announcement={announcement}
-            />
+            <AnnouncementItem key={index} announcement={announcement} />
           ))}
         </div>
       )}
