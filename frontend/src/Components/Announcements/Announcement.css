@@ -32,10 +32,11 @@
   margin-top: 16px;
   display: flex;
   gap: 8px;
+  
 }
 
 .announcement-form input {
-  flex: 1;
+  flex: auto;
   padding: 8px;
   border: 1px solid var(--message-box-border);
   border-radius: 4px;
@@ -56,25 +57,22 @@
 
 .announcement-popup {
   position: absolute;
-  top: 100%;
-  right: 0;
+  top: 130%;
+  right: 75%;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 0px;
   z-index: 1000;
   max-height: 80vh; /* Limit the height to 80% of the viewport height */
   overflow-y: auto; /* Enable vertical scrolling */
   overflow-x: hidden;
+  display: flex; /* Add flexbox display */
+  flex-direction: column; /* Ensure items stack vertically */
+  align-items: flex-start; /* Align items to the left */
 }
 
 .app-header-right {
   position: relative;
-}
-
-/* If needed, add some padding to the content inside the popup */
-.announcements-popup-content {
-  padding: 16px;
 }
 
 /* Optionally, you can style the scrollbar */
