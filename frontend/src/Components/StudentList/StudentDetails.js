@@ -40,7 +40,7 @@ const StudentDetails = ({ student, onBack }) => {
 
   const resumeUrl = resume ? `http://localhost:8000${resume}` : "";
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg">
+    <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
       <button
         onClick={onBack}
         className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"

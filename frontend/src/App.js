@@ -25,29 +25,11 @@ import StudentList from "./Components/StudentList/StudentList";
 import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
-import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage"
+import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
-import { useEffect, useState } from "react";
 import Test from "./Components/Test/Test";
 
 function App() {
-  const [role,setRole] = useState(null);
-
-  useEffect(() => {
-    async function roleWiseAccess() {
-      const storedUserProfile = localStorage.getItem("user_Profile");
-      try{
-        const userProfile = JSON.parse(storedUserProfile);
-        console.log("User Profile ", userProfile);
-        setRole(userProfile.role);
-      }
-      catch(error){
-        console.error("Error parsing user_Profile from localStorage:", error);
-      }
-    }
-    roleWiseAccess();
-  }, []);
-
   return (
     <>
       <Loader /> {/* Include the Loader component */}
@@ -88,14 +70,14 @@ function App() {
           >
             <Route index element={<Navigate replace to="companies" />} />
 
-            <Route 
-              path="companies" 
+            <Route
+              path="companies"
               element={
                 <RoleProtectedRoute path={"companies"}>
                   <CompaniesDashboard />
                 </RoleProtectedRoute>
-              }>
-            </Route>
+              }
+            ></Route>
             <Route
               path="applied-companies"
               element={
@@ -103,8 +85,7 @@ function App() {
                   <AppliedCompanies />
                 </RoleProtectedRoute>
               }
-            >
-            </Route>
+            ></Route>
             <Route
               path="share-hr-contact"
               element={
@@ -112,21 +93,20 @@ function App() {
                   <SharedHrContact />
                 </RoleProtectedRoute>
               }
-            >
-            </Route>
-            <Route 
-              path="all-student-list" 
+            ></Route>
+            <Route
+              path="all-student-list"
               element={
-                <RoleProtectedRoute path={"all-student-list" }>
+                <RoleProtectedRoute path={"all-student-list"}>
                   <StudentList />
                 </RoleProtectedRoute>
-              }>
-            </Route>
+              }
+            ></Route>
             <Route
               path="share-company-contact"
               element={
                 <RoleProtectedRoute path={"share-company-contact"}>
-                    <ShareCompanyContact />
+                  <ShareCompanyContact />
                 </RoleProtectedRoute>
               }
             ></Route>
@@ -134,7 +114,7 @@ function App() {
               path="shared-hr-contact"
               element={
                 <RoleProtectedRoute path={"shared-hr-contact"}>
-                    <SharedHrContactList />
+                  <SharedHrContactList />
                 </RoleProtectedRoute>
               }
             ></Route>
@@ -146,34 +126,34 @@ function App() {
                 </RoleProtectedRoute>
               }
             ></Route>
-            <Route 
-              path="call-log" 
+            <Route
+              path="call-log"
               element={
                 <RoleProtectedRoute path={"call-log"}>
-                    <CallLog />
+                  <CallLog />
                 </RoleProtectedRoute>
-              }>
-            </Route>
-            <Route 
-              path="hr-list" 
+              }
+            ></Route>
+            <Route
+              path="hr-list"
               element={
                 <RoleProtectedRoute path={"hr-list"}>
                   <HrList />
                 </RoleProtectedRoute>
-              }>
-            </Route>
-            <Route 
-              path="my-hr-list" 
+              }
+            ></Route>
+            <Route
+              path="my-hr-list"
               element={
                 <RoleProtectedRoute path={"my-hr-list"}>
                   <MyHrList />
                 </RoleProtectedRoute>
-              }>
-            </Route>
+              }
+            ></Route>
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
           <Route path="*" element={<Error404Page />} />
-          <Route path="/user-profile" element={<UserProfileDetails/>} />
+          <Route path="/user-profile" element={<UserProfileDetails />} />
         </Routes>
       </div>
     </>
