@@ -119,10 +119,21 @@ const CompanyDetails = ({ company, onBack }) => {
   };
 
 
-  const handleApply = () => {
-    
-    setIsApplied(true);
-    alert("You have successfully applied for this position!");
+  // Function to handle apply
+  const handleApply = async () => {
+    try {
+      const response = await applyToCompany(company_id.id, userData.id); // Pass company ID and user ID
+      if (response.status === 201) {
+        setIsApplied(true);
+        alert("You have successfully applied for this position!");
+      } else {
+        console.error("Failed to apply:", response.data);
+        alert("Failed to apply. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while applying. Please try again.");
+    }
   };
 
 
