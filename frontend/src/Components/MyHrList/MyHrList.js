@@ -45,7 +45,7 @@ const MyHrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },

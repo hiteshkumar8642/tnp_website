@@ -46,7 +46,7 @@ def TransferContactView(request):
             linkedin=linkedin,
             college_branch=clg_branch
         )
-
+        sh_hr_obj.delete()
         hr_cont_obj.save()
         # Return a success response with an HTTP 201 Created status
         return Response({'message': 'Contact transferred successfully.'}, status=status.HTTP_201_CREATED)
