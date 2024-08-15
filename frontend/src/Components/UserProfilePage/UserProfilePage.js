@@ -30,7 +30,7 @@ function ProfilePage() {
         
         try {
             // Perform the POST request using apiClient.post
-            const response = await apiClient.post('/apis/update-user-details/', updatedData, {
+            const response = await apiClient.post('/api/update-user-details/', updatedData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
