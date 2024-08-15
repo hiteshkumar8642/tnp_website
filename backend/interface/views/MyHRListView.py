@@ -28,7 +28,7 @@ def MyHRListView(request):
     try:
         # Get the current authenticated user
         user = request.user
-
+        print("DEVVRAT")
         # Retrieve the user's role from UserProfile
         role = UserProfile.objects.get(user=user).role
 

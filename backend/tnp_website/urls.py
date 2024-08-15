@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('userDetails.urls')),
     path('api/',include('interface.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    # path('dashboard/', include('dashboard.urls')),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name ="token_obtain_pair"),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

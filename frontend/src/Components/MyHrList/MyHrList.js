@@ -37,7 +37,7 @@ const MyHrList = () => {
     console.log("hello ji");
     try { 
       // Perform the API request to update the status
-      const response = await apiClient.post('/api/hr_contacts/', {
+      const response = await apiClient.post('/api/myhrlist/', {
         id,
         status,
       });
