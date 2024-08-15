@@ -47,6 +47,8 @@ def DownloadAppliedStudentsListView(request, company_id):
             application_data = application.application_id
             data.append({
                 "Username": application.user_id.username,
+                "First Name": application.user_id.first_name,
+                "Last Name": application.user_id.last_name,
                 "Email": application.user_id.email,
                 "Department": user_details.department,
                 "Mobile": user_details.mobile,
