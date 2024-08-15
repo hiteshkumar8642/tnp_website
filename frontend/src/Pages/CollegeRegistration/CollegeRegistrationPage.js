@@ -31,7 +31,7 @@ export default function CollegeRegistrationPage() {
   useEffect(function () {
     async function fetchBranches() {
       try {
-        const response = await axios.get(`${host}/dashboard/api/Course/`);
+        const response = await axios.get(`${host}/api/Course/`);
         setBranches(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

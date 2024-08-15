@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
     console.log("working properly");
     console.log(formData);
     const params = new URLSearchParams(formData);
-    const response = await apiClient.post('apis/hrcontactmodify/', params.toString(), {
+    const response = await apiClient.post('/api/hrcontactmodify/', params.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },

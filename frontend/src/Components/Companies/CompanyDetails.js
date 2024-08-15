@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./CompanyDetailsModal.css";
+import { fetchDownloadAppliedStudents} from "../../api/downloadAppliedStudents";
 import { IoArrowBack } from "react-icons/io5";
 
 function formatDate(inputDate) {
@@ -86,6 +87,27 @@ const CompanyDetails = ({ company, onBack }) => {
     ? `http://localhost:8000${job_description}`
     : "";
 
+  // Function to handle download
+  const handleDownload = async () => {
+    try {
+      const response = await fetchDownloadAppliedStudents(company_id.id);  // Pass company ID
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${companyName}_applied_students.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        console.error("Failed to download file");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
       <button
@@ -95,6 +117,13 @@ const CompanyDetails = ({ company, onBack }) => {
       >
         <IoArrowBack size={24} />
       </button>
+      {/* Download Button at Top Right Corner */}
+      <button
+          onClick={handleDownload}
+          className="download-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Download List
+        </button>
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>

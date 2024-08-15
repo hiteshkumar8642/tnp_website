@@ -2,6 +2,7 @@ from django.urls import path
 from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
 from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
 
 
 urlpatterns = [
@@ -33,4 +34,6 @@ urlpatterns = [
     path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails'),
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),
     path('download-applied-students/<int:company_id>/', DownloadAppliedStudentsListView.DownloadAppliedStudentsListView, name='download_applied_students'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]

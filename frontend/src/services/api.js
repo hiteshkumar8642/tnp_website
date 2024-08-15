@@ -30,7 +30,7 @@ apiClient.interceptors.response.use(
       const { navigate } = useNavigation();
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/user/api/token/refresh/",
+          "http://127.0.0.1:8000/api/token/refresh/",
           { refresh: localStorage.getItem("refresh_token") }
         );
         const { access } = response.data;

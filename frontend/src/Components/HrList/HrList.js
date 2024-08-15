@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HrList.css";
-import { fetchHRList } from "../../api/ListofHR";
+import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 import apiClient from "../../services/api";
@@ -48,7 +48,7 @@ const HrList = () => {
       );
       console.log(hrData);
       const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
