@@ -31,6 +31,8 @@ import json
 
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
+
+
 # Create your views here.
 
 def activate_email(request, user, to_email):
@@ -153,6 +155,11 @@ def UpdateDetails(request):
         return redirect('userProfile')
 
 
+@api_view(['POST'])
+def update_details(request):
+    print("HLOO")
+    return Response({'message': 'Details updated successfully!'}, status=status.HTTP_200_OK)
+    
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken

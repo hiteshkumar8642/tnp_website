@@ -25,6 +25,7 @@ import StudentList from "./Components/StudentList/StudentList";
 import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
+import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage"
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import { useEffect, useState } from "react";
 import Test from "./Components/Test/Test";
@@ -90,13 +91,15 @@ function App() {
             <Route 
               path="companies" 
               element={
+                <RoleProtectedRoute path={"companies"}>
                   <CompaniesDashboard />
+                </RoleProtectedRoute>
               }>
             </Route>
             <Route
               path="applied-companies"
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"applied-companies"}>
                   <AppliedCompanies />
                 </RoleProtectedRoute>
               }
@@ -105,7 +108,7 @@ function App() {
             <Route
               path="share-hr-contact"
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"share-hr-contact"}>
                   <SharedHrContact />
                 </RoleProtectedRoute>
               }
@@ -114,7 +117,7 @@ function App() {
             <Route 
               path="all-student-list" 
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"all-student-list" }>
                   <StudentList />
                 </RoleProtectedRoute>
               }>
@@ -122,7 +125,7 @@ function App() {
             <Route
               path="share-company-contact"
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"share-company-contact"}>
                     <ShareCompanyContact />
                 </RoleProtectedRoute>
               }
@@ -130,7 +133,7 @@ function App() {
             <Route
               path="shared-hr-contact"
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"shared-hr-contact"}>
                     <SharedHrContactList />
                 </RoleProtectedRoute>
               }
@@ -138,7 +141,7 @@ function App() {
             <Route
               path="shared-company-contact"
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"shared-company-contact"}>
                   <SharedCompanyContactList />
                 </RoleProtectedRoute>
               }
@@ -146,7 +149,7 @@ function App() {
             <Route 
               path="call-log" 
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"call-log"}>
                     <CallLog />
                 </RoleProtectedRoute>
               }>
@@ -154,7 +157,7 @@ function App() {
             <Route 
               path="hr-list" 
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"hr-list"}>
                   <HrList />
                 </RoleProtectedRoute>
               }>
@@ -162,7 +165,7 @@ function App() {
             <Route 
               path="my-hr-list" 
               element={
-                <RoleProtectedRoute role={role}>
+                <RoleProtectedRoute path={"my-hr-list"}>
                   <MyHrList />
                 </RoleProtectedRoute>
               }>
@@ -170,6 +173,7 @@ function App() {
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
           <Route path="*" element={<Error404Page />} />
+          <Route path="/user-profile" element={<UserProfileDetails/>} />
         </Routes>
       </div>
     </>
