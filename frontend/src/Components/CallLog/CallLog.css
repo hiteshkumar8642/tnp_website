@@ -1,21 +1,36 @@
 .call-log-table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 25px 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
   font-size: 1em;
   text-align: left;
+}
+
+.call-log-table thead tr {
+  background-color: var(--main-color);
+  color: var(--link-color-active);
+  text-align: left;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .call-log-table th,
 .call-log-table td {
   padding: 8px 10px; /* Reduced padding to make rows smaller */
-  border: 1px solid #ddd;
+  font-size: 1em;
   line-height: 1.2; /* Adjusted line-height for tighter spacing */
+  height: 25px; /* Fixed row height */
+  border: 1px solid #ddd;
 }
 
-.call-log-table th {
-  background-color: var(--main-color);
-  color: var(--link-color-active);
+.call-log-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .call-log-row:nth-child(even) {
@@ -24,4 +39,22 @@
 
 .call-log-row:nth-child(odd) {
   background-color: var(--projects-section);
+}
+
+.call-log-row:last-of-type {
+  border-bottom: 2px solid var(--main-color);
+}
+
+.call-log-row:hover {
+  background-color: rgba(var(--main-color-rgb), 0.05);
+  transition: background-color 0.3s ease;
+}
+
+@media screen and (max-width: 600px) {
+  .call-log-table th,
+  .call-log-table td {
+    padding: 6px 8px; /* Adjusted padding for smaller screens */
+    font-size: 0.9em;
+    height: 25px; /* Fixed row height for smaller screens */
+  }
 }

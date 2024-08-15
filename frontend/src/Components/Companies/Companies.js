@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchComingCompanyDetails } from "../../api/ComingCompany";
+import { fetchComingCompanyDetails } from "../../api/comingCompany";
 import CompanyDetails from "./CompanyDetails";
 import AddCompanyForm from "./AddCompanyForm";
 import { FaSearch, FaPlus } from "react-icons/fa";

@@ -36,7 +36,7 @@ const SharedCompanyContactList = () => {
   }, []);
 
   if (companyListLoading) {
-    return <ShimmerTable row={5} col={7} />;
+    return <ShimmerTable row={5} col={15} />;
   }
 
   if (error) {

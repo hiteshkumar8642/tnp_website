@@ -1,39 +1,87 @@
-.hr-contact-table {
+.shared-hr-contact-table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1em;
-  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 25px 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.hr-contact-table th,
-.hr-contact-table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-}
-
-.hr-contact-table th {
+.shared-hr-contact-table thead tr {
   background-color: var(--main-color);
   color: var(--link-color-active);
+  text-align: left;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.hr-table-row:nth-child(even) {
+.shared-hr-contact-table th,
+.shared-hr-contact-table td {
+  padding: 8px 15px;
+  font-size: 1em;
+  line-height: 1.2;
+  height: 25px; /* Updated row height */
+}
+
+.shared-hr-contact-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.shared-hr-table-row:nth-child(even) {
   background-color: var(--message-box-hover);
 }
 
-.hr-table-row:nth-child(odd) {
+.shared-hr-table-row:nth-child(odd) {
   background-color: var(--projects-section);
+}
+
+.shared-hr-table-row:last-of-type {
+  border-bottom: 2px solid var(--main-color);
+}
+
+.shared-hr-table-row:hover {
+  background-color: rgba(var(--main-color-rgb), 0.05);
+  transition: background-color 0.3s ease;
 }
 
 .add-to-list-button {
   background-color: var(--button-bg);
   color: var(--message-btn);
   border: none;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .add-to-list-button:hover {
   background-color: var(--link-color-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-list-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 600px) {
+  .shared-hr-contact-table th,
+  .shared-hr-contact-table td {
+    padding: 6px 10px;
+    font-size: 0.9em;
+    height: 25px; /* Updated row height for smaller screens */
+  }
+
+  .add-to-list-button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+  }
 }
