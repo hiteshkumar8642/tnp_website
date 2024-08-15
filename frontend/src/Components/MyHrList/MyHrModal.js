@@ -60,8 +60,8 @@ const [selectedColor, setSelectedColor] = useState('');
     console.log(hr.id);
     const params = new URLSearchParams({
       hr_id:hr.id,
+      colour: selectedColor,
       comment: newMessage,
-      colour: selectedColor
     });
 
     setSelectedColor('');
@@ -74,7 +74,7 @@ const [selectedColor, setSelectedColor] = useState('');
         "Content-Type": "application/x-www-form-urlencoded",
       },
         });
-    console.log("response: " + response.status);
+    console.log("response: " + JSON.stringify(response));
 
   
   }catch(e){
