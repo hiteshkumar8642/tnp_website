@@ -243,7 +243,6 @@ const CompanyDetails = ({ company, onBack }) => {
           <AiOutlineDownload size={24} />
         </button>                 
         
-      </div>
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>
@@ -255,24 +254,24 @@ const CompanyDetails = ({ company, onBack }) => {
           </p>
         </div>
         {isApplied ? (
-    <button
-      className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
-      disabled
-    >
-      Applied
-    </button>
-  ) : (
-    <button
-      onClick={handleApply}
-      className="bg-green-500 text-white p-2 rounded-full hover:bg-green-700 transition-colors"
-      disabled={!!eligibilityError || isLoading}
-    >
-      Apply
-    </button>
-  )}
-  {eligibilityError && (
-    <p className="text-red-500 mt-4">{eligibilityError}</p>
-  )}
+          <button
+            className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
+            disabled
+          >
+            Applied
+          </button>
+        ) : (
+          <button
+            onClick={handleApply}
+            className="bg-green-500 text-white p-2 rounded-full hover:bg-green-700 transition-colors"
+            disabled={!!eligibilityError || isLoading}
+          >
+            Apply
+          </button>
+        )}
+        {eligibilityError && (
+          <p className="text-red-500 mt-4">{eligibilityError}</p>
+        )}
 
       </div>
       <div className="mt-4 flex justify-between items-center">
@@ -290,7 +289,6 @@ const CompanyDetails = ({ company, onBack }) => {
         Job Description
       </p>
 
-      {/* Modal for PDF Viewer */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
