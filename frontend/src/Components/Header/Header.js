@@ -8,12 +8,14 @@ export default function Header({ isLoginPage, children }) {
   return (
     <header className="min-h-[80px] mx-auto flex items-center w-9/12 relative z-50">
       <nav className="container flex items-center justify-between">
-        <span className="text-[#5d5d5d]  text-2xl flex justify-center items-center ">
-        <Link to="/"><img src={MYSVG} alt="My SVG" className="w-16"/></Link> 
-          <Link to="/" className="hover:no-underline">
+        <div className="text-[#5d5d5d]  text-2xl flex justify-center items-center ">
+          <div>
+            <Link to="/"><img src={MYSVG} alt="My SVG" className="w-16"/></Link> 
+          </div>
+          <Link to="/" className="hover:no-underline sm:block hidden">
             <b>{PageName}</b>
           </Link>
-        </span>
+        </div>
 
         {/* Hamburger Button - Visible on Small Screens */}
         <button 
