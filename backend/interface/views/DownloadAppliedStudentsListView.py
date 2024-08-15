@@ -31,6 +31,9 @@ def DownloadAppliedStudentsListView(request, company_id):
     # Get the user's role from the UserProfile model
     user_profile = UserProfile.objects.get(user=request.user)
 
+    # Check if the role is not in the allowed list
+    if user_profile.role in [1, 2]:
+        return Response({'detail': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
     
     # Proceed if the user is authorized
     company = get_object_or_404(Company, id=company_id)
