@@ -221,27 +221,23 @@ const CompanyDetails = ({ company, onBack }) => {
 
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
-      <button
-        onClick={onBack}
-        className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
-        aria-label="Go back"
-      >
-        <IoArrowBack size={24} />
-      </button>
-      
-      <button
-          onClick={handleDownload}
-          className="download-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <IoArrowBack size={24} />
-        </button>
-        {/* Download Button at Top Right Corner */}
-        <button
-          onClick={handleDownload}
-          className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
-        >
-          <AiOutlineDownload size={24} />
-        </button>                 
+        <div className="flex justify-between items-center">
+          <button
+            onClick={onBack}
+            className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+            aria-label="Go back"
+          >
+            <IoArrowBack size={24} />
+          </button>
+        
+          {/* Download Button at Top Right Corner */}
+          <button
+            onClick={handleDownload}
+            className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
+          >
+            <AiOutlineDownload size={24} />
+          </button>    
+        </div>             
         
       <div className="flex items-center">
         <div>
@@ -253,26 +249,7 @@ const CompanyDetails = ({ company, onBack }) => {
             {is_sip ? `SIP` : ``}
           </p>
         </div>
-        {isApplied ? (
-          <button
-            className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
-            disabled
-          >
-            Applied
-          </button>
-        ) : (
-          <button
-            onClick={handleApply}
-            className="bg-green-500 text-white p-2 rounded-full hover:bg-green-700 transition-colors"
-            disabled={!!eligibilityError || isLoading}
-          >
-            Apply
-          </button>
-        )}
-        {eligibilityError && (
-          <p className="text-red-500 mt-4">{eligibilityError}</p>
-        )}
-
+        
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
@@ -310,6 +287,27 @@ const CompanyDetails = ({ company, onBack }) => {
           )}
         </div>
       </Modal>
+      {eligibilityError && (
+          <p className="text-red-500 mt-4">{eligibilityError}</p>
+        )}
+      {isApplied ? (
+          <button
+            className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
+            disabled
+          >
+            Applied
+          </button>
+        ) : (
+          <button
+            onClick={handleApply}
+            className="bg-green-500 text-white  rounded-full  px-14 py-2 hover:bg-green-700 transition-colors absolute left-[50%]"
+            disabled={!!eligibilityError || isLoading}
+          >
+            Apply
+          </button>
+        )}
+        
+
     </div>
   );
 };
