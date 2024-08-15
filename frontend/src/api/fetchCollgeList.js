@@ -3,7 +3,7 @@ import apiClient from "../services/api";
 
 export async function fetchCollegeList(){
     try {
-        const response = await apiClient.get('apis/collegelist/');
+        const response = await apiClient.get('/api/collegelist/');
         return response.data
     }
     catch(error){

@@ -4,7 +4,7 @@ import apiClient from '../services/api';
 
 export async function fetchAnnouncements() {
   try {
-    const response = await apiClient.get('dashboard/api/announcement/');
+    const response = await apiClient.get('/api/announcement/');
     return response.data;
   } catch (error) {
     console.error('Failed to fetch announcements', error);

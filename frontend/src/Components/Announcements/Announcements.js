@@ -45,7 +45,7 @@ function Announcements() {
     e.preventDefault();
     try {
       const response = await apiClient.post(
-        "dashboard/api/add_announcements/",
+        "/api/addannouncement/",
         formData
       );
 

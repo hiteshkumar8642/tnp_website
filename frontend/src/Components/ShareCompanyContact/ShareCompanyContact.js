@@ -54,7 +54,7 @@ const CompanyContactForm = () => {
     setIsLoading(true);
     try {
       const params = new URLSearchParams(formData);
-      const response = await apiClient.post('apis/shared-companymodify/', params.toString(), {
+      const response = await apiClient.post('/api/shared-companymodify/', params.toString(), {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },

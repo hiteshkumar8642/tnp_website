@@ -2,7 +2,7 @@ import apiClient from "../services/api";
 
 export async function fetchAllStudents() {
   try {
-    const response = await apiClient.get("/apis/studentlist/");
+    const response = await apiClient.get("/api/studentlist/");
     console.log("idugudbvf",response);
     return response.data;
   } catch (error) {

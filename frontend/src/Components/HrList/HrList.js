@@ -42,7 +42,7 @@ const HrList = () => {
   const handleStatusChange = async (id, status) => {
     try {
       // Perform the API request to update the status
-      const response = await apiClient.post("dashboard/api/hr_contacts/", {
+      const response = await apiClient.post("/api/hr_contacts/", {
         id,
         status,
       });

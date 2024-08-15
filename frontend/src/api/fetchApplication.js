@@ -3,7 +3,7 @@ import apiClient from "../services/api";
 
 export async function fetchApplication(){
     try {
-        const response = await apiClient.get('apis/application/');
+        const response = await apiClient.get('/api/application/');
         return response.data
     }
     catch(error){

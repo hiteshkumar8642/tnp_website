@@ -2,7 +2,7 @@ import apiClient from "../services/api";
 
 export async function fetchAppliedCompanies() {
   try {
-    const response = await apiClient.get("dashboard/api/appliedCompany/");
+    const response = await apiClient.get("/api/appliedCompany/");
     
     return response.data;
   } catch (error) {

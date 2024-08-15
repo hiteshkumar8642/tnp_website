@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/user/api/login/",
+        "http://127.0.0.1:8000/api/login/",
         user,
         {
           headers: {

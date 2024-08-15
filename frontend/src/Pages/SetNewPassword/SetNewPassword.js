@@ -29,7 +29,7 @@ export default function SetNewPasswordPage() {
       );
     } else {
       setIsLoading(true);
-      axios.post(`http://127.0.0.1:8000/user/api/password_reset/confirm/`,{
+      axios.post(`http://127.0.0.1:8000/api/reset-password/confirm/`,{
         password: newPassword,
         token: token.token,
       },
