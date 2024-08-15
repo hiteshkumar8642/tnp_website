@@ -43,8 +43,8 @@
   background-color: #d32f2f;
 }
 
-.download-button {
-  background-color: #3b82f6;
+/* .download-button {
+  background-color: #000000;
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -55,4 +55,4 @@
 
 .download-button:hover {
   background-color: #2563eb;
-}
+} */
