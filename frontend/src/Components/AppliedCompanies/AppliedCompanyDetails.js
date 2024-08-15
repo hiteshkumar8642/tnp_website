@@ -90,7 +90,7 @@ const AppliedCompanyDetails = ({ company, onBack }) => {
     <div className="p-6 bg-white shadow-lg rounded-lg">
       <button
         onClick={onBack}
-        className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+        className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
         aria-label="Go back"
       >
         <IoArrowBack size={24} />

@@ -1,6 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState ,useRef} from "react";
 import HrModal from "./HrModal";
-import apiClient from '../../services/api';
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,24 +23,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   };
 
   const getSafeValue = (value) => (value ? value : "N/A");
-  const handleStatusDropdownChange = async (e) => {
-    const newStatus = e.target.value;
-    
-    handleStatusChange(hr.id, newStatus);
-    try {
- 
-      const params = new URLSearchParams({id:hr.id});
-      const response = await apiClient.post('apis/hassignme/', params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        });
-      console.log("Status updated successfully:", response.data);
-    } catch (error) {
-      // Handle errors if the API request fails
-      console.error('Failed to update status:', error);
-    }
-  };
 
   return (
     <>
@@ -51,20 +32,20 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
           {getSafeValue(hr.company_id?.name)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr?.last_date_of_contact)}
+          {formatDate(hr.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr?.next_date_of_contact)}
+          {formatDate(hr.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select
-            ref={selectRef}
+          ref={selectRef}
             value={hr.status || "Contact"}
-            onChange={handleStatusDropdownChange}
+            onChange={(e) => handleStatusChange(hr.id, e.target.value)}
             className="status-dropdown"
           >
             <option value="Contact">Contact</option>
-            <option value="Do_not_Contact">Do not Contact</option>
+            <option value="Do not Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>
         </td>
@@ -81,5 +62,3 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
 };
 
 export default HrTableRow;
-
-

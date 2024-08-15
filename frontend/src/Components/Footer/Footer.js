@@ -21,7 +21,7 @@ export default function Footer() {
               <i className="fas fa-phone text-[#6c63ff] text-2xl mr-4"></i>
               <div className="cta-text text-center">
                 <h4 className="text-xl font-bold">Call us</h4>
-                <span className="text-gray-600">1234567890</span>
+                <span className="text-gray-600">8250407815</span>
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@ export default function Footer() {
               <i className="far fa-envelope-open text-[#6c63ff] text-2xl mr-4"></i>
               <div className="cta-text text-center">
                 <h4 className="text-xl font-bold">Mail us</h4>
-                <span className="text-gray-600">mail@info.com</span>
+                <span className="text-gray-600">support@campushirease.com</span>
               </div>
             </div>
           </div>
@@ -71,9 +71,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className="w-full md:w-1/2">
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <h3 className="text-xl font-bold mb-2 relative">
                   Useful Links
                   </h3>
@@ -120,7 +118,10 @@ export default function Footer() {
                   </li>
                 </ul>
               </div>
-              <div className="w-full md:w-1/2 px-3">
+          <div className="w-full md:w-1/2">
+            <div className="flex flex-wrap -mx-3 mb-6">
+              
+              {/* <div className="w-full md:w-1/2 px-3">
                 <h3 className="text-xl font-bold mb-2 relative">
                   Subscribe
                   </h3>
@@ -142,7 +143,7 @@ export default function Footer() {
                     Subscribe
                   </button>
                 </form>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -5,32 +5,36 @@ import ContactForm from "../../Components/ContactForm/ContactForm";
 import Faq from "../../Components/Faq/Faq";
 
 export default function LandingPage() {
-  
   return (
     <div className="flex flex-col bg-[#f3f6fd] min-h-screen">
       <Header />
-      <div className="flex-grow w-9/12 mx-auto mb-10">
+      <div className="flex-grow w-11/12 lg:w-9/12 mx-auto">
         <LandingPageContent />
       </div>
-      <div>
-          <ContactForm />
+      <div className="bg-[#f3f6fd] pt-10">
+        <ContactForm />
       </div>
-      <div>
-          <Faq />
+      <div className="bg-[#f3f6fd] pt-10">
+        <Faq />
       </div>
       <div>
         <Footer />
       </div>
-      
     </div>
   );
 }
 
 function LandingPageContent() {
   let PageName = "Placement";
+
   return (
-    <div className="content container flex flex-col lg:flex-row items-center justify-between gap-5 min-h-[calc(100vh-80px)]">
-      <div className="info w-full lg:max-w-[50%] flex-1 text-center lg:text-left">
+    <div className="content container flex flex-col lg:flex-row items-center justify-between gap-8 min-h-[calc(100vh-80px)] relative">
+      {/* Background Shapes */}
+      <div className="absolute -top-10 -left-10 w-48 h-48 bg-[#6c63ff] rounded-full opacity-10"></div>
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#6c63ff] rounded-full opacity-10"></div>
+
+      {/* Text Section */}
+      <div className="info w-full lg:max-w-[50%] flex-1 text-center lg:text-left z-10">
         <h1 className="text-[#5d5d5d] text-3xl md:text-4xl lg:text-5xl font-semibold pb-4">
           From Manual to Marvelous: Elevate Your Placements!
         </h1>
@@ -43,7 +47,9 @@ function LandingPageContent() {
           </button>
         </Link>
       </div>
-      <div className="image w-full lg:max-w-[32%] flex-1 mb-5 lg:mb-0">
+
+      {/* Image Section */}
+      <div className="image w-full lg:max-w-[40%] flex-1 mb-5 lg:mb-0 z-10">
         <img
           src="https://i.postimg.cc/65QxYYzh/001234.png"
           alt="Placement Illustration"
@@ -53,6 +59,3 @@ function LandingPageContent() {
     </div>
   );
 }
-
-
-
