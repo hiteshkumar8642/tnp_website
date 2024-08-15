@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import HrModal from "./HrModal";
-import apiClient from '../../services/api';
+import apiClient from "../../services/api";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,20 +26,23 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   const getSafeValue = (value) => (value ? value : "N/A");
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
-    
+
     handleStatusChange(hr.id, newStatus);
     try {
- 
-      const params = new URLSearchParams({id:hr.id});
-      const response = await apiClient.post('apis/hassignme/', params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        });
+      const params = new URLSearchParams({ id: hr.id });
+      const response = await apiClient.post(
+        "api/assignme/",
+        params.toString(),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
       console.log("Status updated successfully:", response.data);
     } catch (error) {
       // Handle errors if the API request fails
-      console.error('Failed to update status:', error);
+      console.error("Failed to update status:", error);
     }
   };
 
@@ -81,5 +84,3 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
 };
 
 export default HrTableRow;
-
-
