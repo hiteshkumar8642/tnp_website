@@ -66,7 +66,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="app-sidebar">
+    <div className="app-sidebar sm:block hidden">
       {
         (role === 1 || role === 2 || role === 3 || role === 4) && 
         <NavLink

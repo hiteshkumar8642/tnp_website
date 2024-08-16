@@ -70,10 +70,10 @@ function StudentList() {
       </div>
       <div className="projects-section-line">
         <div className="projects-status">
-          <div className="item-status">
+          {/* <div className="item-status">
             <span className="status-number">{filteredStudents.length}</span>
             <span className="status-type">Total Students</span>
-          </div>
+          </div> */}
         </div>
         <div className="view-actions flex justify-between items-center w-full">
           <div className="flex items-center ml-auto">
