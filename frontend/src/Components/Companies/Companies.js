@@ -102,11 +102,12 @@ function Company() {
     setIsModalOpen(false);
   };
 
-  const filteredCompanies = comingCompanies.filter((company) =>
-    company &&
-    company.company_id &&
-    company.company_id.name &&
-    company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanies = comingCompanies.filter(
+    (company) =>
+      company &&
+      company.company_id &&
+      company.company_id.name &&
+      company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   console.log("Filtered companies:", filteredCompanies);
@@ -140,14 +141,16 @@ function Company() {
                   onChange={handleSearch}
                   className="border rounded-l px-2 py-1 w-64"
                 />
-                <button 
+                <button
                   className="bg-black text-white px-3.5 py-2.5 rounded-r"
-                  onClick={() => handleSearch({ target: { value: searchTerm } })}
+                  onClick={() =>
+                    handleSearch({ target: { value: searchTerm } })
+                  }
                 >
                   <FaSearch />
                 </button>
               </div>
-              <button 
+              <button
                 className="bg-black text-white px-3 py-1 rounded flex items-center sm:ml-4 "
                 onClick={handleAddClick}
               >
@@ -156,7 +159,7 @@ function Company() {
             </div>
           </div>
         </div>
-          {/* <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4 ">
+        {/* <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4 ">
             <div className="status-number  font-extrabold sm:font-bold">{filteredCompanies.length}</div>
             <div className="status-type font-extrabold sm:font-bold">Total Companies</div>
           </div> */}
@@ -172,7 +175,9 @@ function Company() {
                   key={company.id}
                   company={company}
                   onClick={setSelectedCompany}
-                  isActive={selectedCompany && selectedCompany.id === company.id}
+                  isActive={
+                    selectedCompany && selectedCompany.id === company.id
+                  }
                 />
               ))}
             </div>

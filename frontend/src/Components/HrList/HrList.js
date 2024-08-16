@@ -4,13 +4,13 @@ import "./HrList.css";
 import { fetchHRList } from "../../api/ListofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
-import apiClient from "../../services/api";
+import { sendHRinfo } from "../../api/updateHrInfo";
 
 const HrList = () => {
   const [hrData, setHrData] = useState([]);
   const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("All"); // State for filter
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     async function getHRList() {
@@ -47,32 +47,23 @@ const HrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       console.log(hrData);
-      const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        });
+
+      const response = await sendHRinfo(id, status);
       console.log("Status updated successfully:", response.data);
-    
-      
     } catch (err) {
       console.error("Failed to update status:", err);
     }
   };
-
-
 
   let filteredData =
     statusFilter === "All"
       ? hrData
       : hrData.filter((hr) => hr.status === statusFilter);
 
-
-const handleFilterChange = (e) => {
-        setStatusFilter(e.target.value);
-        console.log("chexking data",filteredData);
-};
+  const handleFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+    console.log("chexking data", filteredData);
+  };
 
   return (
     <>
