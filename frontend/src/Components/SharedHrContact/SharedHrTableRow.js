@@ -14,7 +14,7 @@ const SharedHrTableRow = ({ hr, onRemove }) => {
       console.log(hr.id);
 
       localStorage.setItem("hrData", JSON.stringify(updatedHrContacts));
-      const response = await sendSharedHrId({ HR_id: hr.id });
+      const response = await sendSharedHrId({ hr_id: hr.id });
       console.log("Added to Hr List:", response);
 
       onRemove(hr);

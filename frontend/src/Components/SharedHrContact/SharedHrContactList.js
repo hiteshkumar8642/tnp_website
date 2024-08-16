@@ -34,14 +34,12 @@ const SharedHrContactList = () => {
     }
     getSharedHRList();
   }, []);
+  const handleRemoveHr = (hrToRemove) => {
+    const updatedHrData = sharedHrData.filter((hr) => hr !== hrToRemove);
 
-  if (HrListLoading) {
-    return <ShimmerTable row={5} col={15} />;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
+    setSharedHrData(updatedHrData);
+    localStorage.setItem("SharedhrData", JSON.stringify(updatedHrData));
+  };
 
   return (
     <div className="shared-hr-list-container">
@@ -63,7 +61,11 @@ const SharedHrContactList = () => {
             </thead>
             <tbody>
               {sharedHrData.map((hr, index) => (
-                <SharedHrTableRow key={index} hr={hr} />
+                <SharedHrTableRow
+                  key={index}
+                  hr={hr}
+                  onRemove={handleRemoveHr}
+                />
               ))}
             </tbody>
           </table>

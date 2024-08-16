@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrList.css";
 import { fetchmyHRList } from "../../api/fetchMyHRlist";
 import MyHrTableRow from "./MyHrTableRow";
-import apiClient from '../../services/api';
+import { sendHRinfo } from "../../api/updateHrInfo";
 
 const MyHrList = () => {
   const [myHrData, setMyHrData] = useState([]);
@@ -32,55 +32,49 @@ const MyHrList = () => {
     }
     getmyHRList();
   }, []);
- 
+
   const handleStatusChange = async (id, status) => {
     console.log("hello ji");
-    
+
     try {
       // Perform the API request to update the status
-     
-
 
       setMyHrData((prevHrData) =>
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
-      const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        });
-        console.log("response ",response.status);
+
+      const response = await sendHRinfo({ id, status });
+      console.log("response ", response.status);
 
       // Update state after the API request succeeds
-     
     } catch (error) {
-      console.error('Failed to update status:', error);
+      console.error("Failed to update status:", error);
     }
   };
   const handleFilterChange = (e) => {
     setStatusFilter(e.target.value);
   };
 
-  const filteredData = statusFilter === "All"
-    ? myHrData
-    : myHrData.filter(hr => hr.status === statusFilter);
-    
+  const filteredData =
+    statusFilter === "All"
+      ? myHrData
+      : myHrData.filter((hr) => hr.status === statusFilter);
 
   return (
     <div className="myhr-list-container">
-       <label htmlFor="status">Status:</label><br />
-          <select
-           id="status"
-           value={statusFilter}
-           onChange={handleFilterChange}
-           className="status-filter-dropdown">
-          
-            <option value="All">All</option>
-            <option value="Contact">Contact</option>
-            <option value="Do_not_Contact">Do not Contact</option>
-            <option value="Already_Contacted">Already Contacted</option>
-          </select>
+      <label htmlFor="status">Status:</label>
+      <br />
+      <select
+        id="status"
+        value={statusFilter}
+        onChange={handleFilterChange}
+        className="status-filter-dropdown"
+      >
+        <option value="All">All</option>
+        <option value="Contact">Contact</option>
+        <option value="Do_not_Contact">Do not Contact</option>
+        <option value="Already_Contacted">Already Contacted</option>
+      </select>
       <h2>My HR List</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="myhr-list-table-container">

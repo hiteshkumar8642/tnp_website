@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @permission_classes([IsAuthenticated])
 def TransferContactView(request):
     try:
-        hr_id = request.POST.get('HR-id')
+        hr_id = request.POST.get('hr_id')
         # Retrieve the Shared_HR_contact object based on the provided hr_id
         sh_hr_obj = get_object_or_404(Shared_HR_contact, id=hr_id)
 

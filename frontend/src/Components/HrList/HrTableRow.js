@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import HrModal from "./HrModal";
-import apiClient from "../../services/api";
+import { setAssignme } from "../../api/setAssignme";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,19 +26,9 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   const getSafeValue = (value) => (value ? value : "N/A");
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
-
     handleStatusChange(hr.id, newStatus);
     try {
-      const params = new URLSearchParams({ id: hr.id });
-      const response = await apiClient.post(
-        "api/assignme/",
-        params.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
+      const response = await setAssignme({ id: hr.id });
       console.log("Status updated successfully:", response.data);
     } catch (error) {
       // Handle errors if the API request fails
