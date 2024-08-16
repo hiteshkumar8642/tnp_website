@@ -5,6 +5,7 @@ import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { login } from "../../api/loginApi";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -22,16 +23,7 @@ export default function LoginPage() {
     };
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/user/api/login/",
-    
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await login(user);
 
       console.log(response.data);
 
@@ -39,8 +31,8 @@ export default function LoginPage() {
         response.data;
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("user_detail", JSON.stringify(user_detail));
-      localStorage.setItem("user_Profile", JSON.stringify(user_profile));
+      localStorage.setItem("user_detail", JSON.stringify(user_detail[0]));
+      localStorage.setItem("user_Profile", JSON.stringify(user_profile[0]));
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
       if (user_detail && Object.keys(user_detail).length > 0) {
@@ -49,7 +41,7 @@ export default function LoginPage() {
         navigate("/firstlogin");
       }
 
-      toast.success("Login successful",{autoClose : 5000});
+      toast.success("Login successful", { autoClose: 5000 });
     } catch (error) {
       if (
         error.response &&

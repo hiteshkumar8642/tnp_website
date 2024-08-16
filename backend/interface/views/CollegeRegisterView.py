@@ -67,7 +67,7 @@ def activate_email(request, user, to_email):
 @api_view(['POST'])
 def CollegeRegisterView(request):
     try:
-        data = json.loads(request.body)
+        data=request.data
     except json.JSONDecodeError:
         return Response({"errors": "Invalid JSON"}, status=400)
     
