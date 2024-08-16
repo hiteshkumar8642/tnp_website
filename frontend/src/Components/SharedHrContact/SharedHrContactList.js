@@ -37,9 +37,11 @@ const SharedHrContactList = () => {
   const handleRemoveHr = (hrToRemove) => {
     const updatedHrData = sharedHrData.filter((hr) => hr !== hrToRemove);
 
+
     setSharedHrData(updatedHrData);
     localStorage.setItem("SharedhrData", JSON.stringify(updatedHrData));
   };
+
 
   return (
     <div className="shared-hr-list-container">
@@ -61,11 +63,13 @@ const SharedHrContactList = () => {
             </thead>
             <tbody>
               {sharedHrData.map((hr, index) => (
+
                 <SharedHrTableRow
                   key={index}
                   hr={hr}
                   onRemove={handleRemoveHr}
                 />
+
               ))}
             </tbody>
           </table>
