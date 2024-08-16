@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './UserProfilePage.css';
 import apiClient from "../../services/api";
 
-function ProfilePage() {
+function UserProfilePage() {
     const initialData = JSON.parse(localStorage.getItem('user_detail'));
     const [userData, setUserData] = useState(initialData);
     const photo =userData.photo;
@@ -90,7 +90,7 @@ function ProfilePage() {
                         <hr align="center" />
                     </div>
                     <div className="url">
-                        <a href="#" onClick={() => openPDF(resumeURL)}>Resume</a>
+                        <button onClick={() => openPDF(resumeURL)}>Resume</button>
                     </div>
                 </div>
             </div>
@@ -163,4 +163,4 @@ function ProfilePage() {
     );
 }
 
-export default ProfilePage;
+export default UserProfilePage;

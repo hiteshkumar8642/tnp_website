@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
 function DashboardHeader() {
   //const [isDarkMode, setIsDarkMode] = useState(false);
   const [userName, setUserName] = useState("Name");
   const [userPhoto, setUserPhoto] = useState("");
-  const navigate = useNavigate();
   const [showAnnouncements, setShowAnnouncements] = useState(false);
-
+  
   useEffect(() => {
     const storedUserDetail = localStorage.getItem("user_detail");
     try {
@@ -21,9 +20,11 @@ function DashboardHeader() {
       console.error("Error parsing user_detail from localStorage:", error);
     }
   }, []);
-  const handleProfileClick = () => {
-    navigate("/user-profile"); // Adjust the route path as needed
-  };
+  // const handleProfileClick = () => {
+  //   console.log(navigate);
+  //   navigate("/dashboard/user-profile"); 
+  //   console.log("IN PROFILE");
+  // };
 
   // const toggleTheme = () => {
   //   const htmlElement = document.documentElement;
@@ -85,8 +86,8 @@ function DashboardHeader() {
             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
           </svg>
         </button> */}
-        <Link>
-          <button className="profile-btn" onClick={handleProfileClick}>
+        <Link to="user-profile">
+          <button className="profile-btn" >
             <img
               src={
                 userPhoto ||

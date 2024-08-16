@@ -25,7 +25,7 @@ import StudentList from "./Components/StudentList/StudentList";
 import SharedHrContactList from "./Components/SharedHrContact/SharedHrContactList";
 import SharedCompanyContactList from "./Components/SharedCompanyContact/SharedCompanyContactList";
 import CallLog from "./Components/CallLog/CallLog";
-import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage";
+import UserProfilePage from "./Components/UserProfilePage/UserProfilePage";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import Test from "./Components/Test/Test";
 
@@ -40,6 +40,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          
           <Route
             path="/password-reset/:token"
             element={<SetNewPasswordPage />}
@@ -69,7 +70,7 @@ function App() {
             }
           >
             <Route index element={<Navigate replace to="companies" />} />
-
+            
             <Route
               path="companies"
               element={
@@ -78,6 +79,7 @@ function App() {
                 </RoleProtectedRoute>
               }
             ></Route>
+            <Route path="user-profile" element={<UserProfilePage/>} ></Route>
             <Route
               path="applied-companies"
               element={
@@ -153,7 +155,7 @@ function App() {
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
           <Route path="*" element={<Error404Page />} />
-          <Route path="/user-profile" element={<UserProfileDetails />} />
+          
         </Routes>
       </div>
     </>
