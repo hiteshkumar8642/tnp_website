@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
-from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView
+from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView,ReassignView , StudentsApplicationView
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
     path('announcement/',AnnouncementsListView.AnnouncementsListView,name='announcement'),
-    path('applied-company-list/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
+    path('appliedcompany/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
     path('courselist/',CourseListView.CourseListView,name='courselist'),
     path('hrcontactmodify/',HRContactModifyView.HRContactModifyView,name='hrcontactmodify'),
     path('shared-companymodify/',SharedCompanyModifyView.SharedCompanyModifyView.as_view(),name='sharedcompanymodify'),
@@ -22,7 +22,8 @@ urlpatterns = [
     path('addannouncement/',AddAnnouncementView.AddAnnouncementView,name='studentlist'),
     path('hrdata-modified/',HRDataUpdateView.HRDataUpdateView,name='hrdatamodified'),
     path('delete-sharedhr-contact/',DeleteAllSharedHRContactView.DeleteAllSharedHRContactView,name='deletesharedhrcontact'),
-    path('assignme/',HRAssignMeView.HRAssignMeView,name='deletesharedhrcontact'),
+    path('assignme/',HRAssignMeView.HRAssignMeView,name='assignme'),
+    path('reassign/',ReassignView.ReassignView,name='reassign'),
     path('hrcalllogs/',HRCallHistoryView.HRCallHistoryView,name='hrcalllogs'),
     path('transfer-contact/',TransferContactView.TransferContactView,name='transfercontact'),
     path('login/',UserLoginView.MyTokenObtainPairView.as_view(),name='login'),
@@ -35,5 +36,6 @@ urlpatterns = [
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),
     path('download-applied-students/<int:company_id>/', DownloadAppliedStudentsListView.DownloadAppliedStudentsListView, name='download_applied_students'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('apply-to-company/<int:company_id>/', StudentsApplicationView.StudentsApplicationView.as_view(), name='apply-to-company'),
 
 ]

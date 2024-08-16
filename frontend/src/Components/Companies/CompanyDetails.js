@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from "react-modal";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./CompanyDetailsModal.css";
 import { fetchDownloadAppliedStudents} from "../../api/downloadAppliedStudents";
+import { applyToCompany } from "../../api/applyToCompany";
 import { IoArrowBack } from "react-icons/io5";
+import { fetchAppliedCompanies } from "../../api/appliedCompanies";
+import { AiOutlineDownload } from 'react-icons/ai';
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -66,6 +69,12 @@ function daysLeft(lastDate) {
   }
 }
 
+// Fetch user details from local storage
+const getUserDetailsFromLocalStorage = () => {
+  const data = localStorage.getItem('user_detail');
+  return data ? JSON.parse(data) : {};
+};
+
 const CompanyDetails = ({ company, onBack }) => {
   const { company_id, position, is_spp, is_sip, last_date, job_description } =
     company || {};
@@ -73,6 +82,39 @@ const CompanyDetails = ({ company, onBack }) => {
   const generalCTC = company_id?.general_ctc || "N/A";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
+  const [userData, setUserData] = useState(getUserDetailsFromLocalStorage());
+  const [eligibilityError, setEligibilityError] = useState("");
+  const [appliedCompanies, setAppliedCompanies] = useState([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    async function getAppliedCompanies() {
+      setIsLoading(true);
+      try {
+        const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
+        let data;
+        if (storedAppliedCompanies) {
+          data = JSON.parse(storedAppliedCompanies);
+        } else {
+          data = await fetchAppliedCompanies();
+          localStorage.setItem("appliedCompanies", JSON.stringify(data));
+        }
+        setAppliedCompanies(data);
+        // Check if the user has applied to the current company
+        const isUserApplied = data.some(
+          (appliedCompany) => appliedCompany.application_id.id=== company_id.id
+        );
+        setIsApplied(isUserApplied);
+      } catch (err) {
+        setError("Failed to load Applied Companies");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getAppliedCompanies();
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -108,22 +150,95 @@ const CompanyDetails = ({ company, onBack }) => {
     }
   };
 
+
+  // Function to handle apply
+  const handleApply = async () => {
+    try {
+      const response = await applyToCompany(company_id.id, userData.id); // Pass company ID and user ID
+      if (response.status === 201) {
+        setIsApplied(true);
+        alert("You have successfully applied for this position!");
+        // Update applied companies in state and local storage
+        setAppliedCompanies((prevAppliedCompanies) => [
+          ...prevAppliedCompanies,
+          { id: company_id.id },
+        ]);
+        localStorage.setItem(
+          "appliedCompanies",
+          JSON.stringify([
+            ...appliedCompanies,
+            { id: company_id.id },
+          ])
+        );
+      } else {
+        console.error("Failed to apply:", response.data);
+        alert("Failed to apply. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while applying. Please try again.");
+    }
+  };
+
+  // Check eligibility
+  useEffect(() => {
+    if (
+      userData.twelfth_percentage < company.twelfth_marks_eligibility ||
+      userData.tenth_percentage < company.tenth_marks_eligibility ||
+      userData.gap_after_twelfth > company.twelfth_gap ||
+      userData.gap_after_graduation > company.graduation_gap ||
+      userData.graduation_cgpa < company.graduation_marks ||
+      userData.current_cgpa < company.current_cgpa ||
+      userData.backlogs > company.backlogs
+    ) {
+      let error = "You are not eligible to apply due to:";
+      if (userData.twelfth_percentage < company.twelfth_marks_eligibility) {
+        error += `\n- Your 12th Marks ${userData.twelfth_percentage} and required ${company.twelfth_marks_eligibility}`;
+      }
+      if (userData.tenth_percentage < company.tenth_marks_eligibility) {
+        error += `\n- Your 10th Marks ${userData.tenth_percentage} and required ${company.tenth_marks_eligibility}`;
+      }
+      if (userData.graduation_cgpa < company.graduation_marks) {
+        error += `\n- Your Graduation Marks ${userData.graduation_cgpa} and required ${company.graduation_marks}`;
+      }
+      if (userData.current_cgpa < company.current_cgpa) {
+        error += `\n- Your Current CGPA ${userData.current_cgpa} and required ${company.current_cgpa}`;
+      }
+      if (userData.gap_after_graduation > company.graduation_gap) {
+        error += `\n- Your Gap after Graduation ${userData.gap_after_graduation} and required ${company.graduation_gap}`;
+      }
+      if (userData.gap_after_twelfth > company.twelfth_gap) {
+        error += `\n- Your Gap after 12th ${userData.gap_after_twelfth} and required ${company.twelfth_gap}`;
+      }
+      if (userData.backlogs > company.backlogs) {
+        error += `\n- Your Active Backlogs ${userData.backlogs} and required ${company.backlogs}`;
+      }
+      setEligibilityError(error);
+    } else {
+      setEligibilityError("");
+    }
+  }, [userData, company]);
+
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
-      <button
-        onClick={onBack}
-        className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
-        aria-label="Go back"
-      >
-        <IoArrowBack size={24} />
-      </button>
-      {/* Download Button at Top Right Corner */}
-      <button
-          onClick={handleDownload}
-          className="download-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Download List
-        </button>
+        <div className="flex justify-between items-center">
+          <button
+            onClick={onBack}
+            className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+            aria-label="Go back"
+          >
+            <IoArrowBack size={24} />
+          </button>
+        
+          {/* Download Button at Top Right Corner */}
+          <button
+            onClick={handleDownload}
+            className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
+          >
+            <AiOutlineDownload size={24} />
+          </button>    
+        </div>             
+        
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>
@@ -134,6 +249,7 @@ const CompanyDetails = ({ company, onBack }) => {
             {is_sip ? `SIP` : ``}
           </p>
         </div>
+        
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
@@ -150,7 +266,6 @@ const CompanyDetails = ({ company, onBack }) => {
         Job Description
       </p>
 
-      {/* Modal for PDF Viewer */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -172,6 +287,27 @@ const CompanyDetails = ({ company, onBack }) => {
           )}
         </div>
       </Modal>
+      {eligibilityError && (
+          <p className="text-red-500 mt-4">{eligibilityError}</p>
+        )}
+      {isApplied ? (
+          <button
+            className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
+            disabled
+          >
+            Applied
+          </button>
+        ) : (
+          <button
+            onClick={handleApply}
+            className="bg-green-500 text-white  rounded-full  px-14 py-2 hover:bg-green-700 transition-colors absolute left-[50%]"
+            disabled={!!eligibilityError || isLoading}
+          >
+            Apply
+          </button>
+        )}
+        
+
     </div>
   );
 };

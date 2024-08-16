@@ -45,7 +45,7 @@ const MyHrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('apis/hrdata-modified/', params.toString(), {
+      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -90,7 +90,7 @@ const MyHrList = () => {
               <th className="col-2 left-align">HR Name</th>
               <th className="col-2 left-align">Company Name</th>
               <th className="col-1 center-align">Last Contacted</th>
-              <th className="col-1 center-align">Next Contact Date</th>
+              <th className="col-2 center-align">Next Contact Date</th>
               <th className="col-1 center-align">Status</th>
             </tr>
           </thead>
