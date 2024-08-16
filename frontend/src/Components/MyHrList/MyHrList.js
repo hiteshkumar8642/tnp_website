@@ -43,13 +43,8 @@ const MyHrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
 
-      const params = new URLSearchParams({id,status});
-      const response = await apiClient.post('api/hrdata-modified/', params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        });
-        console.log("response ",response.status);
+      const response = await sendHRinfo({ id, status });
+      console.log("response ", response.status);
 
       // Update state after the API request succeeds
     } catch (error) {

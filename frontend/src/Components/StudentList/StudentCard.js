@@ -9,7 +9,7 @@ const StudentCard = ({ student, onClick, isActive }) => {
     >
       <div className="flex items-center justify-between">
         <img
-          src={`http://localhost:8000${student.photo}`}
+          src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
           alt="icon"
           className="w-10 h-10"
         />

@@ -38,7 +38,7 @@ const StudentDetails = ({ student, onBack }) => {
     setIsModalOpen(false);
   };
 
-  const resumeUrl = resume ? `http://localhost:8000${resume}` : "";
+  const resumeUrl = resume ? `${process.env.REACT_APP_API_HOST}${resume}` : "";
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
       <button
@@ -50,7 +50,7 @@ const StudentDetails = ({ student, onBack }) => {
       </button>
       <div className="flex items-center">
         <img
-          src={`http://localhost:8000${student.photo}`}
+          src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
           alt="icon"
           className="w-16 h-16 mr-4"
         />
