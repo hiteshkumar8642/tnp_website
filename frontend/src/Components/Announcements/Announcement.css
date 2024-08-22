@@ -1,42 +1,122 @@
+.announcement-popup {
+  position: absolute;
+  top: 100%;
+  right:8%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.announcements-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.announcements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.announcements-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
 .add-announcement-btn {
   background-color: var(--button-bg);
-  color: #ffffff; /* Darker color for better visibility */
-  border: 1px solid #333; /* Border added for visibility */
+  color: #ffffff;
+  border: none;
   padding: 8px 16px;
   cursor: pointer;
-  border-radius: 50%; /* Circular button */
-  font-size: 18px; /* Increase font size for "+" symbol */
+  border-radius: 50%;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Adjust width and height to make a circle */
-  height: 40px;
+  width: 32px;
+  height: 32px;
 }
 
 .add-announcement-btn:hover {
   background-color: var(--link-color-hover);
-  color: #fff; /* White color on hover */
-  border-color: var(
-    --link-color-hover
-  ); /* Match border color with hover background */
-}
-
-.projects-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
 }
 
 .announcement-form {
-  margin-top: 16px;
+  padding: 16px;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.announcements-scroll-area {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.announcements-list {
+  padding: 16px;
+}
+
+.announcement-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 0;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.announcement-item:last-child {
+  border-bottom: none;
+}
+
+.announcement-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.announcement-content {
+  flex: 1;
+}
+
+.announcement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.announcement-author {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.announcement-time {
+  font-size: 12px;
+  color: #888;
+}
+
+.announcement-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.announcement-form {
   display: flex;
   gap: 8px;
-  
+  width: 100%;
 }
 
 .announcement-form input {
-  flex: auto;
+  flex: 1;
   padding: 8px;
   border: 1px solid var(--message-box-border);
   border-radius: 4px;
@@ -55,41 +135,59 @@
   background-color: var(--link-color-hover);
 }
 
-.announcement-popup {
-  position: absolute;
-  top: 130%;
-  right: 60%;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5%;
-  z-index: 1000;
-  max-height: 80vh; /* Limit the height to 80% of the viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: hidden;
-  display: flex; /* Add flexbox display */
-  flex-direction: column; /* Ensure items stack vertically */
-  align-items: flex-start; /* Align items to the left */
+.announcements-loading {
+  padding: 16px;
 }
 
-.app-header-right {
-  position: relative;
+.error-message {
+  color: #ff0000;
+  padding: 16px;
 }
 
-/* Optionally, you can style the scrollbar */
-.announcement-popup::-webkit-scrollbar {
+/* Existing styles */
+.add-announcement-btn {
+  background-color: var(--button-bg);
+  color: #ffffff;
+  border: 1px solid #333;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.add-announcement-btn:hover {
+  background-color: var(--link-color-hover);
+  color: #fff;
+  border-color: var(--link-color-hover);
+}
+
+.projects-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Scrollbar styles */
+.announcements-scroll-area::-webkit-scrollbar {
   width: 8px;
 }
 
-.announcement-popup::-webkit-scrollbar-track {
+.announcements-scroll-area::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.announcement-popup::-webkit-scrollbar-thumb {
+.announcements-scroll-area::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.announcement-popup::-webkit-scrollbar-thumb:hover {
+.announcements-scroll-area::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 

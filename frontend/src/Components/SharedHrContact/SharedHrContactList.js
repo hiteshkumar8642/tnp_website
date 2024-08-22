@@ -7,95 +7,70 @@ import { ShimmerTable } from "react-shimmer-effects";
 const SharedHrContactList = () => {
   const [sharedHrData, setSharedHrData] = useState([]);
   const [error, setError] = useState("");
-  const [HrListLoading, SetHrListLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getSharedHRList() {
       try {
-        SetHrListLoading(true);
-
-        // Check if data is already in local storage
+        setIsLoading(true);
         const storedHRData = localStorage.getItem("SharedhrData");
         if (storedHRData) {
           setSharedHrData(JSON.parse(storedHRData));
-          SetHrListLoading(false);
         } else {
-          // Fetch data if not found in local storage
           const data = await fetchSharedHRList();
           setSharedHrData(data);
-          // Save the fetched data to local storage
           localStorage.setItem("SharedhrData", JSON.stringify(data));
-          SetHrListLoading(false);
         }
       } catch (err) {
-        setError("Failed to load HR list");
+        setError("Failed to load Shared HR list");
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     }
     getSharedHRList();
   }, []);
+
   const handleRemoveHr = (hrToRemove) => {
     const updatedHrData = sharedHrData.filter((hr) => hr !== hrToRemove);
-
-
     setSharedHrData(updatedHrData);
     localStorage.setItem("SharedhrData", JSON.stringify(updatedHrData));
   };
 
-
   return (
-    <div className="shared-hr-list-container">
-      <h2>Shared HR Contacts List</h2>
-      {error && <p className="error-message">{error}</p>}
-      <div className="shared-hr-list-table-container">
-        {!HrListLoading ? (
+    <div className="projects-section">
+      <div className="projects-section-header">
+        <p>Shared HR Contacts List</p>
+      </div>
+      {error && <p className="text-center py-4 text-red-500">{error}</p>}
+      {isLoading ? (
+        <div className="text-center py-4">Loading Shared HR contacts...</div>
+      ) : (
+        <div className="shared-hr-table-container">
           <table className="shared-hr-table">
             <thead>
               <tr>
-                <th className="col-2 left-align">Name</th>
-                <th className="col-2 left-align">Gender</th>
-                <th className="col-2 left-align">Company Name</th>
-                <th className="col-2 left-align">Contact Number</th>
-                <th className="col-2 left-align">Email</th>
-                <th className="col-2 left-align">LinkedIn</th>
-                <th className="col-2 left-align">Add to List</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Company Name</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+                <th>LinkedIn</th>
+                <th>Add to List</th>
               </tr>
             </thead>
             <tbody>
               {sharedHrData.map((hr, index) => (
-
                 <SharedHrTableRow
                   key={index}
                   hr={hr}
                   onRemove={handleRemoveHr}
                 />
-
               ))}
             </tbody>
           </table>
-        ) : (
-          <table className="shared-hr-table">
-            <thead>
-              <tr>
-                <th className="col-2 left-align">Name</th>
-                <th className="col-1 center-align">Gender</th>
-                <th className="col-2 left-align">Company Name</th>
-                <th className="col-1 center-align">Contact Number</th>
-                <th className="col-2 left-align">Email</th>
-                <th className="col-1 center-align">LinkedIn</th>
-                <th className="col-1 center-align">Add to List</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colSpan="7">
-                  <ShimmerTable row={5} col={7} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
