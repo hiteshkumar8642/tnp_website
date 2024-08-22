@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link  } from "react-router-dom";
-import axios from "axios";
-import { useLoading }  from "../../Components/LoadingContext/LoadingContext";
+import { Link } from "react-router-dom";
+import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./SignUpPage.css";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-const host = "http://127.0.0.1:8000";
+import { fetchCollegeList } from "../../api/fetchCollgeList";
+import { Signup } from "../../api/signInApi";
 
 export default function SignUpPage() {
-  const Navigate=useNavigate();
+  const Navigate = useNavigate();
   const { setIsLoading } = useLoading();
   const [college, setCollege] = useState([]);
   const [formData, setFormData] = useState({
@@ -25,8 +24,8 @@ export default function SignUpPage() {
   useEffect(function () {
     async function fetchColleges() {
       try {
-        const response = await axios.get(`${host}/api/collegelist/`);
-        setCollege(response.data);
+        const response = await fetchCollegeList();
+        setCollege(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -45,16 +44,12 @@ export default function SignUpPage() {
       alert("Passwords do not match!");
       return;
     }
-  
+
     try {
-      const response = await axios.post(`${host}/user/api/register/`, formData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log(response)
+      const response = await Signup(formData);
+      console.log(response);
       if (response.status === 200) {
-        console.log(response)
+        console.log(response);
         Navigate("/login");
         toast.success("Registered successfully ! Confirm email to login .");
         //return;
@@ -67,12 +62,10 @@ export default function SignUpPage() {
         console.error("Error registering user:", error.message);
         toast.error("Error signing up !");
       }
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
-
 
   return (
     <>

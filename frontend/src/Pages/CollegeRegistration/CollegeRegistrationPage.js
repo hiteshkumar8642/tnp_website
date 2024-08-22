@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useLoading } from "../../Components/LoadingContext/LoadingContext";
 import Header from "../../Components/Header/Header";
 import "./CollegeRegistrationPage.css";
 import toast from "react-hot-toast";
-
-const host = "http://127.0.0.1:8000";
+import { fetchBranches } from "../../api/branches";
+import { sendNewCollege } from "../../api/sendCollegeRegistration";
 
 export default function CollegeRegistrationPage() {
   const { setIsLoading } = useLoading();
@@ -29,15 +28,15 @@ export default function CollegeRegistrationPage() {
   });
 
   useEffect(function () {
-    async function fetchBranches() {
+    async function getBranches() {
       try {
-        const response = await axios.get(`${host}/api/Course/`);
-        setBranches(response.data);
+        const response = await fetchBranches();
+        setBranches(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
-    fetchBranches();
+    getBranches();
   }, []);
 
   useEffect(
@@ -142,10 +141,7 @@ export default function CollegeRegistrationPage() {
     };
 
     try {
-      const response = await axios.post(
-        `${host}/user/api/CollegeRegister/`,
-        data
-      );
+      const response = await sendNewCollege(data);
       console.log("Registration successful:", response.data);
       setShowModal(false);
       setFormData({

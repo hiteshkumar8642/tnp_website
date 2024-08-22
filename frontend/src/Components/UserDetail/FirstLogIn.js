@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./FirstLogIn.css";
+import { fetchBranches } from "../../api/branches";
 
 export default function FirstLogIn() {
   const [branches, setBranches] = useState([]);
@@ -36,17 +36,15 @@ export default function FirstLogIn() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchBranches() {
+    async function getBranches() {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/Course/"
-        );
-        setBranches(response.data);
+        const response = await fetchBranches();
+        setBranches(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
-    fetchBranches();
+    getBranches();
 
     // Extract user name from localStorage
     const userProfile = JSON.parse(localStorage.getItem("user_Profile"));
