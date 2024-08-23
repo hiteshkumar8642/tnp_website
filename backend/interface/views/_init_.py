@@ -25,3 +25,4 @@ from .SaveDetailsView import SaveDetailsView
 from .HRCallResponse import HRCallResponseView
 from .DownloadAppliedStudentsListView import DownloadAppliedStudentsListView
 from .StudentsApplicationView import StudentsApplicationView
+from .AddApplicationView import AddApplicationView
