@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { fetchAllStudents } from "../../api/studentList";
 import StudentCard from "./StudentCard";
 import StudentDetails from "./StudentDetails";
+import ShimmerStudentCard from "./ShimmerStudentCard"; // Import ShimmerStudentCard
 import { FaSearch } from "react-icons/fa";
-
 
 function StudentList() {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -55,26 +55,12 @@ function StudentList() {
 
   console.log("Filtered students:", filteredStudents);
 
-  if (isLoading) {
-    return <div className="text-center py-4">Loading students...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-4 text-red-500">{error}</div>;
-  }
-
   return (
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Students</p>
       </div>
       <div className="projects-section-line">
-        <div className="projects-status">
-          {/* <div className="item-status">
-            <span className="status-number">{filteredStudents.length}</span>
-            <span className="status-type">Total Students</span>
-          </div> */}
-        </div>
         <div className="view-actions flex justify-between items-center w-full">
           <div className="flex items-center ml-auto">
             <input
@@ -93,13 +79,23 @@ function StudentList() {
           </div>
         </div>
       </div>
-      <div className="project-boxes jsGridView">
-        {selectedStudent ? (
-          <div className="w-full">
-            <StudentDetails student={selectedStudent} onBack={handleBack} />
-          </div>
-        ) : (
-          <div className="project-box-wrapper">
+      {isLoading ? (
+        <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
+          {[...Array(8)].map((_, index) => (
+            <ShimmerStudentCard key={index} />
+          ))}
+        </div>
+      ) : error ? (
+        <div className="text-center py-4 text-red-500">{error}</div>
+      ) : (
+        <div className="project-boxes jsGridView">
+          {/* <div className="projects-status">
+            <div className="item-status">
+              <span className="status-number">{filteredStudents.length}</span>
+              <span className="status-type">Total Students</span>
+            </div>
+          </div> */}
+          <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
             {filteredStudents.map((student) => (
               <StudentCard
                 key={student.id}
@@ -109,8 +105,13 @@ function StudentList() {
               />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+      {selectedStudent && (
+        <div className="w-full">
+          <StudentDetails student={selectedStudent} onBack={handleBack} />
+        </div>
+      )}
     </div>
   );
 }

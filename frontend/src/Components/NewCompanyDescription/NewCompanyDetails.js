@@ -1,5 +1,4 @@
-import React, { useState,useEffect } from "react";
-
+import React, { useState } from "react";
 
 const JobCard = ({ job, onClick, isActive }) => {
   return (
@@ -29,7 +28,7 @@ const JobCard = ({ job, onClick, isActive }) => {
   );
 };
 
-const JobDetails = ({ job,onBack}) => {
+const JobDetails = ({ job, onBack }) => {
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg">
       <button
@@ -202,7 +201,9 @@ const JobList = () => {
       >
         <div
           className={`grid ${
-            selectedJob ? "grid-cols-1" : "lg:grid-cols-5 h-fit md:grid-cols-3 sm:grid-cols-2 grid-cols-1"
+            selectedJob
+              ? "grid-cols-1"
+              : "lg:grid-cols-5 h-fit md:grid-cols-3 sm:grid-cols-2 grid-cols-1"
           } gap-x-4`}
         >
           {jobs.map((job, index) => (

@@ -1,13 +1,13 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./CompanyDetailsModal.css";
-import { fetchDownloadAppliedStudents} from "../../api/downloadAppliedStudents";
+import { fetchDownloadAppliedStudents } from "../../api/downloadAppliedStudents";
 import { applyToCompany } from "../../api/applyToCompany";
 import { IoArrowBack } from "react-icons/io5";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
-import { AiOutlineDownload } from 'react-icons/ai';
+import { AiOutlineDownload } from "react-icons/ai";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -71,7 +71,7 @@ function daysLeft(lastDate) {
 
 // Fetch user details from local storage
 const getUserDetailsFromLocalStorage = () => {
-  const data = localStorage.getItem('user_detail');
+  const data = localStorage.getItem("user_detail");
   return data ? JSON.parse(data) : {};
 };
 
@@ -102,8 +102,9 @@ const CompanyDetails = ({ company, onBack }) => {
         }
         setAppliedCompanies(data);
         // Check if the user has applied to the current company
+        console.log(company_id);
         const isUserApplied = data.some(
-          (appliedCompany) => appliedCompany.application_id.id=== company_id.id
+          (appliedCompany) => appliedCompany.application_id.id === company_id.id
         );
         setIsApplied(isUserApplied);
       } catch (err) {
@@ -114,7 +115,7 @@ const CompanyDetails = ({ company, onBack }) => {
       }
     }
     getAppliedCompanies();
-  }, []);
+  }, [company_id.id]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -126,15 +127,17 @@ const CompanyDetails = ({ company, onBack }) => {
 
   // Correctly format the job_description URL
   const jobDescriptionUrl = job_description
-    ? `http://localhost:8000${job_description}`
+    ? `${process.env.REACT_APP_API_HOST}${job_description}`
     : "";
 
   // Function to handle download
   const handleDownload = async () => {
     try {
-      const response = await fetchDownloadAppliedStudents(company_id.id);  // Pass company ID
+      const response = await fetchDownloadAppliedStudents(company_id.id); // Pass company ID
       if (response.status === 200) {
-        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -150,7 +153,6 @@ const CompanyDetails = ({ company, onBack }) => {
     }
   };
 
-
   // Function to handle apply
   const handleApply = async () => {
     try {
@@ -165,10 +167,7 @@ const CompanyDetails = ({ company, onBack }) => {
         ]);
         localStorage.setItem(
           "appliedCompanies",
-          JSON.stringify([
-            ...appliedCompanies,
-            { id: company_id.id },
-          ])
+          JSON.stringify([...appliedCompanies, { id: company_id.id }])
         );
       } else {
         console.error("Failed to apply:", response.data);
@@ -221,24 +220,24 @@ const CompanyDetails = ({ company, onBack }) => {
 
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
-        <div className="flex justify-between items-center">
-          <button
-            onClick={onBack}
-            className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
-            aria-label="Go back"
-          >
-            <IoArrowBack size={24} />
-          </button>
-        
-          {/* Download Button at Top Right Corner */}
-          <button
-            onClick={handleDownload}
-            className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
-          >
-            <AiOutlineDownload size={24} />
-          </button>    
-        </div>             
-        
+      <div className="flex justify-between items-center">
+        <button
+          onClick={onBack}
+          className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+          aria-label="Go back"
+        >
+          <IoArrowBack size={24} />
+        </button>
+
+        {/* Download Button at Top Right Corner */}
+        <button
+          onClick={handleDownload}
+          className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+        >
+          <AiOutlineDownload size={24} />
+        </button>
+      </div>
+
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>
@@ -249,7 +248,6 @@ const CompanyDetails = ({ company, onBack }) => {
             {is_sip ? `SIP` : ``}
           </p>
         </div>
-        
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
@@ -288,26 +286,24 @@ const CompanyDetails = ({ company, onBack }) => {
         </div>
       </Modal>
       {eligibilityError && (
-          <p className="text-red-500 mt-4">{eligibilityError}</p>
-        )}
+        <p className="text-red-500 mt-4">{eligibilityError}</p>
+      )}
       {isApplied ? (
-          <button
-            className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
-            disabled
-          >
-            Applied
-          </button>
-        ) : (
-          <button
-            onClick={handleApply}
-            className="bg-green-500 text-white  rounded-full  px-14 py-2 hover:bg-green-700 transition-colors absolute left-[50%]"
-            disabled={!!eligibilityError || isLoading}
-          >
-            Apply
-          </button>
-        )}
-        
-
+        <button
+          className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
+          disabled
+        >
+          Applied
+        </button>
+      ) : (
+        <button
+          onClick={handleApply}
+          className="bg-green-500 text-white  rounded-full  px-14 py-2 hover:bg-green-700 transition-colors absolute left-[50%]"
+          disabled={!!eligibilityError || isLoading}
+        >
+          Apply
+        </button>
+      )}
     </div>
   );
 };

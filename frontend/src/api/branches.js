@@ -1,9 +1,10 @@
-import axios from "axios";
+import unprotectedApiClient from "../services/unprotectedApi";
 
-const host = "http://127.0.0.1:8000";
 export async function fetchBranches() {
   try {
-    const response = await axios.get(`${host}/api/courselist/`);
+    console.log("kuch bhi");
+    const response = await unprotectedApiClient.get(`api/courselist/`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

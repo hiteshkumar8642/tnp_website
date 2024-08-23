@@ -1,5 +1,6 @@
 from .ApplicationView import ApplicationView
 from .CollegeListView import CollegeListView
+from .CompanyListView import CompanyListView
 from .AnnouncementsListView import AnnouncementsListView
 from .AppliedCompanysListView import AppliedCompnaysListView
 from .CourseListView import CourseListView
@@ -25,3 +26,4 @@ from .SaveDetailsView import SaveDetailsView
 from .HRCallResponse import HRCallResponseView
 from .DownloadAppliedStudentsListView import DownloadAppliedStudentsListView
 from .StudentsApplicationView import StudentsApplicationView
+from .AddApplicationView import AddApplicationView

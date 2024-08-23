@@ -3,13 +3,13 @@ const StudentCard = ({ student, onClick, isActive }) => {
   return (
     <div
       onClick={() => onClick(student)}
-      className={`p-4 bg-white shadow-lg rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
+      className={`p-4 bg-white shadow-md rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
         isActive ? "border-2 border-blue-500" : ""
       }`}
     >
       <div className="flex items-center gap-2">
         <img
-          src={`http://localhost:8000${student.photo}`}
+          src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
           alt="icon"
           className="w-10 h-10"
         />

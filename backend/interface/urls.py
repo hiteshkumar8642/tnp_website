@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
+from .views import ApplicationView,CollegeListView,CompanyListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
 from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView,ReassignView , StudentsApplicationView
+from .views import AddApplicationView
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -9,6 +10,7 @@ urlpatterns = [
     # Printing Application
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
+    path('companylist/',CompanyListView.CompanyListView,name='companylist'),
     path('announcement/',AnnouncementsListView.AnnouncementsListView,name='announcement'),
     path('appliedcompany/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
     path('courselist/',CourseListView.CourseListView,name='courselist'),
@@ -30,12 +32,14 @@ urlpatterns = [
     path('logout/',LogoutView.LogoutView.as_view(),name='logout'),
     path('register/',RegisterView.RegisterView,name='register'),
     path('college-register/',CollegeRegisterView.CollegeRegisterView,name='collegeregister'),
-    path('reset-password/',ResetPasswordView.ResetPasswordView.as_view(),name='resetpassword'),
+    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('savedetails/',SaveDetailsView.SaveDetailsView,name='savedetails'),
     path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails'),
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),
     path('download-applied-students/<int:company_id>/', DownloadAppliedStudentsListView.DownloadAppliedStudentsListView, name='download_applied_students'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('apply-to-company/<int:company_id>/', StudentsApplicationView.StudentsApplicationView.as_view(), name='apply-to-company'),
+    path('addcompany/', AddApplicationView.AddApplicationView, name='addcompany'),
+
 
 ]

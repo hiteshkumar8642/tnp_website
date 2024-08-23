@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import MyHrModal from "./MyHrModal";
-import { useRef } from "react";
-import apiClient from '../../services/api';
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,12 +12,11 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   };
 
   const handleRowClick = (e) => {
-    if (selectRef.current.contains(e.target)) {
+    if (selectRef.current && selectRef.current.contains(e.target)) {
       return;
     }
     setIsModalOpen(true);
   };
- 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -27,40 +24,36 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
 
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
-    
+
     // Call the provided handleStatusChange function to update the status locally
     handleStatusChange(hr.id, newStatus);
     try {
- 
       // const response = await apiClient.post('dashboard/api/hr_contacts/', {
       //   id: hr.id,
       //   status: newStatus
       // });
-  
-      
       // console.log('Status updated successfully:', response.data);
     } catch (error) {
       // Handle errors if the API request fails
-      console.error('Failed to update status:', error);
+      console.error("Failed to update status:", error);
     }
   };
-  
 
   return (
     <>
       <tr onClick={handleRowClick}>
-        <td className="col-2 left-align">{hr.name}</td>
-        <td className="col-2 left-align">{hr.company_id.name}</td>
+        <td className="col-2 left-align">{hr?.name || "N/A"}</td>
+        <td className="col-2 left-align">{hr?.company_id?.name || "N/A"}</td>
         <td className="col-1 center-align">
-          {formatDate(hr.last_date_of_contact)}
+          {formatDate(hr?.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.next_date_of_contact)}
+          {formatDate(hr?.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select
-           ref={selectRef}
-            value={hr.status || ""}
+            ref={selectRef}
+            value={hr?.status || ""}
             onChange={handleStatusDropdownChange}
             className="status-dropdown"
           >

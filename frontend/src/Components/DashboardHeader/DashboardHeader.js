@@ -3,6 +3,7 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
 import MYSVG from "../../assets/Logo/campuslogo.png";
 
+
 function DashboardHeader() {
   const [userName, setUserName] = useState("Name");
   const [userPhoto, setUserPhoto] = useState("");
@@ -14,15 +15,17 @@ function DashboardHeader() {
 
   useEffect(() => {
     const storedUserDetail = localStorage.getItem("user_detail");
-    try {
-      const userDetails = JSON.parse(storedUserDetail);
-      if (userDetails && userDetails.length > 0) {
-        const { first_name, last_name, photo } = userDetails[0].user;
+    if (storedUserDetail) {
+      try {
+        const userDetails = JSON.parse(storedUserDetail);
+        const { first_name, last_name } = userDetails.user;
         setUserName(`${first_name} ${last_name}`);
-        setUserPhoto(`http://localhost:8000${photo}`);
+        setUserPhoto(
+          `${process.env.REACT_APP_API_HOST}${userDetails.photo}`
+        );
+      } catch (error) {
+        console.error("Error parsing user_detail from localStorage:", error);
       }
-    } catch (error) {
-      console.error("Error parsing user_detail from localStorage:", error);
     }
 
     const storedUserProfile = localStorage.getItem("user_Profile");
@@ -33,10 +36,6 @@ function DashboardHeader() {
       console.error("Error parsing user_Profile from localStorage:", error);
     }
   }, []);
-
-  const handleProfileClick = () => {
-    navigate("/user-profile");
-  };
 
   const toggleAnnouncements = () => {
     setShowAnnouncements(!showAnnouncements);
@@ -74,19 +73,19 @@ function DashboardHeader() {
           aria-label="Toggle Announcements"
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118.6 14.5a2.032 2.032 0 01-.595-1.405v-2c0-1.08-.213-2.145-.61-3.156A6.989 6.989 0 0012 4c-2.72 0-5.09 1.525-6.39 3.94A8.02 8.02 0 005 9.5v2c0 .52-.214 1.025-.595 1.405L3 17h5m7 0v1a3 3 0 01-6 0v-1m6 0H9"
-            />
-          </svg>
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             strokeWidth={2}
+             stroke="currentColor"
+             className="w-6 h-6"
+           >
+             <path
+               strokeLinecap="round"
+               strokeLinejoin="round"
+               d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118.6 14.5a2.032 2.032 0 01-.595-1.405v-2c0-1.08-.213-2.145-.61-3.156A6.989 6.989 0 0012 4c-2.72 0-5.09 1.525-6.39 3.94A8.02 8.02 0 005 9.5v2c0 .52-.214 1.025-.595 1.405L3 17h5m7 0v1a3 3 0 01-6 0v-1m6 0H9"
+             />
+           </svg>
         </button>
         {/* Hamburger button to toggle sidebar on small screens */}
         <button
@@ -120,10 +119,8 @@ function DashboardHeader() {
           </svg>
         </button>
 
-        
-
-        <Link to="#">
-          <button className="profile-btn flex items-center" onClick={handleProfileClick}>
+        <Link to="/user-profile">
+          <button className="profile-btn">
             <img
               src={
                 userPhoto ||
@@ -269,32 +266,3 @@ function DashboardHeader() {
 }
 
 export default DashboardHeader;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

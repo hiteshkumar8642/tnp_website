@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { fetchComingCompanyDetails } from "../../api/ComingCompany";
+import { fetchComingCompanyDetails } from "../../api/comingCompany";
 import CompanyDetails from "./CompanyDetails";
 import AddCompanyForm from "./AddCompanyForm";
 import { FaSearch, FaPlus } from "react-icons/fa";
-
 import { timeanddate } from "../../utils/timeanddate";
+import { addNewCompany } from "../../api/addNewCompany";
+import Shimmer from "./Shimmer"; // Import Shimmer component
 
 // CompanyCard component
 const CompanyCard = ({ company, onClick, isActive }) => {
@@ -14,7 +15,7 @@ const CompanyCard = ({ company, onClick, isActive }) => {
   return (
     <div
       onClick={() => onClick(company)}
-      className={`p-4 bg-white shadow-lg rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
+      className={`p-4 bg-white shadow-md rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
         isActive ? "border-2 border-blue-500" : ""
       }`}
     >
@@ -93,34 +94,37 @@ function Company() {
     setIsModalOpen(false);
   };
 
-  const handleSaveCompany = (newCompany) => {
-    setComingCompanies([...comingCompanies, newCompany]);
-    localStorage.setItem(
-      "comingCompanies",
-      JSON.stringify([...comingCompanies, newCompany])
-    );
-    setIsModalOpen(false);
+  const handleSaveCompany = async (newCompany) => {
+    try {
+      const response = await addNewCompany(newCompany);
+      console.log(response);
+      if (response.status === 201) {
+        setComingCompanies([...comingCompanies, newCompany]);
+        localStorage.setItem(
+          "comingCompanies",
+          JSON.stringify([...comingCompanies, newCompany])
+        );
+        setIsModalOpen(false);
+      } else {
+        console.log("Failed to add the company.");
+      }
+    } catch (err) {
+      console.error("Error adding the company", err);
+    }
   };
 
-  const filteredCompanies = comingCompanies.filter((company) =>
-    company &&
-    company.company_id &&
-    company.company_id.name &&
-    company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanies = comingCompanies.filter(
+    (company) =>
+      company &&
+      company.company_id &&
+      company.company_id.name &&
+      company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   console.log("Filtered companies:", filteredCompanies);
 
   const currentDate = new Date();
   const formattedDate = timeanddate(currentDate);
-
-  if (isLoading) {
-    return <div className="text-center py-4">Loading companies...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-4 text-red-500">{error}</div>;
-  }
 
   return (
     <>
@@ -131,7 +135,7 @@ function Company() {
         </div>
         <div className="projects-section-line">
           <div className="view-actions flex justify-between items-center w-full">
-            <div className="flex flex-col sm:flex-row  items-center ml-auto ">
+            <div className="flex flex-col sm:flex-row  items-center ml-auto">
               <div className="flex items-center justify-center m-4">
                 <input
                   type="text"
@@ -140,15 +144,17 @@ function Company() {
                   onChange={handleSearch}
                   className="border rounded-l px-2 py-1 w-64"
                 />
-                <button 
-                  className="bg-black text-white px-3.5 py-2.5 rounded-r"
-                  onClick={() => handleSearch({ target: { value: searchTerm } })}
+                <button
+                  className="bg-black text-white px-3.5 py-2.5 rounded-r hover:bg-gray-500"
+                  onClick={() =>
+                    handleSearch({ target: { value: searchTerm } })
+                  }
                 >
                   <FaSearch />
                 </button>
               </div>
-              <button 
-                className="bg-black text-white px-3 py-1 rounded flex items-center sm:ml-4 "
+              <button
+                className="bg-black text-white px-3 py-1 hover:bg-gray-500 rounded flex items-center sm:ml-4"
                 onClick={handleAddClick}
               >
                 <FaPlus className="mr-1" /> Add
@@ -156,28 +162,47 @@ function Company() {
             </div>
           </div>
         </div>
-          {/* <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4 ">
-            <div className="status-number  font-extrabold sm:font-bold">{filteredCompanies.length}</div>
-            <div className="status-type font-extrabold sm:font-bold">Total Companies</div>
-          </div> */}
-        <div className="project-boxes jsGridView">
-          {selectedCompany ? (
-            <div className="w-full">
-              <CompanyDetails company={selectedCompany} onBack={handleBack} />
+
+        {isLoading ? (
+          <Shimmer />
+        ) : error ? (
+          <div className="text-center py-4 text-red-500">{error}</div>
+        ) : (
+          <>
+            <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4">
+              <div className="status-number font-extrabold sm:font-bold">
+                {filteredCompanies.length}
+              </div>
+              <div className="status-type font-extrabold sm:font-bold">
+                Total Companies
+              </div>
             </div>
-          ) : (
-            <div className="project-box-wrapper">
-              {filteredCompanies.map((company) => (
-                <CompanyCard
-                  key={company.id}
-                  company={company}
-                  onClick={setSelectedCompany}
-                  isActive={selectedCompany && selectedCompany.id === company.id}
-                />
-              ))}
+            <div className="project-boxes jsGridView">
+              {selectedCompany ? (
+                <div className="w-full">
+                  <CompanyDetails
+                    company={selectedCompany}
+                    onBack={handleBack}
+                  />
+                </div>
+              ) : (
+                <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
+                  {filteredCompanies.map((company) => (
+                    <CompanyCard
+                      key={company.id}
+                      company={company}
+                      onClick={setSelectedCompany}
+                      isActive={
+                        selectedCompany && selectedCompany.id === company.id
+                      }
+                      className="w-full"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
       {isModalOpen && (
         <AddCompanyForm onClose={handleModalClose} onSave={handleSaveCompany} />
