@@ -716,7 +716,7 @@ a {
     margin-left: 4px;
   }
 }
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 640px) {
   .projects-section {
     overflow: auto;
   }

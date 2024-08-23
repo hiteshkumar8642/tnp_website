@@ -1,16 +1,24 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import MYSVG from "../../assets/Logo/campuslogo.png";
+
 export default function Header({ isLoginPage, children }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState(""); // To track the active link
+
   const PageName = "CampusHirease";
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+    setMenuOpen(false); // Close the menu after clicking a link
+  };
 
   return (
     <header className="min-h-[80px] mx-auto flex items-center w-9/12 relative z-50">
       <nav className="container flex items-center justify-between">
-        <div className="text-[#5d5d5d]  text-2xl flex justify-center items-center ">
+        <div className="text-[#5d5d5d] text-2xl flex justify-center items-center">
           <div>
-            <Link to="/"><img src={MYSVG} alt="My SVG" className="w-16"/></Link> 
+            <Link to="/"><img src={MYSVG} alt="My SVG" className="w-16" /></Link>
           </div>
           <Link to="/" className="hover:no-underline sm:block hidden">
             <b>{PageName}</b>
@@ -36,18 +44,12 @@ export default function Header({ isLoginPage, children }) {
         {/* Desktop Menu - Hidden on Small Screens */}
         <div className="hidden md:flex gap-6">
           <ul className="flex items-center text-lg">
-            <NavLink to="/Features" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+            <NavLink to="/Features" className={`ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ${activeLink === "/Features" ? "bg-gray-200" : ""}`} onClick={() => handleLinkClick("/Features")}>
               <li>Features</li>
             </NavLink>
-            <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
+            <NavLink to="/team" className={`ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ${activeLink === "/team" ? "bg-gray-200" : ""}`} onClick={() => handleLinkClick("/team")}>
               <li>Team</li>
             </NavLink>
-            {/* <Link to="Faq" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
-              <li>Faq</li>
-            </Link>
-            <Link to="ContactUs" smooth={true} duration={500} className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
-              <li>ContactUs</li>
-            </Link> */}
           </ul>
           <Link to="/login">
             <button className="nav-button bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors align-middle">
@@ -56,101 +58,25 @@ export default function Header({ isLoginPage, children }) {
           </Link>
         </div>
 
-        {/* Full-Screen Mobile Menu - Visible on Small Screens */}
+        {/* Dropdown Menu after Clicking Hamburger - Mobile View */}
         {menuOpen && (
-          <div className="fixed inset-0 bg-white flex flex-col items-center justify-center md:hidden top-16">
-            <ul className="flex flex-col items-center text-lg gap-4">
-              <NavLink to="/Features" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
-                <li>Features</li>
+          <div className="absolute right-0 top-[80px] mt-2 w-[220px] bg-white shadow-lg rounded-lg py-2 flex flex-col md:hidden">
+            <ul className="text-sm text-gray-700">
+              <NavLink to="/Features" className={`block px-4 py-2 hover:bg-gray-100 hover:no-underline ${activeLink === "/Features" ? "bg-gray-200" : ""}`} onClick={() => handleLinkClick("/Features")}>
+                Features
               </NavLink>
-              <NavLink to="/team" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
-                <li>Team</li>
+              <NavLink to="/team" className={`block px-4 py-2 hover:bg-gray-100 hover:no-underline ${activeLink === "/team" ? "bg-gray-200" : ""}`} onClick={() => handleLinkClick("/team")}>
+                Team
               </NavLink>
-              {/* <Link to="" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
-                <li>Faq</li>
+              <Link to="/login">
+                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-blue-600" onClick={() => handleLinkClick("/login")}>
+                  Login
+                </button>
               </Link>
-              <Link to="" className="text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline" onClick={() => setMenuOpen(false)}>
-                <li>Contact Us</li>
-              </Link> */}
             </ul>
-            <Link to="/login">
-              <button className="mt-4 bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors">
-                Login
-              </button>
-            </Link>
           </div>
         )}
       </nav>
     </header>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Link, NavLink } from "react-router-dom";
-// import { useState } from "react";
-// import Dropdown from "./Dropdown";
-// import { MenuIcon, XIcon } from "@heroicons/react/outline";
-
-// export default function Header({ isLoginPage, children }) {
-//   const [isOpen, setIsOpen] = useState(false);
-//   let PageName = "CampusHirease";
-
-//   const toggleMenu = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   return (
-//     <header className="min-h-[80px] mx-auto flex items-center w-9/12">
-//       <nav className="container flex items-center justify-between">
-//         <span className="text-[#5d5d5d] italic text-2xl">
-//           <Link to="/" className="hover:no-underline">
-//             <b>{PageName}</b>
-//           </Link>
-//         </span>
-
-//         <div className="flex gap-6">
-//             <ul className="flex items-center text-lg">
-//               <NavLink to="/Features" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
-//                 <li>Features</li>
-//               </NavLink>
-//               <NavLink to="/team" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
-//                 <li>Team</li>
-//               </NavLink>
-//               {/* <NavLink to="/pricing" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline">
-//                 <li>Pricing</li>
-//               </NavLink> */}
-//               <Link to="" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
-//                 <li>Faq</li>
-//               </Link>
-//               <Link to="" className="ml-[30px] text-[#5d5d5d] hover:text-[#6c63ff] transition-colors hover:no-underline ">
-//                 <li>Contact Us</li>
-//               </Link>
-              
-//               {/* <Dropdown/> */}
-//             </ul>
-//           <Link to="/login">
-//             <button className="nav-button bg-[#6c63ff] text-white rounded-[20px] py-2 px-7 hover:bg-[#5752d8] transition-colors align-middle">
-//               Login
-//             </button>
-//           </Link>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// }
