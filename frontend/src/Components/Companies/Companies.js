@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchComingCompanyDetails } from "../../api/comingCompany";
+import { fetchComingCompanyDetails } from "../../api/ComingCompany";
 import CompanyDetails from "./CompanyDetails";
 import AddCompanyForm from "./AddCompanyForm";
 import { FaSearch, FaPlus } from "react-icons/fa";
@@ -142,7 +142,7 @@ function Company() {
                   className="border rounded-l px-2 py-1 w-64"
                 />
                 <button
-                  className="bg-black text-white px-3.5 py-2.5 rounded-r"
+                  className="bg-black text-white px-3.5 py-2.5 rounded-r  hover:bg-gray-500"
                   onClick={() =>
                     handleSearch({ target: { value: searchTerm } })
                   }
@@ -151,7 +151,7 @@ function Company() {
                 </button>
               </div>
               <button
-                className="bg-black text-white px-3 py-1 rounded flex items-center sm:ml-4 "
+                className="bg-black text-white px-3 py-1  hover:bg-gray-500 rounded flex items-center sm:ml-4 "
                 onClick={handleAddClick}
               >
                 <FaPlus className="mr-1" /> Add

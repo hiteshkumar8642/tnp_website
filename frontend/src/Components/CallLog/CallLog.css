@@ -22,12 +22,26 @@
 .call-log-table-container {
   overflow-y: auto;
   max-height: calc(100% - 60px);
+  position: relative;
+  height: 500px; /* Adjust this value based on your needs */
+  overflow: hidden;
 }
 
 .call-log-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
+}
+
+/* Ensure the header columns align with body columns */
+.call-log-table th,
+.table-body-container td {
+  width: 33.33%; /* Adjust if you have a different number of columns */
+}
+
+.table-body-container {
+  height: calc(100% - 58px); /* Subtract the header height */
+  overflow-y: auto;
 }
 
 .call-log-table th,
