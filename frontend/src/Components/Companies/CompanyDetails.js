@@ -219,24 +219,24 @@ const CompanyDetails = ({ company, onBack }) => {
 
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
-      <div className="flex justify-between items-center">
-        <button
-          onClick={onBack}
-          className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
-          aria-label="Go back"
-        >
-          <IoArrowBack size={24} />
-        </button>
-
-        {/* Download Button at Top Right Corner */}
-        <button
-          onClick={handleDownload}
-          className="mb-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
-        >
-          <AiOutlineDownload size={24} />
-        </button>
-      </div>
-
+        <div className="flex justify-between items-center">
+          <button
+            onClick={onBack}
+            className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+            aria-label="Go back"
+          >
+            <IoArrowBack size={24} />
+          </button>
+        
+          {/* Download Button at Top Right Corner */}
+          <button
+            onClick={handleDownload}
+            className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
+          >
+            <AiOutlineDownload size={24} />
+          </button>    
+        </div>             
+        
       <div className="flex items-center">
         <div>
           <h2 className="text-2xl font-bold">{companyName}</h2>

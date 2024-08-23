@@ -13,7 +13,8 @@ function Announcements() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ announcement: "" });
 
-  const formRef = useRef(null); // Ref to track the form element
+  const formRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     async function getAnnouncements() {
@@ -43,22 +44,27 @@ function Announcements() {
   useEffect(() => {
     function handleClickOutside(event) {
       // Check if the click is outside the form and the add-announcement-btn
-      if (formRef.current && !formRef.current.contains(event.target)) {
+      if (
+        formRef.current && 
+        !formRef.current.contains(event.target) &&
+        buttonRef.current && 
+        !buttonRef.current.contains(event.target)
+      ) {
         setShowForm(false);
       }
     }
-
-    if (showForm) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    
+      if (showForm) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showForm]);
-
+  
   const handleInputChange = (e) => {
     setFormData({ ...formData, announcement: e.target.value });
   };
@@ -89,23 +95,28 @@ function Announcements() {
     }
   };
 
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
   return (
-    <div className="messages-section">
-      <div className="projects-section-header">
-        <p>Announcements</p>
+    <div className="announcements-container">
+      <div className="announcements-header">
+        <h2>Announcements</h2>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={toggleForm}
           className="add-announcement-btn"
+          ref={buttonRef}
         >
-          +
+          {showForm ? '×' : '+'}
         </button>
       </div>
-
+      
       {showForm && (
         <form
           onSubmit={handleAddAnnouncement}
           className="announcement-form"
-          ref={formRef} // Attach ref to the form
+          ref={formRef}
         >
           <input
             type="text"
@@ -118,28 +129,29 @@ function Announcements() {
         </form>
       )}
 
-      {AnnouncementLoading ? (
-        <div>
-          {[1, 2, 3, 4].map((x) => (
-            <div className="messages" style={{ margin: "10px" }} key={x}>
+      <div className="announcements-scroll-area">
+        {AnnouncementLoading ? (
+          <div className="announcements-loading">
+            {[1, 2, 3, 4].map((x) => (
               <ShimmerCategoryItem
+                key={x}
                 hasImage
                 imageType="circular"
                 imageWidth={50}
                 imageHeight={50}
                 text
               />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="messages">
-          {error && <p>{error}</p>}
-          {announcements.map((announcement, index) => (
-            <AnnouncementItem key={index} announcement={announcement} />
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        ) : (
+          <div className="announcements-list">
+            {error && <p className="error-message">{error}</p>}
+            {announcements.map((announcement, index) => (
+              <AnnouncementItem key={index} announcement={announcement} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

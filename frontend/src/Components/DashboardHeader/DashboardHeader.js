@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
+
+
 function DashboardHeader() {
-  //const [isDarkMode, setIsDarkMode] = useState(false);
+  // const [isDarkMode, setIsDarkMode] = useState(false);
   const [userName, setUserName] = useState("Name");
   const [userPhoto, setUserPhoto] = useState("");
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ function DashboardHeader() {
       <div className="app-header-right">
         <button
           onClick={toggleAnnouncements}
-          className="bg-[#000000] text-white rounded-full p-2 hover:bg-[#5752d8] focus:outline-none focus:ring-2 focus:ring-[#6c63ff] shadow-lg"
+          className="bg-[#000000] text-white rounded-full p-2  hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-lg"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
