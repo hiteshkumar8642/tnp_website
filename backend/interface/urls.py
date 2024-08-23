@@ -39,7 +39,7 @@ urlpatterns = [
     path('download-applied-students/<int:company_id>/', DownloadAppliedStudentsListView.DownloadAppliedStudentsListView, name='download_applied_students'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('apply-to-company/<int:company_id>/', StudentsApplicationView.StudentsApplicationView.as_view(), name='apply-to-company'),
-    path('addcompany/', AddApplicationView.AddApplicationView.as_view(), name='addcompany'),
+    path('addcompany/', AddApplicationView.AddApplicationView, name='addcompany'),
 
 
 ]
