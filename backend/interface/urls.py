@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ApplicationView,CollegeListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
+from .views import ApplicationView,CollegeListView,CompanyListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
 from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView,ReassignView , StudentsApplicationView
 from .views import AddApplicationView
 from django.urls import path, include
@@ -10,6 +10,7 @@ urlpatterns = [
     # Printing Application
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
+    path('companylist/',CompanyListView.CompanyListView,name='companylist'),
     path('announcement/',AnnouncementsListView.AnnouncementsListView,name='announcement'),
     path('appliedcompany/',AppliedCompanysListView.AppliedCompanysListView,name='appliedcompanylist'),
     path('courselist/',CourseListView.CourseListView,name='courselist'),
