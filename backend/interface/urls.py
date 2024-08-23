@@ -38,7 +38,7 @@ urlpatterns = [
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),
     path('download-applied-students/<int:company_id>/', DownloadAppliedStudentsListView.DownloadAppliedStudentsListView, name='download_applied_students'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('apply-to-company/<int:company_id>/', StudentsApplicationView.StudentsApplicationView.as_view(), name='apply-to-company'),
+    path('apply-to-company/', StudentsApplicationView.StudentsApplicationView, name='apply-to-company'),
     path('addcompany/', AddApplicationView.AddApplicationView, name='addcompany'),
 
 

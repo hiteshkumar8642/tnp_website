@@ -26,16 +26,19 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
+@api_view(['POST']) 
 @permission_classes([IsAuthenticated])
-class StudentsApplicationView(APIView):
-    def post(self, request, company_id):
+def StudentsApplicationView(request):
+    try:
         # user = request.user
-        user = get_object_or_404(User, id=request.user.id)
-        company = get_object_or_404(Company, id=company_id)
-        print(user,company)
+        user = request.user
+        id=request.POST.get('application')
+        print(id)
+        application = Application.objects.get(id=id)
+        print(application)
         # Check if the user has already applied
         existing_application = AppliedCompany.objects.filter(
-            user_id=user, application_id__company_id=company
+            user_id=user, application_id=application
         ).first()
         
         if existing_application:
@@ -45,8 +48,9 @@ class StudentsApplicationView(APIView):
         # Create a new application
         application = AppliedCompany.objects.create(
             user_id=user,
-            application_id=company
+            application_id=application
         )
-        
-        serializer = AppliedCompanySerializer(application)
         return Response({'message': 'Applied successfully.'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,12 +1,20 @@
 import apiClient from "../services/api";
 
 // Function to handle applying to a company
-export async function applyToCompany(companyId, userId) {
+export async function applyToCompany(formData) {
   try {
     console.log("IN API");
-    const response = await apiClient.post(`api/apply-to-company/${companyId}/`, {
-      user: userId,
-    });
+    console.log(formData);
+    const params = new URLSearchParams(formData);
+    const response = await apiClient.post(
+      "api/apply-to-company/",
+      params.toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
     return response;
   } catch (error) {
     console.error("Failed to apply to company", error);

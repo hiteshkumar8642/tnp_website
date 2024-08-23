@@ -90,8 +90,10 @@ const CompanyDetails = ({ company, onBack }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function getAppliedCompanies() {
+      console.log(company);
       setIsLoading(true);
       try {
+        console.log(company);
         const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
         let data;
         if (storedAppliedCompanies) {
@@ -102,9 +104,9 @@ const CompanyDetails = ({ company, onBack }) => {
         }
         setAppliedCompanies(data);
         // Check if the user has applied to the current company
-        console.log(company_id);
+
         const isUserApplied = data.some(
-          (appliedCompany) => appliedCompany.application_id.id === company_id.id
+          (appliedCompany) => appliedCompany.application_id.id === company.id
         );
         setIsApplied(isUserApplied);
       } catch (err) {
@@ -156,7 +158,7 @@ const CompanyDetails = ({ company, onBack }) => {
   // Function to handle apply
   const handleApply = async () => {
     try {
-      const response = await applyToCompany(company_id.id, userData.id); // Pass company ID and user ID
+      const response = await applyToCompany({ application: company.id }); // Pass Application ID and user ID
       if (response.status === 201) {
         setIsApplied(true);
         alert("You have successfully applied for this position!");
@@ -167,15 +169,13 @@ const CompanyDetails = ({ company, onBack }) => {
         ]);
         localStorage.setItem(
           "appliedCompanies",
-          JSON.stringify([...appliedCompanies, { id: company_id.id }])
+          JSON.stringify([...appliedCompanies, { id: company.id }])
         );
       } else {
         console.error("Failed to apply:", response.data);
-        alert("Failed to apply. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while applying. Please try again.");
     }
   };
 
@@ -309,74 +309,3 @@ const CompanyDetails = ({ company, onBack }) => {
 };
 
 export default CompanyDetails;
-
-// import React, { useEffect, useState } from "react";
-// import { timeanddate } from "../../utils/timeanddate";
-// import { fetchComingCompanyDetails } from "../../api/comingCompany";
-// import CompanyItem from "../CompanyItem/CompanyItem";
-
-// function CompanyDetails() {
-//   const [comingCompanies, setComingCompanies] = useState([]);
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     async function getComingCompanies() {
-//       try {
-//         // Check if data is already in local storage
-//         const storedCompanies = localStorage.getItem("comingCompanies");
-//         if (storedCompanies) {
-//           setComingCompanies(JSON.parse(storedCompanies));
-//         } else {
-//           // Fetch data if not found in local storage
-//           const data = await fetchComingCompanyDetails();
-//           console.log(data);
-//           setComingCompanies(data);
-//           // Save the fetched data to local storage
-//           localStorage.setItem("comingCompanies", JSON.stringify(data));
-//         }
-//       } catch (err) {
-//         setError("Failed to load Upcoming Companies");
-//         console.log(err);
-//       }
-//     }
-//     getComingCompanies();
-//   }, []);
-
-//   const currentDate = new Date();
-//   const formattedDate = timeanddate(currentDate);
-
-//   return (
-//     <div className="projects-section">
-//       <div className="projects-section-header">
-//         <p>Companies</p>
-//         <p className="time">{formattedDate}</p>
-//       </div>
-//       <div className="projects-section-line">
-//         {error && <p className="error-message">{error}</p>}
-//         <div className="projects-status">
-//           <div className="item-status">
-//             <span className="status-number">5</span>
-//             <span className="status-type"></span>
-//           </div>
-//           <div className="item-status">
-//             <span className="status-number">4</span>
-//             <span className="status-type">Upcoming</span>
-//           </div>
-//           <div className="item-status">
-//             <span className="status-number">9</span>
-//             <span className="status-type">Total Companies</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="project-boxes jsGridView">
-//         <div className="project-box-wrapper">
-//           {comingCompanies.map((company) => (
-//             <CompanyItem company={company} key={company.id} />
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default CompanyDetails;
