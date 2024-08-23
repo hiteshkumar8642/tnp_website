@@ -43,8 +43,6 @@ def AddApplicationView(request):
             # }
             # Validate and save the announcement using a serializer
             application = Application(
-                created=request.POST.get('created'),  # auto_now_add=True, set automatically on save
-                updated=request.POST.get('updated'),  # auto_now=True, set automatically on save
                 last_date=request.POST.get('last_date'),
                 position=request.POST.get('position'),
                 company_id_id=request.POST.get('company_id'),  # assuming `company_id` is passed as an ID
