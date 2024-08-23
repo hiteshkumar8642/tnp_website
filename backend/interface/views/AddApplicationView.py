@@ -45,7 +45,7 @@ def AddApplicationView(request):
             application = Application(
                 last_date=request.POST.get('last_date'),
                 position=request.POST.get('position'),
-                company_id_id=request.POST.get('company_id'),  # assuming `company_id` is passed as an ID
+                company_id=request.POST.get('company_id'),  # assuming `company_id` is passed as an ID
                 predicted_visit_date=request.POST.get('predicted_visit_date'),
                 twelfth_marks_eligibility=request.POST.get('twelfth_marks_eligibility'),
                 tenth_marks_eligibility=request.POST.get('tenth_marks_eligibility'),
