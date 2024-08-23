@@ -1,38 +1,48 @@
 import React, { useState, useEffect } from "react";
 import "./AddCompanyForm.css";
 import { fetchBranches } from "../../api/branches";
+import { fetchCompanyList } from "../../api/fetchCompanyList";
 
 function AddCompanyForm({ onClose, onSave }) {
   const [formData, setFormData] = useState({
-    name: "",
-    lastDate: "",
+    company_id: "",
+    last_date: "",
     position: "",
-    predictedVisitDate: "",
-    twelfthMarksEligibility: "",
-    tenthMarksEligibility: "",
-    pocBranch: "",
-    jobDescription: null,
-    intern: false,
-    fte: false,
-    ppo: false,
-    spp: false,
-    sip: false,
-    allowedGapAfter12: "",
-    allowedGapAfterGraduation: "",
-    allowedBacklog: "",
-    minGraduationMarks: "",
-    minCgpa: "",
-    allowedBranches: [],
+    predicted_visit_date: "",
+    twelfth_marks_eligibility: "",
+    tenth_marks_eligibility: "",
+    job_description: null,
+    is_intern: false,
+    is_fte: false,
+    is_ppo: false,
+    is_spp: false,
+    is_sip: false,
+    twelfth_gap: "",
+    graduation_gap: "",
+    backlogs: "",
+    graduation_marks: "",
+    current_cgpa: "",
+    college_branch_id: [],
   });
 
   const [branches, setBranches] = useState([]);
+  const [listedCompanies, setListedCompanies] = useState([]);
 
   useEffect(() => {
     async function fetchBranchData() {
       const data = await fetchBranches();
       setBranches(data);
     }
+
     fetchBranchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchCompany() {
+      const data = await fetchCompanyList();
+      setListedCompanies(data);
+    }
+    fetchCompany();
   }, []);
 
   const handleInputChange = (e) => {
@@ -44,14 +54,14 @@ function AddCompanyForm({ onClose, onSave }) {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, jobDescription: e.target.files[0] });
+    setFormData({ ...formData, job_description: e.target.files[0] });
   };
 
   const handleBranchChange = (branch) => {
-    const updatedBranches = formData.allowedBranches.includes(branch)
-      ? formData.allowedBranches.filter((b) => b !== branch)
-      : [...formData.allowedBranches, branch];
-    setFormData({ ...formData, allowedBranches: updatedBranches });
+    const updatedBranches = formData.college_branch_id.includes(branch)
+      ? formData.college_branch_id.filter((b) => b !== branch)
+      : [...formData.college_branch_id, branch];
+    setFormData({ ...formData, college_branch_id: updatedBranches });
   };
 
   const handleSubmit = (e) => {
@@ -70,20 +80,26 @@ function AddCompanyForm({ onClose, onSave }) {
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-field">
-              <label>Name:</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
+              <select
+                name="company_id"
+                required
+                value={formData.company_id}
                 onChange={handleInputChange}
-              />
+              >
+                <option value="">Select Company</option>
+                {listedCompanies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-field">
               <label>Last Date:</label>
               <input
                 type="date"
-                name="lastDate"
-                value={formData.lastDate}
+                name=" last_date"
+                value={formData.last_date}
                 onChange={handleInputChange}
               />
             </div>
@@ -103,8 +119,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Predicted Visit Date:</label>
               <input
                 type="date"
-                name="predictedVisitDate"
-                value={formData.predictedVisitDate}
+                name=" predicted_visit_date"
+                value={formData.predicted_visit_date}
                 onChange={handleInputChange}
               />
             </div>
@@ -112,8 +128,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Twelfth Marks Eligibility:</label>
               <input
                 type="number"
-                name="twelfthMarksEligibility"
-                value={formData.twelfthMarksEligibility}
+                name="twelfth_marks_eligibility"
+                value={formData.twelfth_marks_eligibility}
                 onChange={handleInputChange}
               />
             </div>
@@ -121,8 +137,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Tenth Marks Eligibility:</label>
               <input
                 type="number"
-                name="tenthMarksEligibility"
-                value={formData.tenthMarksEligibility}
+                name="tenth_marks_eligibility"
+                value={formData.tenth_marks_eligibility}
                 onChange={handleInputChange}
               />
             </div>
@@ -130,19 +146,10 @@ function AddCompanyForm({ onClose, onSave }) {
 
           <div className="form-row">
             <div className="form-field">
-              <label>POC Branch:</label>
-              <input
-                type="text"
-                name="pocBranch"
-                value={formData.pocBranch}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-field">
               <label>Job Description:</label>
               <input
                 type="file"
-                name="jobDescription"
+                name="job_description"
                 onChange={handleFileChange}
               />
             </div>
@@ -150,8 +157,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>
                 <input
                   type="checkbox"
-                  name="intern"
-                  checked={formData.intern}
+                  name="is_intern"
+                  checked={formData.is_intern}
                   onChange={handleInputChange}
                 />
                 Intern
@@ -159,8 +166,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>
                 <input
                   type="checkbox"
-                  name="fte"
-                  checked={formData.fte}
+                  name="is_fte"
+                  checked={formData.is_fte}
                   onChange={handleInputChange}
                 />
                 FTE
@@ -168,8 +175,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>
                 <input
                   type="checkbox"
-                  name="ppo"
-                  checked={formData.ppo}
+                  name="is_ppo"
+                  checked={formData.is_ppo}
                   onChange={handleInputChange}
                 />
                 PPO
@@ -177,8 +184,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>
                 <input
                   type="checkbox"
-                  name="spp"
-                  checked={formData.spp}
+                  name="is_spp"
+                  checked={formData.is_spp}
                   onChange={handleInputChange}
                 />
                 SPP
@@ -186,8 +193,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>
                 <input
                   type="checkbox"
-                  name="sip"
-                  checked={formData.sip}
+                  name="is_sip"
+                  checked={formData.is_sip}
                   onChange={handleInputChange}
                 />
                 SIP
@@ -197,20 +204,20 @@ function AddCompanyForm({ onClose, onSave }) {
 
           <div className="form-row">
             <div className="form-field">
-              <label>Allowed Gap After 12:</label>
+              <label>Allowed Gap Ais_fter 12:</label>
               <input
                 type="number"
-                name="allowedGapAfter12"
-                value={formData.allowedGapAfter12}
+                name="twelfth_gap"
+                value={formData.twelfth_gap}
                 onChange={handleInputChange}
               />
             </div>
             <div className="form-field">
-              <label>Allowed Gap After Graduation:</label>
+              <label>Allowed Gap Ais_fter Graduation:</label>
               <input
                 type="number"
-                name="allowedGapAfterGraduation"
-                value={formData.allowedGapAfterGraduation}
+                name="graduation_gap"
+                value={formData.graduation_gap}
                 onChange={handleInputChange}
               />
             </div>
@@ -218,8 +225,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Allowed Backlog:</label>
               <input
                 type="number"
-                name="allowedBacklog"
-                value={formData.allowedBacklog}
+                name="backlogs"
+                value={formData.backlogs}
                 onChange={handleInputChange}
               />
             </div>
@@ -230,8 +237,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Min Graduation Marks:</label>
               <input
                 type="number"
-                name="minGraduationMarks"
-                value={formData.minGraduationMarks}
+                name="graduation_marks"
+                value={formData.graduation_marks}
                 onChange={handleInputChange}
               />
             </div>
@@ -239,8 +246,8 @@ function AddCompanyForm({ onClose, onSave }) {
               <label>Min CGPA:</label>
               <input
                 type="number"
-                name="minCgpa"
-                value={formData.minCgpa}
+                name="current_cgpa"
+                value={formData.current_cgpa}
                 onChange={handleInputChange}
               />
             </div>
@@ -254,7 +261,7 @@ function AddCompanyForm({ onClose, onSave }) {
                   <label key={branch.id}>
                     <input
                       type="checkbox"
-                      checked={formData.allowedBranches.includes(branch.id)}
+                      checked={formData.college_branch_id.includes(branch.id)}
                       onChange={() => handleBranchChange(branch.id)}
                     />
                     {branch.degree} ({branch.specialization})

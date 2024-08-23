@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
-from dashboard.models import Application
+from dashboard.models import Application,Company
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
@@ -33,7 +33,7 @@ def AddApplicationView(request):
         college_branch = user.userdetails.college_branch
         print(college_branch)
 
-
+        company=Company.objects.get(id=request.POST.get('company_id'))
         # Check if the user has the required role
         if role == 3 or role == 4:
             # Prepare data for serialization
@@ -45,22 +45,22 @@ def AddApplicationView(request):
             application = Application(
                 last_date=request.POST.get('last_date'),
                 position=request.POST.get('position'),
-                company_id=request.POST.get('company_id'),  # assuming `company_id` is passed as an ID
+                company_id=company,  # assuming `company_id` is passed as an ID
                 predicted_visit_date=request.POST.get('predicted_visit_date'),
                 twelfth_marks_eligibility=request.POST.get('twelfth_marks_eligibility'),
                 tenth_marks_eligibility=request.POST.get('tenth_marks_eligibility'),
                 job_description=request.FILES.get('job_description'),
-                is_intern=request.POST.get('is_intern') == 'on',  # convert checkbox to boolean
-                is_ppo=request.POST.get('is_ppo') == 'on',
-                is_fte=request.POST.get('is_fte') == 'on',
-                is_spp=request.POST.get('is_spp') == 'on',
-                is_sip=request.POST.get('is_sip') == 'on',
+                is_intern=request.POST.get('is_intern') == 'true',  # convert checkbox to boolean
+                is_ppo=request.POST.get('is_ppo') == 'true',
+                is_fte=request.POST.get('is_fte') == 'true',
+                is_spp=request.POST.get('is_spp') == 'true',
+                is_sip=request.POST.get('is_sip') == 'true',
                 twelfth_gap=request.POST.get('twelfth_gap'),
                 graduation_gap=request.POST.get('graduation_gap'),
                 backlogs=request.POST.get('backlogs'),
                 graduation_marks=request.POST.get('graduation_marks'),
                 current_cgpa=request.POST.get('current_cgpa'),
-                college_branch_id=request.POST.get('college_branch'),  # assuming `college_branch` is passed as an ID
+                college_branch=college_branch,  
             )
             application.save()
             

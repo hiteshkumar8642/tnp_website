@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HrList.css";
-import { fetchHRList } from "../../api/ListofHR";
+import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
-import { ShimmerTable } from "react-shimmer-effects";
+//import { ShimmerTable } from "react-shimmer-effects";
 import { sendHRinfo } from "../../api/updateHrInfo";
 
 const HrList = () => {
@@ -70,7 +70,9 @@ const HrList = () => {
       <div className="projects-section-header">
         <p>HR Contacts List</p>
         <div className="view-actions">
-          <label htmlFor="status" className="mr-2">Status:</label>
+          <label htmlFor="status" className="mr-2">
+            Status:
+          </label>
           <select
             id="status"
             value={statusFilter}

@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 def CompanyListView(request):
     try:
         print("Hello")
-        Company = Company.objects.all()
-        companyserializer = CompanySerializer(college,many=True)
+        company = Company.objects.all()
+        companyserializer = CompanySerializer(company,many=True)
 
         return Response(companyserializer.data,status=status.HTTP_200_OK)
 

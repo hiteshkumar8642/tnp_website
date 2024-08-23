@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { fetchComingCompanyDetails } from "../../api/ComingCompany";
+import { fetchComingCompanyDetails } from "../../api/comingCompany";
 import CompanyDetails from "./CompanyDetails";
 import AddCompanyForm from "./AddCompanyForm";
 import { FaSearch, FaPlus } from "react-icons/fa";
 
 import { timeanddate } from "../../utils/timeanddate";
+import { addNewCompany } from "../../api/addNewCompany";
 
 // CompanyCard component
 const CompanyCard = ({ company, onClick, isActive }) => {
@@ -93,13 +94,23 @@ function Company() {
     setIsModalOpen(false);
   };
 
-  const handleSaveCompany = (newCompany) => {
-    setComingCompanies([...comingCompanies, newCompany]);
-    localStorage.setItem(
-      "comingCompanies",
-      JSON.stringify([...comingCompanies, newCompany])
-    );
-    setIsModalOpen(false);
+  const handleSaveCompany = async (newCompany) => {
+    try {
+      const response = await addNewCompany(newCompany);
+      console.log(response);
+      if (response.status === 201) {
+        setComingCompanies([...comingCompanies, newCompany]);
+        localStorage.setItem(
+          "comingCompanies",
+          JSON.stringify([...comingCompanies, newCompany])
+        );
+        setIsModalOpen(false);
+      } else {
+        console.log("Failed to add the company.");
+      }
+    } catch (err) {
+      console.error("Error adding the company", err);
+    }
   };
 
   const filteredCompanies = comingCompanies.filter(
