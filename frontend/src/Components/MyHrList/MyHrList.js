@@ -4,6 +4,7 @@ import "./MyHrList.css";
 import { fetchmyHRList } from "../../api/fetchMyHRlist";
 import MyHrTableRow from "./MyHrTableRow";
 import { sendHRinfo } from "../../api/updateHrInfo";
+import { ShimmerTable } from "react-shimmer-effects";
 
 const MyHrList = () => {
   const [myHrData, setMyHrData] = useState([]);
@@ -75,7 +76,7 @@ const MyHrList = () => {
       </div>
       {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (
-        <div className="text-center py-4">Loading My HR contacts...</div>
+        <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
         <div className="myhr-table-container">
           <table className="myhr-table">

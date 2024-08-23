@@ -1,0 +1,65 @@
+.shimmer-student-card {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    background: #f6f7f8;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .shimmer-student-card-image {
+    width: 100%;
+    height: 80px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-image: linear-gradient(
+      to right,
+      #e0e0e0 0%,
+      #f6f7f8 20%,
+      #e0e0e0 40%,
+      #e0e0e0 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 800px 80px;
+    animation: shimmer 1.5s infinite linear;
+  }
+  
+  .shimmer-student-card-name,
+  .shimmer-student-card-username {
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-image: linear-gradient(
+      to right,
+      #e0e0e0 0%,
+      #f6f7f8 20%,
+      #e0e0e0 40%,
+      #e0e0e0 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 800px 10px;
+    animation: shimmer 1.5s infinite linear;
+  }
+  
+  .shimmer-student-card-name {
+    width: 80%;
+  }
+  
+  .shimmer-student-card-username {
+    width: 60%;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -800px 0;
+    }
+    100% {
+      background-position: 800px 0;
+    }
+  }
+  

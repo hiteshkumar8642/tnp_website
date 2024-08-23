@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchAppliedCompanies } from "../../api/appliedCompanies";
 import AppliedCompanyDetails from "./AppliedCompanyDetails";
 import AppliedCompanyCard from "./AppliedCompanyCard";
+import Shimmer from "./Shimmer";
 import { FaSearch } from "react-icons/fa";
 
 function AppliedCompaniesList() {
@@ -54,26 +55,12 @@ function AppliedCompaniesList() {
 
   console.log("Filtered applied companies:", filteredCompanies);
 
-  if (isLoading) {
-    return <div className="text-center py-4">Loading applied companies...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-4 text-red-500">{error}</div>;
-  }
-
   return (
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Applied Companies</p>
       </div>
       <div className="projects-section-line">
-        <div className="projects-status">
-          <div className="item-status">
-            <span className="status-number">{filteredCompanies.length}</span>
-            <span className="status-type">Total Applied Companies</span>
-          </div>
-        </div>
         <div className="view-actions flex justify-between items-center w-full">
           <div className="flex items-center ml-auto">
             <input
@@ -92,24 +79,39 @@ function AppliedCompaniesList() {
           </div>
         </div>
       </div>
-      <div className="project-boxes jsGridView">
-        {selectedCompany ? (
-          <div className="w-full">
-            <AppliedCompanyDetails company={selectedCompany} onBack={handleBack} />
+
+      {isLoading ? (
+        <Shimmer />
+      ) : error ? (
+        <div className="text-center py-4 text-red-500">{error}</div>
+      ) : (
+        <>
+          <div className="projects-status">
+            <div className="item-status">
+              <span className="status-number">{filteredCompanies.length}</span>
+              <span className="status-type">Total Applied Companies</span>
+            </div>
           </div>
-        ) : (
-          <div className="project-box-wrapper">
-            {filteredCompanies.map((company) => (
-              <AppliedCompanyCard
-                key={company.id}
-                company={company.application_id}
-                onClick={setSelectedCompany}
-                isActive={selectedCompany && selectedCompany.id === company.application_id?.id}
-              />
-            ))}
+          <div className="project-boxes jsGridView">
+            {selectedCompany ? (
+              <div className="w-full">
+                <AppliedCompanyDetails company={selectedCompany} onBack={handleBack} />
+              </div>
+            ) : (
+              <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
+                {filteredCompanies.map((company) => (
+                  <AppliedCompanyCard
+                    key={company.id}
+                    company={company.application_id}
+                    onClick={setSelectedCompany}
+                    isActive={selectedCompany && selectedCompany.id === company.application_id?.id}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

@@ -7,11 +7,11 @@ function ProfilePage() {
     const [userData, setUserData] = useState(initialData);
     const photo =userData.photo;
     const photoURL = photo
-    ? `http://localhost:8000${userData.photo}`
+    ? `${process.env.REACT_APP_API_HOST}${userData.photo}`
     : "";
     const resume =userData.resume;
     const resumeURL = resume
-    ? `http://localhost:8000${userData.resume}`
+    ? `${process.env.REACT_APP_API_HOST}${userData.resume}`
     : "";
     const handleChange = (e) => {
         const { name, value } = e.target;

@@ -23,7 +23,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     setIsModalOpen(false);
   };
 
-  const getSafeValue = (value) => (value ? value : "N/A");
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
     handleStatusChange(hr.id, newStatus);
@@ -31,7 +30,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
       const response = await setAssignme({ id: hr.id });
       console.log("Status updated successfully:", response.data);
     } catch (error) {
-      // Handle errors if the API request fails
       console.error("Failed to update status:", error);
     }
   };
@@ -39,15 +37,15 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   return (
     <>
       <tr onClick={handleRowClick}>
-        <td className="col-2 left-align">{getSafeValue(hr.name)}</td>
+        <td className="col-2 left-align">{hr.name || "N/A"}</td>
         <td className="col-2 left-align">
-          {getSafeValue(hr.company_id?.name)}
+          {hr.company_id?.name || "N/A"}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr?.last_date_of_contact)}
+          {formatDate(hr.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr?.next_date_of_contact)}
+          {formatDate(hr.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select

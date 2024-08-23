@@ -38,7 +38,7 @@ const SharedCompanyContactList = () => {
       </div>
       {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (
-        <div className="text-center py-4">Loading Shared Company contacts...</div>
+        <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
         <div className="shared-company-table-container">
           <table className="shared-company-table">

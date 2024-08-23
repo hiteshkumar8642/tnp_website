@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CallLog.css";
 import { fetchCallHistoryList } from "../../api/fetchCallHistory";
 import CallLogTableRow from "./CallLogTableRow";
+import { ShimmerTable } from "react-shimmer-effects";
 
 const CallLog = () => {
   const [callLogs, setCallLogs] = useState([]);
@@ -37,7 +38,7 @@ const CallLog = () => {
       </div>
       {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (
-        <div className="text-center py-4">Loading Call Logs...</div>
+        <ShimmerTable row={6} col={3} className="shimmer-table-effect" />
       ) : (
         <div className="call-log-table-container">
           <table className="call-log-table">

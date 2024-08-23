@@ -5,7 +5,7 @@ const AppliedCompanyCard = ({ company, onClick, isActive }) => {
   return (
     <div
       onClick={() => onClick(company)}
-      className={`p-4 bg-white shadow-lg rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
+      className={`p-4 bg-white shadow-md rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
         isActive ? "border-2 border-blue-500" : ""
       }`}
     >

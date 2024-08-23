@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./HrList.css";
 import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
-//import { ShimmerTable } from "react-shimmer-effects";
+import { ShimmerTable } from "react-shimmer-effects";
 import { sendHRinfo } from "../../api/updateHrInfo";
 
 const HrList = () => {
@@ -25,7 +25,6 @@ const HrList = () => {
         } else {
           // Fetch data if not found in local storage
           const data = await fetchHRList();
-          console.log(data);
           setHrData(data);
           // Save the fetched data to local storage
           localStorage.setItem("hrData", JSON.stringify(data));
@@ -34,6 +33,7 @@ const HrList = () => {
       } catch (err) {
         setError("Failed to load HR list");
         console.log(err);
+        SetHrListLoading(false);
       }
     }
     getHRList();
@@ -41,13 +41,9 @@ const HrList = () => {
 
   const handleStatusChange = async (id, status) => {
     try {
-      // // Perform the API request to update the status
-      // console.log(id);
       setHrData((prevHrData) =>
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
-      console.log(hrData);
-
       const response = await sendHRinfo(id, status);
       console.log("Status updated successfully:", response.data);
     } catch (err) {
@@ -55,14 +51,13 @@ const HrList = () => {
     }
   };
 
-  let filteredData =
+  const filteredData =
     statusFilter === "All"
       ? hrData
       : hrData.filter((hr) => hr.status === statusFilter);
 
   const handleFilterChange = (e) => {
     setStatusFilter(e.target.value);
-    console.log("chexking data", filteredData);
   };
 
   return (
@@ -88,7 +83,7 @@ const HrList = () => {
       </div>
       {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {HrListLoading ? (
-        <div className="text-center py-4">Loading HR contacts...</div>
+        <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
         <div className="hr-table-container">
           <table className="hr-table">
@@ -102,13 +97,19 @@ const HrList = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((hr) => (
-                <HrTableRow
-                  key={hr.id}
-                  hr={hr}
-                  handleStatusChange={handleStatusChange}
-                />
-              ))}
+              {filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center">No HRs found</td>
+                </tr>
+              ) : (
+                filteredData.map((hr) => (
+                  <HrTableRow
+                    key={hr.id}
+                    hr={hr}
+                    handleStatusChange={handleStatusChange}
+                  />
+                ))
+              )}
             </tbody>
           </table>
         </div>

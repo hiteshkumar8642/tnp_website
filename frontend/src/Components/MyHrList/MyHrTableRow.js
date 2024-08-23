@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import MyHrModal from "./MyHrModal";
-import { useRef } from "react";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,7 +12,7 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   };
 
   const handleRowClick = (e) => {
-    if (selectRef.current.contains(e.target)) {
+    if (selectRef.current && selectRef.current.contains(e.target)) {
       return;
     }
     setIsModalOpen(true);
@@ -43,18 +42,18 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   return (
     <>
       <tr onClick={handleRowClick}>
-        <td className="col-2 left-align">{hr.name}</td>
-        <td className="col-2 left-align">{hr.company_id.name}</td>
+        <td className="col-2 left-align">{hr?.name || "N/A"}</td>
+        <td className="col-2 left-align">{hr?.company_id?.name || "N/A"}</td>
         <td className="col-1 center-align">
-          {formatDate(hr.last_date_of_contact)}
+          {formatDate(hr?.last_date_of_contact)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr.next_date_of_contact)}
+          {formatDate(hr?.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select
             ref={selectRef}
-            value={hr.status || ""}
+            value={hr?.status || ""}
             onChange={handleStatusDropdownChange}
             className="status-dropdown"
           >
