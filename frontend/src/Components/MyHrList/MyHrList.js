@@ -78,7 +78,7 @@ const MyHrList = () => {
       {isLoading ? (
         <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
-        <div className="myhr-table-container">
+        <div className="myhr-table-container overflow-auto">
           <table className="myhr-table">
             <thead>
               <tr>
