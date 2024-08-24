@@ -10,7 +10,7 @@ const HrList = () => {
   const [hrData, setHrData] = useState([]);
   const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("Contact"); // Default status is "Contact"
 
   useEffect(() => {
     async function getHRList() {
@@ -54,7 +54,10 @@ const HrList = () => {
   const filteredData =
     statusFilter === "All"
       ? hrData
-      : hrData.filter((hr) => hr.status === statusFilter);
+      : hrData.filter(
+          (hr) =>
+            hr.status && hr.status.toLowerCase() === statusFilter.toLowerCase()
+        );
 
   const handleFilterChange = (e) => {
     setStatusFilter(e.target.value);
@@ -85,7 +88,7 @@ const HrList = () => {
       {HrListLoading ? (
         <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
-        <div className="hr-table-container">
+        <div className="hr-table-container overflow-auto">
           <table className="hr-table">
             <thead>
               <tr>

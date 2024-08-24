@@ -7,13 +7,17 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   const selectRef = useRef(null);
 
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
+    if (!dateString) return "N/A"; // Check if the date string is null or undefined
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid Date"; // Handle invalid date strings
+    }
     return date.toISOString().split("T")[0];
   };
 
   const handleRowClick = (e) => {
-    if (selectRef.current.contains(e.target)) {
+    // Prevent opening the modal if the select dropdown is clicked
+    if (selectRef.current && selectRef.current.contains(e.target)) {
       return;
     }
     setIsModalOpen(true);
@@ -27,7 +31,7 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     const newStatus = e.target.value;
     handleStatusChange(hr.id, newStatus);
     try {
-      const response = await setAssignme({ id: hr.id });
+      const response = await setAssignme({ id: hr.id, status: newStatus });
       console.log("Status updated successfully:", response.data);
     } catch (error) {
       console.error("Failed to update status:", error);

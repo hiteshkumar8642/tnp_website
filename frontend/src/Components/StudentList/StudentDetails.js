@@ -40,7 +40,8 @@ const StudentDetails = ({ student, onBack }) => {
 
   const resumeUrl = resume ? `${process.env.REACT_APP_API_HOST}${resume}` : "";
   return (
-    <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
+    <div className="p-6 bg-gray-100 shadow-lg rounded-lg ">
+      <div className="overflow-auto">
       <button
         onClick={onBack}
         className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
@@ -125,6 +126,7 @@ const StudentDetails = ({ student, onBack }) => {
           )}
         </div>
       </Modal>
+      </div>
     </div>
   );
 };

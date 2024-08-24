@@ -46,7 +46,7 @@ const SharedHrContactList = () => {
       {isLoading ? (
         <ShimmerTable row={6} col={7} className="shimmer-table-effect" />
       ) : (
-        <div className="shared-hr-table-container">
+        <div className="shared-hr-table-container overflow-auto">
           <table className="shared-hr-table">
             <thead>
               <tr>
