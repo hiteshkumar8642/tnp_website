@@ -80,10 +80,11 @@ const CompanyDetails = ({ company, onBack }) => {
     company || {};
   const companyName = company_id?.name || "Unknown Company";
   const generalCTC = company_id?.general_ctc || "N/A";
+  const userData = getUserDetailsFromLocalStorage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
-  const [userData, setUserData] = useState(getUserDetailsFromLocalStorage());
+  //const [userData, setUserData] = useState(getUserDetailsFromLocalStorage());
   const [eligibilityError, setEligibilityError] = useState("");
   const [appliedCompanies, setAppliedCompanies] = useState([]);
   const [error, setError] = useState("");
@@ -117,7 +118,7 @@ const CompanyDetails = ({ company, onBack }) => {
       }
     }
     getAppliedCompanies();
-  }, [company_id.id]);
+  }, [company_id.id, company]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -218,6 +219,7 @@ const CompanyDetails = ({ company, onBack }) => {
     }
   }, [userData, company]);
 
+  if (error !== "") return <p>There was Error</p>;
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
       <div className="flex justify-between items-center">

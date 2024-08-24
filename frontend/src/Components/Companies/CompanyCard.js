@@ -1,10 +1,10 @@
-const CompanyCard = ({ company, onClick, isActive }) => {
-  const { company_id, position, is_fte, is_ppo, is_intern } = company || {};
+const CompanyCard = ({ comingCompany, onClick, isActive }) => {
+  const { company_id, position, is_spp, is_sip } = comingCompany || {};
   const companyName = company_id?.name || "Unknown Company";
 
   return (
     <div
-      onClick={() => onClick(company)}
+      onClick={() => onClick(comingCompany)}
       className={`p-4 bg-white shadow-md rounded-lg hover:scale-105 transition-transform cursor-pointer mb-4 ${
         isActive ? "border-2 border-blue-500" : ""
       }`}
@@ -12,19 +12,14 @@ const CompanyCard = ({ company, onClick, isActive }) => {
       <h2 className="text-lg font-semibold mt-2">{companyName}</h2>
       <p className="text-gray-600">{position}</p>
       <div className="flex justify-between items-center mt-2">
-        {is_fte && (
+        {is_spp && (
           <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-            FTE
+            SPP
           </span>
         )}
-        {is_ppo && (
-          <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-            PPO
-          </span>
-        )}
-        {is_intern && (
+        {is_sip && (
           <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-            Intern
+            SIP
           </span>
         )}
       </div>

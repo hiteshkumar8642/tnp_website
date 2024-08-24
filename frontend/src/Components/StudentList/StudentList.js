@@ -88,14 +88,7 @@ function StudentList() {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-        <div className="project-boxes jsGridView">
-          {/* <div className="projects-status">
-            <div className="item-status">
-              <span className="status-number">{filteredStudents.length}</span>
-              <span className="status-type">Total Students</span>
-            </div>
-          </div> */}
-          <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
+          <div className="project-box-wrapper project-boxes jsGridView grid gap-5">
             {filteredStudents.map((student) => (
               <StudentCard
                 key={student.id}
@@ -105,7 +98,6 @@ function StudentList() {
               />
             ))}
           </div>
-        </div>
       )}
       {selectedStudent && (
         <div className="w-full">
