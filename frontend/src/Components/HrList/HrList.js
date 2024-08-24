@@ -10,7 +10,7 @@ const HrList = () => {
   const [hrData, setHrData] = useState([]);
   const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("Contact"); // Default status is "Contact"
+  const [statusFilter, setStatusFilter] = useState("All"); // Default status is "Contact"
 
   useEffect(() => {
     async function getHRList() {

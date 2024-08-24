@@ -136,14 +136,6 @@ function Company() {
           <div className="text-center py-4 text-red-500">{error}</div>
         ) : (
           <>
-            <div className="projects-status item-status flex sm:flex-col md:-mt-20 mb-4">
-              <div className="status-number font-extrabold sm:font-bold">
-                {filteredCompanies.length}
-              </div>
-              <div className="status-type font-extrabold sm:font-bold">
-                Total Companies
-              </div>
-            </div>
             <div className="project-boxes jsGridView">
               {selectedCompany ? (
                 <div className="w-full">

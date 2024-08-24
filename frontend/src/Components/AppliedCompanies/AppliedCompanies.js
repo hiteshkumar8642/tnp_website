@@ -85,12 +85,6 @@ function AppliedCompaniesList() {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <>
-          <div className="projects-status">
-            <div className="item-status">
-              <span className="status-number">{filteredCompanies.length}</span>
-              <span className="status-type">Total Applied Companies</span>
-            </div>
-          </div>
           <div className="project-boxes jsGridView">
             {selectedCompany ? (
               <div className="w-full">
