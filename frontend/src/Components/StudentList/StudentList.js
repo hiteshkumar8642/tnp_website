@@ -88,7 +88,13 @@ function StudentList() {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-          <div className="project-box-wrapper project-boxes jsGridView grid gap-5">
+        <div className="project-boxes jsGridView">
+        {selectedStudent ? (
+          <div className="w-full">
+            <StudentDetails student={selectedStudent} onBack={handleBack} />
+          </div>
+        ) : (
+          <div className="project-box-wrapper grid md:grid-flow-col grid-flow-row gap-8">
             {filteredStudents.map((student) => (
               <StudentCard
                 key={student.id}
@@ -98,12 +104,10 @@ function StudentList() {
               />
             ))}
           </div>
+        )}
+      </div>
       )}
-      {selectedStudent && (
-        <div className="w-full">
-          <StudentDetails student={selectedStudent} onBack={handleBack} />
-        </div>
-      )}
+      
     </div>
   );
 }

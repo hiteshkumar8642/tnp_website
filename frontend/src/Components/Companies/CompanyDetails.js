@@ -75,11 +75,13 @@ const getUserDetailsFromLocalStorage = () => {
   return data ? JSON.parse(data) : {};
 };
 
-const CompanyDetails = ({ company, onBack }) => {
+const CompanyDetails = ({comingCompany, onBack }) => {
   const { company_id, position, is_spp, is_sip, last_date, job_description } =
-    company || {};
-  const companyName = company_id?.name || "Unknown Company";
-  const generalCTC = company_id?.general_ctc || "N/A";
+   comingCompany || {};
+   const company=company_id;
+   const companyName = company?.name || "Unknown Company";
+   console.log(company);
+  const generalCTC = company?.general_ctc || "N/A";
   const userData = getUserDetailsFromLocalStorage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,10 +106,10 @@ const CompanyDetails = ({ company, onBack }) => {
           localStorage.setItem("appliedCompanies", JSON.stringify(data));
         }
         setAppliedCompanies(data);
-        // Check if the user has applied to the current company
+        // Check if the user has applied to the currentcomingCompany
 
         const isUserApplied = data.some(
-          (appliedCompany) => appliedCompany.application_id.id === company.id
+          (appliedCompany) => appliedCompany.application_id.id ===comingCompany.id
         );
         setIsApplied(isUserApplied);
       } catch (err) {
@@ -118,7 +120,7 @@ const CompanyDetails = ({ company, onBack }) => {
       }
     }
     getAppliedCompanies();
-  }, [company_id.id, company]);
+  }, [comingCompany]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -136,7 +138,7 @@ const CompanyDetails = ({ company, onBack }) => {
   // Function to handle download
   const handleDownload = async () => {
     try {
-      const response = await fetchDownloadAppliedStudents(company_id.id); // Pass company ID
+      const response = await fetchDownloadAppliedStudents(company.id); // PasscomingCompany ID
       if (response.status === 200) {
         const blob = new Blob([response.data], {
           type: response.headers["content-type"],
@@ -159,18 +161,18 @@ const CompanyDetails = ({ company, onBack }) => {
   // Function to handle apply
   const handleApply = async () => {
     try {
-      const response = await applyToCompany({ application: company.id }); // Pass Application ID and user ID
+      const response = await applyToCompany({ application:comingCompany.id }); // Pass Application ID and user ID
       if (response.status === 201) {
         setIsApplied(true);
         alert("You have successfully applied for this position!");
         // Update applied companies in state and local storage
         setAppliedCompanies((prevAppliedCompanies) => [
           ...prevAppliedCompanies,
-          { id: company_id.id },
+          { id: company.id },
         ]);
         localStorage.setItem(
           "appliedCompanies",
-          JSON.stringify([...appliedCompanies, { id: company.id }])
+          JSON.stringify([...appliedCompanies, { id:comingCompany.id }])
         );
       } else {
         console.error("Failed to apply:", response.data);
@@ -182,42 +184,43 @@ const CompanyDetails = ({ company, onBack }) => {
 
   // Check eligibility
   useEffect(() => {
+    console.log()
     if (
-      userData.twelfth_percentage < company.twelfth_marks_eligibility ||
-      userData.tenth_percentage < company.tenth_marks_eligibility ||
-      userData.gap_after_twelfth > company.twelfth_gap ||
-      userData.gap_after_graduation > company.graduation_gap ||
-      userData.graduation_cgpa < company.graduation_marks ||
-      userData.current_cgpa < company.current_cgpa ||
-      userData.backlogs > company.backlogs
+      userData.twelfth_percentage <comingCompany.twelfth_marks_eligibility ||
+      userData.tenth_percentage <comingCompany.tenth_marks_eligibility ||
+      userData.gap_after_twelfth >comingCompany.twelfth_gap ||
+      userData.gap_after_graduation >comingCompany.graduation_gap ||
+      userData.graduation_cgpa <comingCompany.graduation_marks ||
+      userData.current_cgpa <comingCompany.current_cgpa ||
+      userData.backlogs >comingCompany.backlogs
     ) {
       let error = "You are not eligible to apply due to:";
-      if (userData.twelfth_percentage < company.twelfth_marks_eligibility) {
+      if (userData.twelfth_percentage <comingCompany.twelfth_marks_eligibility) {
         error += `\n- Your 12th Marks ${userData.twelfth_percentage} and required ${company.twelfth_marks_eligibility}`;
       }
-      if (userData.tenth_percentage < company.tenth_marks_eligibility) {
+      if (userData.tenth_percentage <comingCompany.tenth_marks_eligibility) {
         error += `\n- Your 10th Marks ${userData.tenth_percentage} and required ${company.tenth_marks_eligibility}`;
       }
-      if (userData.graduation_cgpa < company.graduation_marks) {
+      if (userData.graduation_cgpa <comingCompany.graduation_marks) {
         error += `\n- Your Graduation Marks ${userData.graduation_cgpa} and required ${company.graduation_marks}`;
       }
-      if (userData.current_cgpa < company.current_cgpa) {
+      if (userData.current_cgpa <comingCompany.current_cgpa) {
         error += `\n- Your Current CGPA ${userData.current_cgpa} and required ${company.current_cgpa}`;
       }
-      if (userData.gap_after_graduation > company.graduation_gap) {
+      if (userData.gap_after_graduation >comingCompany.graduation_gap) {
         error += `\n- Your Gap after Graduation ${userData.gap_after_graduation} and required ${company.graduation_gap}`;
       }
-      if (userData.gap_after_twelfth > company.twelfth_gap) {
+      if (userData.gap_after_twelfth >comingCompany.twelfth_gap) {
         error += `\n- Your Gap after 12th ${userData.gap_after_twelfth} and required ${company.twelfth_gap}`;
       }
-      if (userData.backlogs > company.backlogs) {
+      if (userData.backlogs >comingCompany.backlogs) {
         error += `\n- Your Active Backlogs ${userData.backlogs} and required ${company.backlogs}`;
       }
       setEligibilityError(error);
     } else {
       setEligibilityError("");
     }
-  }, [userData, company]);
+  }, [userData,comingCompany]);
 
   if (error !== "") return <p>There was Error</p>;
   return (
@@ -242,7 +245,30 @@ const CompanyDetails = ({ company, onBack }) => {
 
       <div className="flex items-center">
         <div>
-          <h2 className="text-2xl font-bold">{companyName}</h2>
+          <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">{companyName}</h2>
+              <div className="absolute right-16">
+                  {eligibilityError && (
+                    <p className="text-red-500 mt-4">{eligibilityError}</p>
+                  )}
+                  {isApplied ? (
+                    <button
+                      className="bg-gray-500 text-white p-2 rounded-md cursor-not-allowed px-8"
+                      disabled
+                    >
+                      Applied
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleApply}
+                      className="bg-blue-500 text-white  rounded-md  px-8 py-2 hover:bg-blue-700 transition-colors"
+                      disabled={!!eligibilityError || isLoading}
+                    >
+                      Apply
+                    </button>
+                  )}
+              </div>  
+          </div>
           <p className="text-blue-500">{position}</p>
           <p className="text-gray-500">
             {is_spp ? `SPP` : ``}
@@ -287,25 +313,7 @@ const CompanyDetails = ({ company, onBack }) => {
           )}
         </div>
       </Modal>
-      {eligibilityError && (
-        <p className="text-red-500 mt-4">{eligibilityError}</p>
-      )}
-      {isApplied ? (
-        <button
-          className="bg-gray-500 text-white p-2 rounded-full cursor-not-allowed"
-          disabled
-        >
-          Applied
-        </button>
-      ) : (
-        <button
-          onClick={handleApply}
-          className="bg-green-500 text-white  rounded-full  px-14 py-2 hover:bg-green-700 transition-colors absolute left-[50%]"
-          disabled={!!eligibilityError || isLoading}
-        >
-          Apply
-        </button>
-      )}
+      
     </div>
   );
 };
