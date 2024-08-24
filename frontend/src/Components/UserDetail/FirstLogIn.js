@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./FirstLogIn.css";
 import { fetchBranches } from "../../api/branches";
 import { sendNewUserData } from "../../api/sendUserInfo";
+import { toast } from "react-hot-toast";
 
 export default function FirstLogIn() {
   const userProfile = JSON.parse(localStorage.getItem("user_Profile"));
@@ -97,7 +98,7 @@ export default function FirstLogIn() {
       ...formData,
       ...files,
     };
-    console.log(finalData);
+
     try {
       const response = await sendNewUserData(finalData);
       if (response.status === 201) {
@@ -131,7 +132,7 @@ export default function FirstLogIn() {
         });
         navigate("/401");
       } else {
-        console.log("Failed to send the user data.");
+        toast.error("Failed to send the user data.");
       }
     } catch (error) {
       console.error("Error sending the user data", error);

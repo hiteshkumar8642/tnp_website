@@ -23,7 +23,6 @@ const CallLog = () => {
         }
       } catch (err) {
         setError("Failed to load call logs");
-        console.log(err);
       } finally {
         setIsLoading(false);
       }

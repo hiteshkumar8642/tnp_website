@@ -19,9 +19,9 @@ export default function SetNewPasswordPage() {
   function handleSubmit(event) {
     event.preventDefault();
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
     } else if (!passwordRegex.test(newPassword)) {
-      alert(
+      toast.error(
         "Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character (!@#$%^&*)."
       );
     } else {
@@ -30,7 +30,6 @@ export default function SetNewPasswordPage() {
       setNewPass(data)
         .then((response) => {
           setIsLoading(false);
-
           toast.success("Password changed successfully!");
           navigate("/login");
         })

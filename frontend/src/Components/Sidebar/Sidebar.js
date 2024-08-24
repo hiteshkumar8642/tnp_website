@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
 import { useLoading } from "../LoadingContext/LoadingContext"; // Import the useLoading hook
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 function Sidebar() {
-  const Navigate=useNavigate();
+  const Navigate = useNavigate();
   const { setIsLoading } = useLoading();
-  const [role,setRole] = useState(null);
-
+  const [role, setRole] = useState(null);
 
   const logout = async (refreshToken) => {
     try {
@@ -20,24 +19,19 @@ function Sidebar() {
     }
   };
 
-  
-
   useEffect(() => {
     async function roleWiseAccess() {
       const storedUserProfile = localStorage.getItem("user_Profile");
-      try{
+      try {
         const userProfile = JSON.parse(storedUserProfile);
         console.log("User Profile ", userProfile);
         setRole(userProfile.role);
-      }
-      catch(error){
+      } catch (error) {
         console.error("Error parsing user_Profile from localStorage:", error);
       }
     }
     roleWiseAccess();
   }, []);
-
-
 
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
@@ -48,27 +42,23 @@ function Sidebar() {
       // Remove the Authorization header
       axios.defaults.headers.common["Authorization"] = null;
       // Redirect to login page
-      Navigate("/")
+      Navigate("/");
       setIsLoading(false);
       console.log("hekko");
       toast.success("Logout successfully");
-      
     } catch (error) {
       console.error("Logout failed:", error);
       toast.success("Logout successfully");
       localStorage.clear();
-      Navigate("/")
-    }
-    finally
-    {
+      Navigate("/");
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <div className="app-sidebar sm:block hidden">
-      {
-        (role === 1 || role === 2 || role === 3 || role === 4) && 
+      {(role === 1 || role === 2 || role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/companies"
           className={({ isActive }) =>
@@ -77,10 +67,9 @@ function Sidebar() {
         >
           Companies
         </NavLink>
-      }
-      
-      {
-        (role === 1 || role === 2 || role === 3 || role === 4) && 
+      )}
+
+      {(role === 1 || role === 2 || role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/applied-companies"
           className={({ isActive }) =>
@@ -89,10 +78,9 @@ function Sidebar() {
         >
           Applied Companies
         </NavLink>
-      }
-      
-      {
-        (role === 2) &&
+      )}
+
+      {role === 2 && (
         <NavLink
           to="/dashboard/share-hr-contact"
           className={({ isActive }) =>
@@ -101,10 +89,9 @@ function Sidebar() {
         >
           Share HR Contact
         </NavLink>
-      }
-      
-      {
-        (role === 2) && 
+      )}
+
+      {role === 2 && (
         <NavLink
           to="/dashboard/share-company-contact"
           className={({ isActive }) =>
@@ -113,10 +100,9 @@ function Sidebar() {
         >
           Share Company Contact
         </NavLink>
-      }
-      
-      { 
-        (role === 3 || role === 4) && 
+      )}
+
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/hr-list"
           className={({ isActive }) =>
@@ -125,57 +111,48 @@ function Sidebar() {
         >
           HR List
         </NavLink>
-      }
-      {
-        (role === 3 || role === 4) && 
+      )}
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/my-hr-list"
           className={({ isActive }) =>
             isActive ? "app-sidebar-link active" : "app-sidebar-link"
-            
           }
         >
           My HR List
         </NavLink>
-      }
-      {
-        (role === 3 || role === 4) && 
+      )}
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/shared-hr-contact"
           className={({ isActive }) =>
             isActive ? "app-sidebar-link active" : "app-sidebar-link"
-            
           }
         >
           Shared HR Contact
         </NavLink>
-      }
-      {
-        (role === 3 || role === 4) && 
+      )}
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/shared-company-contact"
           className={({ isActive }) =>
             isActive ? "app-sidebar-link active" : "app-sidebar-link"
-            
           }
         >
           Shared Company Contact
         </NavLink>
-      }
-      {
-        (role === 3 || role === 4) && 
+      )}
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/call-log"
           className={({ isActive }) =>
             isActive ? "app-sidebar-link active" : "app-sidebar-link"
-            
           }
         >
           Call Log
         </NavLink>
-      }
-      {
-        (role === 3 || role === 4) &&
+      )}
+      {(role === 3 || role === 4) && (
         <NavLink
           to="/dashboard/all-student-list"
           className={({ isActive }) =>
@@ -184,13 +161,12 @@ function Sidebar() {
         >
           AllStudentList
         </NavLink>
-      }
-      {
-        (role === 1 || role === 2 || role === 3 || role === 4) &&
+      )}
+      {(role === 1 || role === 2 || role === 3 || role === 4) && (
         <span className="app-sidebar-link" onClick={handleLogout}>
           Logout
         </span>
-      }
+      )}
     </div>
   );
 }

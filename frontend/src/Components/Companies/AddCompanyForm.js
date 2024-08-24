@@ -66,7 +66,7 @@ function AddCompanyForm({ onClose, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+   
     onSave(formData);
     onClose();
   };

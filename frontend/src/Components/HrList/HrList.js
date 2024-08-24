@@ -32,7 +32,7 @@ const HrList = () => {
         }
       } catch (err) {
         setError("Failed to load HR list");
-        console.log(err);
+
         SetHrListLoading(false);
       }
     }
@@ -102,7 +102,9 @@ const HrList = () => {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center">No HRs found</td>
+                  <td colSpan="5" className="text-center">
+                    No HRs found
+                  </td>
                 </tr>
               ) : (
                 filteredData.map((hr) => (

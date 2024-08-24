@@ -7,11 +7,13 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { fetchCollegeList } from "../../api/fetchCollgeList";
 import { Signup } from "../../api/signInApi";
+import { fetchExistingUsers } from "../../api/existingUser";
 
 export default function SignUpPage() {
   const Navigate = useNavigate();
   const { setIsLoading } = useLoading();
   const [college, setCollege] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [formData, setFormData] = useState({
     college: "",
     first_name: "",
@@ -21,46 +23,131 @@ export default function SignUpPage() {
     password1: "",
     password2: "",
   });
+
   useEffect(function () {
     async function fetchColleges() {
       try {
         const response = await fetchCollegeList();
         setCollege(response);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching Colleges", error);
       }
     }
     fetchColleges();
+  }, []);
+
+  useEffect(function () {
+    async function fetchUsers() {
+      try {
+        const response = await fetchExistingUsers();
+        setUserList(response);
+      } catch (error) {
+        console.error("Error fetching Users", error);
+      }
+    }
+    fetchUsers();
   }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validateUsername = (username) => {
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    return usernameRegex.test(username);
+  };
+
+  const validateName = (name) => {
+    const nameRegex = /^[a-zA-Z]+$/;
+    return nameRegex.test(name);
+  };
+
+  const isUserEmailExists = () => {
+    return userList.some((user) => user.email === formData.email);
+  };
+
+  const isUserNameExists = () => {
+    return userList.some((user) => user.username === formData.username);
+  };
+
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
+
+    if (!validateUsername(formData.username)) {
+      toast.error("Username can only contain alphanumeric characters!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateName(formData.first_name)) {
+      toast.error("First name can only contain alphabetic characters!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateName(formData.last_name)) {
+      toast.error("Last name can only contain alphabetic characters!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (isUserNameExists()) {
+      toast.error("Username already exists!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (isUserEmailExists()) {
+      toast.error("Email already exists!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      toast.error("Please enter a valid email address!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePassword(formData.password1)) {
+      toast.error(
+        "Password must be at least 6 characters long, include an uppercase letter, a number, and a special character!"
+      );
+      setIsLoading(false);
+      return;
+    }
+
     if (formData.password1 !== formData.password2) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
+      setIsLoading(false);
       return;
     }
 
     try {
       const response = await Signup(formData);
-      console.log(response);
       if (response.status === 200) {
-        console.log(response);
         Navigate("/login");
-        toast.success("Registered successfully ! Confirm email to login .");
-        //return;
+        toast.success("Registered successfully! Confirm email to login.");
       }
     } catch (error) {
       if (error.response) {
         console.error("Error registering user:", error.response.data);
-        toast.error("Error signing up !");
+        toast.error("Error signing up!");
       } else {
         console.error("Error registering user:", error.message);
-        toast.error("Error signing up !");
+        toast.error("Error signing up!");
       }
     } finally {
       setIsLoading(false);

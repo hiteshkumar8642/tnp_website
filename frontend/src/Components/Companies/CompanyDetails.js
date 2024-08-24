@@ -91,10 +91,8 @@ const CompanyDetails = ({ company, onBack }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function getAppliedCompanies() {
-      console.log(company);
       setIsLoading(true);
       try {
-        console.log(company);
         const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
         let data;
         if (storedAppliedCompanies) {

@@ -2,7 +2,6 @@ import apiClient from "../services/api";
 
 export async function sendHRinfo(id, status) {
   try {
-    //console.log(formData);
     const params = new URLSearchParams({ id, status });
     const response = await apiClient.post(
       "api/hrdata-modified/",
@@ -13,7 +12,7 @@ export async function sendHRinfo(id, status) {
         },
       }
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.error("Failed to send HR contact", error);

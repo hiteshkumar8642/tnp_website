@@ -2,7 +2,6 @@ import apiClient from "../services/api";
 
 export async function sendAnnouncements(formData) {
   try {
-    //console.log(formData);
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
       "/api/addannouncement/",
@@ -13,7 +12,7 @@ export async function sendAnnouncements(formData) {
         },
       }
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.error("Failed to send announcements", error);

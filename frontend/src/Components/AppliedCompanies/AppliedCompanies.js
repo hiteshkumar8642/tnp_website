@@ -18,12 +18,10 @@ function AppliedCompaniesList() {
       try {
         const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
         if (storedAppliedCompanies) {
-          console.log("Using stored applied companies data");
           setAppliedCompanies(JSON.parse(storedAppliedCompanies));
         } else {
-          console.log("Fetching applied companies data");
           const data = await fetchAppliedCompanies();
-          console.log("Fetched applied companies data:", data);
+
           setAppliedCompanies(data);
           localStorage.setItem("appliedCompanies", JSON.stringify(data));
         }
@@ -45,15 +43,16 @@ function AppliedCompaniesList() {
     setSearchTerm(event.target.value);
   };
 
-  const filteredCompanies = appliedCompanies.filter((company) =>
-    company &&
-    company.application_id &&
-    company.application_id.company_id &&
-    company.application_id.company_id.name &&
-    company.application_id.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanies = appliedCompanies.filter(
+    (company) =>
+      company &&
+      company.application_id &&
+      company.application_id.company_id &&
+      company.application_id.company_id.name &&
+      company.application_id.company_id.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
-
-  console.log("Filtered applied companies:", filteredCompanies);
 
   return (
     <div className="projects-section">
@@ -70,7 +69,7 @@ function AppliedCompaniesList() {
               onChange={handleSearch}
               className="border rounded-l px-2 py-1 w-64"
             />
-            <button 
+            <button
               className="bg-black text-white px-3.5 py-2.5 rounded-r"
               onClick={() => handleSearch({ target: { value: searchTerm } })}
             >
@@ -95,7 +94,10 @@ function AppliedCompaniesList() {
           <div className="project-boxes jsGridView">
             {selectedCompany ? (
               <div className="w-full">
-                <AppliedCompanyDetails company={selectedCompany} onBack={handleBack} />
+                <AppliedCompanyDetails
+                  company={selectedCompany}
+                  onBack={handleBack}
+                />
               </div>
             ) : (
               <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
@@ -104,7 +106,10 @@ function AppliedCompaniesList() {
                     key={company.id}
                     company={company.application_id}
                     onClick={setSelectedCompany}
-                    isActive={selectedCompany && selectedCompany.id === company.application_id?.id}
+                    isActive={
+                      selectedCompany &&
+                      selectedCompany.id === company.application_id?.id
+                    }
                   />
                 ))}
               </div>

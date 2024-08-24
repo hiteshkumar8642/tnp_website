@@ -30,12 +30,10 @@ function Company() {
       try {
         const storedCompanies = localStorage.getItem("comingCompanies");
         if (storedCompanies) {
-          console.log("Using stored companies data");
           setComingCompanies(JSON.parse(storedCompanies));
         } else {
-          console.log("Fetching companies data");
           const data = await fetchComingCompanyDetails();
-          console.log("Fetched companies data:", data);
+
           setComingCompanies(data);
           localStorage.setItem("comingCompanies", JSON.stringify(data));
         }
@@ -68,7 +66,7 @@ function Company() {
   const handleSaveCompany = async (newCompany) => {
     try {
       const response = await addNewCompany(newCompany);
-      console.log(response);
+
       if (response.status === 201) {
         setComingCompanies([...comingCompanies, newCompany]);
         localStorage.setItem(
@@ -77,7 +75,7 @@ function Company() {
         );
         setIsModalOpen(false);
       } else {
-        console.log("Failed to add the company.");
+        console.error("Failed to add the company.");
       }
     } catch (err) {
       console.error("Error adding the company", err);
@@ -91,8 +89,6 @@ function Company() {
       company.company_id.name &&
       company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  console.log("Filtered companies:", filteredCompanies);
 
   const currentDate = new Date();
   const formattedDate = timeanddate(currentDate);

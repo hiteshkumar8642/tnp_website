@@ -3,8 +3,6 @@ import apiClient from "../services/api";
 // Function to handle applying to a company
 export async function applyToCompany(formData) {
   try {
-    console.log("IN API");
-    console.log(formData);
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
       "api/apply-to-company/",

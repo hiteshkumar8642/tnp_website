@@ -6,15 +6,19 @@ import "./CollegeRegistrationPage.css";
 import toast from "react-hot-toast";
 import { fetchBranches } from "../../api/branches";
 import { sendNewCollege } from "../../api/sendCollegeRegistration";
+import { fetchExistingUsers } from "../../api/existingUser";
+import { fetchCollegeList } from "../../api/fetchCollgeList";
 
 export default function CollegeRegistrationPage() {
   const { setIsLoading } = useLoading();
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredBranches, setFilteredBranches] = useState(branches);
+  const [collegeList, setCollegeList] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
     first_name: "",
@@ -33,10 +37,32 @@ export default function CollegeRegistrationPage() {
         const response = await fetchBranches();
         setBranches(response);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching Branches", error);
       }
     }
     getBranches();
+  }, []);
+  useEffect(function () {
+    async function fetchColleges() {
+      try {
+        const response = await fetchCollegeList();
+        setCollegeList(response);
+      } catch (error) {
+        console.error("Error fetching Colleges", error);
+      }
+    }
+    fetchColleges();
+  }, []);
+  useEffect(function () {
+    async function fetchUsers() {
+      try {
+        const response = await fetchExistingUsers();
+        setUserList(response);
+      } catch (error) {
+        console.error("Error fetching Users", error);
+      }
+    }
+    fetchUsers();
   }, []);
 
   useEffect(
@@ -68,51 +94,76 @@ export default function CollegeRegistrationPage() {
     [searchInput, branches]
   );
 
+  const isUserEmailExists = () => {
+    return userList.some((user) => user.email === formData.email);
+  };
+
+  const isUserNameExists = () => {
+    return userList.some((user) => user.username === formData.username);
+  };
+  const isCollegeExists = () => {
+    return collegeList.some((col) => col.name === formData.college);
+  };
+
   const handleProceed = (e) => {
     e.preventDefault();
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    const nameRegex = /^[a-zA-Z]+$/;
     const allFieldsFilled = Object.values(formData).every(
       (field) => field.trim() !== ""
     );
 
     if (!allFieldsFilled) {
-      alert("Please fill in all fields before proceeding.");
+      toast.error("Please fill in all fields before proceeding.");
       return;
     }
 
-    if (formData.college !== formData.confirmCollege) {
-      alert("College and Confirm College fields do not match.");
+    if (isUserNameExists()) {
+      toast.error("Username already exists!");
+      setIsLoading(false);
       return;
     }
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Password and Confirm Password fields do not match.");
-      return;
-    }
-
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
-    const usernameRegex = /^[a-zA-Z0-9]+$/;
-    const nameRegex = /^[a-zA-Z]+$/;
-
-    if (!passwordRegex.test(formData.password)) {
-      alert(
-        "Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number."
-      );
-      return;
-    }
-
     if (!usernameRegex.test(formData.username)) {
-      alert("Username can only contain alphanumeric characters.");
+      toast.error("Username can only contain alphanumeric characters.");
       return;
     }
 
     if (!nameRegex.test(formData.first_name)) {
-      alert("First Name can only contain alphabetic characters.");
+      toast.error("First Name can only contain alphabetic characters.");
       return;
     }
 
     if (!nameRegex.test(formData.last_name)) {
-      alert("Last Name can only contain alphabetic characters.");
+      toast.error("Last Name can only contain alphabetic characters.");
+      return;
+    }
+
+    if (isUserEmailExists()) {
+      toast.error("Email already exists!");
+      setIsLoading(false);
+      return;
+    }
+    if (isCollegeExists()) {
+      toast.error("College already exists!");
+      setIsLoading(false);
+      return;
+    }
+    if (formData.college !== formData.confirmCollege) {
+      toast.error("College and Confirm College fields do not match.");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Password and Confirm Password fields do not match.");
+      return;
+    }
+
+    if (!passwordRegex.test(formData.password)) {
+      toast.error(
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number."
+      );
       return;
     }
 
@@ -142,7 +193,6 @@ export default function CollegeRegistrationPage() {
 
     try {
       const response = await sendNewCollege(data);
-      console.log("Registration successful:", response.data);
       setShowModal(false);
       setFormData({
         username: "",
@@ -157,7 +207,6 @@ export default function CollegeRegistrationPage() {
       });
       setSelectedBranches([]);
       if (response.status === 200) {
-        console.log(response);
         navigate("/login");
         setIsLoading(false);
       }

@@ -26,7 +26,6 @@ const MyHrList = () => {
         }
       } catch (err) {
         setError("Failed to load My HR list");
-        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +59,9 @@ const MyHrList = () => {
       <div className="projects-section-header">
         <p>My HR List</p>
         <div className="view-actions">
-          <label htmlFor="status" className="mr-2">Status:</label>
+          <label htmlFor="status" className="mr-2">
+            Status:
+          </label>
           <select
             id="status"
             value={statusFilter}

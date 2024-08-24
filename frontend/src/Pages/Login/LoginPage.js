@@ -25,8 +25,6 @@ export default function LoginPage() {
     try {
       const response = await login(user);
 
-      console.log(response.data);
-
       const { access_token, refresh_token, user_detail, user_profile } =
         response.data;
       localStorage.setItem("access_token", access_token);
@@ -34,8 +32,10 @@ export default function LoginPage() {
       localStorage.setItem("user_detail", JSON.stringify(user_detail[0]));
       localStorage.setItem("user_Profile", JSON.stringify(user_profile[0]));
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
-
-      if (user_detail && Object.keys(user_detail).length > 0) {
+      if (
+        (user_detail && Object.keys(user_detail).length > 0) ||
+        user_profile[0]?.role === 4
+      ) {
         navigate("/dashboard");
       } else {
         navigate("/firstlogin");
@@ -66,10 +66,10 @@ export default function LoginPage() {
           <h2>Login</h2>
           <form onSubmit={submit}>
             <div className="input-group">
-              <i className="fas fa-envelope"></i>
+              <i className="fas fa-user"></i>
               <input
                 type="text"
-                placeholder="Email"
+                placeholder="User Name"
                 required
                 onChange={(e) => setUsername(e.target.value)}
               />

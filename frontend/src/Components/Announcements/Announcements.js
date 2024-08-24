@@ -4,6 +4,7 @@ import AnnouncementItem from "./AnnouncementItem";
 import { ShimmerCategoryItem } from "react-shimmer-effects";
 import "./Announcement.css";
 import { sendAnnouncements } from "../../api/sendAnnouncement";
+import { toast } from "react-hot-toast";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
@@ -45,26 +46,26 @@ function Announcements() {
     function handleClickOutside(event) {
       // Check if the click is outside the form and the add-announcement-btn
       if (
-        formRef.current && 
+        formRef.current &&
         !formRef.current.contains(event.target) &&
-        buttonRef.current && 
+        buttonRef.current &&
         !buttonRef.current.contains(event.target)
       ) {
         setShowForm(false);
       }
     }
-    
-      if (showForm) {
-        document.addEventListener("mousedown", handleClickOutside);
-      } else {
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
+
+    if (showForm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showForm]);
-  
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, announcement: e.target.value });
   };
@@ -74,9 +75,7 @@ function Announcements() {
     try {
       const response = await sendAnnouncements(formData);
 
-      console.log(response);
       if (response.status === 201) {
-        console.log("Announcement added successfully!");
         setAnnouncements((prevAnnouncements) => [
           formData,
           ...prevAnnouncements,
@@ -88,7 +87,7 @@ function Announcements() {
         //setAnnouncementInput("");
         setShowForm(false);
       } else {
-        console.log("Failed to add the announcement.");
+        toast.error("Failed to add the announcement.");
       }
     } catch (error) {
       console.error("Error adding the announcement:", error);
@@ -108,10 +107,10 @@ function Announcements() {
           className="add-announcement-btn"
           ref={buttonRef}
         >
-          {showForm ? '×' : '+'}
+          {showForm ? "×" : "+"}
         </button>
       </div>
-      
+
       {showForm && (
         <form
           onSubmit={handleAddAnnouncement}
