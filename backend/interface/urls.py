@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     # Printing Application
+    path('activate/<uidb64>/<token>', RegisterView.activate, name='activate'),
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
     path('companylist/',CompanyListView.CompanyListView,name='companylist'),
