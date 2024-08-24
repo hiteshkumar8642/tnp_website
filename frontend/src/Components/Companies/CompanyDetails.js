@@ -286,8 +286,8 @@ const CompanyDetails = ({comingCompany, onBack }) => {
           CTC: {generalCTC} LPA
         </span>
       </div>
-      <p className="JD mt-4 text-gray-600 cursor-pointer" onClick={openModal}>
-        Job Description
+      <p className="JD mt-4 text-white text-center cursor-pointer bg-blue-500 hover:bg-blue-700 w-fit relative left-[40%] py-2 px-6 rounded-md" onClick={openModal}>
+       Click to View Job Description
       </p>
 
       <Modal
