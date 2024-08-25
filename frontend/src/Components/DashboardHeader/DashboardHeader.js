@@ -77,12 +77,12 @@ function DashboardHeader() {
     <div className="app-header flex justify-between items-center p-4">
       <div>
         <div className="app-header-left flex items-center">
-          <span className="app-icon"></span>
+          <img src={MYSVG} alt="My SVG" className="w-16"/>
           <p className="app-name text-xl font-bold ml-2">CampusHirease</p>
         </div>
-        <div className="sm:hidden block">
+        {/* <div className="sm:hidden block">
             <img src={MYSVG} alt="My SVG" className="w-16"/>
-        </div>
+        </div> */}
       </div>
       <div className="app-header-right flex items-center space-x-4">
         <button

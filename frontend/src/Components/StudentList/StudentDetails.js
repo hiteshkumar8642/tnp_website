@@ -4,6 +4,7 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./StudentDetailsModal.css";
 import { IoArrowBack } from "react-icons/io5";
+import ToggleButton from "./ToggleButton";
 
 const StudentDetails = ({ student, onBack }) => {
   const {
@@ -30,12 +31,19 @@ const StudentDetails = ({ student, onBack }) => {
   } = student;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
   };
 
   const resumeUrl = resume ? `${process.env.REACT_APP_API_HOST}${resume}` : "";
@@ -49,19 +57,25 @@ const StudentDetails = ({ student, onBack }) => {
       >
         <IoArrowBack size={24} />
       </button>
-      <div className="flex items-center">
-        <img
-          src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
-          alt="icon"
-          className="w-16 h-16 mr-4"
-        />
-        <div>
-          <h2 className="text-2xl font-bold">{`${user.first_name} ${user.last_name}`}</h2>
-          <p className="text-gray-500">{user.username}</p>
-          <p className="Res text-blue-500" onClick={openModal}>
-            Resume
-          </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center" >
+          <img
+            src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
+            alt="icon"
+            className="w-16 h-16 mr-4"
+          />
+          <div>
+            <h2 className="text-2xl font-bold">{`${user.first_name} ${user.last_name}`}</h2>
+            <p className="text-gray-500">{user.username}</p>
+            <p className="Res text-blue-500" onClick={openModal}>
+              Resume
+            </p>
+          </div>
         </div>
+        <div>
+          <ToggleButton student={student}/>
+        </div>
+
       </div>
       <div className="mt-4 flex justify-between items-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
