@@ -84,9 +84,13 @@ const CompanyDetails = ({ appliedCompanies, comingCompany, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eligibilityError, setEligibilityError] = useState("");
 
-  const isApplied = appliedCompanies.some(
-    (appliedCompany) => appliedCompany.application_id.id === comingCompany.id
-  );
+  const isApplied =
+    appliedCompanies.length === 0
+      ? false
+      : appliedCompanies.some(
+          (appliedCompany) =>
+            appliedCompany.application_id.id === comingCompany.id
+        );
 
   const openModal = () => {
     setIsModalOpen(true);
