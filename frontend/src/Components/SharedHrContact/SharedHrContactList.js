@@ -41,6 +41,9 @@ const SharedHrContactList = () => {
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Shared HR Contacts List</p>
+        <button className="bg-gray-700 text-white p-2 px-3 rounded-md hover:bg-gray-800">
+          Delete All
+        </button>
       </div>
       {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (

@@ -28,6 +28,7 @@ import CallLog from "./Components/CallLog/CallLog";
 import UserProfileDetails from "./Components/UserProfilePage/UserProfilePage";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import Test from "./Components/Test/Test";
+import ErrorPage from "./Components/ErrorPage/ErrorPage";
 
 function App() {
   return (
@@ -152,6 +153,7 @@ function App() {
             ></Route>
           </Route>
           <Route path="/401" element={<UnauthorizedPage />} />
+          <Route path="/not-verified" element={<ErrorPage/>} />
           <Route path="*" element={<Error404Page />} />
           <Route path="/user-profile" element={<UserProfileDetails />} />
         </Routes>

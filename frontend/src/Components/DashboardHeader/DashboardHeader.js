@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import Announcements from "../Announcements/Announcements";
 import MYSVG from "../../assets/Logo/campuslogo.png";
-
 
 function DashboardHeader() {
   const [userName, setUserName] = useState("Name");
@@ -12,6 +11,7 @@ function DashboardHeader() {
   const [role, setRole] = useState(null); // State for user role
   const [activeLink, setActiveLink] = useState(""); // State for active link
   const navigate = useNavigate();
+  const announcementRef = useRef(null); // Reference for announcement box
 
   useEffect(() => {
     const storedUserDetail = localStorage.getItem("user_detail");
@@ -37,9 +37,27 @@ function DashboardHeader() {
     }
   }, []);
 
-  const toggleAnnouncements = () => {
+  const toggleAnnouncements = (event) => {
+    event.stopPropagation(); // Prevent event from propagating to the document
     setShowAnnouncements(!showAnnouncements);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        announcementRef.current &&
+        !announcementRef.current.contains(event.target)
+      ) {
+        setShowAnnouncements(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -67,7 +85,7 @@ function DashboardHeader() {
         </div>
       </div>
       <div className="app-header-right flex items-center space-x-4">
-      <button
+        <button
           onClick={toggleAnnouncements}
           className="bg-black text-white rounded-full p-2 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 shadow-lg"
           aria-label="Toggle Announcements"
@@ -134,7 +152,10 @@ function DashboardHeader() {
         </Link>
 
         {showAnnouncements && (
-          <div className="announcement-popup absolute right-0 mt-4 bg-white shadow-md rounded p-4 w-64">
+          <div
+            ref={announcementRef}
+            className="announcement-popup absolute right-0 mt-4 bg-white shadow-md rounded p-4 w-64"
+          >
             <Announcements />
           </div>
         )}
@@ -253,7 +274,7 @@ function DashboardHeader() {
               )}
               <button
                 onClick={handleLogout}
-                className="w-full text-left text-red-500 hover:text-red-700 p-2 rounded"
+                className="block text-red-600 hover:text-red-800 p-2 rounded w-full text-left"
               >
                 Logout
               </button>

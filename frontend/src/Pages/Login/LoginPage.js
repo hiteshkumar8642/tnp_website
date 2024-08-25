@@ -29,12 +29,11 @@ export default function LoginPage() {
         response.data;
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("user_detail", JSON.stringify(user_detail[0]));
-      localStorage.setItem("user_Profile", JSON.stringify(user_profile[0]));
+      localStorage.setItem("user_detail", JSON.stringify(user_detail));
+      localStorage.setItem("user_Profile", JSON.stringify(user_profile));
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
       if (
-        (user_detail && Object.keys(user_detail).length > 0) ||
-        user_profile[0]?.role === 4
+        user_profile?.role === 4
       ) {
         navigate("/dashboard");
       } else {
