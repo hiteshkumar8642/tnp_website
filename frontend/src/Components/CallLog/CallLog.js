@@ -52,9 +52,17 @@ const CallLog = () => {
           <div className="table-body-container">
             <table className="call-log-table">
               <tbody>
-                {callLogs.map((callLog, index) => (
-                  <CallLogTableRow key={index} callLog={callLog} />
-                ))}
+                {callLogs.length === 0 ? (
+                  <tr>
+                    <td colSpan="3" className="text-center">
+                      No HRs found
+                    </td>
+                  </tr>
+                ) : (
+                  callLogs.map((callLog, index) => (
+                    <CallLogTableRow key={index} callLog={callLog} />
+                  ))
+                )}
               </tbody>
             </table>
           </div>

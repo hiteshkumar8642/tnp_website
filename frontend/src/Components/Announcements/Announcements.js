@@ -145,9 +145,13 @@ function Announcements() {
         ) : (
           <div className="announcements-list">
             {error && <p className="error-message">{error}</p>}
-            {announcements.map((announcement, index) => (
-              <AnnouncementItem key={index} announcement={announcement} />
-            ))}
+            {announcements.length === 0 ? (
+              <p>No Announcements</p>
+            ) : (
+              announcements.map((announcement, index) => (
+                <AnnouncementItem key={index} announcement={announcement} />
+              ))
+            )}
           </div>
         )}
       </div>

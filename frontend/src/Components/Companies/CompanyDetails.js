@@ -75,12 +75,12 @@ const getUserDetailsFromLocalStorage = () => {
   return data ? JSON.parse(data) : {};
 };
 
-const CompanyDetails = ({comingCompany, onBack }) => {
+const CompanyDetails = ({ comingCompany, onBack }) => {
   const { company_id, position, is_spp, is_sip, last_date, job_description } =
-   comingCompany || {};
-   const company=company_id;
-   const companyName = company?.name || "Unknown Company";
-   console.log(company);
+    comingCompany || {};
+  const company = company_id;
+  const companyName = company?.name || "Unknown Company";
+
   const generalCTC = company?.general_ctc || "N/A";
   const userData = getUserDetailsFromLocalStorage();
 
@@ -107,7 +107,8 @@ const CompanyDetails = ({comingCompany, onBack }) => {
         // Check if the user has applied to the currentcomingCompany
 
         const isUserApplied = data.some(
-          (appliedCompany) => appliedCompany.application_id.id ===comingCompany.id
+          (appliedCompany) =>
+            appliedCompany.application_id.id === comingCompany.id
         );
         setIsApplied(isUserApplied);
       } catch (err) {
@@ -159,7 +160,7 @@ const CompanyDetails = ({comingCompany, onBack }) => {
   // Function to handle apply
   const handleApply = async () => {
     try {
-      const response = await applyToCompany({ application:comingCompany.id }); // Pass Application ID and user ID
+      const response = await applyToCompany({ application: comingCompany.id }); // Pass Application ID and user ID
       if (response.status === 201) {
         setIsApplied(true);
         alert("You have successfully applied for this position!");
@@ -170,7 +171,7 @@ const CompanyDetails = ({comingCompany, onBack }) => {
         ]);
         localStorage.setItem(
           "appliedCompanies",
-          JSON.stringify([...appliedCompanies, { id:comingCompany.id }])
+          JSON.stringify([...appliedCompanies, { id: comingCompany.id }])
         );
       } else {
         console.error("Failed to apply:", response.data);
@@ -182,43 +183,54 @@ const CompanyDetails = ({comingCompany, onBack }) => {
 
   // Check eligibility
   useEffect(() => {
-    console.log()
     if (
-      userData.twelfth_percentage <comingCompany.twelfth_marks_eligibility ||
-      userData.tenth_percentage <comingCompany.tenth_marks_eligibility ||
-      userData.gap_after_twelfth >comingCompany.twelfth_gap ||
-      userData.gap_after_graduation >comingCompany.graduation_gap ||
-      userData.graduation_cgpa <comingCompany.graduation_marks ||
-      userData.current_cgpa <comingCompany.current_cgpa ||
-      userData.backlogs >comingCompany.backlogs
+      userData.twelfth_percentage < comingCompany.twelfth_marks_eligibility ||
+      userData.tenth_percentage < comingCompany.tenth_marks_eligibility ||
+      userData.gap_after_twelfth > comingCompany.twelfth_gap ||
+      userData.gap_after_graduation > comingCompany.graduation_gap ||
+      userData.graduation_cgpa < comingCompany.graduation_marks ||
+      userData.current_cgpa < comingCompany.current_cgpa ||
+      userData.backlogs > comingCompany.backlogs
     ) {
       let error = "You are not eligible to apply due to:";
-      if (userData.twelfth_percentage <comingCompany.twelfth_marks_eligibility) {
+      if (
+        userData.twelfth_percentage < comingCompany.twelfth_marks_eligibility
+      ) {
         error += `\n- Your 12th Marks ${userData.twelfth_percentage} and required ${company.twelfth_marks_eligibility}`;
       }
-      if (userData.tenth_percentage <comingCompany.tenth_marks_eligibility) {
+      if (userData.tenth_percentage < comingCompany.tenth_marks_eligibility) {
         error += `\n- Your 10th Marks ${userData.tenth_percentage} and required ${company.tenth_marks_eligibility}`;
       }
-      if (userData.graduation_cgpa <comingCompany.graduation_marks) {
+      if (userData.graduation_cgpa < comingCompany.graduation_marks) {
         error += `\n- Your Graduation Marks ${userData.graduation_cgpa} and required ${company.graduation_marks}`;
       }
-      if (userData.current_cgpa <comingCompany.current_cgpa) {
+      if (userData.current_cgpa < comingCompany.current_cgpa) {
         error += `\n- Your Current CGPA ${userData.current_cgpa} and required ${company.current_cgpa}`;
       }
-      if (userData.gap_after_graduation >comingCompany.graduation_gap) {
+      if (userData.gap_after_graduation > comingCompany.graduation_gap) {
         error += `\n- Your Gap after Graduation ${userData.gap_after_graduation} and required ${company.graduation_gap}`;
       }
-      if (userData.gap_after_twelfth >comingCompany.twelfth_gap) {
+      if (userData.gap_after_twelfth > comingCompany.twelfth_gap) {
         error += `\n- Your Gap after 12th ${userData.gap_after_twelfth} and required ${company.twelfth_gap}`;
       }
-      if (userData.backlogs >comingCompany.backlogs) {
+      if (userData.backlogs > comingCompany.backlogs) {
         error += `\n- Your Active Backlogs ${userData.backlogs} and required ${company.backlogs}`;
       }
       setEligibilityError(error);
     } else {
       setEligibilityError("");
     }
-  }, [userData,comingCompany]);
+  }, [
+    userData,
+    comingCompany,
+    company.backlogs,
+    company.current_cgpa,
+    company.graduation_gap,
+    company.graduation_marks,
+    company.tenth_marks_eligibility,
+    company.twelfth_gap,
+    company.twelfth_marks_eligibility,
+  ]);
 
   if (error !== "") return <p>There was Error</p>;
   return (
@@ -244,28 +256,28 @@ const CompanyDetails = ({comingCompany, onBack }) => {
       <div className="flex items-center">
         <div>
           <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{companyName}</h2>
-              <div className="absolute right-16">
-                  {eligibilityError && (
-                    <p className="text-red-500 mt-4">{eligibilityError}</p>
-                  )}
-                  {isApplied ? (
-                    <button
-                      className="bg-gray-500 text-white p-2 rounded-md cursor-not-allowed px-8"
-                      disabled
-                    >
-                      Applied
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleApply}
-                      className="bg-blue-500 text-white  rounded-md  px-8 py-2 hover:bg-blue-700 transition-colors"
-                      disabled={!!eligibilityError || isLoading}
-                    >
-                      Apply
-                    </button>
-                  )}
-              </div>  
+            <h2 className="text-2xl font-bold">{companyName}</h2>
+            <div className="absolute right-16">
+              {eligibilityError && (
+                <p className="text-red-500 mt-4">{eligibilityError}</p>
+              )}
+              {isApplied ? (
+                <button
+                  className="bg-gray-500 text-white p-2 rounded-md cursor-not-allowed px-8"
+                  disabled
+                >
+                  Applied
+                </button>
+              ) : (
+                <button
+                  onClick={handleApply}
+                  className="bg-blue-500 text-white  rounded-md  px-8 py-2 hover:bg-blue-700 transition-colors"
+                  disabled={!!eligibilityError || isLoading}
+                >
+                  Apply
+                </button>
+              )}
+            </div>
           </div>
           <p className="text-blue-500">{position}</p>
           <p className="text-gray-500">
@@ -286,8 +298,11 @@ const CompanyDetails = ({comingCompany, onBack }) => {
           CTC: {generalCTC} LPA
         </span>
       </div>
-      <p className="JD mt-4 text-white text-center cursor-pointer bg-blue-500 hover:bg-blue-700 w-fit relative left-[40%] py-2 px-6 rounded-md" onClick={openModal}>
-       Click to View Job Description
+      <p
+        className="JD mt-4 text-white text-center cursor-pointer bg-blue-500 hover:bg-blue-700 w-fit relative left-[40%] py-2 px-6 rounded-md"
+        onClick={openModal}
+      >
+        Click to View Job Description
       </p>
 
       <Modal
@@ -311,7 +326,6 @@ const CompanyDetails = ({comingCompany, onBack }) => {
           )}
         </div>
       </Modal>
-      
     </div>
   );
 };

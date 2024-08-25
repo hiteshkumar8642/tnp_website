@@ -52,9 +52,17 @@ const SharedCompanyContactList = () => {
               </tr>
             </thead>
             <tbody>
-              {sharedCompanyData.map((company, index) => (
-                <SharedCompanyTableRow key={index} company={company} />
-              ))}
+              {sharedCompanyData.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center">
+                    No HRs found
+                  </td>
+                </tr>
+              ) : (
+                sharedCompanyData.map((company, index) => (
+                  <SharedCompanyTableRow key={index} company={company} />
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -44,12 +44,12 @@ function Sidebar() {
       // Redirect to login page
       Navigate("/");
       setIsLoading(false);
-      console.log("hekko");
+
       toast.success("Logout successfully");
     } catch (error) {
-      console.error("Logout failed:", error);
-      toast.success("Logout successfully");
       localStorage.clear();
+      toast.success("Logout successfully");
+
       Navigate("/");
     } finally {
       setIsLoading(false);

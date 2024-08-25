@@ -91,13 +91,21 @@ const MyHrList = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((hr) => (
-                <MyHrTableRow
-                  key={hr.id}
-                  hr={hr}
-                  handleStatusChange={handleStatusChange}
-                />
-              ))}
+              {filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center">
+                    No HRs found
+                  </td>
+                </tr>
+              ) : (
+                filteredData.map((hr) => (
+                  <MyHrTableRow
+                    key={hr.id}
+                    hr={hr}
+                    handleStatusChange={handleStatusChange}
+                  />
+                ))
+              )}
             </tbody>
           </table>
         </div>

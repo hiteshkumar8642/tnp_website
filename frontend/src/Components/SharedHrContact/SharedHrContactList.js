@@ -60,13 +60,21 @@ const SharedHrContactList = () => {
               </tr>
             </thead>
             <tbody>
-              {sharedHrData.map((hr, index) => (
-                <SharedHrTableRow
-                  key={index}
-                  hr={hr}
-                  onRemove={handleRemoveHr}
-                />
-              ))}
+              {sharedHrData.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="text-center">
+                    No HRs found
+                  </td>
+                </tr>
+              ) : (
+                sharedHrData.map((hr, index) => (
+                  <SharedHrTableRow
+                    key={index}
+                    hr={hr}
+                    onRemove={handleRemoveHr}
+                  />
+                ))
+              )}
             </tbody>
           </table>
         </div>
