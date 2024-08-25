@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import MyHrModal from "./MyHrModal";
+import React, { useState ,useRef} from "react";
+import HrModal from "./HrModal";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +12,7 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   };
 
   const handleRowClick = (e) => {
-    if (selectRef.current && selectRef.current.contains(e.target)) {
+    if (selectRef.current.contains(e.target)) {
       return;
     }
     setIsModalOpen(true);
@@ -22,39 +22,36 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     setIsModalOpen(false);
   };
 
-  const handleStatusDropdownChange = async (e) => {
-    const newStatus = e.target.value;
-
-    // Call the provided handleStatusChange function to update the status locally
-    handleStatusChange(hr.id, newStatus);
-  };
+  const getSafeValue = (value) => (value ? value : "N/A");
 
   return (
     <>
       <tr onClick={handleRowClick}>
-        <td className="col-2 left-align">{hr?.name || "N/A"}</td>
-        <td className="col-2 left-align">{hr?.company_id?.name || "N/A"}</td>
-        <td className="col-1 center-align">
-          {formatDate(hr?.last_date_of_contact)}
+        <td className="col-2 left-align">{getSafeValue(hr.name)}</td>
+        <td className="col-2 left-align">
+          {getSafeValue(hr.company_id?.name)}
         </td>
         <td className="col-1 center-align">
-          {formatDate(hr?.next_date_of_contact)}
+          {formatDate(hr.last_date_of_contact)}
+        </td>
+        <td className="col-1 center-align">
+          {formatDate(hr.next_date_of_contact)}
         </td>
         <td className="col-1 center-align">
           <select
-            ref={selectRef}
-            value={hr?.status || ""}
-            onChange={handleStatusDropdownChange}
+          ref={selectRef}
+            value={hr.status || "Contact"}
+            onChange={(e) => handleStatusChange(hr.id, e.target.value)}
             className="status-dropdown"
           >
             <option value="Contact">Contact</option>
-            <option value="Do_not_Contact">Do not Contact</option>
+            <option value="Do not Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>
         </td>
       </tr>
       {isModalOpen && (
-        <MyHrModal
+        <HrModal
           hr={hr}
           onClose={handleCloseModal}
           handleStatusChange={handleStatusChange}
