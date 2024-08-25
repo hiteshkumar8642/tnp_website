@@ -4,11 +4,11 @@ import AppliedCompanyDetails from "./AppliedCompanyDetails";
 import AppliedCompanyCard from "./AppliedCompanyCard";
 import Shimmer from "./Shimmer";
 import { FaSearch } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 function AppliedCompaniesList() {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [appliedCompanies, setAppliedCompanies] = useState([]);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -16,18 +16,10 @@ function AppliedCompaniesList() {
     async function getAppliedCompanies() {
       setIsLoading(true);
       try {
-        const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
-        if (storedAppliedCompanies) {
-          setAppliedCompanies(JSON.parse(storedAppliedCompanies));
-        } else {
-          const data = await fetchAppliedCompanies();
-
-          setAppliedCompanies(data);
-          localStorage.setItem("appliedCompanies", JSON.stringify(data));
-        }
-      } catch (err) {
-        setError("Failed to load Applied Companies");
-        console.error(err);
+        const data = await fetchAppliedCompanies();
+        setAppliedCompanies(data);
+      } catch (error) {
+        toast.error("Failed to load Applied Companies");
       } finally {
         setIsLoading(false);
       }
@@ -81,35 +73,27 @@ function AppliedCompaniesList() {
 
       {isLoading ? (
         <Shimmer />
-      ) : error ? (
-        <div className="text-center py-4 text-red-500">{error}</div>
+      ) : filteredCompanies.length === 0 ? (
+        <div className="text-center py-4">No Applied Companies found.</div>
+      ) : selectedCompany ? (
+        <div className="w-full">
+          <AppliedCompanyDetails
+            company={selectedCompany}
+            onBack={handleBack}
+          />
+        </div>
       ) : (
-        <>
-          <div className="project-boxes jsGridView">
-            {selectedCompany ? (
-              <div className="w-full">
-                <AppliedCompanyDetails
-                  company={selectedCompany}
-                  onBack={handleBack}
-                />
-              </div>
-            ) : (
-              <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
-                {filteredCompanies.map((company) => (
-                  <AppliedCompanyCard
-                    key={company.id}
-                    company={company.application_id}
-                    onClick={setSelectedCompany}
-                    isActive={
-                      selectedCompany &&
-                      selectedCompany.id === company.application_id?.id
-                    }
-                  />
-                ))}
-              </div>
-            )}
+        <div className="project-boxes jsGridView">
+          <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
+            {filteredCompanies.map((company) => (
+              <AppliedCompanyCard
+                key={company.id}
+                company={company.application_id}
+                onClick={setSelectedCompany}
+              />
+            ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
