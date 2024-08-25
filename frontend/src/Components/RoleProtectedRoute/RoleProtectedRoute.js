@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 const RoleProtectedRoute = ({ children, path }) => {
   const user = JSON.parse(localStorage.getItem("user_Profile")); // Assuming the user info is stored in localStorage
 
+  console.log("user;;;;", user);
   if (user?.is_verified === false) return <Navigate to="/not-verified" />;
 
   let role = user?.role;
