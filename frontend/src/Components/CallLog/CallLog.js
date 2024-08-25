@@ -3,26 +3,20 @@ import "./CallLog.css";
 import { fetchCallHistoryList } from "../../api/fetchCallHistory";
 import CallLogTableRow from "./CallLogTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
+import { toast } from "react-hot-toast";
 
 const CallLog = () => {
   const [callLogs, setCallLogs] = useState([]);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getCallLogs() {
       try {
         setIsLoading(true);
-        const storedCallLogs = localStorage.getItem("callLogs");
-        if (storedCallLogs) {
-          setCallLogs(JSON.parse(storedCallLogs));
-        } else {
-          const data = await fetchCallHistoryList();
-          setCallLogs(data);
-          localStorage.setItem("callLogs", JSON.stringify(data));
-        }
+        const data = await fetchCallHistoryList();
+        setCallLogs(data);
       } catch (err) {
-        setError("Failed to load call logs");
+        toast.error("Failed to load call logs");
       } finally {
         setIsLoading(false);
       }
@@ -35,7 +29,7 @@ const CallLog = () => {
       <div className="projects-section-header">
         <p>Call Logs</p>
       </div>
-      {error && <p className="text-center py-4 text-red-500">{error}</p>}
+
       {isLoading ? (
         <ShimmerTable row={6} col={3} className="shimmer-table-effect" />
       ) : (
@@ -55,7 +49,7 @@ const CallLog = () => {
                 {callLogs.length === 0 ? (
                   <tr>
                     <td colSpan="3" className="text-center">
-                      No HRs found
+                      No Calllog found
                     </td>
                   </tr>
                 ) : (

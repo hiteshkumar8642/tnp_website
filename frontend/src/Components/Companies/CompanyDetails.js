@@ -6,8 +6,8 @@ import "./CompanyDetailsModal.css";
 import { fetchDownloadAppliedStudents } from "../../api/downloadAppliedStudents";
 import { applyToCompany } from "../../api/applyToCompany";
 import { IoArrowBack } from "react-icons/io5";
-import { fetchAppliedCompanies } from "../../api/appliedCompanies";
 import { AiOutlineDownload } from "react-icons/ai";
+import { toast } from "react-hot-toast";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -69,57 +69,24 @@ function daysLeft(lastDate) {
   }
 }
 
-// Fetch user details from local storage
 const getUserDetailsFromLocalStorage = () => {
   const data = localStorage.getItem("user_detail");
   return data ? JSON.parse(data) : {};
 };
 
-const CompanyDetails = ({ comingCompany, onBack }) => {
+const CompanyDetails = ({ appliedCompanies, comingCompany, onBack }) => {
   const { company_id, position, is_spp, is_sip, last_date, job_description } =
     comingCompany || {};
   const company = company_id;
   const companyName = company?.name || "Unknown Company";
-
   const generalCTC = company?.general_ctc || "N/A";
   const userData = getUserDetailsFromLocalStorage();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isApplied, setIsApplied] = useState(false);
-  //const [userData, setUserData] = useState(getUserDetailsFromLocalStorage());
   const [eligibilityError, setEligibilityError] = useState("");
-  const [appliedCompanies, setAppliedCompanies] = useState([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    async function getAppliedCompanies() {
-      setIsLoading(true);
-      try {
-        const storedAppliedCompanies = localStorage.getItem("appliedCompanies");
-        let data;
-        if (storedAppliedCompanies) {
-          data = JSON.parse(storedAppliedCompanies);
-        } else {
-          data = await fetchAppliedCompanies();
-          localStorage.setItem("appliedCompanies", JSON.stringify(data));
-        }
-        setAppliedCompanies(data);
-        // Check if the user has applied to the currentcomingCompany
 
-        const isUserApplied = data.some(
-          (appliedCompany) =>
-            appliedCompany.application_id.id === comingCompany.id
-        );
-        setIsApplied(isUserApplied);
-      } catch (err) {
-        setError("Failed to load Applied Companies");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getAppliedCompanies();
-  }, [comingCompany]);
+  const isApplied = appliedCompanies.some(
+    (appliedCompany) => appliedCompany.application_id.id === comingCompany.id
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -129,15 +96,13 @@ const CompanyDetails = ({ comingCompany, onBack }) => {
     setIsModalOpen(false);
   };
 
-  // Correctly format the job_description URL
   const jobDescriptionUrl = job_description
     ? `${process.env.REACT_APP_API_HOST}${job_description}`
     : "";
 
-  // Function to handle download
   const handleDownload = async () => {
     try {
-      const response = await fetchDownloadAppliedStudents(company.id); // PasscomingCompany ID
+      const response = await fetchDownloadAppliedStudents(company.id);
       if (response.status === 200) {
         const blob = new Blob([response.data], {
           type: response.headers["content-type"],
@@ -149,39 +114,28 @@ const CompanyDetails = ({ comingCompany, onBack }) => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        toast.success("File downloaded successfully!");
       } else {
-        console.error("Failed to download file");
+        toast.error("Failed to download file");
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Error occurred while downloading the file");
     }
   };
 
-  // Function to handle apply
   const handleApply = async () => {
     try {
-      const response = await applyToCompany({ application: comingCompany.id }); // Pass Application ID and user ID
+      const response = await applyToCompany({ application: comingCompany.id });
       if (response.status === 201) {
-        setIsApplied(true);
-        alert("You have successfully applied for this position!");
-        // Update applied companies in state and local storage
-        setAppliedCompanies((prevAppliedCompanies) => [
-          ...prevAppliedCompanies,
-          { id: company.id },
-        ]);
-        localStorage.setItem(
-          "appliedCompanies",
-          JSON.stringify([...appliedCompanies, { id: comingCompany.id }])
-        );
+        toast.success("You have successfully applied for this position!");
       } else {
-        console.error("Failed to apply:", response.data);
+        toast.error("Failed to apply for the position");
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Error occurred while applying to the company");
     }
   };
 
-  // Check eligibility
   useEffect(() => {
     if (
       userData.twelfth_percentage < comingCompany.twelfth_marks_eligibility ||
@@ -232,7 +186,6 @@ const CompanyDetails = ({ comingCompany, onBack }) => {
     company.twelfth_marks_eligibility,
   ]);
 
-  if (error !== "") return <p>There was Error</p>;
   return (
     <div className="p-6 bg-gray-100 shadow-lg rounded-lg">
       <div className="flex justify-between items-center">
@@ -244,7 +197,6 @@ const CompanyDetails = ({ comingCompany, onBack }) => {
           <IoArrowBack size={24} />
         </button>
 
-        {/* Download Button at Top Right Corner */}
         <button
           onClick={handleDownload}
           className="mb-4 bg-black text-white p-2 rounded-full hover:bg-gray-500 transition-colors"
@@ -272,7 +224,7 @@ const CompanyDetails = ({ comingCompany, onBack }) => {
                 <button
                   onClick={handleApply}
                   className="bg-blue-500 text-white  rounded-md  px-8 py-2 hover:bg-blue-700 transition-colors"
-                  disabled={!!eligibilityError || isLoading}
+                  disabled={!!eligibilityError}
                 >
                   Apply
                 </button>
