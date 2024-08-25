@@ -5,8 +5,10 @@ import AddCompanyForm from "./AddCompanyForm";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { timeanddate } from "../../utils/timeanddate";
 import { addNewCompany } from "../../api/addNewCompany";
+import { fetchAppliedCompanies } from "../../api/appliedCompanies";
 import Shimmer from "./Shimmer";
 import CompanyCard from "./CompanyCard";
+import { toast } from "react-hot-toast";
 
 function CompaniesDashboard() {
   return (
@@ -19,7 +21,7 @@ function CompaniesDashboard() {
 function Company() {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [comingCompanies, setComingCompanies] = useState([]);
-  const [error, setError] = useState("");
+  const [appliedCompanies, setAppliedCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,23 +30,30 @@ function Company() {
     async function getComingCompanies() {
       setIsLoading(true);
       try {
-        const storedCompanies = localStorage.getItem("comingCompanies");
-        if (storedCompanies) {
-          setComingCompanies(JSON.parse(storedCompanies));
-        } else {
-          const data = await fetchComingCompanyDetails();
-
-          setComingCompanies(data);
-          localStorage.setItem("comingCompanies", JSON.stringify(data));
-        }
+        const data = await fetchComingCompanyDetails();
+        setComingCompanies(data);
       } catch (err) {
-        setError("Failed to load Upcoming Companies");
-        console.error(err);
+        toast.error("Failed to load Upcoming Companies");
       } finally {
         setIsLoading(false);
       }
     }
     getComingCompanies();
+  }, []);
+
+  useEffect(() => {
+    async function getAppliedCompanies() {
+      setIsLoading(true);
+      try {
+        const data = await fetchAppliedCompanies();
+        setAppliedCompanies(data);
+      } catch (error) {
+        toast.error("Failed to load Applied Companies");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getAppliedCompanies();
   }, []);
 
   const handleBack = () => {
@@ -66,19 +75,15 @@ function Company() {
   const handleSaveCompany = async (newCompany) => {
     try {
       const response = await addNewCompany(newCompany);
-
       if (response.status === 201) {
         setComingCompanies([...comingCompanies, newCompany]);
-        localStorage.setItem(
-          "comingCompanies",
-          JSON.stringify([...comingCompanies, newCompany])
-        );
+        toast.success("Company added successfully");
         setIsModalOpen(false);
       } else {
-        console.error("Failed to add the company.");
+        toast.error("Failed to add the company.");
       }
     } catch (err) {
-      console.error("Error adding the company", err);
+      toast.error("Error adding the company");
     }
   };
 
@@ -132,14 +137,13 @@ function Company() {
 
         {isLoading ? (
           <Shimmer />
-        ) : error ? (
-          <div className="text-center py-4 text-red-500">{error}</div>
         ) : (
           <>
             <div className="project-boxes jsGridView">
               {selectedCompany ? (
                 <div className="w-full">
                   <CompanyDetails
+                    appliedCompanies={appliedCompanies}
                     comingCompany={selectedCompany}
                     onBack={handleBack}
                   />

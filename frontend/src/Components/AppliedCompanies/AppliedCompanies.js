@@ -35,16 +35,19 @@ function AppliedCompaniesList() {
     setSearchTerm(event.target.value);
   };
 
-  const filteredCompanies = appliedCompanies.filter(
-    (company) =>
-      company &&
-      company.application_id &&
-      company.application_id.company_id &&
-      company.application_id.company_id.name &&
-      company.application_id.company_id.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-  );
+  const filteredCompanies =
+    appliedCompanies.length === 0
+      ? []
+      : appliedCompanies.filter(
+          (company) =>
+            company &&
+            company.application_id &&
+            company.application_id.company_id &&
+            company.application_id.company_id.name &&
+            company.application_id.company_id.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
 
   return (
     <div className="projects-section">
