@@ -7,7 +7,6 @@ export async function addNewCompany(formData) {
         "Content-Type": "multipart/form-data",
       },
     });
-
     return response;
   } catch (error) {
     console.error("Failed to send New Company Data", error);

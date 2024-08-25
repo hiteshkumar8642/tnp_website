@@ -9,7 +9,6 @@ import { toast } from "react-hot-toast";
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState("");
-  //const [announcementInput, setAnnouncementInput] = useState("");
   const [AnnouncementLoading, SetAnnouncementLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ announcement: "" });
@@ -21,17 +20,8 @@ function Announcements() {
     async function getAnnouncements() {
       try {
         SetAnnouncementLoading(true);
-        let localdata = localStorage.getItem("announcements")
-          ? JSON.parse(localStorage.getItem("announcements"))
-          : null;
-
-        if (localdata === null) {
-          localdata = await fetchAnnouncements();
-          setAnnouncements(localdata);
-          localStorage.setItem("announcements", JSON.stringify(localdata));
-        } else {
-          setAnnouncements(localdata);
-        }
+        const data = await fetchAnnouncements();
+        setAnnouncements(data);
         SetAnnouncementLoading(false);
       } catch (err) {
         setError("Failed to load announcements");
@@ -44,7 +34,6 @@ function Announcements() {
   // Close form if clicking outside of it
   useEffect(() => {
     function handleClickOutside(event) {
-      // Check if the click is outside the form and the add-announcement-btn
       if (
         formRef.current &&
         !formRef.current.contains(event.target) &&
@@ -76,21 +65,15 @@ function Announcements() {
       const response = await sendAnnouncements(formData);
 
       if (response.status === 201) {
-        setAnnouncements((prevAnnouncements) => [
-          formData,
-          ...prevAnnouncements,
-        ]);
-        localStorage.setItem(
-          "announcements",
-          JSON.stringify([formData, ...announcements])
-        );
-        //setAnnouncementInput("");
+        // After adding the announcement, re-fetch the announcements
+        const updatedAnnouncements = await fetchAnnouncements();
+        setAnnouncements(updatedAnnouncements);
         setShowForm(false);
       } else {
         toast.error("Failed to add the announcement.");
       }
     } catch (error) {
-      console.error("Error adding the announcement:", error);
+      toast.error("Error adding the announcement.");
     }
   };
 

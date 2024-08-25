@@ -3,13 +3,15 @@ import React from "react";
 const AnnouncementItem = ({ announcement }) => {
   return (
     <div className="message-box -ml-4">
-      <img
+      {/* <img
         src="https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
         alt="announcement"
-      />
+      /> */}
       <div className="message-content">
         <div className="message-header">
-          <div className="name">User</div>
+          <div className="name">
+            {announcement.user.first_name} {announcement.user.last_name}
+          </div>
         </div>
         <p className="message-line">{announcement.announcement}</p>
         <p className="message-line time">

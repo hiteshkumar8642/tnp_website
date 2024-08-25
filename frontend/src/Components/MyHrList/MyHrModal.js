@@ -3,41 +3,37 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrModal.css";
 import { FaLinkedin, FaEdit } from "react-icons/fa";
-import apiClient from '../../services/api';
+import apiClient from "../../services/api";
 
 const HrModal = ({ hr, onClose, handleStatusChange }) => {
-
-// colours array
-const COLOR_CHOICES = [
-  ['red', 'Red'],
-  ['blue', 'Blue'],
-  ['yellow', 'Yellow'],
-  ['green', 'Green'],
-  ['orange', 'Orange'],
-  ['purple', 'Purple'],
-  ['pink', 'Pink'],
-  ['brown', 'Brown'],
-  ['black', 'Black'],
-  ['white', 'White'],
-  ['gray', 'Gray'],
-  ['cyan', 'Cyan'],
-  ['magenta', 'Magenta'],
-  ['lime', 'Lime'],
-  ['indigo', 'Indigo'],
-  ['violet', 'Violet'],
-  ['teal', 'Teal'],
-  ['maroon', 'Maroon'],
-  ['navy', 'Navy']
-];
-const [selectedColor, setSelectedColor] = useState('');
+  // colours array
+  const COLOR_CHOICES = [
+    ["red", "Red"],
+    ["blue", "Blue"],
+    ["yellow", "Yellow"],
+    ["green", "Green"],
+    ["orange", "Orange"],
+    ["purple", "Purple"],
+    ["pink", "Pink"],
+    ["brown", "Brown"],
+    ["black", "Black"],
+    ["white", "White"],
+    ["gray", "Gray"],
+    ["cyan", "Cyan"],
+    ["magenta", "Magenta"],
+    ["lime", "Lime"],
+    ["indigo", "Indigo"],
+    ["violet", "Violet"],
+    ["teal", "Teal"],
+    ["maroon", "Maroon"],
+    ["navy", "Navy"],
+  ];
+  const [selectedColor, setSelectedColor] = useState("");
 
   // Handle change in dropdown selection
   const handleChange = (event) => {
     setSelectedColor(event.target.value);
   };
-
-
-
 
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
@@ -47,46 +43,47 @@ const [selectedColor, setSelectedColor] = useState('');
   );
   const [newMessageDate, setNewMessageDate] = useState(new Date());
   const [newMessage, setNewMessage] = useState("");
-  const [newMessageColor, setNewMessageColor] = useState("#ffffff");
+  //const [newMessageColor, setNewMessageColor] = useState("#ffffff");
   const [editingMessageIndex, setEditingMessageIndex] = useState(null);
 
-  const handleAddMessage = async() => {
-    try{
+  const handleAddMessage = async () => {
+    try {
+      const updatedMessages = [
+        ...messages,
+        { date: newMessageDate, message: newMessage, color: selectedColor },
+      ];
+      console.log(hr.id);
+      const params = new URLSearchParams({
+        hr_id: hr.id,
+        colour: selectedColor,
+        comment: newMessage,
+      });
 
-    const updatedMessages = [
-      ...messages,
-      { date: newMessageDate, message: newMessage, color: selectedColor },
-    ];
-    console.log(hr.id);
-    const params = new URLSearchParams({
-      hr_id:hr.id,
-      colour: selectedColor,
-      comment: newMessage,
-    });
+      setSelectedColor("");
+      setMessages(updatedMessages);
+      setNewMessage("");
+      //setNewMessageColor("#ffffff");
 
-    setSelectedColor('');
-    setMessages(updatedMessages);
-    setNewMessage("");
-    setNewMessageColor("#ffffff");
-
-    const response = await apiClient.post('apis/hrcallresponse/', params.toString(), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-    },
-    });
-    console.log("response: " + JSON.stringify(response));
-
-  
-  }catch(e){
-    console.log(e)
-  }
+      const response = await apiClient.post(
+        "apis/hrcallresponse/",
+        params.toString(),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log("response: " + JSON.stringify(response));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleEditMessage = (index) => {
     setEditingMessageIndex(index);
     setNewMessage(messages[index].message);
     setNewMessageDate(new Date(messages[index].date));
-    setNewMessageColor(messages[index].color);
+    //setNewMessageColor(messages[index].color);
   };
 
   const handleUpdateMessage = () => {
@@ -96,16 +93,12 @@ const [selectedColor, setSelectedColor] = useState('');
       message: newMessage,
       color: selectedColor,
     };
-    setSelectedColor('');
+    setSelectedColor("");
     setMessages(updatedMessages);
     setEditingMessageIndex(null);
     setNewMessage("");
-    setNewMessageColor("#ffffff");
+    //setNewMessageColor("#ffffff");
   };
-
-
-
-
 
   return (
     <div className="myhrlist-modal-overlay" onClick={onClose}>
@@ -145,14 +138,14 @@ const [selectedColor, setSelectedColor] = useState('');
               <label>Status:</label>
               <span className="data">{hr.status}</span>
             </div>
-            <label htmlFor="status">Status:</label><br />
-          <select className="info-row">
-          
-            <option value="All">All</option>
-            <option value="Contact">Contact</option>
-            <option value="Do_not_Contact">Do not Contact</option>
-            <option value="Already_Contacted">Already Contacted</option>
-          </select>
+            <label htmlFor="status">Status:</label>
+            <br />
+            <select className="info-row">
+              <option value="All">All</option>
+              <option value="Contact">Contact</option>
+              <option value="Do_not_Contact">Do not Contact</option>
+              <option value="Already_Contacted">Already Contacted</option>
+            </select>
             <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
               Reassign
             </button>
@@ -222,16 +215,15 @@ const [selectedColor, setSelectedColor] = useState('');
               />
             </div>
             <div>
-            <label htmlFor="color">Select a color:</label>
+              <label htmlFor="color">Select a color:</label>
               <select id="color" value={selectedColor} onChange={handleChange}>
-               <option value="">--Select a color--</option>
-                 {COLOR_CHOICES.map(([value, label]) => (
-                   <option key={value} value={value}>
-                     {label}
-                </option>
-               ))}
+                <option value="">--Select a color--</option>
+                {COLOR_CHOICES.map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
               </select>
-           
             </div>
             {editingMessageIndex !== null ? (
               <button onClick={handleUpdateMessage}>Update</button>

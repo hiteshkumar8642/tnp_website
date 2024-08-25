@@ -5,12 +5,13 @@ import { fetchHRList } from "../../api/listofHR";
 import HrTableRow from "./HrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
 import { sendHRinfo } from "../../api/updateHrInfo";
+import { toast } from "react-hot-toast";
 
 const HrList = () => {
   const [hrData, setHrData] = useState([]);
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("All"); // Default status is "Contact"
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     async function getHRList() {
@@ -31,7 +32,7 @@ const HrList = () => {
           SetHrListLoading(false);
         }
       } catch (err) {
-        setError("Failed to load HR list");
+        toast.error("Failed to load HR list");
 
         SetHrListLoading(false);
       }
@@ -45,7 +46,11 @@ const HrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       const response = await sendHRinfo(id, status);
-      console.log("Status updated successfully:", response.data);
+      if (response.status === 201 || response.status === 200) {
+        toast.success("Status updated successfully");
+      } else {
+        toast.error("Status update failed");
+      }
     } catch (err) {
       console.error("Failed to update status:", err);
     }
@@ -84,7 +89,7 @@ const HrList = () => {
           </select>
         </div>
       </div>
-      {error && <p className="text-center py-4 text-red-500">{error}</p>}
+      {/* {error && <p className="text-center py-4 text-red-500">{error}</p>} */}
       {HrListLoading ? (
         <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
