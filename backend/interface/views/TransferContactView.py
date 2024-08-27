@@ -1,32 +1,22 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User, auth  
-from django.core.exceptions import PermissionDenied
-# Create your views here.
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from dashboard.models import Shared_HR_contact,HRContact
-from rest_framework.views import APIView
-from dashboard.serializers import AppliedCompanySerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import DatabaseError
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from interface.models import Shared_HR_contact, HRContact
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def TransferContactView(request):
     try:
-        hr_id = request.POST.get('hr_id')
+        hr_id = request.data.get('hr_id')
+        
+        if not hr_id:
+            return Response({'detail': 'HR ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
         # Retrieve the Shared_HR_contact object based on the provided hr_id
         sh_hr_obj = get_object_or_404(Shared_HR_contact, id=hr_id)
 
@@ -37,8 +27,8 @@ def TransferContactView(request):
         contact = sh_hr_obj.contact_number
         linkedin = sh_hr_obj.linkedin_id
         clg_branch = sh_hr_obj.college_branch
-        # Create a new HRContact object with the extracted data
 
+        # Create a new HRContact object with the extracted data
         hr_cont_obj = HRContact.objects.create(
             name=name,
             mail_id=email,
@@ -46,9 +36,10 @@ def TransferContactView(request):
             linkedin=linkedin,
             college_branch=clg_branch
         )
+        
+        # Delete the original Shared_HR_contact object
         sh_hr_obj.delete()
-        hr_cont_obj.save()
-        # Return a success response with an HTTP 201 Created status
+        
         return Response({'message': 'Contact transferred successfully.'}, status=status.HTTP_201_CREATED)
 
     except Shared_HR_contact.DoesNotExist:
@@ -57,7 +48,6 @@ def TransferContactView(request):
         return Response({'detail': 'Shared_HR_contact not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
-        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
+        # Log any unexpected exceptions and return a generic error response with an HTTP 500 Internal Server Error status
         logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

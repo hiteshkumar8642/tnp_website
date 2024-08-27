@@ -1,11 +1,21 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import College, Course, CollegeCourse, Company, Shared_Company, Shared_HR_contact, HRContact, CallHistory, UserDetails, Application, AppliedCompany, UserProfile, Announcement
+from .models import College, Course, CollegeCourse, Company, Shared_Company, Shared_HR_contact, HRContact, CallHistory, UserDetails, Application, AppliedCompany, UserProfile, Announcement,ContactUs
+
+class ContactUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = ['name', 'email', 'message']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
 
 class CollegeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +47,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class SharedCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Shared_Company
-        fields = ['id', 'company_name', 'company_email', 'college_branch', 'user']
+        fields = ['id','company_name','company_email','company_contact','ctc','college_visited','type','location','college_branch','user']
 
 class SharedHRContactSerializer(serializers.ModelSerializer):
     class Meta:

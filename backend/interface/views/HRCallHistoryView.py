@@ -1,27 +1,14 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User, auth  
-from django.core.exceptions import PermissionDenied
-# Create your views here.
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from dashboard.models import UserProfile,CallHistory
-from rest_framework.views import APIView
-from dashboard.serializers import CallHistorySerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import DatabaseError
+from rest_framework.permissions import IsAuthenticated
+from interface.models import UserProfile, CallHistory
+from interface.serializers import CallHistorySerializer
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
-
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -29,34 +16,41 @@ def HRCallHistoryView(request):
     try:
         # Retrieve the authenticated user
         user = request.user
-        
+
         # Retrieve the user's branch from UserDetails model
         branch = user.userdetails.college_branch
 
         # Retrieve the user's role from UserProfile model
-        role = UserProfile.objects.get(user=user).role
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            role = user_profile.role
+        except UserProfile.DoesNotExist:
+            logger.warning(f"UserProfile not found for user: {user.id}")
+            return Response({'detail': 'User profile not found'}, status=status.HTTP_404_NOT_FOUND)
 
         # Check if the user's role is either 3 or 4
-        if role == 3 or role == 4:
+        if role in [3, 4]:
             # Retrieve call history for the user's branch
             callhistory = CallHistory.objects.filter(college_branch=branch)
-            print("Retrieving call history")
-            
+
+            if not callhistory.exists():
+                logger.info(f"No call history found for branch: {branch}")
+                return Response({'detail': 'No call history found.'}, status=status.HTTP_204_NO_CONTENT)
+
             # Serialize the call history data
             callhistory_serializer = CallHistorySerializer(callhistory, many=True)
-            print("Serialization complete")
-            
+            logger.info(f"Call history retrieved and serialized for user: {user.id}")
+
             # Return the serialized data with a 200 OK status
             return Response(callhistory_serializer.data, status=status.HTTP_200_OK)
+        else:
+            logger.warning(f"Permission denied for user: {user.id} with role: {role}")
+            return Response({'detail': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
 
-        # If the role is not 3 or 4, return a 403 Forbidden response
-        return Response({'detail': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
-
-    except UserProfile.DoesNotExist:
-        # Handle the case where the user's profile is not found
-        return Response({'detail': 'User profile not found'}, status=status.HTTP_404_NOT_FOUND)
+    except DatabaseError as db_err:
+        logger.error(f"Database error occurred: {str(db_err)}")
+        return Response({'detail': 'Database error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     except Exception as e:
-        # Handle any other exceptions and return a 400 Bad Request response
-        print(f"Error occurred: {str(e)}")
-        return Response({'detail': 'An error occurred'}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error(f"Unexpected error occurred: {str(e)}")
+        return Response({'detail': 'An unexpected error occurred.'}, status=status.HTTP_400_BAD_REQUEST)

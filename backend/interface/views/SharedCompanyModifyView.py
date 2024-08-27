@@ -1,24 +1,15 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User, auth  
-from django.core.exceptions import PermissionDenied
-# Create your views here.
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from dashboard.models import Shared_Company
-from rest_framework.views import APIView
-from dashboard.serializers import SharedCompanySerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import permission_classes
+from rest_framework.views import APIView
 
-from django.shortcuts import get_object_or_404
+from interface.models import Shared_Company
+from interface.serializers import SharedCompanySerializer
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DatabaseError
 import logging
-
-
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -33,24 +24,39 @@ class SharedCompanyModifyView(APIView):
             company_contact = request.POST.get('contactNumber')
             ctc = request.POST.get('ctc')
             college_visited = request.POST.get('collegeVisited')
-            type = request.POST.get('type')
-            
+            company_type = request.POST.get('type')
             location = request.POST.get('location')
 
-            # Get the current authenticated user
-            user = request.user
+            # Check for required fields
+            if not all([company_name, company_email, company_contact, ctc, college_visited, company_type, location]):
+                return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
+            # Get the current authenticated user and their role
+            user = request.user
             role = user.userprofile.role
-            print(role)
-            # Retrieve the user's college branch3ZZ6
             branch = user.userdetails.college_branch
 
-            # Log the college_visited value for debugging purposes
+            logger.debug(f"User role: {role}")
             logger.debug(f"College Visited: {college_visited}")
 
-            company_serializer = Shared_Company(company_name=company_name,company_email=company_email,company_contact=company_contact,ctc=ctc,college_visited=college_visited,type=type,location=location,college_branch=branch,user=user)
-            company_serializer.save()
+            # Check if the user has the appropriate role to modify company data
+            if role not in [2]:
+                return Response({'message': 'Unauthorized Access'}, status=status.HTTP_403_FORBIDDEN)
 
+            # Create a new Shared_Company object and save it
+            shared_company = Shared_Company(
+                company_name=company_name,
+                company_email=company_email,
+                company_contact=company_contact,
+                ctc=ctc,
+                college_visited=college_visited,
+                type=company_type,
+                location=location,
+                college_branch=branch,
+                user=user
+            )
+
+            shared_company.save()
             return Response({"message": 'Submitted Successfully'}, status=status.HTTP_201_CREATED)
 
         except ObjectDoesNotExist:

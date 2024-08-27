@@ -1,40 +1,45 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.contrib import messages
-from django.contrib.auth.models import User,auth
-from django.views.decorators.csrf import csrf_exempt
-from interface.forms import createUserForm
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-from django.contrib.auth import get_user_model
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from interface.forms import createUserForm
 from interface.tokens import account_activation_token
-from dashboard.models import Shared_Company,Shared_HR_contact,UserDetails,HRContact,Announcement,Application,UserProfile,UserDetails,CollegeCourse,College,Course
-from dashboard.serializers import UserDetailsSerializer, UserProfileSerializer
-from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView
-from django.contrib.messages.views import SuccessMessageMixin
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-import json
-from rest_framework import status
+from interface.models import College, UserProfile
 from rest_framework.decorators import api_view
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import status
-
+import json
 import logging
+from decouple import config  # Importing config from decouple
 
+# Configure logging
 logger = logging.getLogger(__name__)
+
+# Fetch frontend host from environment variable using config
+FRONTEND_HOST = config('FRONTEND_HOST')
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+        logger.error("User activation failed: Invalid token or user does not exist.")
+        messages.error(request, 'Activation link is invalid!')
+        return redirect(f"{FRONTEND_HOST}/login")
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Thank you for your email confirmation. Now you can log in to your account.')
+    else:
+        messages.error(request, 'Activation link is invalid!')
+
+    return redirect(f"{FRONTEND_HOST}/login")
 
 def activate_email(request, user, to_email):
     mail_subject = 'Activate your user account.'
@@ -45,43 +50,38 @@ def activate_email(request, user, to_email):
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
     })
-    print(message)
     email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
-        messages.success(request , "Registered succesfully ! Please confirm your email to login. If you didn't recieve any email, check if you typed your email correctly. ")
-    else:
-        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
-
+    try:
+        email.send()
+        messages.success(request, "Registered successfully! Please confirm your email to login.")
+    except Exception as e:
+        logger.error(f"Error sending confirmation email to {to_email}: {str(e)}")
+        messages.error(request, f'Problem sending confirmation email to {to_email}. Check if you typed it correctly.')
 
 @api_view(['POST'])
 def RegisterView(request):
     try:
         data = json.loads(request.body)
-        print("hii data loaded")
-    except json.JSONDecodeError:
-        print("errors")
-        return Response({"errors": "Invalid JSON"}, status=400)
-
-    #print("Received data: ", data)  # Debug: print the received data
-    form = createUserForm(data)
-    id=0
-    try:
+        form = createUserForm(data)
         if form.is_valid():
-            print("form valid")
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            id=user.id
-            #print(data.get('college'))
             clg = College.objects.get(name=data.get('college'))
             user_profile_obj = UserProfile(user=user, role=1, college=clg)
             user_profile_obj.save()
             activate_email(request, user, form.cleaned_data.get('email'))
-            return Response({'detail': 'Registration successful.'}, status=status.HTTP_200_OK)
+            return Response({'detail': 'Registration successful. Please check your email to activate your account.'}, status=status.HTTP_201_CREATED)
         else:
             errors = form.errors.as_json()
-            return Response({"errors": errors}, status=400)
+            logger.warning(f"Form errors during registration: {errors}")
+            return Response({"errors": errors}, status=status.HTTP_400_BAD_REQUEST)
+    except json.JSONDecodeError:
+        logger.error("Invalid JSON in request body.")
+        return Response({"detail": "Invalid JSON."}, status=status.HTTP_400_BAD_REQUEST)
+    except College.DoesNotExist:
+        logger.error("College does not exist.")
+        return Response({'detail': 'College does not exist.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        u = User.objects.get(id = id)
-        u.delete()
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error(f"Unexpected error during registration: {str(e)}")
+        return Response({'detail': 'An error occurred during registration.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

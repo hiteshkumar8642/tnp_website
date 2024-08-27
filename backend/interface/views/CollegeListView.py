@@ -1,41 +1,29 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User, auth  
-from django.core.exceptions import PermissionDenied
-# Create your views here.
-from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from dashboard.models import College
-from rest_framework.views import APIView
-from dashboard.serializers import CollegeSerializer
-
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import DatabaseError
+from interface.models import College
+from interface.serializers import CollegeSerializer
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-
 @api_view(['GET'])
 def CollegeListView(request):
     try:
-        print("Hello")
-        college = College.objects.filter(is_verified=True)
-        collegeserializer = CollegeSerializer(college,many=True)
+        # Retrieve verified college objects
+        colleges = College.objects.filter(is_verified=True)
 
-        return Response(collegeserializer.data,status=status.HTTP_200_OK)
+        # If no colleges are found, return a 204 No Content response
+        if not colleges.exists():
+            logger.info("No verified colleges found.")
+            return Response({'detail': 'No verified colleges available.'}, status=status.HTTP_204_NO_CONTENT)
 
-    except ObjectDoesNotExist:
-        # Handle case where the Application object doesn't exist
-        logger.error("College objects not found.")
-        return Response({'detail': 'Colleges not found.'}, status=status.HTTP_404_NOT_FOUND)
+        # Serialize and return the college data
+        serializer = CollegeSerializer(colleges, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     except Exception as e:
         # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
+        logger.error(f"Unexpected error: {str(e)}", exc_info=True)
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
