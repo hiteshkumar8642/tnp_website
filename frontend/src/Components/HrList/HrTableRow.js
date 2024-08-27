@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import HrModal from "./HrModal";
 import { setAssignme } from "../../api/setAssignme";
+import { toast } from "react-hot-toast";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,9 +33,11 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
     handleStatusChange(hr.id, newStatus);
     try {
       const response = await setAssignme({ id: hr.id, status: newStatus });
-      console.log("Status updated successfully:", response.data);
+      if (response.status === 200)
+        toast.success("Status updated successfully:");
+      else toast.error("Failed To update status");
     } catch (error) {
-      console.error("Failed to update status:", error);
+      toast.error("Error occured while updating status:");
     }
   };
 

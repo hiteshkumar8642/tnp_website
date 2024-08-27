@@ -48,17 +48,16 @@ const CompanyContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     setIsLoading(true);
     try {
       const response = await sendSharedCompany(formData);
 
       if (response.status === 201) {
         // Handle success response
-        console.log("Form submitted successfully!");
+
         setIsLoading(false);
         // Optionally, reset the form or provide user feedback
-        toast.success("Company added !");
+        toast.success("Company data sent");
         setFormData({
           companyName: "",
           companyEmail: "",
@@ -75,14 +74,12 @@ const CompanyContactForm = () => {
         });
       } else {
         // Handle error response
-        setIsLoading(false);
-        console.log("Failed to submit the form.");
-        toast.error("Something went wrong.");
+
+        toast.error("Failed to send company data");
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error("Something went wrong.");
-      console.error("Error submitting the form:", error);
+      toast.error("Error occured while sending company");
     }
   };
 
