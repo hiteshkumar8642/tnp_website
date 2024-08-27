@@ -81,7 +81,6 @@ export default function CollegeRegistrationPage() {
 
   useEffect(
     function () {
-      branches.length===0 ? setFilteredBranches([]):
       setFilteredBranches(
         branches.filter(
           (branch) =>
@@ -96,14 +95,14 @@ export default function CollegeRegistrationPage() {
   );
 
   const isUserEmailExists = () => {
-    return userList.length===0 ? false : userList.some((user) => user.email === formData.email);
+    return userList.some((user) => user.email === formData.email);
   };
 
   const isUserNameExists = () => {
-    return userList.length===0 ? false : userList.some((user) => user.username === formData.username);
+    return userList.some((user) => user.username === formData.username);
   };
   const isCollegeExists = () => {
-    return collegeList.length===0 ? false : collegeList.some((col) => col.name === formData.college);
+    return collegeList.some((col) => col.name === formData.college);
   };
 
   const handleProceed = (e) => {
@@ -207,12 +206,12 @@ export default function CollegeRegistrationPage() {
         confirmPassword: "",
       });
       setSelectedBranches([]);
-      if (response.status === 201) {
-        toast.success("College Registered Successfully");
+      if (response.status === 200) {
         navigate("/login");
         setIsLoading(false);
       }
     } catch (error) {
+      console.error("Error during registration:", error);
       toast.error(
         "There was an error with the registration. Please try again."
       );

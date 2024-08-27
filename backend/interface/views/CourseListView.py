@@ -1,26 +1,38 @@
+from django.shortcuts import render,redirect
+from django.contrib.auth.models import User, auth  
+from django.core.exceptions import PermissionDenied
+# Create your views here.
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from interface.models import Course
-from interface.serializers import CourseSerializer
+from django.shortcuts import render, get_object_or_404
+from rest_framework.decorators import api_view
+from dashboard.models import Course
+from rest_framework.views import APIView
+from dashboard.serializers import CourseSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import DatabaseError
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
+
 @api_view(['GET'])
 def CourseListView(request):
     try:
-        # Retrieve all course objects
-        courses = Course.objects.all()
-
-        # If no courses are found, return a 204 No Content response
-        if not courses.exists():
-            return Response({'detail': 'No courses available.'}, status=status.HTTP_204_NO_CONTENT)
-
-        # Serialize and return the course data
-        serializer = CourseSerializer(courses, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        course = Course.objects.all()
+        serializer = CourseSerializer(course,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    except ObjectDoesNotExist:
+        # Handle case where the Application object doesn't exist
+        logger.error("Course objects not found.")
+        return Response({'detail': 'Courses not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         # Log any unexpected exceptions

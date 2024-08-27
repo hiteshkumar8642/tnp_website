@@ -27,5 +27,3 @@ from .HRCallResponse import HRCallResponseView
 from .DownloadAppliedStudentsListView import DownloadAppliedStudentsListView
 from .StudentsApplicationView import StudentsApplicationView
 from .AddApplicationView import AddApplicationView
-from .ExistingUserListView import ExistingUserListView
-from .ContactUsView import ContactUsView

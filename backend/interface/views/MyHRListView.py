@@ -1,17 +1,26 @@
+from django.shortcuts import render,redirect
+from django.contrib.auth.models import User, auth  
+from django.core.exceptions import PermissionDenied
+# Create your views here.
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.shortcuts import render, get_object_or_404
+from rest_framework.decorators import api_view
+from dashboard.models import HRContact,UserProfile
+from rest_framework.views import APIView
+from dashboard.serializers import HRContactSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+
+from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DatabaseError
 import logging
 
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-
-from interface.models import HRContact, UserProfile
-from interface.serializers import HRContactSerializer
-
 # Configure logging
 logger = logging.getLogger(__name__)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -19,19 +28,18 @@ def MyHRListView(request):
     try:
         # Get the current authenticated user
         user = request.user
-
+        print("DEVVRAT")
         # Retrieve the user's role from UserProfile
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
+        role = UserProfile.objects.get(user=user).role
 
         # Check if the user has the required role
-        if role in [3, 4]:
+        if role == 3 or role == 4:
             # Fetch HR contacts for the user's college branch assigned to the user
             hrContact = HRContact.objects.filter(college_branch=user.userdetails.college_branch, assigned=user)
 
-            # If hrContact is empty, return 204 No Content
+            # Check if hrContact is empty
             if not hrContact.exists():
-                return Response(status=status.HTTP_204_NO_CONTENT)
+                return Response({'error': 'No HR Contacts'}, status=status.HTTP_404_NOT_FOUND)
 
             # Serialize and return the HR contacts
             hrcontactserializer = HRContactSerializer(hrContact, many=True)
@@ -41,7 +49,7 @@ def MyHRListView(request):
             # Return 403 Forbidden for unauthorized access
             return Response({'message': 'Unauthorized access.'}, status=status.HTTP_403_FORBIDDEN)
 
-    except UserProfile.DoesNotExist:
+    except ObjectDoesNotExist:
         # Log the error if the UserProfile does not exist
         logger.error(f"UserProfile not found for user ID: {user.id}")
         return Response({'detail': 'UserProfile not found.'}, status=status.HTTP_404_NOT_FOUND)

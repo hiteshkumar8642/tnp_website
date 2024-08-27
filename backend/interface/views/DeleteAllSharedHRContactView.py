@@ -1,14 +1,26 @@
+from django.shortcuts import render,redirect
+from django.contrib.auth.models import User, auth  
+from django.core.exceptions import PermissionDenied
+# Create your views here.
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
+from django.shortcuts import render, get_object_or_404
+from rest_framework.decorators import api_view
+from dashboard.models import Shared_HR_contact
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from interface.models import Shared_HR_contact
+from rest_framework.decorators import api_view, permission_classes
+
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import DatabaseError
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-@api_view(['DELETE'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def DeleteAllSharedHRContactView(request):
     try:
@@ -17,26 +29,21 @@ def DeleteAllSharedHRContactView(request):
 
         # Retrieve the role of the user
         role = user.userprofile.role
-
+        print(role)
         # Check if the user has the appropriate role (3 or 4)
-        if role in [3, 4]:
+        if role == 3 or role == 4:
             # Get the college branch of the user
             branch = user.userdetails.college_branch
-
+            print(branch)
             # Delete all Shared_HR_contact objects associated with the user's branch
-            deleted_count, _ = Shared_HR_contact.objects.filter(college_branch=branch).delete()
+            Shared_HR_contact.objects.filter(college_branch=branch).delete()
 
-            # Check if any objects were deleted
-            if deleted_count > 0:
-                return Response({'message': 'Deleted successfully'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'detail': 'No records found to delete'}, status=status.HTTP_204_NO_CONTENT)
-
+            # Return a success message with an HTTP 200 OK status
+            return Response({'message': 'Deleted'}, status=status.HTTP_200_OK)
         else:
-            # Return a failure message with an HTTP 403 Forbidden status if the user role is not authorized
-            return Response({'detail': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
-
+            # Return a failure message with an HTTP 400 Bad Request status if the user role is not authorized
+            return Response({"message": False}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Log any unexpected exceptions and return a generic error response with an HTTP 500 Internal Server Error status
+        # Log any unexpected exceptions and return a generic error response with an HTTP 400 Bad Request status
         logger.error(f"Unexpected error: {str(e)}")
-        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'detail': 'An error occurred.', 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

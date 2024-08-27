@@ -67,7 +67,7 @@ export default function FirstLogIn() {
           photo: file,
         }));
       } else {
-        toast.error("Please upload a .jpg or .jpeg file.");
+        alert("Please upload a .jpg or .jpeg file.");
       }
     }
   };
@@ -80,7 +80,7 @@ export default function FirstLogIn() {
         [id]: files[0],
       }));
     } else {
-      toast.error("Please upload a .pdf file.");
+      alert("Please upload a .pdf file.");
     }
   };
 
@@ -92,70 +92,8 @@ export default function FirstLogIn() {
     }));
   };
 
-  // Regex patterns for validation
-  const mobileRegex = /^\d{10}$/;
-  const percentageRegex = /^(\d{1,2}(\.\d{1,2})?)?$/;
-  const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/;
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Validate inputs using regex
-    if (!mobileRegex.test(formData.mobile)) {
-      toast.error("Invalid mobile number. Please enter a 10-digit number.");
-      return;
-    }
-
-    if (!percentageRegex.test(formData.tenth_percentage) || !percentageRegex.test(formData.twelfth_percentage)) {
-      toast.error("Invalid percentage format. Please enter a number up to 100 with optional decimals.");
-      return;
-    }
-
-    if (formData.graduation_cgpa && !percentageRegex.test(formData.graduation_cgpa)) {
-      toast.error("Invalid CGPA format. Please enter a valid CGPA.");
-      return;
-    }
-
-    if (formData.current_cgpa && !percentageRegex.test(formData.current_cgpa)) {
-      toast.error("Invalid CGPA format. Please enter a valid CGPA.");
-      return;
-    }
-
-    if (formData.portfolio_link && !urlRegex.test(formData.portfolio_link)) {
-      toast.error("Invalid portfolio URL.");
-      return;
-    }
-
-    if (formData.linkedin_profile && !urlRegex.test(formData.linkedin_profile)) {
-      toast.error("Invalid LinkedIn profile URL.");
-      return;
-    }
-
-    if (formData.github_profile && !urlRegex.test(formData.github_profile)) {
-      toast.error("Invalid GitHub profile URL.");
-      return;
-    }
-
-    if (formData.codechef_profile && !urlRegex.test(formData.codechef_profile)) {
-      toast.error("Invalid CodeChef profile URL.");
-      return;
-    }
-
-    if (formData.codeforces_profile && !urlRegex.test(formData.codeforces_profile)) {
-      toast.error("Invalid CodeForces profile URL.");
-      return;
-    }
-
-    if (formData.leetcode_profile && !urlRegex.test(formData.leetcode_profile)) {
-      toast.error("Invalid LeetCode profile URL.");
-      return;
-    }
-
-    if (formData.other_website_link && !urlRegex.test(formData.other_website_link)) {
-      toast.error("Invalid website URL.");
-      return;
-    }
-
     const finalData = {
       ...formData,
       ...files,
@@ -163,8 +101,7 @@ export default function FirstLogIn() {
 
     try {
       const response = await sendNewUserData(finalData);
-      if (response.status === 201 || response.status === 200) {
-        toast.success("User Details Saved Successfully");
+      if (response.status === 201) {
         // Reset the form
         setFormData({
           branch: "",
@@ -193,7 +130,7 @@ export default function FirstLogIn() {
           graduation_marksheet: null,
           resume: null,
         });
-        navigate("/not-verified");
+        navigate("/401");
       } else {
         toast.error("Failed to send the user data.");
       }
@@ -289,86 +226,146 @@ export default function FirstLogIn() {
                 <input
                   type="text"
                   name="tenth_percentage"
-                  placeholder="10th Percentage"
+                  placeholder="10th Marks Percentage"
                   value={formData.tenth_percentage}
                   onChange={handleInputChange}
                   required
                 />
               </div>
+              <div className="first-login-input-group file-input required">
+                <i className="fas fa-file-alt"></i>
+                <input
+                  type="file"
+                  id="tenth_marksheet"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  required
+                />
+                <label htmlFor="tenth_marksheet">
+                  {files.tenth_marksheet
+                    ? files.tenth_marksheet.name
+                    : "10th Marksheet"}
+                </label>
+              </div>
+            </div>
+            <div className="first-login-form-group">
               <div className="first-login-input-group required">
                 <i className="fas fa-percentage"></i>
                 <input
                   type="text"
                   name="twelfth_percentage"
-                  placeholder="12th Percentage"
+                  placeholder="12th Marks Percentage"
                   value={formData.twelfth_percentage}
                   onChange={handleInputChange}
                   required
                 />
               </div>
+              <div className="first-login-input-group file-input required">
+                <i className="fas fa-file-alt"></i>
+                <input
+                  type="file"
+                  id="twelfth_marksheet"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  required
+                />
+                <label htmlFor="twelfth_marksheet">
+                  {files.twelfth_marksheet
+                    ? files.twelfth_marksheet.name
+                    : "12th Marksheet"}
+                </label>
+              </div>
             </div>
             <div className="first-login-form-group">
-              <div className="first-login-input-group">
+              <div className="first-login-input-group required">
                 <i className="fas fa-graduation-cap"></i>
                 <input
                   type="text"
                   name="graduation_cgpa"
-                  placeholder="Graduation CGPA (if applicable)"
+                  placeholder="Graduation CGPA"
                   value={formData.graduation_cgpa}
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="first-login-input-group">
-                <i className="fas fa-graduation-cap"></i>
+              <div className="first-login-input-group file-input required">
+                <i className="fas fa-file-alt"></i>
+                <input
+                  type="file"
+                  id="graduation_marksheet"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  required
+                />
+                <label htmlFor="graduation_marksheet">
+                  {files.graduation_marksheet
+                    ? files.graduation_marksheet.name
+                    : "Graduation Marksheet"}
+                </label>
+              </div>
+            </div>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group required">
+                <i className="fas fa-percentage"></i>
                 <input
                   type="text"
                   name="current_cgpa"
                   placeholder="Current CGPA"
                   value={formData.current_cgpa}
                   onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div className="first-login-form-group">
-              <div className="first-login-input-group required">
-                <i className="fas fa-user-clock"></i>
-                <input
-                  type="number"
-                  name="backlogs"
-                  placeholder="Backlogs"
-                  value={formData.backlogs}
-                  onChange={handleInputChange}
                   required
                 />
               </div>
-              <div className="first-login-input-group required">
-                <i className="fas fa-calendar-times"></i>
+              <div className="first-login-input-group file-input required">
+                <i className="fas fa-file-alt"></i>
                 <input
-                  type="number"
+                  type="file"
+                  id="resume"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  required
+                />
+                <label htmlFor="resume">
+                  {files.resume ? files.resume.name : "Resume"}
+                </label>
+              </div>
+            </div>
+            <div className="first-login-form-group">
+              <div className="first-login-input-group">
+                <i className="fas fa-clipboard-check"></i>
+                <input
+                  type="text"
+                  name="backlogs"
+                  placeholder="Backlogs (if any)"
+                  value={formData.backlogs}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="first-login-input-group">
+                <i className="fas fa-user-clock"></i>
+                <input
+                  type="text"
                   name="gap_after_twelfth"
                   placeholder="Gap After 12th (in years)"
                   value={formData.gap_after_twelfth}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
             </div>
             <div className="first-login-form-group">
-              <div className="first-login-input-group required">
-                <i className="fas fa-calendar-times"></i>
+              <div className="first-login-input-group">
+                <i className="fas fa-user-clock"></i>
                 <input
-                  type="number"
+                  type="text"
                   name="gap_after_graduation"
                   placeholder="Gap After Graduation (in years)"
                   value={formData.gap_after_graduation}
                   onChange={handleInputChange}
-                  required
                 />
               </div>
               <div className="first-login-input-group">
                 <i className="fas fa-link"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="portfolio_link"
                   placeholder="Portfolio Link"
                   value={formData.portfolio_link}
@@ -380,7 +377,7 @@ export default function FirstLogIn() {
               <div className="first-login-input-group">
                 <i className="fab fa-linkedin"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="linkedin_profile"
                   placeholder="LinkedIn Profile"
                   value={formData.linkedin_profile}
@@ -390,7 +387,7 @@ export default function FirstLogIn() {
               <div className="first-login-input-group">
                 <i className="fab fa-github"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="github_profile"
                   placeholder="GitHub Profile"
                   value={formData.github_profile}
@@ -400,9 +397,9 @@ export default function FirstLogIn() {
             </div>
             <div className="first-login-form-group">
               <div className="first-login-input-group">
-                <i className="fas fa-code"></i>
+                <i className="fas fa-link"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="codechef_profile"
                   placeholder="CodeChef Profile"
                   value={formData.codechef_profile}
@@ -410,9 +407,9 @@ export default function FirstLogIn() {
                 />
               </div>
               <div className="first-login-input-group">
-                <i className="fas fa-code"></i>
+                <i className="fas fa-link"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="codeforces_profile"
                   placeholder="CodeForces Profile"
                   value={formData.codeforces_profile}
@@ -422,9 +419,9 @@ export default function FirstLogIn() {
             </div>
             <div className="first-login-form-group">
               <div className="first-login-input-group">
-                <i className="fas fa-code"></i>
+                <i className="fas fa-link"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="leetcode_profile"
                   placeholder="LeetCode Profile"
                   value={formData.leetcode_profile}
@@ -434,7 +431,7 @@ export default function FirstLogIn() {
               <div className="first-login-input-group">
                 <i className="fas fa-link"></i>
                 <input
-                  type="text"
+                  type="url"
                   name="other_website_link"
                   placeholder="Other Website Link"
                   value={formData.other_website_link}
@@ -442,47 +439,7 @@ export default function FirstLogIn() {
                 />
               </div>
             </div>
-            <div className="first-login-form-group">
-              <div className="first-login-input-group">
-                <label htmlFor="tenth_marksheet">10th Marksheet:</label>
-                <input
-                  type="file"
-                  id="tenth_marksheet"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                />
-              </div>
-              <div className="first-login-input-group">
-                <label htmlFor="twelfth_marksheet">12th Marksheet:</label>
-                <input
-                  type="file"
-                  id="twelfth_marksheet"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                />
-              </div>
-            </div>
-            <div className="first-login-form-group">
-              <div className="first-login-input-group">
-                <label htmlFor="graduation_marksheet">Graduation Marksheet:</label>
-                <input
-                  type="file"
-                  id="graduation_marksheet"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                />
-              </div>
-              <div className="first-login-input-group">
-                <label htmlFor="resume">Resume:</label>
-                <input
-                  type="file"
-                  id="resume"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                />
-              </div>
-            </div>
-            <div className="first-login-form-group">
+            <div className="first-login-submit">
               <button type="submit">Submit</button>
             </div>
           </form>
