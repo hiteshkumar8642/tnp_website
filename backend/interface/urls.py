@@ -1,13 +1,15 @@
 from django.urls import path
 from .views import ApplicationView,CollegeListView,CompanyListView,TransferContactView,HRCallHistoryView,HRAssignMeView,DeleteAllSharedHRContactView,HRDataUpdateView,AddAnnouncementView,StudentListView,SharedHRListView,MyHRListView,HRListView,AnnouncementsListView,AppliedCompanysListView,CourseListView,HRContactModifyView,SharedCompanyModifyView,SharedCompanyListView
 from .views import UserLoginView,LogoutView,RegisterView,CollegeRegisterView,ResetPasswordView,SaveDetailsView,UserDetailsModifyView,HRCallResponseView,DownloadAppliedStudentsListView,ReassignView , StudentsApplicationView
-from .views import AddApplicationView
+from .views import AddApplicationView,ExistingUserListView,ContactUsView
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
 urlpatterns = [
     # Printing Application
+    path('contactus/',ContactUsView.ContactUsView,name='contactus'),
+    path('existinguserlist/',ExistingUserListView.ExistingUserListView,name='existinguserlist'),
     path('activate/<uidb64>/<token>', RegisterView.activate, name='activate'),
     path('application/',ApplicationView.ApplicationView,name='application'),
     path('collegelist/',CollegeListView.CollegeListView,name='collegelist'),
@@ -33,7 +35,7 @@ urlpatterns = [
     path('logout/',LogoutView.LogoutView.as_view(),name='logout'),
     path('register/',RegisterView.RegisterView,name='register'),
     path('college-register/',CollegeRegisterView.CollegeRegisterView,name='collegeregister'),
-    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('passwordreset/', include('django_rest_passwordreset.urls', namespace='passwordreset')),
     path('savedetails/',SaveDetailsView.SaveDetailsView,name='savedetails'),
     path('update-user-details/',UserDetailsModifyView.UserDetailsModifyView,name='updateuserdetails'),
     path('hrcallresponse/',HRCallResponseView.HRCallResponseView,name='hrcallresponse'),

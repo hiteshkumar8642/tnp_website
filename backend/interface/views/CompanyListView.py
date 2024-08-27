@@ -1,41 +1,29 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User, auth  
-from django.core.exceptions import PermissionDenied
-# Create your views here.
-from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from dashboard.models import Company
-from rest_framework.views import APIView
-from dashboard.serializers import CompanySerializer
-
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import DatabaseError
+from interface.models import Company
+from interface.serializers import CompanySerializer
 import logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-
 @api_view(['GET'])
 def CompanyListView(request):
     try:
-        print("Hello")
-        company = Company.objects.all()
-        companyserializer = CompanySerializer(company,many=True)
+        # Retrieve all company objects
+        companies = Company.objects.all()
 
-        return Response(companyserializer.data,status=status.HTTP_200_OK)
+        # If no companies are found, return a 204 No Content response
+        if not companies.exists():
+            logger.info("No companies found.")
+            return Response({'detail': 'No companies available.'}, status=status.HTTP_204_NO_CONTENT)
 
-    except ObjectDoesNotExist:
-        # Handle case where the Company object doesn't exist
-        logger.error("Company objects not found.")
-        return Response({'detail': 'Company not found.'}, status=status.HTTP_404_NOT_FOUND)
+        # Serialize and return the company data
+        serializer = CompanySerializer(companies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     except Exception as e:
         # Log any unexpected exceptions
-        logger.error(f"Unexpected error: {str(e)}")
+        logger.error(f"Unexpected error: {str(e)}", exc_info=True)
         return Response({'detail': 'An unexpected error occurred.', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

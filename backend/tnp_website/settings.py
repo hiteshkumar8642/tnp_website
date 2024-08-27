@@ -14,6 +14,10 @@ from pathlib import Path
 from decouple import config
 import os
 from datetime import timedelta
+import logging
+from logging.handlers import RotatingFileHandler
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,9 +38,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'dashboard', 
     'interface',
-    'userDetails',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,9 +64,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# JWT_AUTH = {
-#     'JWT_RESPONSE_PAYLOAD_HANDLER': 'dashboard.utils.my_jwt_response_handler'
-# }
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:3000","http://localhost:3001"
@@ -120,15 +119,10 @@ WSGI_APPLICATION = 'tnp_website.wsgi.application'
 # To use Neon with Django, you have to create a Project on Neon and specify the project connection settings in your settings.py in the same way as for standalone Postgres.
 
 DATABASES = {
-  'default': {
-    'ENGINE': config('ENGINE'),
-    'NAME': config('NAME'),
-    'USER': 'hiteshkumar8642',
-    'PASSWORD': config('PASSWORD'),
-    'HOST': config('HOST'),
-    'PORT': '5432',
-    'OPTIONS': {'sslmode': 'require'},
-  }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    }
 }
 
 
@@ -191,3 +185,62 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+        'detailed': {
+            'format': '{levelname} {asctime} {module} {message} {exc_info}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+            'maxBytes': 10485760,  # 10 MB
+            'backupCount': 5,  # keep 5 backup files
+            'formatter': 'detailed',
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_errors.log'),
+            'maxBytes': 10485760,
+            'backupCount': 5,
+            'formatter': 'detailed',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['error_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'myapp': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

@@ -1,36 +1,10 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.models import User,auth
-# from . forms import createUserForm , CollegeRegistrationForm
-from django.views.decorators.csrf import csrf_exempt
-
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.core.mail import EmailMessage
-from django.contrib.auth import get_user_model
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from dashboard.models import UserDetails,UserProfile,UserDetails
-from dashboard.serializers import UserDetailsSerializer, UserProfileSerializer
-from django.urls import reverse_lazy
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-import json
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework import status
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-
+from interface.models import UserDetails, UserProfile
+from interface.serializers import UserDetailsSerializer, UserProfileSerializer
 
 class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -50,15 +24,15 @@ class MyTokenObtainPairView(TokenObtainPairView):
                     user = jwt_auth.get_user(validated_token)
                     
                     # Fetch user details and profile
-                    userdetails = UserDetails.objects.filter(user=user)
-                    user_details = UserDetailsSerializer(userdetails, many=True).data
+                    userdetails = UserDetails.objects.filter(user=user).first()
+                    user_profile = UserProfile.objects.filter(user=user).first()
                     
-                    user_profile = UserProfile.objects.filter(user=user)
-                    user_profile_data = UserProfileSerializer(user_profile, many=True).data
+                    user_details_data = UserDetailsSerializer(userdetails).data if userdetails else {}
+                    user_profile_data = UserProfileSerializer(user_profile).data if user_profile else {}
                     
                     # Return user details, profile, and tokens in the response
                     return Response({
-                        'user_detail': user_details,
+                        'user_detail': user_details_data,
                         'user_profile': user_profile_data,
                         'refresh_token': refresh,
                         'access_token': access
@@ -66,11 +40,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
                 except Exception as e:
                     # Handle token validation errors
-                    return JsonResponse({'detail': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+                    return JsonResponse({'detail': 'Token validation failed.', 'error': str(e)}, status=status.HTTP_401_UNAUTHORIZED)
             
             else:
                 # Tokens are missing from the response data
-                return JsonResponse({'detail': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'detail': 'Tokens not provided in the response.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Handle unexpected response status codes
+        # Handle unexpected response status codes from the parent class
         return response

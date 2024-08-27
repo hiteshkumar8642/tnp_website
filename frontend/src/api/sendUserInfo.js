@@ -11,7 +11,7 @@ export async function sendNewUserData(formData) {
 
     return response;
   } catch (error) {
-    console.error("Failed to send New Company Data", error);
+    console.error("Failed to send user details", error);
     throw error;
   }
 }

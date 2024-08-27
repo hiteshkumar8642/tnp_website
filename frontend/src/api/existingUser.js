@@ -5,7 +5,7 @@ export async function fetchExistingUsers() {
     const response = await unprotectedApiClient.get("/api/existinguserlist/");
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch College List");
+    console.error("Failed to fetch User List");
     throw error;
   }
 }
