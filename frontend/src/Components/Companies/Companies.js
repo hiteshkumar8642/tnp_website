@@ -73,6 +73,7 @@ function Company() {
   };
 
   const handleSaveCompany = async (newCompany) => {
+    console.log(newCompany)
     try {
       const response = await addNewCompany(newCompany);
       if (response.status === 201) {
@@ -97,6 +98,8 @@ function Company() {
 
   const currentDate = new Date();
   const formattedDate = timeanddate(currentDate);
+
+  const user = JSON.parse(localStorage.getItem("user_Profile"));
 
   return (
     <>
@@ -125,12 +128,15 @@ function Company() {
                   <FaSearch />
                 </button>
               </div>
-              <button
-                className="bg-black text-white px-3 py-1 hover:bg-gray-500 rounded flex items-center sm:ml-4"
-                onClick={handleAddClick}
-              >
-                <FaPlus className="mr-1" /> Add
-              </button>
+              {
+                (user.role === 3 || user.role === 4) &&
+                  <button
+                  className="bg-black text-white px-3 py-1 hover:bg-gray-500 rounded flex items-center sm:ml-4"
+                  onClick={handleAddClick}
+                >
+                  <FaPlus className="mr-1" /> Add
+                </button>
+              }
             </div>
           </div>
         </div>

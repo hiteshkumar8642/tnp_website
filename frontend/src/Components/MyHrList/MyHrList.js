@@ -5,6 +5,7 @@ import { fetchmyHRList } from "../../api/fetchMyHRlist";
 import MyHrTableRow from "./MyHrTableRow";
 import { sendHRinfo } from "../../api/updateHrInfo";
 import { ShimmerTable } from "react-shimmer-effects";
+import { toast } from "react-hot-toast";
 
 const MyHrList = () => {
   const [myHrData, setMyHrData] = useState([]);
@@ -16,16 +17,11 @@ const MyHrList = () => {
     async function getmyHRList() {
       try {
         setIsLoading(true);
-        const storedMyHrData = localStorage.getItem("myHrData");
-        if (storedMyHrData) {
-          setMyHrData(JSON.parse(storedMyHrData));
-        } else {
-          const data = await fetchmyHRList();
-          setMyHrData(data);
-          localStorage.setItem("myHrData", JSON.stringify(data));
-        }
+        const data = await fetchmyHRList();
+        setMyHrData(data);
       } catch (err) {
         setError("Failed to load My HR list");
+        toast.error("Failed to load My HR list");
       } finally {
         setIsLoading(false);
       }
@@ -39,9 +35,13 @@ const MyHrList = () => {
         prevHrData.map((hr) => (hr.id === id ? { ...hr, status } : hr))
       );
       const response = await sendHRinfo({ id, status });
-      console.log("response ", response.status);
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Status updated successfully");
+      } else {
+        toast.error("Status update failed");
+      }
     } catch (error) {
-      console.error("Failed to update status:", error);
+      toast.error("Failed to update status");
     }
   };
 

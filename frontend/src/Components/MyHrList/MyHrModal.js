@@ -3,7 +3,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./MyHrModal.css";
 import { FaLinkedin, FaEdit } from "react-icons/fa";
-import apiClient from "../../services/api";
+import { sendHRCallResponse } from "../../api/sendHrCallResponse";
+import { toast } from "react-hot-toast";
 
 const HrModal = ({ hr, onClose, handleStatusChange }) => {
   // colours array
@@ -52,30 +53,22 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
         ...messages,
         { date: newMessageDate, message: newMessage, color: selectedColor },
       ];
-      console.log(hr.id);
-      const params = new URLSearchParams({
-        hr_id: hr.id,
-        colour: selectedColor,
-        comment: newMessage,
-      });
 
       setSelectedColor("");
       setMessages(updatedMessages);
       setNewMessage("");
       //setNewMessageColor("#ffffff");
 
-      const response = await apiClient.post(
-        "apis/hrcallresponse/",
-        params.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log("response: " + JSON.stringify(response));
+      const response = await sendHRCallResponse({
+        hr_id: hr.id,
+        colour: selectedColor,
+        comment: newMessage,
+      });
+      if (response.status === 200 || response.status === 201)
+        toast.success("HR Callresponse sent successfully");
+      else toast.error("Failed to send HR's Call Response");
     } catch (e) {
-      console.log(e);
+      toast.error("Error occured during sending response");
     }
   };
 
