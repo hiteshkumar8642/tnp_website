@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import "./HRContactForm.css";
 import { sendSharedHr } from "../../api/sendSharedHr";
-import { toast } from "react-hot-toast";
 
 function SharedHrContact() {
   return <HRContactForm />;
@@ -31,10 +30,15 @@ const HRContactForm = () => {
     e.preventDefault();
 
     try {
+      console.log("working properly");
+      console.log(formData);
+
       const response = await sendSharedHr(formData);
+      console.log("working properly");
+      console.log("Response:", response.data);
       if (response.status === 201) {
         // Handle success response
-        toast.success("HR's contact information is sent successfully");
+        console.log("Form submitted successfully!");
         // Optionally, reset the form or provide user feedback
         setFormData({
           name: "",
@@ -46,10 +50,10 @@ const HRContactForm = () => {
         });
       } else {
         // Handle error response
-        toast.error("Failed to send HR's contact information");
+        console.log("Failed to submit the form.");
       }
     } catch (error) {
-      toast.error("Error occured while sending HR's contact information");
+      console.error("Error submitting the form:", error);
     }
   };
 

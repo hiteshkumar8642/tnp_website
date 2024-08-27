@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../../services/api";
-import { useLoading } from "../LoadingContext/LoadingContext";
+import { useLoading } from "../LoadingContext/LoadingContext"; // Import the useLoading hook
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 function Sidebar() {
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
   const { setIsLoading } = useLoading();
   const [role, setRole] = useState(null);
 
@@ -24,9 +24,10 @@ function Sidebar() {
       const storedUserProfile = localStorage.getItem("user_Profile");
       try {
         const userProfile = JSON.parse(storedUserProfile);
+        console.log("User Profile ", userProfile);
         setRole(userProfile.role);
       } catch (error) {
-        toast.error("Error loading user profile.");
+        console.error("Error parsing user_Profile from localStorage:", error);
       }
     }
     roleWiseAccess();
@@ -38,13 +39,18 @@ function Sidebar() {
       setIsLoading(true);
       await logout(refreshToken);
       localStorage.clear();
+      // Remove the Authorization header
       axios.defaults.headers.common["Authorization"] = null;
-      navigate("/");
-      toast.success("Logged out successfully");
+      // Redirect to login page
+      Navigate("/");
+      setIsLoading(false);
+
+      toast.success("Logout successfully");
     } catch (error) {
       localStorage.clear();
-      toast.success("Logged out successfully");
-      navigate("/");
+      toast.success("Logout successfully");
+
+      Navigate("/");
     } finally {
       setIsLoading(false);
     }
@@ -153,7 +159,7 @@ function Sidebar() {
             isActive ? "app-sidebar-link active" : "app-sidebar-link"
           }
         >
-          All Student List
+          AllStudentList
         </NavLink>
       )}
       {(role === 1 || role === 2 || role === 3 || role === 4) && (

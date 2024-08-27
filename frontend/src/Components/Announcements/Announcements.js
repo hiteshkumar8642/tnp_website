@@ -81,21 +81,17 @@ function Announcements() {
     setShowForm(!showForm);
   };
 
-  const user = JSON.parse(localStorage.getItem("user_Profile"));
   return (
     <div className="announcements-container">
       <div className="announcements-header">
         <h2>Announcements</h2>
-        {
-          (user.role === 3 || user.role === 4) &&
-              <button
-              onClick={toggleForm}
-              className="add-announcement-btn"
-              ref={buttonRef}
-            >
-              {showForm ? "×" : "+"}
-            </button>
-        }
+        <button
+          onClick={toggleForm}
+          className="add-announcement-btn"
+          ref={buttonRef}
+        >
+          {showForm ? "×" : "+"}
+        </button>
       </div>
 
       {showForm && (

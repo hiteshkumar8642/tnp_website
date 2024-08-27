@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../assets/Logo/contactFormImg.png";
+import apiClient from "../../services/api";
 import { Element } from "react-scroll";
-import { sendContactDetail } from "../../api/sendContactForm";
-import { toast } from "react-hot-toast";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -18,34 +17,30 @@ const ContactForm = () => {
     });
   };
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateEmail(formData.email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-
     try {
-      const response = await sendContactDetail(formData);
+      const response = await apiClient.post(
+        "http://localhost:8000/contacus",
+        formData
+      );
 
-      if (response.status === 201) {
-        toast.success("Message sent successfully!");
+      if (response.status === 200) {
+        // Handle successful submission
+        alert("Message sent successfully!");
         setFormData({
           name: "",
           email: "",
           message: "",
         });
       } else {
-        toast.error("Failed to send message. Please try again.");
+        // Handle errors
+        alert("Failed to send message. Please try again.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 

@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 
 const HrList = () => {
   const [hrData, setHrData] = useState([]);
+  //const [error, setError] = useState("");
   const [HrListLoading, SetHrListLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("All");
 
@@ -16,11 +17,23 @@ const HrList = () => {
     async function getHRList() {
       try {
         SetHrListLoading(true);
-        const data = await fetchHRList();
-        setHrData(data);
-        SetHrListLoading(false);
+
+        // Check if data is already in local storage
+        const storedHRData = localStorage.getItem("hrData");
+        if (storedHRData) {
+          setHrData(JSON.parse(storedHRData));
+          SetHrListLoading(false);
+        } else {
+          // Fetch data if not found in local storage
+          const data = await fetchHRList();
+          setHrData(data);
+          // Save the fetched data to local storage
+          localStorage.setItem("hrData", JSON.stringify(data));
+          SetHrListLoading(false);
+        }
       } catch (err) {
         toast.error("Failed to load HR list");
+
         SetHrListLoading(false);
       }
     }
@@ -39,7 +52,7 @@ const HrList = () => {
         toast.error("Status update failed");
       }
     } catch (err) {
-      toast.error("Failed to update status");
+      console.error("Failed to update status:", err);
     }
   };
 
@@ -76,6 +89,7 @@ const HrList = () => {
           </select>
         </div>
       </div>
+      {/* {error && <p className="text-center py-4 text-red-500">{error}</p>} */}
       {HrListLoading ? (
         <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (

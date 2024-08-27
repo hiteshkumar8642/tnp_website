@@ -67,7 +67,7 @@ const StudentDetails = ({ student, onBack }) => {
           <div>
             <h2 className="text-2xl font-bold">{`${user.first_name} ${user.last_name}`}</h2>
             <p className="text-gray-500">{user.username}</p>
-            <p className="Res text-white bg-blue-500 hover:bg-blue-700 p-2 px-4 rounded-md cursor-pointer " onClick={openModal}>
+            <p className="Res text-blue-500" onClick={openModal}>
               Resume
             </p>
           </div>
@@ -91,7 +91,7 @@ const StudentDetails = ({ student, onBack }) => {
           CGPA: {current_cgpa}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-2 gap-4">
         <InfoItem label="12th Percentage" value={twelfth_percentage} />
         <InfoItem label="10th Percentage" value={tenth_percentage} />
         <InfoItem label="Graduation CGPA" value={graduation_cgpa} />
