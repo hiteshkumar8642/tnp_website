@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./AddCompanyForm.css";
 import { fetchBranches } from "../../api/branches";
 import { fetchCompanyList } from "../../api/fetchCompanyList";
-import MultiSelect from "./MultiSelect";
 
 function AddCompanyForm({ onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -67,23 +66,20 @@ function AddCompanyForm({ onClose, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-
+   
     onSave(formData);
     onClose();
   };
 
   return (
-    <div className="add-company-modal overflow-auto">
+    <div className="add-company-modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>
           &times;
         </span>
         <form onSubmit={handleSubmit}>
-          {/* Row 1 */}
           <div className="form-row">
             <div className="form-field">
-              <label>Company Name:</label>
               <select
                 name="company_id"
                 required
@@ -98,17 +94,15 @@ function AddCompanyForm({ onClose, onSave }) {
                 ))}
               </select>
             </div>
-
             <div className="form-field">
               <label>Last Date:</label>
               <input
                 type="date"
-                name="last_date"
+                name=" last_date"
                 value={formData.last_date}
                 onChange={handleInputChange}
               />
             </div>
-
             <div className="form-field">
               <label>Position:</label>
               <input
@@ -120,20 +114,18 @@ function AddCompanyForm({ onClose, onSave }) {
             </div>
           </div>
 
-          {/* Row 2 */}
           <div className="form-row">
             <div className="form-field">
               <label>Predicted Visit Date:</label>
               <input
                 type="date"
-                name="predicted_visit_date"
+                name=" predicted_visit_date"
                 value={formData.predicted_visit_date}
                 onChange={handleInputChange}
               />
             </div>
-
             <div className="form-field">
-              <label>12th Marks Eligibility:</label>
+              <label>Twelfth Marks Eligibility:</label>
               <input
                 type="number"
                 name="twelfth_marks_eligibility"
@@ -141,9 +133,8 @@ function AddCompanyForm({ onClose, onSave }) {
                 onChange={handleInputChange}
               />
             </div>
-
             <div className="form-field">
-              <label>10th Marks Eligibility:</label>
+              <label>Tenth Marks Eligibility:</label>
               <input
                 type="number"
                 name="tenth_marks_eligibility"
@@ -153,75 +144,108 @@ function AddCompanyForm({ onClose, onSave }) {
             </div>
           </div>
 
-          {/* Row 3 */}
           <div className="form-row">
             <div className="form-field">
               <label>Job Description:</label>
               <input
                 type="file"
                 name="job_description"
-                accept=".pdf"
                 onChange={handleFileChange}
               />
             </div>
-
-            <div className="form-field">
-              <MultiSelect formData={formData} setFormData={setFormData} handleInputChange={handleInputChange}/>
+            <div className="form-field checkbox-group">
+              <label>
+                <input
+                  type="checkbox"
+                  name="is_intern"
+                  checked={formData.is_intern}
+                  onChange={handleInputChange}
+                />
+                Intern
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="is_fte"
+                  checked={formData.is_fte}
+                  onChange={handleInputChange}
+                />
+                FTE
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="is_ppo"
+                  checked={formData.is_ppo}
+                  onChange={handleInputChange}
+                />
+                PPO
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="is_spp"
+                  checked={formData.is_spp}
+                  onChange={handleInputChange}
+                />
+                SPP
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="is_sip"
+                  checked={formData.is_sip}
+                  onChange={handleInputChange}
+                />
+                SIP
+              </label>
             </div>
+          </div>
 
+          <div className="form-row">
             <div className="form-field">
-              <label>12th Gap:</label>
+              <label>Allowed Gap Ais_fter 12:</label>
               <input
-                type="text"
+                type="number"
                 name="twelfth_gap"
                 value={formData.twelfth_gap}
                 onChange={handleInputChange}
               />
             </div>
-          </div>
-
-          {/* Row 5 */}
-          <div className="form-row">
-
             <div className="form-field">
-              <label>Graduation Gap:</label>
+              <label>Allowed Gap Ais_fter Graduation:</label>
               <input
-                type="text"
+                type="number"
                 name="graduation_gap"
                 value={formData.graduation_gap}
                 onChange={handleInputChange}
               />
             </div>
-
             <div className="form-field">
-              <label>Backlogs:</label>
+              <label>Allowed Backlog:</label>
               <input
-                type="text"
+                type="number"
                 name="backlogs"
                 value={formData.backlogs}
                 onChange={handleInputChange}
               />
             </div>
+          </div>
 
+          <div className="form-row">
             <div className="form-field">
-              <label>Graduation Marks:</label>
+              <label>Min Graduation Marks:</label>
               <input
-                type="text"
+                type="number"
                 name="graduation_marks"
                 value={formData.graduation_marks}
                 onChange={handleInputChange}
               />
             </div>
-          </div>
-
-          {/* Row 6 */}
-          <div className="form-row">
-            
-
             <div className="form-field">
-              <label>Current CGPA:</label>
+              <label>Min CGPA:</label>
               <input
-                type="text"
+                type="number"
                 name="current_cgpa"
                 value={formData.current_cgpa}
                 onChange={handleInputChange}
@@ -229,7 +253,6 @@ function AddCompanyForm({ onClose, onSave }) {
             </div>
           </div>
 
-          {/* Row 7 */}
           <div className="form-row">
             <div className="form-field full-width">
               <label>Allowed Branches:</label>

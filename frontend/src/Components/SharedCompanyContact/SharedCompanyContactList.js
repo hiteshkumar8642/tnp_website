@@ -3,20 +3,27 @@ import "./SharedCompanyContactList.css";
 import { fetchSharedCompanies } from "../../api/sharedCompanies";
 import SharedCompanyTableRow from "./SharedCompanyTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
-import { toast } from "react-hot-toast";
 
 const SharedCompanyContactList = () => {
   const [sharedCompanyData, setSharedCompanyData] = useState([]);
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getSharedCompanyList() {
       try {
         setIsLoading(true);
-        const data = await fetchSharedCompanies();
-        setSharedCompanyData(data);
+        const storedCompanyData = localStorage.getItem("SharedCompanyData");
+        if (storedCompanyData) {
+          setSharedCompanyData(JSON.parse(storedCompanyData));
+        } else {
+          const data = await fetchSharedCompanies();
+          setSharedCompanyData(data);
+          localStorage.setItem("SharedCompanyData", JSON.stringify(data));
+        }
       } catch (err) {
-        toast.error("Error loading Shared Company list");
+        setError("Failed to load Shared Company list");
+        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -29,6 +36,7 @@ const SharedCompanyContactList = () => {
       <div className="projects-section-header">
         <p>Shared Company Contacts List</p>
       </div>
+      {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (
         <ShimmerTable row={6} col={5} className="shimmer-table-effect" />
       ) : (
@@ -47,7 +55,7 @@ const SharedCompanyContactList = () => {
               {sharedCompanyData.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="text-center">
-                    No companies found
+                    No HRs found
                   </td>
                 </tr>
               ) : (

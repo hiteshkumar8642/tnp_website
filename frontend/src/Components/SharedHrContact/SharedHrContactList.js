@@ -3,20 +3,27 @@ import "./SharedHrContactList.css";
 import { fetchSharedHRList } from "../../api/listOfSharedHR";
 import SharedHrTableRow from "./SharedHrTableRow";
 import { ShimmerTable } from "react-shimmer-effects";
-import { toast } from "react-hot-toast";
 
 const SharedHrContactList = () => {
   const [sharedHrData, setSharedHrData] = useState([]);
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getSharedHRList() {
       try {
         setIsLoading(true);
-        const data = await fetchSharedHRList();
-        setSharedHrData(data);
+        const storedHRData = localStorage.getItem("SharedhrData");
+        if (storedHRData) {
+          setSharedHrData(JSON.parse(storedHRData));
+        } else {
+          const data = await fetchSharedHRList();
+          setSharedHrData(data);
+          localStorage.setItem("SharedhrData", JSON.stringify(data));
+        }
       } catch (err) {
-        toast.error("Failed to load Shared HR list");
+        setError("Failed to load Shared HR list");
+        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -27,23 +34,18 @@ const SharedHrContactList = () => {
   const handleRemoveHr = (hrToRemove) => {
     const updatedHrData = sharedHrData.filter((hr) => hr !== hrToRemove);
     setSharedHrData(updatedHrData);
-    toast.success("HR contact removed successfully");
+    localStorage.setItem("SharedhrData", JSON.stringify(updatedHrData));
   };
 
   return (
     <div className="projects-section">
       <div className="projects-section-header">
         <p>Shared HR Contacts List</p>
-        <button
-          className="bg-gray-700 text-white p-2 px-3 rounded-md hover:bg-gray-800"
-          onClick={() => {
-            setSharedHrData([]);
-            toast.success("All HR contacts deleted successfully");
-          }}
-        >
+        <button className="bg-gray-700 text-white p-2 px-3 rounded-md hover:bg-gray-800">
           Delete All
         </button>
       </div>
+      {error && <p className="text-center py-4 text-red-500">{error}</p>}
       {isLoading ? (
         <ShimmerTable row={6} col={7} className="shimmer-table-effect" />
       ) : (
