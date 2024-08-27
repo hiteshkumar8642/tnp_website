@@ -45,13 +45,20 @@ function StudentList() {
     setSearchTerm(event.target.value);
   };
 
-  const filteredStudents = students.filter((student) =>
-    student &&
-    student.user &&
-    (student.user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.user.username.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredStudents =
+    students.length === 0
+      ? null
+      : students.filter(
+          (student) =>
+            student &&
+            (student.first_name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+              student.last_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              student.username.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
 
   console.log("Filtered students:", filteredStudents);
 
@@ -70,7 +77,7 @@ function StudentList() {
               onChange={handleSearch}
               className="border rounded-l px-2 py-1 w-64"
             />
-            <button 
+            <button
               className="bg-black text-white px-3.5 py-2.5 rounded-r"
               onClick={() => handleSearch({ target: { value: searchTerm } })}
             >
@@ -89,25 +96,28 @@ function StudentList() {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="project-boxes jsGridView">
-        {selectedStudent ? (
-          <div className="w-full">
-            <StudentDetails student={selectedStudent} onBack={handleBack} />
-          </div>
-        ) : (
-          <div className="project-box-wrapper grid md:grid-flow-col grid-flow-row gap-8">
-            {filteredStudents.map((student) => (
-              <StudentCard
-                key={student.id}
-                student={student}
-                onClick={setSelectedStudent}
-                isActive={selectedStudent && selectedStudent.id === student.id}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+          {selectedStudent ? (
+            <div className="w-full">
+              <StudentDetails student={selectedStudent} onBack={handleBack} />
+            </div>
+          ) : (
+            <div className="project-box-wrapper grid md:grid-flow-col grid-flow-row gap-8">
+              {filteredStudents.length === 0
+                ? null
+                : filteredStudents.map((student) => (
+                    <StudentCard
+                      key={student.id}
+                      student={student}
+                      onClick={setSelectedStudent}
+                      isActive={
+                        selectedStudent && selectedStudent.id === student.id
+                      }
+                    />
+                  ))}
+            </div>
+          )}
+        </div>
       )}
-      
     </div>
   );
 }

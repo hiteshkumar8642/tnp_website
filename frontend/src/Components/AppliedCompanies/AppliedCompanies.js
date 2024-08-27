@@ -88,13 +88,15 @@ function AppliedCompaniesList() {
       ) : (
         <div className="project-boxes jsGridView">
           <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
-            {filteredCompanies.map((company) => (
-              <AppliedCompanyCard
-                key={company.id}
-                company={company.application_id}
-                onClick={setSelectedCompany}
-              />
-            ))}
+            {filteredCompanies.length === 0
+              ? null
+              : filteredCompanies.map((company) => (
+                  <AppliedCompanyCard
+                    key={company.id}
+                    company={company.application_id}
+                    onClick={setSelectedCompany}
+                  />
+                ))}
           </div>
         </div>
       )}

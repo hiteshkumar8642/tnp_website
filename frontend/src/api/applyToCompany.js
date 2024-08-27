@@ -5,7 +5,7 @@ export async function applyToCompany(formData) {
   try {
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
-      "api/apply-to-company/",
+      "/api/apply-to-company/",
       params.toString(),
       {
         headers: {

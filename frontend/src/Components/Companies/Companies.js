@@ -73,7 +73,7 @@ function Company() {
   };
 
   const handleSaveCompany = async (newCompany) => {
-    console.log(newCompany)
+    console.log(newCompany);
     try {
       const response = await addNewCompany(newCompany);
       if (response.status === 201) {
@@ -88,13 +88,18 @@ function Company() {
     }
   };
 
-  const filteredCompanies = comingCompanies.filter(
-    (company) =>
-      company &&
-      company.company_id &&
-      company.company_id.name &&
-      company.company_id.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCompanies =
+    comingCompanies.length === 0
+      ? []
+      : comingCompanies.filter(
+          (company) =>
+            company &&
+            company.company_id &&
+            company.company_id.name &&
+            company.company_id.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
 
   const currentDate = new Date();
   const formattedDate = timeanddate(currentDate);
@@ -128,15 +133,14 @@ function Company() {
                   <FaSearch />
                 </button>
               </div>
-              {
-                (user.role === 3 || user.role === 4) &&
-                  <button
+              {(user.role === 3 || user.role === 4) && (
+                <button
                   className="bg-black text-white px-3 py-1 hover:bg-gray-500 rounded flex items-center sm:ml-4"
                   onClick={handleAddClick}
                 >
                   <FaPlus className="mr-1" /> Add
                 </button>
-              }
+              )}
             </div>
           </div>
         </div>
@@ -156,17 +160,19 @@ function Company() {
                 </div>
               ) : (
                 <div className="project-box-wrapper grid lg:grid-flow-col grid-flow-row gap-9">
-                  {filteredCompanies.map((company) => (
-                    <CompanyCard
-                      key={company.id}
-                      comingCompany={company}
-                      onClick={setSelectedCompany}
-                      isActive={
-                        selectedCompany && selectedCompany.id === company.id
-                      }
-                      className="w-full"
-                    />
-                  ))}
+                  {filteredCompanies.length === 0
+                    ? null
+                    : filteredCompanies.map((company) => (
+                        <CompanyCard
+                          key={company.id}
+                          comingCompany={company}
+                          onClick={setSelectedCompany}
+                          isActive={
+                            selectedCompany && selectedCompany.id === company.id
+                          }
+                          className="w-full"
+                        />
+                      ))}
                 </div>
               )}
             </div>

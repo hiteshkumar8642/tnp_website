@@ -4,7 +4,7 @@ export async function sendSharedCompany(formData) {
   try {
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
-      "api/shared-companymodify/",
+      "/api/shared-companymodify/",
       params.toString(),
       {
         headers: {

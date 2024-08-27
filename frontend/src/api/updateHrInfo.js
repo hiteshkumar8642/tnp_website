@@ -4,7 +4,7 @@ export async function sendHRinfo(id, status) {
   try {
     const params = new URLSearchParams({ id, status });
     const response = await apiClient.post(
-      "api/hrdata-modified/",
+      "/api/hrdata-modified/",
       params.toString(),
       {
         headers: {

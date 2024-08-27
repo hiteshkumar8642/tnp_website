@@ -81,28 +81,38 @@ export default function CollegeRegistrationPage() {
 
   useEffect(
     function () {
-      setFilteredBranches(
-        branches.filter(
-          (branch) =>
-            branch.degree.toLowerCase().includes(searchInput.toLowerCase()) ||
-            branch.specialization
-              .toLowerCase()
-              .includes(searchInput.toLowerCase())
-        )
-      );
+      branches.length === 0
+        ? setFilteredBranches([])
+        : setFilteredBranches(
+            branches.filter(
+              (branch) =>
+                branch.degree
+                  .toLowerCase()
+                  .includes(searchInput.toLowerCase()) ||
+                branch.specialization
+                  .toLowerCase()
+                  .includes(searchInput.toLowerCase())
+            )
+          );
     },
     [searchInput, branches]
   );
 
   const isUserEmailExists = () => {
-    return userList.some((user) => user.email === formData.email);
+    return userList.length === 0
+      ? false
+      : userList.some((user) => user.email === formData.email);
   };
 
   const isUserNameExists = () => {
-    return userList.some((user) => user.username === formData.username);
+    return userList.length === 0
+      ? false
+      : userList.some((user) => user.username === formData.username);
   };
   const isCollegeExists = () => {
-    return collegeList.some((col) => col.name === formData.college);
+    return collegeList.length === 0
+      ? false
+      : collegeList.some((col) => col.name === formData.college);
   };
 
   const handleProceed = (e) => {
@@ -192,6 +202,7 @@ export default function CollegeRegistrationPage() {
     };
 
     try {
+      console.log(data);
       const response = await sendNewCollege(data);
       setShowModal(false);
       setFormData({
@@ -206,12 +217,12 @@ export default function CollegeRegistrationPage() {
         confirmPassword: "",
       });
       setSelectedBranches([]);
-      if (response.status === 200) {
+      if (response.status === 201) {
+        toast.success("College Registered Succesfully!! Check you email.");
         navigate("/login");
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
       toast.error(
         "There was an error with the registration. Please try again."
       );
@@ -367,18 +378,20 @@ export default function CollegeRegistrationPage() {
                   filteredBranches.length > 25 ? "scrollable" : ""
                 }`}
               >
-                {filteredBranches.map((branch) => (
-                  <div
-                    key={branch.id}
-                    className={`branch-item ${
-                      selectedBranches.includes(branch.id) ? "selected" : ""
-                    }`}
-                    onClick={() => handleBranchClick(branch.id)}
-                  >
-                    {branch.degree}
-                    {`(${branch.specialization})`}
-                  </div>
-                ))}
+                {filteredBranches.length === 0
+                  ? null
+                  : filteredBranches.map((branch) => (
+                      <div
+                        key={branch.id}
+                        className={`branch-item ${
+                          selectedBranches.includes(branch.id) ? "selected" : ""
+                        }`}
+                        onClick={() => handleBranchClick(branch.id)}
+                      >
+                        {branch.degree}
+                        {`(${branch.specialization})`}
+                      </div>
+                    ))}
               </div>
               <button type="submit">Submit</button>
             </form>

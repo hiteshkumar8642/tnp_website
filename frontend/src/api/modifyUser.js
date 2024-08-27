@@ -1,10 +1,10 @@
 import apiClient from "../services/api";
 
-export async function setAssignme(formData) {
+export async function modifyUserData(formData) {
   try {
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
-      "/api/api/assignme/",
+      "/api/modifyuser/",
       params.toString(),
       {
         headers: {
@@ -15,7 +15,7 @@ export async function setAssignme(formData) {
 
     return response;
   } catch (error) {
-    console.error("Failed to Assign HR", error);
+    console.error("Failed to send Modified user data", error);
     throw error;
   }
 }

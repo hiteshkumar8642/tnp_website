@@ -67,7 +67,7 @@ export default function FirstLogIn() {
           photo: file,
         }));
       } else {
-        alert("Please upload a .jpg or .jpeg file.");
+        toast.error("Please upload a .jpg or .jpeg file.");
       }
     }
   };
@@ -80,7 +80,7 @@ export default function FirstLogIn() {
         [id]: files[0],
       }));
     } else {
-      alert("Please upload a .pdf file.");
+      toast.error("Please upload a .pdf file.");
     }
   };
 
@@ -101,7 +101,8 @@ export default function FirstLogIn() {
 
     try {
       const response = await sendNewUserData(finalData);
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
+        toast.success("Data Sent !! Wait till you are verified");
         // Reset the form
         setFormData({
           branch: "",
@@ -130,12 +131,12 @@ export default function FirstLogIn() {
           graduation_marksheet: null,
           resume: null,
         });
-        navigate("/401");
+        navigate("/not-verified");
       } else {
         toast.error("Failed to send the user data.");
       }
     } catch (error) {
-      console.error("Error sending the user data", error);
+      toast.error("Error sending the user data");
     }
   };
 

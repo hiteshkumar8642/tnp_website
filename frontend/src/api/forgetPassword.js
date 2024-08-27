@@ -4,7 +4,7 @@ export async function fetchForgetPassword(email) {
   try {
     const params = new URLSearchParams({ email: email });
     const response = await unprotectedApiClient.post(
-      "api/passwordreset/",
+      "/api/passwordreset/",
       params.toString(),
       {
         headers: {

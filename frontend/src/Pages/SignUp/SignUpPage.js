@@ -74,11 +74,15 @@ export default function SignUpPage() {
   };
 
   const isUserEmailExists = () => {
-    return userList.some((user) => user.email === formData.email);
+    return userList.length === 0
+      ? false
+      : userList.some((user) => user.email === formData.email);
   };
 
   const isUserNameExists = () => {
-    return userList.some((user) => user.username === formData.username);
+    return userList.length === 0
+      ? false
+      : userList.some((user) => user.username === formData.username);
   };
 
   const handleSubmit = async (e) => {
@@ -137,7 +141,7 @@ export default function SignUpPage() {
 
     try {
       const response = await Signup(formData);
-      if (response.status === 200) {
+      if (response.status === 201) {
         Navigate("/login");
         toast.success("Registered successfully! Confirm email to login.");
       }
@@ -174,11 +178,13 @@ export default function SignUpPage() {
                 onChange={handleChange}
               >
                 <option value="">---Select your college---</option>
-                {college.map((col) => (
-                  <option key={col.id} value={col.name}>
-                    {col.name}
-                  </option>
-                ))}
+                {college.length === 0
+                  ? null
+                  : college.map((col) => (
+                      <option key={col.id} value={col.name}>
+                        {col.name}
+                      </option>
+                    ))}
               </select>
             </div>
             <div className="form-group input-group">

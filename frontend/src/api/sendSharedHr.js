@@ -4,7 +4,7 @@ export async function sendSharedHr(formData) {
   try {
     const params = new URLSearchParams(formData);
     const response = await apiClient.post(
-      "api/hrcontactmodify/",
+      "/api/hrcontactmodify/",
       params.toString(),
       {
         headers: {

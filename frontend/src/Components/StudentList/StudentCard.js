@@ -1,5 +1,5 @@
 const StudentCard = ({ student, onClick, isActive }) => {
-  const { user, current_cgpa, backlogs } = student;
+  const { user, current_cgpa, backlogs } = student.user_details;
   return (
     <div
       onClick={() => onClick(student)}
@@ -9,15 +9,15 @@ const StudentCard = ({ student, onClick, isActive }) => {
     >
       <div className="flex items-center gap-2">
         <img
-          src={`${process.env.REACT_APP_API_HOST}${student.photo}`}
+          src={`${process.env.REACT_APP_API_HOST}${student.user_details.photo}`}
           alt="icon"
           className="w-10 h-10"
         />
         <h2 className="text-lg font-semibold mt-2">{`${user.first_name} ${user.last_name}`}</h2>
       </div>
-      
-      <p className="text-gray-600">{student.location}</p>
-      
+
+      <p className="text-gray-600">{student.username}</p>
+
       <div className="flex justify-between items-center mt-2">
         <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
           CGPA : {current_cgpa}
