@@ -27,16 +27,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
 
     // Call the provided handleStatusChange function to update the status locally
     handleStatusChange(hr.id, newStatus);
-    try {
-      // const response = await apiClient.post('dashboard/api/hr_contacts/', {
-      //   id: hr.id,
-      //   status: newStatus
-      // });
-      // console.log('Status updated successfully:', response.data);
-    } catch (error) {
-      // Handle errors if the API request fails
-      console.error("Failed to update status:", error);
-    }
   };
 
   return (

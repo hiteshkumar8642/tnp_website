@@ -1,0 +1,6 @@
+ERROR 2024-08-26 01:01:24,382 log Internal Server Error: /api/addcompany/ None
+ERROR 2024-08-26 01:04:32,323 log Internal Server Error: /api/addcompany/ None
+ERROR 2024-08-26 01:06:12,422 log Internal Server Error: /api/addcompany/ None
+ERROR 2024-08-26 01:08:05,178 log Internal Server Error: /api/addcompany/ None
+ERROR 2024-08-26 01:14:25,764 log Internal Server Error: /api/addcompany/ None
+ERROR 2024-08-26 01:24:09,083 log Internal Server Error: /api/addcompany/ None
