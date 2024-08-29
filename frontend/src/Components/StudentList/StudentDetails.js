@@ -8,7 +8,6 @@ import ToggleButton from "./ToggleButton";
 
 const StudentDetails = ({ student, onBack }) => {
   const {
-    user_id,
     user,
     mobile,
     department,
@@ -31,7 +30,7 @@ const StudentDetails = ({ student, onBack }) => {
     is_spp,
   } = student.user_details;
   const { is_verified } = student.user_profile;
-  console.log(is_placed, is_verified, is_spp);
+  const { id } = student;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -76,7 +75,7 @@ const StudentDetails = ({ student, onBack }) => {
               is_placed={is_placed}
               is_verified={is_verified}
               is_spp={is_spp}
-              user_id={user_id}
+              user_id={id}
             />
           </div>
         </div>

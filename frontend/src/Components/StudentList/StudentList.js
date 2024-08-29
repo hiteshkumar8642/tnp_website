@@ -4,11 +4,11 @@ import StudentCard from "./StudentCard";
 import StudentDetails from "./StudentDetails";
 import ShimmerStudentCard from "./ShimmerStudentCard"; // Import ShimmerStudentCard
 import { FaSearch } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 function StudentList() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [students, setStudents] = useState([]);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -16,20 +16,10 @@ function StudentList() {
     async function getAllStudents() {
       setIsLoading(true);
       try {
-        const storedAllStudents = localStorage.getItem("allStudents");
-        if (storedAllStudents) {
-          console.log("Using stored students data");
-          setStudents(JSON.parse(storedAllStudents));
-        } else {
-          console.log("Fetching students data");
-          const data = await fetchAllStudents();
-          console.log("Fetched students data:", data);
-          setStudents(data);
-          localStorage.setItem("allStudents", JSON.stringify(data));
-        }
+        const response = await fetchAllStudents();
+        setStudents(response.data);
       } catch (err) {
-        setError("Failed to load All Students");
-        console.error(err);
+        toast.error("Error occurred during loading All Students");
       } finally {
         setIsLoading(false);
       }
@@ -47,7 +37,7 @@ function StudentList() {
 
   const filteredStudents =
     students.length === 0
-      ? null
+      ? []
       : students.filter(
           (student) =>
             student &&
@@ -92,8 +82,6 @@ function StudentList() {
             <ShimmerStudentCard key={index} />
           ))}
         </div>
-      ) : error ? (
-        <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="project-boxes jsGridView">
           {selectedStudent ? (

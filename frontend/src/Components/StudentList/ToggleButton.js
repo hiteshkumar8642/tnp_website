@@ -5,6 +5,9 @@ import { toast } from "react-hot-toast";
 const ToggleButtonGroup = ({ is_placed, is_verified, is_spp, user_id }) => {
   const [activeToggles, setActiveToggles] = useState([]);
 
+  let option;
+  let value;
+
   useEffect(() => {
     const initialActiveToggles = [];
     if (is_verified) initialActiveToggles.push(2);
@@ -15,9 +18,7 @@ const ToggleButtonGroup = ({ is_placed, is_verified, is_spp, user_id }) => {
 
   const labels = ["SPP", "Placed", "Verified"];
 
-  const handleToggle = async (index) => {
-    let value;
-    let option;
+  const handleToggle = (index) => {
     setActiveToggles((prevActiveToggles) => {
       const isActive = prevActiveToggles.includes(index);
       const newActiveToggles = isActive
@@ -25,18 +26,25 @@ const ToggleButtonGroup = ({ is_placed, is_verified, is_spp, user_id }) => {
         : [...prevActiveToggles, index];
 
       console.log(`Toggle ${index} is now ${!isActive}`);
-      option = index;
-      value = !isActive;
+      toggleSetter(index, !isActive);
       return newActiveToggles;
     });
-    const formData = { value, option, user_id };
-    const response = await modifyUserData(formData);
-    if (response.status === 200) {
-      toast.success("Status Update");
-    } else {
-      toast.error("Error In Updating");
-    }
   };
+  async function toggleSetter(a, b) {
+    option = a;
+    value = b;
+    const formData = { value: value, option: option, user_id: user_id };
+    try {
+      const response = await modifyUserData(formData);
+      if (response.status === 200) {
+        toast.success("Status Update");
+      } else {
+        toast.error("Failed to Update status");
+      }
+    } catch (err) {
+      toast.error("Error occured while sending data");
+    }
+  }
 
   return (
     <div className="flex items-center justify-center gap-4">

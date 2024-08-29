@@ -6,7 +6,7 @@ import { FaLinkedin, FaEdit } from "react-icons/fa";
 import { sendHRCallResponse } from "../../api/sendHrCallResponse";
 import { toast } from "react-hot-toast";
 
-const HrModal = ({ hr, onClose, handleStatusChange }) => {
+const HrModal = ({ hr, onClose }) => {
   // colours array
   const COLOR_CHOICES = [
     ["red", "Red"],
@@ -29,12 +29,12 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
     ["maroon", "Maroon"],
     ["navy", "Navy"],
   ];
-  const [selectedColor, setSelectedColor] = useState("");
 
-  // Handle change in dropdown selection
-  const handleChange = (event) => {
-    setSelectedColor(event.target.value);
-  };
+  const company = hr.company_id || {};
+  const companyPOC = company.poc || {};
+  const companyAllowedCourses = company.allowed_courses || [];
+
+  const [selectedColor, setSelectedColor] = useState("");
 
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
@@ -46,6 +46,11 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const [newMessage, setNewMessage] = useState("");
   //const [newMessageColor, setNewMessageColor] = useState("#ffffff");
   const [editingMessageIndex, setEditingMessageIndex] = useState(null);
+
+  // Handle change in dropdown selection
+  const handleChange = (event) => {
+    setSelectedColor(event.target.value);
+  };
 
   const handleAddMessage = async () => {
     try {
@@ -128,20 +133,20 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               </div>
             </div>
             <div className="info-row">
-              <label>Status:</label>
+              <label>Contact Status:</label>
               <span className="data">{hr.status}</span>
             </div>
-            <label htmlFor="status">Status:</label>
+            {/* <label htmlFor="status">Status:</label>
             <br />
             <select className="info-row">
               <option value="All">All</option>
               <option value="Contact">Contact</option>
               <option value="Do_not_Contact">Do not Contact</option>
               <option value="Already_Contacted">Already Contacted</option>
-            </select>
-            <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
+            </select> */}
+            {/* <button >
               Reassign
-            </button>
+            </button> */}
           </div>
           <div className="grid-item grid-item-0-1">
             <table>
@@ -169,27 +174,33 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
           </div>
           <div className="grid-item grid-item-1-0">
             <h3>Company Information</h3>
-            <p>Company: {hr.company_id.name}</p>
-            <p>General CTC: {hr.company_id.general_ctc}</p>
-            <p>College CTC: {hr.company_id.college_ctc}</p>
+            <p>Company: {company.name || "N/A"}</p>
+            <p>General CTC: {company.general_ctc || "N/A"}</p>
+            <p>College CTC: {company.college_ctc || "N/A"}</p>
             <p>
               Time of Visit:{" "}
-              {new Date(hr.company_id.time_of_visit).toLocaleDateString()}
+              {company.time_of_visit
+                ? new Date(company.time_of_visit).toLocaleDateString()
+                : "N/A"}
             </p>
             <h4>Allowed Courses:</h4>
             <ul>
-              {hr.company_id.allowed_courses.map((course, index) => (
-                <li key={index}>
-                  {course.degree} in {course.specialization} (
-                  {course.course_duration} years)
-                </li>
-              ))}
+              {companyAllowedCourses.length > 0 ? (
+                companyAllowedCourses.map((course, index) => (
+                  <li key={index}>
+                    {course.degree} in {course.specialization} (
+                    {course.course_duration} years)
+                  </li>
+                ))
+              ) : (
+                <li>N/A</li>
+              )}
             </ul>
             <h4>Point of Contact:</h4>
-            <p>College: {hr.company_id.poc.college.name}</p>
+            <p>College: {companyPOC.college?.name || "N/A"}</p>
             <p>
-              Course: {hr.company_id.poc.course.degree} in{" "}
-              {hr.company_id.poc.course.specialization}
+              Course: {companyPOC.course?.degree} in{" "}
+              {companyPOC.course?.specialization || "N/A"}
             </p>
           </div>
           <div className="grid-item grid-item-1-1">

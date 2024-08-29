@@ -70,7 +70,7 @@ const HrList = () => {
             className="status-dropdown"
           >
             <option value="All">All</option>
-            <option value="Contact">Contact</option>
+            <option value="To_Be_Contacted">To Be Contacted</option>
             <option value="Do_not_Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>

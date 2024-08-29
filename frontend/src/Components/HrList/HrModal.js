@@ -3,8 +3,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HrModal.css";
 import { FaLinkedin } from "react-icons/fa";
+import { setAssignme } from "../../api/setAssignme";
+import { toast } from "react-hot-toast";
 
-const HrModal = ({ hr, onClose, handleStatusChange }) => {
+const HrModal = ({ hr, onClose }) => {
   const [nextContactDate, setNextContactDate] = useState(
     new Date(hr.next_date_of_contact)
   );
@@ -14,6 +16,16 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
   const company = hr.company_id || {};
   const companyPOC = company.poc || {};
   const companyAllowedCourses = company.allowed_courses || [];
+
+  async function handleAssignMe(id) {
+    try {
+      const response = await setAssignme({ id: id });
+      if (response.status === 200) toast.success("HR assigned successfully:");
+      else toast.error("Failed To assign HR");
+    } catch (error) {
+      toast.error("Error occured while Assigning HR");
+    }
+  }
 
   return (
     <div className="hrlist-modal-overlay" onClick={onClose}>
@@ -53,12 +65,10 @@ const HrModal = ({ hr, onClose, handleStatusChange }) => {
               </div>
             </div>
             <div className="info-row">
-              <label>Status:</label>
+              <label>Contact Status:</label>
               <span className="data">{hr.status || "N/A"}</span>
             </div>
-            <button onClick={() => handleStatusChange(hr.id, "Assigned")}>
-              Assign me
-            </button>
+            <button onClick={() => handleAssignMe(hr.id)}>Assign me</button>
           </div>
           <div className="grid-item grid-item-0-1">
             <h3>Company Information</h3>

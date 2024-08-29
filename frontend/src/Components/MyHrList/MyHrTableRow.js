@@ -24,8 +24,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
 
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
-
-    // Call the provided handleStatusChange function to update the status locally
     handleStatusChange(hr.id, newStatus);
   };
 
@@ -43,23 +41,17 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
         <td className="col-1 center-align">
           <select
             ref={selectRef}
-            value={hr?.status || ""}
+            value={hr.status || "To_Be_Contacted"}
             onChange={handleStatusDropdownChange}
             className="status-dropdown"
           >
-            <option value="Contact">Contact</option>
+            <option value="To_Be_Contacted">To Be Contacted</option>
             <option value="Do_not_Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>
         </td>
       </tr>
-      {isModalOpen && (
-        <MyHrModal
-          hr={hr}
-          onClose={handleCloseModal}
-          handleStatusChange={handleStatusChange}
-        />
-      )}
+      {isModalOpen && <MyHrModal hr={hr} onClose={handleCloseModal} />}
     </>
   );
 };

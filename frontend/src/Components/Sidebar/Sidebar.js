@@ -13,7 +13,7 @@ function Sidebar() {
 
   const logout = async (refreshToken) => {
     try {
-      await apiClient.post("user/api/logout/", { refresh_token: refreshToken });
+      await apiClient.post("api/logout/", { refresh_token: refreshToken });
     } catch (error) {
       throw error.response.data;
     }

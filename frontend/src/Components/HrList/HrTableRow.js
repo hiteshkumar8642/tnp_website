@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 import HrModal from "./HrModal";
-import { setAssignme } from "../../api/setAssignme";
-import { toast } from "react-hot-toast";
 
 const HrTableRow = ({ hr, handleStatusChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,14 +29,6 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
   const handleStatusDropdownChange = async (e) => {
     const newStatus = e.target.value;
     handleStatusChange(hr.id, newStatus);
-    try {
-      const response = await setAssignme({ id: hr.id, status: newStatus });
-      if (response.status === 200)
-        toast.success("Status updated successfully:");
-      else toast.error("Failed To update status");
-    } catch (error) {
-      toast.error("Error occured while updating status:");
-    }
   };
 
   return (
@@ -55,23 +45,17 @@ const HrTableRow = ({ hr, handleStatusChange }) => {
         <td className="col-1 center-align">
           <select
             ref={selectRef}
-            value={hr.status || "Contact"}
+            value={hr.status || "To_Be_Contacted"}
             onChange={handleStatusDropdownChange}
             className="status-dropdown"
           >
-            <option value="Contact">Contact</option>
+            <option value="To_Be_Contacted">To Be Contacted</option>
             <option value="Do_not_Contact">Do not Contact</option>
             <option value="Already_Contacted">Already Contacted</option>
           </select>
         </td>
       </tr>
-      {isModalOpen && (
-        <HrModal
-          hr={hr}
-          onClose={handleCloseModal}
-          handleStatusChange={handleStatusChange}
-        />
-      )}
+      {isModalOpen && <HrModal hr={hr} onClose={handleCloseModal} />}
     </>
   );
 };
